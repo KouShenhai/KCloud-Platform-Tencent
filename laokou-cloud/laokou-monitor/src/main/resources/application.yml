@@ -1,0 +1,28 @@
+server:
+  port: 5000
+  servlet:
+    context-path: /monitor
+  tomcat:
+    max-http-header-size: -1
+    max-connections: -1
+    max-threads: -1
+    max-http-form-post-size: -1
+    connection-timeout: 60000
+
+spring:
+  profiles:
+    active: @profile.active@
+  application:
+    name: laokou-monitor
+  security:
+    user:
+      name: root
+      password: koushenhai
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
