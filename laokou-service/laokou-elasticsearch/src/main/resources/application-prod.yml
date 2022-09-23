@@ -1,0 +1,13 @@
+elasticsearch:
+  host: 101.33.251.11:9200
+  cluster-name: laokou-elasticsearch
+  username: elastic
+  password: koushenhai123456
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://127.0.0.1:8848
+        namespace: kcloud-platform-aliyun
+        service: laokou-elasticsearch

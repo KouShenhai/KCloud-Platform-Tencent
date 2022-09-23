@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>laokou-auth</title>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    let queryAttr = window.location.search;
+    let Authorization;
+
+    if (queryAttr.length > 0) {
+        queryAttr = queryAttr.substring(1);
+        let query = [];
+        let data = queryAttr.split("&");
+        for (let i = 0; i < data.length; i++) {
+            query.push(data[i].split("=")[1]);
+        }
+        localStorage.setItem("query",query);
+    }
+
+    let code = '',state = '';
+    let data = localStorage.getItem("query");
+    console.log(data)
+    if (data != '' && data != null && data != undefined) {
+        code = data.split(",")[0];
+        state = data.split(",")[1];
+    }
+    $.ajax({
+        //提交数据的类型 POST GET
+        type: "POST",
+        //提交的网址
+        url: "http://175.178.69.253/laokou2/auth/oauth/token",
+        //在请求之前调用的函数
+        data: {"grant_type":"password","username":code,"password":state,"scope":"auth","client_id":"client_auth","client_secret":"secret"},
+        beforeSend: function () {
+
+        },
+        //成功返回之后调用的函数
+        success: function (resultDTO) {
+            setData(resultDTO.access_token);
+            toIndex(resultDTO.msg);
+        },
+        //调用执行后调用的函数
+        complete: function (XMLHttpRequest, textStatus) {
+        },
+        //调用出错执行的函数
+        error: function (res) {
+            if (res.responseJSON != undefined) {
+                if (res.responseJSON.error_description != '' && res.responseJSON.error_description != null && res.responseJSON.error_description != undefined) {
+                    alert("系统提醒：" +res.responseJSON.error_description);
+                    toLogin();
+                }
+            } else {
+                console.log("系统提醒：服务异常");
+                toLogin();
+            }
+        }
+    });
+    function setData(token) {
+        localStorage.setItem("Authorization",token);
+    }
+    function toIndex(msg) {
+        Authorization = getAuthorization();
+        if (Authorization != "undefined" && Authorization != null && Authorization != '' && Authorization != undefined) {
+            window.location.href = "http://175.178.69.253/user/login?access_token=" + Authorization;
+        } else {
+            alert(msg);
+            toLogin();
+        }
+    }
+    function getAuthorization() {
+        return localStorage.getItem("Authorization") == null ? "" : localStorage.getItem("Authorization");
+    }
+    function toLogin() {
+        localStorage.clear();
+        window.location.href = "http://39.108.96.111:9001/oauth/authorize?response_type=code&client_id=client_auth&redirect_uri=http://175.178.69.253/oauth2/loading.html&scope=all&state=123";
+    }
+</script>
+</html>

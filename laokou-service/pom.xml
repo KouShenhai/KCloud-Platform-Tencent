@@ -19,5 +19,7 @@
         <module>laokou-auth</module>
         <module>laokou-generator</module>
         <module>laokou-oauth2</module>
+        <module>laokou-elasticsearch</module>
+        <module>laokou-cas</module>
     </modules>
 </project>

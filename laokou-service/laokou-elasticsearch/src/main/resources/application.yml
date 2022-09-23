@@ -1,0 +1,11 @@
+server:
+  port: 9998
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  application:
+    name: laokou-elasticsearch
+  profiles:
+    active: @profile.active@
