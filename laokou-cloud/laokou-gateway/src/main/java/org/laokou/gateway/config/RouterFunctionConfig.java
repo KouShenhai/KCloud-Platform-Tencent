@@ -16,8 +16,8 @@
 package org.laokou.gateway.config;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
-import lombok.RequiredArgsConstructor;
 import org.laokou.gateway.component.Resilience4jFallbackHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
@@ -28,10 +28,10 @@ import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 @Configuration
-@RequiredArgsConstructor
 public class RouterFunctionConfig {
 
-    private final Resilience4jFallbackHandler resilience4jFallbackHandler;
+    @Autowired
+    private Resilience4jFallbackHandler resilience4jFallbackHandler;
 
     @Bean
     public RouterFunction routerFunction() {

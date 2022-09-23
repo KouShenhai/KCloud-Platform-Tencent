@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.gateway.filter;
-import lombok.RequiredArgsConstructor;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.user.UserDetail;
 import org.laokou.common.utils.HttpResultUtil;
@@ -23,11 +22,13 @@ import org.laokou.gateway.feign.auth.AuthApiFeignClient;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
@@ -52,7 +53,6 @@ import java.util.List;
 @Slf4j
 @Data
 @ConfigurationProperties(prefix = "gateway")
-@RequiredArgsConstructor
 public class AuthFilter implements GlobalFilter,Ordered {
 
     private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
@@ -60,9 +60,11 @@ public class AuthFilter implements GlobalFilter,Ordered {
     /**
      * 不拦截的urls
      */
-    private final List<String> uris;
+    private List<String> uris;
 
-    private final AuthApiFeignClient authApiFeignClient;
+    @Autowired
+    @Lazy
+    private AuthApiFeignClient authApiFeignClient;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

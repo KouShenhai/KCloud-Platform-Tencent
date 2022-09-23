@@ -9,6 +9,8 @@ spring:
     basename: i18n/messages
   profiles:
     active: @profile.active@
+  main:
+    lazy-initialization: true
   servlet:
     multipart:
       enabled: true
