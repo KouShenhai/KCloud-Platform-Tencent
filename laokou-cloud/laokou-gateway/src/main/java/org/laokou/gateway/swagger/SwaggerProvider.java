@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.gateway.swagger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import springfox.documentation.swagger.web.SwaggerResource;
@@ -28,10 +28,10 @@ import java.util.List;
  */
 @Component
 @Primary
+@RequiredArgsConstructor
 public class SwaggerProvider implements SwaggerResourcesProvider {
     public static final String API_URI = "/v2/api-docs";
-    @Autowired
-    private SwaggerRoute swaggerRoute;
+    private final SwaggerRoute swaggerRoute;
 
     @Override
     public List<SwaggerResource> get() {

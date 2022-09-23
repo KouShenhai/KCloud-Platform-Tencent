@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.gateway.swagger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,18 +30,11 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/swagger-resources")
+@RequiredArgsConstructor
 public class SwaggerHandler {
-    @Autowired(required = false)
-    private SecurityConfiguration securityConfiguration;
-    @Autowired(required = false)
-    private UiConfiguration uiConfiguration;
-    @Autowired
-    private SwaggerResourcesProvider swaggerResources;
-
-    @Autowired
-    public SwaggerHandler(SwaggerResourcesProvider swaggerResources) {
-        this.swaggerResources = swaggerResources;
-    }
+    private final SecurityConfiguration securityConfiguration;
+    private final UiConfiguration uiConfiguration;
+    private final SwaggerResourcesProvider swaggerResources;
 
     @GetMapping("/configuration/security")
     public Mono<ResponseEntity<SecurityConfiguration>> securityConfiguration() {
