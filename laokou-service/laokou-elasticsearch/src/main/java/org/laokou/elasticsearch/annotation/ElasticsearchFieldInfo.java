@@ -1,4 +1,4 @@
-package io.laokou.elasticsearch.annotation;
+package org.laokou.elasticsearch.annotation;
 import java.lang.annotation.*;
 
 /**

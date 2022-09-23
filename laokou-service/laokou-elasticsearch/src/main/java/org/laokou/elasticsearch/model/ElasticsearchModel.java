@@ -1,4 +1,4 @@
-package io.laokou.elasticsearch.model;
+package org.laokou.elasticsearch.model;
 
 import lombok.Data;
 

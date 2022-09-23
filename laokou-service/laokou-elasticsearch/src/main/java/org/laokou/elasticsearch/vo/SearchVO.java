@@ -1,4 +1,4 @@
-package io.laokou.elasticsearch.vo;
+package org.laokou.elasticsearch.vo;
 
 import io.laokou.common.entity.BasePage;
 import lombok.Data;

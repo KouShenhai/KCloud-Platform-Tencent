@@ -1,5 +1,5 @@
-package io.laokou.elasticsearch.utils;
-import io.laokou.elasticsearch.index.ResourceIndex;
+package org.laokou.elasticsearch.utils;
+import org.laokou.elasticsearch.index.ResourceIndex;
 
 import java.util.HashMap;
 import java.util.Map;

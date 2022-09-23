@@ -1,4 +1,4 @@
-package io.laokou.elasticsearch.constant;
+package org.laokou.elasticsearch.constant;
 
 public interface EsConstant {
     /**

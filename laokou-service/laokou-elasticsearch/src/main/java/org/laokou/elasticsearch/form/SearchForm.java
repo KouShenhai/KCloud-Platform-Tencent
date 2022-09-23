@@ -1,4 +1,4 @@
-package io.laokou.elasticsearch.form;
+package org.laokou.elasticsearch.form;
 import io.laokou.common.dto.AggregationDTO;
 import io.laokou.common.dto.SearchDTO;
 import io.swagger.annotations.ApiModel;

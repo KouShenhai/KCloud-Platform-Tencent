@@ -1,13 +1,13 @@
-package io.laokou.elasticsearch.utils;
+package org.laokou.elasticsearch.utils;
 import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.google.common.collect.Lists;
 import io.laokou.common.dto.AggregationDTO;
 import io.laokou.common.dto.SearchDTO;
-import io.laokou.elasticsearch.constant.EsConstant;
-import io.laokou.elasticsearch.form.SearchForm;
-import io.laokou.elasticsearch.vo.SearchVO;
+import org.laokou.elasticsearch.constant.EsConstant;
+import org.laokou.elasticsearch.form.SearchForm;
+import org.laokou.elasticsearch.vo.SearchVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.queryparser.classic.QueryParser;

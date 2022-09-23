@@ -1,4 +1,4 @@
-package io.laokou.elasticsearch.utils;
+package org.laokou.elasticsearch.utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package io.laokou.elasticsearch.config;
+package org.laokou.elasticsearch.config;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;

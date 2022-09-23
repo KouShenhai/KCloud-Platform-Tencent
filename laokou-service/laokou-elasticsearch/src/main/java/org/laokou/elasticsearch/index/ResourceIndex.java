@@ -1,6 +1,6 @@
-package io.laokou.elasticsearch.index;
+package org.laokou.elasticsearch.index;
 
-import io.laokou.elasticsearch.annotation.ElasticsearchFieldInfo;
+import org.laokou.elasticsearch.annotation.ElasticsearchFieldInfo;
 import lombok.Data;
 
 import java.io.Serializable;
