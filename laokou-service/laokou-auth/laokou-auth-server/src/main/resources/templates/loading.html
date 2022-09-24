@@ -66,7 +66,7 @@
     function toIndex(msg) {
         Authorization = getAuthorization();
         if (Authorization != "undefined" && Authorization != null && Authorization != '' && Authorization != undefined) {
-            window.location.href = "http://175.178.69.253/user/login?access_token=" + Authorization;
+            window.location.href = "http://192.168.62.1:8000/user/login?access_token=" + Authorization;
         } else {
             alert(msg);
             toLogin();
@@ -77,7 +77,7 @@
     }
     function toLogin() {
         localStorage.clear();
-        window.location.href = "http://39.108.96.111:9001/oauth/authorize?response_type=code&client_id=client_auth&redirect_uri=http://175.178.69.253/oauth2/loading.html&scope=all&state=123";
+        window.location.href = "http://192.168.62.1:9001/oauth/authorize?response_type=code&client_id=client_auth&redirect_uri=http://192.168.62.1:5555/auth/sys/loading.html&scope=all&state=123";
     }
 </script>
 </html>

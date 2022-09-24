@@ -23,9 +23,9 @@
         }
     }
     if (accessToken != "") {
-        location.href = "http://175.178.69.253/laokou/auth/sys/auth/api/zfbBind?Authorization=" + accessToken + "&zfb_openid=" + localStorage.getItem("zfb_openid")
+        location.href = "http://192.168.62.1:5555/auth/sys/auth/api/zfbBind?Authorization=" + accessToken + "&zfb_openid=" + localStorage.getItem("zfb_openid")
     } else {
-        location.href = "http://175.178.69.253/oauth2/login.html?redirect_url=http://175.178.69.253/oauth2/zfb/zfb_loading.html"
+        location.href = "http://192.168.62.1:5555/auth/sys/login.html?redirect_url=http://192.168.62.1:5555/auth/sys/zfb_loading.html"
     }
 </script>
 </html>

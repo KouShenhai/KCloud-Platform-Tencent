@@ -45,8 +45,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.elasticsearch.client.model.ElasticsearchModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -79,6 +83,9 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
 
     @Autowired
     private ElasticsearchApiFeignClient elasticsearchApiFeignClient;
+
+    @Autowired
+    private AsyncTaskExecutor asyncTaskExecutor;
 
     @Override
     @DataSource("master")
@@ -174,6 +181,8 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             //同步数据 - 异步
             final int chunkSize = 500;
             int pageIndex = 0;
+            //请求头对象
+            RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
             while (pageIndex < resourceTotal) {
                 final List<ResourceIndex> resourceIndexList = sysResourceService.getResourceIndexList(chunkSize, pageIndex,code);
                 final Map<String, List<ResourceIndex>> resourceDataMap = resourceIndexList.stream().collect(Collectors.groupingBy(ResourceIndex::getYm));
@@ -189,13 +198,38 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                     model.setData(jsonDataList);
                     model.setIndexAlias(resourceIndexAlias);
                     //同步数据
-                    elasticsearchApiFeignClient.syncAsyncBatch(model);
+                    asyncTaskExecutor.execute(new SyncElasticsearchRun(indexName,jsonDataList,resourceIndexAlias,requestAttributes));
                 }
                 pageIndex += chunkSize;
             }
             afterSync();
         }
         return true;
+    }
+
+    private class SyncElasticsearchRun extends Thread {
+        private String indexName;
+        private String resourceIndexAlias;
+        private String jsonDataList;
+        private RequestAttributes requestAttributes;
+        SyncElasticsearchRun(String indexName,String jsonDataList,String resourceIndexAlias,RequestAttributes requestAttributes) {
+            this.indexName = indexName;
+            this.jsonDataList = jsonDataList;
+            this.resourceIndexAlias = resourceIndexAlias;
+            this.requestAttributes = requestAttributes;
+        }
+        @Override
+        public void run() {
+            //解决请求头丢失问题
+            //每一个线程都共享之前的请求头
+            RequestContextHolder.setRequestAttributes(requestAttributes);
+            final ElasticsearchModel model = new ElasticsearchModel();
+            model.setIndexName(indexName);
+            model.setData(jsonDataList);
+            model.setIndexAlias(resourceIndexAlias);
+            //同步数据
+            elasticsearchApiFeignClient.syncAsyncBatch(model);
+        }
     }
 
     @Override
