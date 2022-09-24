@@ -7,3 +7,17 @@ elasticsearch:
   cluster-name: ENC(a2+u6NnvkCrnz6kgiZsTj+q7W3zoz/u0CJYGHqvteBE=)
   username: ENC(VcPrVKUHLwRVZVtLbkOoGw==)
   password: ENC(AHdloD6Rp4bu9SYZJbO7bcwErNCQm43R1b4zh6x4B10=)
+
+spring:
+  boot:
+    admin:
+      client:
+        url: http://124.222.196.51:5000/monitor
+        username: ENC(7j+MYBNM2fhq8WST3DE3WA==)
+        password: ENC(nj35dMcOWEmR5EASEZR3yfaT4IdT9TPm)
+        instance:
+          service-base-url: http://175.178.69.253:${server.port}
+
+logging:
+  file:
+    name: /opt/logs/${spring.application.name}/error.log

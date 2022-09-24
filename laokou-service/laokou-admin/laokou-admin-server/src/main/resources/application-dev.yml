@@ -29,7 +29,6 @@ spring:
         password: ENC(nj35dMcOWEmR5EASEZR3yfaT4IdT9TPm)
         instance:
           service-base-url: http://127.0.0.1:${server.port}
-          prefer-ip: true
   redis:
     database: 0
     host: 127.0.0.1
