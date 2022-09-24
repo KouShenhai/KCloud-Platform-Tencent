@@ -1,13 +1,28 @@
+/**
+ * Copyright (c) 2022 KCloud-Platform Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.laokou.cas.server.utils;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.cas.server.exception.RenOAuth2Exception;
-import org.laokou.cas.server.user.BaseUserVO;
-import io.laokou.common.constant.Constant;
-import io.laokou.common.exception.ErrorCode;
-import io.laokou.common.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.laokou.common.constant.Constant;
+import org.laokou.common.exception.ErrorCode;
+import org.laokou.common.utils.HttpUtil;
+import org.laokou.common.utils.JacksonUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
@@ -48,8 +63,8 @@ public class AuthUtil {
         tokenMap.put("redirect_uri",REDIRECT_URI);
         tokenMap.put("grant_type",GRANT_TYPE);
         String resultJson = HttpUtil.doPost(POST_AUTHORIZE_URL,tokenMap,new HashMap<>(0));
-        JSONObject jsonObject = JSON.parseObject(resultJson);
-        String accessToken = jsonObject.getString(Constant.ACCESS_TOKEN);
+        JsonNode jsonNode = JacksonUtil.readTree(resultJson);
+        String accessToken = jsonNode.get(Constant.ACCESS_TOKEN).toString();
         if (StringUtils.isEmpty(accessToken)){
             throw new RenOAuth2Exception(ErrorCode.UNAUTHORIZED,"授权码已过期，请重新获取");
         }
@@ -60,8 +75,8 @@ public class AuthUtil {
         Map<String,String> userInfoMap = new HashMap<>(1);
         userInfoMap.put(Constant.ACCESS_TOKEN,accessToken);
         String json = HttpUtil.doGet(GET_USER_KEY_URL, userInfoMap,new HashMap<>(0));
-        String data = JSONObject.parseObject(json).getString("data");
-        return JSONObject.parseObject(data).toJavaObject(BaseUserVO.class);
+        JsonNode data = JacksonUtil.readTree(json).get("data");
+        return JacksonUtil.toBean(data.toString(),BaseUserVO.class);
     }
 
 }

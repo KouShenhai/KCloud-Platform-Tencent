@@ -1,8 +1,11 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   profiles:
     active: @profile.active@
   application:
-    name: laokou-auth
+    name: laokou-cas
 
 auth:
   client_id: client_auth

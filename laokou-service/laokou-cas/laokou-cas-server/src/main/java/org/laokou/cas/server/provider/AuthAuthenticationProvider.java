@@ -1,14 +1,29 @@
+/**
+ * Copyright (c) 2022 KCloud-Platform Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.laokou.cas.server.provider;
+import org.laokou.auth.client.user.BaseUserVO;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.cas.server.exception.RenOAuth2Exception;
 import org.laokou.cas.server.service.SysMenuService;
 import org.laokou.cas.server.service.SysUserService;
-import org.laokou.cas.server.user.BaseUserVO;
-import org.laokou.cas.server.user.UserDetail;
 import org.laokou.cas.server.utils.AuthUtil;
-import io.laokou.common.exception.ErrorCode;
-import io.laokou.common.utils.MessageUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.common.exception.ErrorCode;
+import org.laokou.common.utils.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,7 +61,7 @@ public class AuthAuthenticationProvider implements AuthenticationProvider {
         String accessToken = authUtil.getAccessToken(code);
         BaseUserVO vo = authUtil.getUerInfo(accessToken);
         if (null == vo) {
-            throw new RenOAuth2Exception(ErrorCode.ACCOUNT_NOT_EXIST,MessageUtil.getMessage(ErrorCode.ACCOUNT_NOT_EXIST));
+            throw new RenOAuth2Exception(ErrorCode.ACCOUNT_NOT_EXIST, MessageUtil.getMessage(ErrorCode.ACCOUNT_NOT_EXIST));
         }
         Set<GrantedAuthority> authorities = new HashSet<>();
         UserDetail userDetail = sysUserService.getUserDetail(vo.getUserId(), null);

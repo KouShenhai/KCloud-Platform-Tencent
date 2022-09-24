@@ -13,4 +13,11 @@
     <artifactId>laokou-cas-client</artifactId>
     <name>laokou-cas-client</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-common</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

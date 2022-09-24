@@ -54,7 +54,7 @@ import java.util.concurrent.TimeUnit;
 @GlobalTransactional(rollbackFor = Exception.class)
 public class SysMessageApplicationServiceImpl implements SysMessageApplicationService {
 
-    public static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
+    private static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
             8,
             16,
             60,

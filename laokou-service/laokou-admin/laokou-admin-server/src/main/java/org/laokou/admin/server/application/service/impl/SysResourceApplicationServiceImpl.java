@@ -45,7 +45,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.elasticsearch.client.model.ElasticsearchModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import javax.servlet.http.HttpServletRequest;
@@ -74,9 +73,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
 
     @Autowired
     private WorkFlowUtil workFlowUtil;
-
-    @Autowired
-    private AsyncTaskExecutor asyncTaskExecutor;
 
     @Autowired
     private SysResourceAuditLogService sysResourceAuditLogService;
@@ -167,14 +163,14 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             final String resourceIndex = "laokou_resource_" + code;
             final String resourceIndexAlias = "laokou_resource";
             final List<String> resourceYMPartitionList = sysResourceService.getResourceYMPartitionList(code);
-            resourceYMPartitionList.stream().forEach(ym -> {
+            for (String ym: resourceYMPartitionList) {
                 final CreateIndexModel model = new CreateIndexModel();
                 final String indexName = resourceIndex + "_" + ym;
                 final String indexAlias = resourceIndexAlias;
                 model.setIndexName(indexName);
                 model.setIndexAlias(indexAlias);
                 elasticsearchApiFeignClient.create(model);
-            });
+            }
             //同步数据 - 异步
             final int chunkSize = 500;
             int pageIndex = 0;
@@ -188,33 +184,18 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                     final List<ResourceIndex> resourceDataList = entry.getValue();
                     final String indexName = resourceIndex + "_" + ym;
                     final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
-                    asyncTaskExecutor.execute(new SyncElasticsearchRun(indexName,jsonDataList,resourceIndexAlias));
+                    final ElasticsearchModel model = new ElasticsearchModel();
+                    model.setIndexName(indexName);
+                    model.setData(jsonDataList);
+                    model.setIndexAlias(resourceIndexAlias);
+                    //同步数据
+                    elasticsearchApiFeignClient.syncAsyncBatch(model);
                 }
                 pageIndex += chunkSize;
             }
             afterSync();
         }
         return true;
-    }
-
-    private class SyncElasticsearchRun extends Thread {
-        private String indexName;
-        private String resourceIndexAlias;
-        private String jsonDataList;
-        SyncElasticsearchRun(String indexName,String jsonDataList,String resourceIndexAlias) {
-            this.indexName = indexName;
-            this.jsonDataList = jsonDataList;
-            this.resourceIndexAlias = resourceIndexAlias;
-        }
-        @Override
-        public void run() {
-            final ElasticsearchModel model = new ElasticsearchModel();
-            model.setIndexName(indexName);
-            model.setData(jsonDataList);
-            model.setIndexAlias(resourceIndexAlias);
-            //同步数据
-            elasticsearchApiFeignClient.syncAsyncBatch(model);
-        }
     }
 
     @Override

@@ -1,5 +1,22 @@
+/**
+ * Copyright (c) 2022 KCloud-Platform Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.laokou.elasticsearch.server.utils;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -460,7 +477,7 @@ public class ElasticsearchUtil {
         //WAIT_UNTIL >  请求向es提交数据，等待数据完成刷新<实时性高，资源消耗低>
         //NONE > 默认策略<实时性低>
         bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-        ArrayNode jsonArray = (ArrayNode) JacksonUtil.readTree(jsonDataList);
+        JSONArray jsonArray = JSONUtil.parseArray(jsonDataList);
         if (jsonArray.isEmpty()) {
             return bulkRequest;
         }
@@ -468,7 +485,7 @@ public class ElasticsearchUtil {
         jsonArray.forEach(obj ->{
             final Map<String, Object> map = (Map<String, Object>) obj;
             IndexRequest indexRequest = new IndexRequest(indexName);
-            indexRequest.source(map,XContentType.JSON);
+            indexRequest.source(JSONUtil.toJsonStr(obj),XContentType.JSON);
             indexRequest.id(map.get(PRIMARY_KEY_NAME).toString());
             bulkRequest.add(indexRequest);
         });
