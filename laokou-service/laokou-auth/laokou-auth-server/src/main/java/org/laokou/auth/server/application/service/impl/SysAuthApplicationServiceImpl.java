@@ -50,8 +50,6 @@ import org.laokou.redis.RedisUtil;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.redisson.api.RBucket;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -69,7 +67,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 /**
  * auth实现类
  * @author Kou Shenhai
@@ -100,8 +97,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private SysRoleService sysRoleService;
     @Autowired
     private SysDeptService sysDeptService;
-    @Autowired
-    private RedissonClient redissonClient;
     @Autowired
     private RedisUtil redisUtil;
 
@@ -181,16 +176,14 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //资源列表放到redis中
         String userResourceKey = RedisKeyUtil.getUserResourceKey(userId);
         //原子操作 -> 防止数据被修改，更新到redis的数据不是最新数据
-        final RBucket<Object> userInfoBucket = redissonClient.getBucket(userInfoKey);
-        final RBucket<Object> userResourceBucket = redissonClient.getBucket(userResourceKey);
         List<String> permissionList = getPermissionList(userDetail);
         userDetail.setPermissionsList(permissionList);
         userDetail.setRoles(sysRoleService.getRoleListByUserId(userDetail.getId()));
         userDetail.setDepts(getDeptList(userDetail));
-        redissonClient.getKeys().delete(userInfoKey);
-        redissonClient.getKeys().delete(userResourceKey);
-        userInfoBucket.set(userDetail,RedisUtil.HOUR_ONE_EXPIRE, TimeUnit.SECONDS);
-        userResourceBucket.set(resourceList,RedisUtil.HOUR_ONE_EXPIRE,TimeUnit.SECONDS);
+        redisUtil.delete(userInfoKey);
+        redisUtil.delete(userResourceKey);
+        redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
+        redisUtil.set(userResourceKey,resourceList,RedisUtil.HOUR_ONE_EXPIRE);
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         request.setAttribute(Constant.AUTHORIZATION_HEAD, token);
         return token;
@@ -232,8 +225,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //删除缓存
         String userResourceKey = RedisKeyUtil.getUserResourceKey(userId);
         String userInfoKey = RedisKeyUtil.getUserInfoKey(userId);
-        redissonClient.getKeys().delete(userResourceKey);
-        redissonClient.getKeys().delete(userInfoKey);
+        redisUtil.delete(userResourceKey);
+        redisUtil.delete(userInfoKey);
         //退出
         request.removeAttribute(Constant.AUTHORIZATION_HEAD);
         //endregion
@@ -344,10 +337,10 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     public UserDetail getUserDetail(Long userId) {
         //region Description
         String userInfoKey = RedisKeyUtil.getUserInfoKey(userId);
-        final RBucket<Object> bucket = redissonClient.getBucket(userInfoKey);
+        final Object obj = redisUtil.get(userInfoKey);
         UserDetail userDetail;
-        if (redisUtil.hasKey(userInfoKey)) {
-            userDetail = (UserDetail)bucket.get();
+        if (obj != null) {
+            userDetail = (UserDetail) obj;
         } else {
             userDetail = sysUserService.getUserDetail(userId,null);
             if (Objects.isNull(userDetail)) {
@@ -356,7 +349,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             userDetail.setPermissionsList(getPermissionList(userDetail));
             userDetail.setRoles(sysRoleService.getRoleListByUserId(userId));
             userDetail.setDepts(getDeptList(userDetail));
-            bucket.set(userDetail,RedisUtil.HOUR_ONE_EXPIRE,TimeUnit.SECONDS);
+            redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
         }
         return userDetail;
         //endregion

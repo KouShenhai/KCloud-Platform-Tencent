@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.redis.aspect;
+import org.laokou.redis.RedisUtil;
 import org.laokou.redis.annotation.Lock4j;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,18 +25,20 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
+/**
+ * @author Kou Shenhai
+ */
 @Component
 @Aspect
 @Slf4j
 @AllArgsConstructor
 public class LockAspect {
 
-    private final RedissonClient redissonClient;
+    private final RedisUtil redisUtil;
 
     /**
      * 配置切入点
@@ -59,7 +62,7 @@ public class LockAspect {
         String key = lock4j.key();
         long expire = lock4j.expire();
         long timeout = lock4j.timeout();
-        RLock lock = redissonClient.getLock(key);
+        RLock lock = redisUtil.getLock(key);
         try {
             if (lock.tryLock(expire, timeout, TimeUnit.SECONDS)) {
                 log.info("加锁成功...");

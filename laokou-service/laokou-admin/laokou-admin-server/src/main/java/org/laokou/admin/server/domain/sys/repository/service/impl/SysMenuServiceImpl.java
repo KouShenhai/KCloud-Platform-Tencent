@@ -24,13 +24,10 @@ import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.RedisKeyUtil;
 import org.laokou.redis.RedisUtil;
-import org.redisson.api.RBucket;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Kou Shenhai
@@ -38,9 +35,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> implements SysMenuService {
-
-    @Autowired
-    private RedissonClient redissonClient;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -73,13 +67,13 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> im
             return getMenuList(userDetail.getId(),userDetail.getSuperAdmin(),type);
         }
         String userResourceKey = RedisKeyUtil.getUserResourceKey(userDetail.getId());
-        final RBucket<Object> bucket = redissonClient.getBucket(userResourceKey);
+        final Object obj = redisUtil.get(userResourceKey);
         List<SysMenuVO> resourceList;
-        if (redisUtil.hasKey(userResourceKey)) {
-            resourceList = (List<SysMenuVO>) bucket.get();
+        if (null != obj) {
+            resourceList = (List<SysMenuVO>) obj;
         } else {
             resourceList = getMenuList(userDetail.getId(),userDetail.getSuperAdmin(),type);
-            bucket.set(resourceList,RedisUtil.HOUR_ONE_EXPIRE, TimeUnit.SECONDS);
+            redisUtil.set(userResourceKey,resourceList,RedisUtil.HOUR_ONE_EXPIRE);
         }
         return resourceList;
         //endregion

@@ -15,6 +15,8 @@
  */
 package org.laokou.redis;
 import org.apache.commons.lang.StringUtils;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisCallback;
@@ -30,6 +32,8 @@ import java.util.concurrent.TimeUnit;
 public final class RedisUtil {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private RedissonClient redissonClient;
     /**  默认过期时长为24小时，单位：秒 */
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24L;
     /**  过期时长为1小时，单位：秒 */
@@ -38,18 +42,15 @@ public final class RedisUtil {
     public final static long HOUR_SIX_EXPIRE = 60 * 60 * 6L;
     /**  不设置过期时长 */
     public final static long NOT_EXPIRE = -1L;
-    public final void set(String key, String value, long expire){
-        redisTemplate.opsForValue().set(key, value);
-        if(expire != NOT_EXPIRE){
-            expire(key, expire);
-        }
+    public final void set(String key, Object value, long expire){
+        redissonClient.getBucket(key).set(value,expire, TimeUnit.SECONDS);
     }
 
     public final boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
     }
 
-    public final void set(String key, String value){
+    public final void set(String key, Object value){
         set(key, value, DEFAULT_EXPIRE);
     }
 
@@ -61,12 +62,16 @@ public final class RedisUtil {
         return value;
     }
 
+    public final RLock getLock(String key) {
+        return redissonClient.getLock(key);
+    }
+
     public final Object get(String key) {
-        return get(key, NOT_EXPIRE);
+        return redissonClient.getBucket(key).get();
     }
 
     public final void delete(String key) {
-        redisTemplate.delete(key);
+        redissonClient.getKeys().delete(key);
     }
 
     public final void delete(Collection<String> keys) {

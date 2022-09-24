@@ -29,8 +29,6 @@ import org.laokou.common.utils.RedisKeyUtil;
 import org.laokou.redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.redisson.api.RBucket;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,9 +44,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
     @Autowired
     private RedisUtil redisUtil;
 
-    @Autowired
-    private RedissonClient redissonClient;
-
     @Override
     public void updateUser(SysUserDTO dto) {
         String password = dto.getPassword();
@@ -57,17 +52,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
         }
         this.baseMapper.updateUser(dto);
         //删除用户缓存数据
-        redissonClient.getKeys().delete(RedisKeyUtil.getUserInfoKey(dto.getId()));
+        redisUtil.delete(RedisKeyUtil.getUserInfoKey(dto.getId()));
     }
 
     @Override
     public UserDetail getUserDetail(Long userId) {
         //region Description
         String userInfoKey = RedisKeyUtil.getUserInfoKey(userId);
-        final RBucket<Object> bucket = redissonClient.getBucket(userInfoKey);
+        final Object obj = redisUtil.get(userInfoKey);
         UserDetail userDetail;
-        if (redisUtil.hasKey(userInfoKey)) {
-            userDetail = (UserDetail) bucket.get();
+        if (null != obj) {
+            userDetail = (UserDetail) obj;
         } else {
             userDetail = this.baseMapper.getUserDetail(userId,null);
         }

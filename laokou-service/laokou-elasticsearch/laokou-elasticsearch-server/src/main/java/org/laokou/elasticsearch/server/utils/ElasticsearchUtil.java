@@ -17,7 +17,6 @@ package org.laokou.elasticsearch.server.utils;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -61,7 +60,6 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
-import org.laokou.common.utils.JacksonUtil;
 import org.laokou.elasticsearch.client.constant.EsConstant;
 import org.laokou.elasticsearch.client.dto.AggregationDTO;
 import org.laokou.elasticsearch.client.dto.SearchDTO;
@@ -331,14 +329,14 @@ public class ElasticsearchUtil {
     private BulkRequest packBulkUpdateRequest(String indexName,String jsonDataList) {
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-
-        ArrayNode jsonArray = (ArrayNode) JacksonUtil.readTree(jsonDataList);
+        JSONArray jsonArray = JSONUtil.parseArray(jsonDataList);
         if (jsonArray.isEmpty()) {
             return bulkRequest;
         }
-        jsonArray.forEach(o -> {
-            Map<String, String> map = (Map<String, String>) o;
-            UpdateRequest updateRequest = new UpdateRequest(indexName,map.get(PRIMARY_KEY_NAME));
+        //循环数据封装bulkRequest
+        jsonArray.forEach(obj ->{
+            final Map<String, Object> map = (Map<String, Object>) obj;
+            UpdateRequest updateRequest = new UpdateRequest(indexName,map.get(PRIMARY_KEY_NAME).toString());
             // 修改索引中不存在就新增
             updateRequest.docAsUpsert(true);
             updateRequest.doc(map,XContentType.JSON);
