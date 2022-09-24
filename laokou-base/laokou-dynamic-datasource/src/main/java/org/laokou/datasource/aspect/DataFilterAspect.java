@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 package org.laokou.datasource.aspect;
-import org.laokou.common.entity.BasePage;
+import org.laokou.datasource.entity.BasePage;
 import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
-import org.laokou.common.user.UserDetail;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.HttpContextUtil;
 import org.laokou.datasource.annotation.DataFilter;
 import org.laokou.security.utils.UserDetailUtil;

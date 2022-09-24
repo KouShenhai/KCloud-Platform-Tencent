@@ -342,7 +342,7 @@ public class FileUtil extends FileUtils {
             log.info(oldFile + "不是文件");
             return false;
         }
-        if(oldFile.getName().equalsIgnoreCase("Thumbs.db")){
+        if("Thumbs.db".equalsIgnoreCase(oldFile.getName())){
             log.info(oldFile + "忽略此文件");
             return true;
         }
@@ -432,7 +432,7 @@ public class FileUtil extends FileUtils {
         if (str == null) {
             return null;
         }
-        if (subStr == null || subStr.equals("") || subStr.length() > str.length() || reStr == null) {
+        if (subStr == null || "".equals(subStr) || subStr.length() > str.length() || reStr == null) {
             return str;
         }
         StringBuffer sb = new StringBuffer();

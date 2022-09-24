@@ -23,12 +23,10 @@
         <dependency>
             <groupId>org.laokou</groupId>
             <artifactId>laokou-common</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.baomidou</groupId>
-                    <artifactId>mybatis-plus-boot-starter</artifactId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-auth-client</artifactId>
         </dependency>
     </dependencies>
 

@@ -16,7 +16,7 @@
 package org.laokou.security.feign.auth;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.constant.ServiceConstant;
-import org.laokou.common.user.UserDetail;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.security.feign.auth.factory.AuthApiFeignClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;

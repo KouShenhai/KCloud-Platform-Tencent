@@ -15,7 +15,7 @@
  */
 package org.laokou.gateway.filter;
 import org.laokou.common.constant.Constant;
-import org.laokou.common.user.UserDetail;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.common.utils.JacksonUtil;
 import org.laokou.gateway.feign.auth.AuthApiFeignClient;

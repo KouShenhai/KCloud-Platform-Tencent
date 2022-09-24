@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 package org.laokou.gateway.feign.auth;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.constant.ServiceConstant;
-import org.laokou.common.user.UserDetail;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.gateway.feign.auth.factory.AuthApiFeignClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;

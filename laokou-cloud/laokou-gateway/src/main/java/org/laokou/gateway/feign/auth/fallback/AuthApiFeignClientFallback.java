@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.gateway.feign.auth.fallback;
-import org.laokou.common.user.UserDetail;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.gateway.feign.auth.AuthApiFeignClient;
 import lombok.AllArgsConstructor;

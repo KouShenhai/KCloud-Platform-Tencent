@@ -15,10 +15,10 @@
  */
 package org.laokou.log.aspect;
 import com.google.common.collect.Lists;
+import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.dto.OperateLogDTO;
 import org.laokou.common.enums.DataTypeEnum;
 import org.laokou.common.enums.ResultStatusEnum;
-import org.laokou.common.user.SecurityUser;
 import org.laokou.log.annotation.OperateLog;
 import org.laokou.log.event.OperateLogEvent;
 import lombok.extern.slf4j.Slf4j;

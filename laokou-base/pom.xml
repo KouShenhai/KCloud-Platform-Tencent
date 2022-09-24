@@ -19,6 +19,7 @@
         <module>laokou-dynamic-datasource</module>
         <module>laokou-security</module>
         <module>laokou-bom</module>
+        <module>laokou-redis</module>
     </modules>
 
 </project>

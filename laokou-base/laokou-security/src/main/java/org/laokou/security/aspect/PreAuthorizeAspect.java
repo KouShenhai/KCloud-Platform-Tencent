@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 package org.laokou.security.aspect;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
-import org.laokou.common.user.UserDetail;
 import org.laokou.common.utils.HttpContextUtil;
 import org.laokou.security.annotation.PreAuthorize;
 import org.laokou.security.utils.UserDetailUtil;
@@ -65,7 +65,7 @@ public class PreAuthorizeAspect {
         throw new CustomException(ErrorCode.FORBIDDEN);
     }
 
-    private boolean checkPermission(UserDetail userDetail,JoinPoint point) throws NoSuchMethodException {
+    private boolean checkPermission(UserDetail userDetail, JoinPoint point) throws NoSuchMethodException {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = point.getTarget().getClass().getDeclaredMethod(signature.getName(), signature.getParameterTypes());
         PreAuthorize preAuthorize = method.getAnnotation(PreAuthorize.class);

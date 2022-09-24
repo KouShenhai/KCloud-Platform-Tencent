@@ -15,8 +15,8 @@
  */
 package org.laokou.security.utils;
 import org.laokou.common.exception.CustomException;
-import org.laokou.common.user.SecurityUser;
-import org.laokou.common.user.UserDetail;
+import org.laokou.auth.client.user.SecurityUser;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.HttpContextUtil;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.security.feign.auth.AuthApiFeignClient;
