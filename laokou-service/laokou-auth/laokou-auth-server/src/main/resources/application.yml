@@ -123,3 +123,9 @@ auth:
       url: /sys/login.html
     - permission: anon
       url: /sys/auth/api/open/login
+    - permission: anon
+      url: /sys/loading.html
+    - permission: anon
+      url: /sys/zfb_bind_fail.html
+    - permission: anon
+      url: /sys/zfb_loading.html

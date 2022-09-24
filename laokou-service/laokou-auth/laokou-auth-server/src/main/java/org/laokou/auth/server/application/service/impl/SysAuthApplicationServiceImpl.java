@@ -78,11 +78,11 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
 
     private static AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-    private static final String CALLBACK_LOGIN_URL = "http://175.178.69.253/oauth2/login.html?redirect_url=%s&error_info=%s";
+    private static final String CALLBACK_LOGIN_URL = "http://192.168.62.1:5555/auth/sys/login.html?redirect_url=%s&error_info=%s";
 
-    private static final String CALLBACK_FAIL_URL = "http://175.178.69.253/oauth2/zfb/zfb_bind_fail.html";
+    private static final String CALLBACK_FAIL_URL = "http://192.168.62.1:5555/auth/sys/zfb_bind_fail.html";
 
-    private static final String INDEX_URL = "http://175.178.69.253/user/login?redirect=/index&access_token=%s";
+    private static final String INDEX_URL = "http://192.168.62.1:8000/user/login?redirect=/index&access_token=%s";
 
     @Autowired
     private SysMenuService sysMenuService;

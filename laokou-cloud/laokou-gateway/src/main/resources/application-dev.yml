@@ -24,7 +24,6 @@ spring:
         password: koushenhai
         instance:
           service-base-url: http://127.0.0.1:${server.port}
-          prefer-ip: true
 
 logging:
   file:

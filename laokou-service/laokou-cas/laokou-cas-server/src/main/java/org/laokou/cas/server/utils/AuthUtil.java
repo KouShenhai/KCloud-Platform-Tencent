@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.cas.server.utils;
+import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.cas.server.exception.RenOAuth2Exception;
@@ -50,9 +51,9 @@ public class AuthUtil {
     @Value("${auth.grant_type}")
     private String GRANT_TYPE;
 
-    private static final String POST_AUTHORIZE_URL = "http://39.108.96.111:9001/oauth/token";
+    private static final String POST_AUTHORIZE_URL = "http://192.168.62.1:9001/oauth/token";
 
-    private static final String GET_USER_KEY_URL = "http://39.108.96.111:9001/oauth2/userInfo";
+    private static final String GET_USER_KEY_URL = "http://192.168.62.1:9001/oauth2/userInfo";
 
     public String getAccessToken(String code) throws IOException {
         //将code放入
@@ -63,8 +64,7 @@ public class AuthUtil {
         tokenMap.put("redirect_uri",REDIRECT_URI);
         tokenMap.put("grant_type",GRANT_TYPE);
         String resultJson = HttpUtil.doPost(POST_AUTHORIZE_URL,tokenMap,new HashMap<>(0));
-        JsonNode jsonNode = JacksonUtil.readTree(resultJson);
-        String accessToken = jsonNode.get(Constant.ACCESS_TOKEN).toString();
+        String accessToken = JSONUtil.parseObj(resultJson).getStr(Constant.ACCESS_TOKEN);
         if (StringUtils.isEmpty(accessToken)){
             throw new RenOAuth2Exception(ErrorCode.UNAUTHORIZED,"授权码已过期，请重新获取");
         }
