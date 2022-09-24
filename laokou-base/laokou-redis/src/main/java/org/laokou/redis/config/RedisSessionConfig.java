@@ -18,6 +18,8 @@ package org.laokou.redis.config;
 import lombok.Data;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.client.codec.Codec;
+import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +52,9 @@ public class RedisSessionConfig {
         server.setAddress("redis://" + HOST + ":" + PORT);
         server.setPassword(PASSWORD);
         server.setDatabase(DATABASE);
+        //使用json序列化方式
+        Codec codec = new JsonJacksonCodec();
+        config.setCodec(codec);
         return Redisson.create(config);
     }
 

@@ -15,7 +15,6 @@
  */
 package org.laokou.redis;
 import org.apache.commons.lang.StringUtils;
-import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
@@ -62,8 +61,24 @@ public final class RedisUtil {
         return value;
     }
 
-    public final RLock getLock(String key) {
-        return redissonClient.getLock(key);
+    public final Boolean tryLock(String key,long expire,long timeout) throws InterruptedException {
+       return redissonClient.getLock(key).tryLock(expire, timeout, TimeUnit.SECONDS);
+    }
+
+    public final void unlock(String key) {
+        redissonClient.getLock(key).unlock();
+    }
+
+    public final void lock(String key) {
+        redissonClient.getLock(key).lock();
+    }
+
+    public final Boolean isLocked(String key) {
+        return redissonClient.getLock(key).isLocked();
+    }
+
+    public final Boolean isHeldByCurrentThread(String key) {
+        return redissonClient.getLock(key).isHeldByCurrentThread();
     }
 
     public final Object get(String key) {

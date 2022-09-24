@@ -1,3 +1,7 @@
+jasypt:
+  encryptor:
+    password: koushenhai5201314wumeihua
+
 spring:
   mvc:
     pathmatch:
@@ -6,6 +10,15 @@ spring:
     active: @profile.active@
   application:
     name: laokou-cas
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 
 auth:
   client_id: client_auth

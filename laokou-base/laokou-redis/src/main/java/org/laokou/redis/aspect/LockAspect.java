@@ -24,11 +24,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.redisson.api.RLock;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
-import java.util.concurrent.TimeUnit;
 /**
  * @author Kou Shenhai
  */
@@ -48,6 +46,8 @@ public class LockAspect {
 
     @Around(value = "lockPointCut()")
     public void around(ProceedingJoinPoint joinPoint) {
+        //线程名称
+        String threadName = Thread.currentThread().getName();
         //获取注解
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
@@ -62,17 +62,26 @@ public class LockAspect {
         String key = lock4j.key();
         long expire = lock4j.expire();
         long timeout = lock4j.timeout();
-        RLock lock = redisUtil.getLock(key);
         try {
-            if (lock.tryLock(expire, timeout, TimeUnit.SECONDS)) {
+            if (redisUtil.tryLock(key,expire, timeout)) {
                 log.info("加锁成功...");
                 joinPoint.proceed();
+            } else {
+                log.info("线程{}获取锁失败",threadName);
             }
         } catch (Throwable throwable) {
             log.error("异常信息：{}",throwable.getMessage());
         } finally {
-            lock.unlock();
-            log.info("解锁成功...");
+            if (redisUtil.isLocked(key)) {
+                log.info("{}对应的锁被持有，线程{}",key,threadName);
+                if (redisUtil.isHeldByCurrentThread(key)) {
+                    log.info("当前线程{}持有锁",threadName);
+                    redisUtil.unlock(key);
+                    log.info("解锁成功...");
+                }
+            } else {
+                log.info("无线程持有，无需解锁...");
+            }
         }
     }
 
