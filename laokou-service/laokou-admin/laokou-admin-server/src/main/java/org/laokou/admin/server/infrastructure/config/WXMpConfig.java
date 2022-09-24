@@ -16,7 +16,6 @@
 package org.laokou.admin.server.infrastructure.config;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.laokou.admin.server.domain.wx.entity.WXMpAccountDO;
-import org.laokou.admin.infrastructure.component.handler.impl.*;
 import lombok.AllArgsConstructor;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;

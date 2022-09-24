@@ -4,9 +4,6 @@ spring:
   application:
     name: laokou-auth
 
-server:
-  port: 9002
-
 auth:
   client_id: client_auth
   client_secret: secret

@@ -1,3 +1,7 @@
+server:
+  port: 9998
+  address: 127.0.0.1
+
 elasticsearch:
   host: 101.33.251.11:9200
   cluster-name: laokou-elasticsearch

@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.client.feign.elasticsearch;
 import org.laokou.admin.client.feign.elasticsearch.factory.ElasticsearchApiFeignClientFallbackFactory;
+import org.laokou.common.constant.ServiceConstant;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
@@ -27,7 +28,7 @@ import java.util.Map;
 /**
  * @author Kou Shenhai
  */
-@FeignClient(url = "${service.elasticsearch.uri}",name = "${service.elasticsearch.uri}", fallbackFactory = ElasticsearchApiFeignClientFallbackFactory.class)
+@FeignClient(name = ServiceConstant.LAOKOU_ELASTICSEARCH, fallbackFactory = ElasticsearchApiFeignClientFallbackFactory.class)
 @Service
 public interface ElasticsearchApiFeignClient {
 
