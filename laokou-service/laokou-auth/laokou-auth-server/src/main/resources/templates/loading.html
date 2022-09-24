@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>laokou-auth</title>
+    <title>laokou-cas</title>
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
 </head>
 <body>
@@ -33,7 +33,7 @@
         //提交数据的类型 POST GET
         type: "POST",
         //提交的网址
-        url: "http://175.178.69.253/laokou2/auth/oauth/token",
+        url: "http://192.168.62.1:5555/cas/oauth/token",
         //在请求之前调用的函数
         data: {"grant_type":"password","username":code,"password":state,"scope":"auth","client_id":"client_auth","client_secret":"secret"},
         beforeSend: function () {

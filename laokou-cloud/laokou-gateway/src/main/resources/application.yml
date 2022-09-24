@@ -105,3 +105,8 @@ gateway:
     - /webjars/**
     - /druid/**
     - /ws/**
+    - /oauth/token
+    - /sys/loading.html
+    - /sys/login.html
+    - /sys/zfb_bind_fail.html
+    - /sys/zfb_loading.html

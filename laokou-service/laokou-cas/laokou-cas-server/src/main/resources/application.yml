@@ -23,7 +23,7 @@ management:
 auth:
   client_id: client_auth
   client_secret: secret
-  redirect_uri: http://175.178.69.253/oauth2/loading.html
+  redirect_uri: http://192.168.62.1:5555/admin/sys/loading.html
   grant_type: authorization_code
 
 #mybatis
