@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.elasticsearch.server;
+import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,6 +25,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @EnableDiscoveryClient
 @EnableConfigurationProperties
+@EnableApolloConfig
 @SpringBootApplication(scanBasePackages = {"org.laokou.elasticsearch"})
 public class ElasticsearchApplication {
 

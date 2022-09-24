@@ -70,3 +70,12 @@ dynamic:
 logging:
   file:
     name: /opt/logs/${spring.application.name}/error.log
+
+app:
+  id: cas # 应用全局唯一的身份标识
+apollo:
+  cacheDir: config # 自定义本地配置文件缓存路径
+  bootstrap:
+    enabled: true # 设置在应用启动阶段就加载 Apollo 配置
+    eagerLoad:
+      enabled: true
