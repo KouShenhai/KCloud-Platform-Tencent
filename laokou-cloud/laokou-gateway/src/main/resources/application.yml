@@ -60,7 +60,7 @@ resilience4j.circuitbreaker:
 resilience4j.timelimiter:
   instances:
     default:
-      timeoutDuration: 60s
+      timeoutDuration: 120s
       cancelRunningFuture: true
 
 feign:
