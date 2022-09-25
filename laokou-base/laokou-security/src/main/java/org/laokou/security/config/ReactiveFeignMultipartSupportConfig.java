@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 package org.laokou.security.config;
-import feign.RequestInterceptor;
 import org.laokou.common.constant.Constant;
-import org.laokou.common.utils.HttpContextUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import javax.servlet.http.HttpServletRequest;
+import reactivefeign.client.ReactiveHttpRequestInterceptor;
+import reactor.core.publisher.Mono;
 /**
  * @author  Kou Shenhai
  */
 @Configuration
-public class FeignMultipartSupportConfig {
+public class ReactiveFeignMultipartSupportConfig {
 
     @Bean
     public feign.Logger.Level multipartLoggerLevel() {
@@ -32,10 +31,10 @@ public class FeignMultipartSupportConfig {
     }
 
     @Bean
-    public RequestInterceptor getRequestInterceptor() {
-        return requestTemplate -> {
-            HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-            requestTemplate.header(Constant.AUTHORIZATION_HEAD,request.getHeader(Constant.AUTHORIZATION_HEAD));
+    public ReactiveHttpRequestInterceptor reactiveHttpRequestInterceptor() {
+        return reactiveHttpRequest -> {
+            reactiveHttpRequest.headers().put(Constant.AUTHORIZATION_HEAD, reactiveHttpRequest.headers().get(Constant.AUTHORIZATION_HEAD));
+            return Mono.just(reactiveHttpRequest);
         };
     }
 

@@ -19,6 +19,8 @@ import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.gateway.feign.auth.AuthApiFeignClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
+
 /**
  * 服务降级
  * @author Kou Shenhai
@@ -32,8 +34,8 @@ public class AuthApiFeignClientFallback implements AuthApiFeignClient {
     private Throwable throwable;
 
     @Override
-    public HttpResultUtil<UserDetail> resource(String language, String Authorization, String uri, String method) {
+    public Mono<HttpResultUtil<UserDetail>> resource(String language, String Authorization, String uri, String method) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<UserDetail>().error("服务调用失败，请联系管理员");
+        return Mono.just(new HttpResultUtil<UserDetail>().error("服务调用失败，请联系管理员"));
     }
 }

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.config;
+import org.apache.shiro.util.ThreadContext;
 import org.laokou.auth.server.infrastructure.common.filter.AuthFilter;
 import org.laokou.auth.server.infrastructure.common.filter.AuthRealm;
 import org.laokou.auth.server.infrastructure.component.AuthHandler;
@@ -62,6 +63,8 @@ public class ShiroConfig {
         securityManager.setRealm(authRealm);
         securityManager.setRememberMeManager(null);
         securityManager.setSessionManager(sessionManager);
+        //ThreadContext绑定SecurityManager
+        ThreadContext.bind(securityManager);
         return securityManager;
     }
 

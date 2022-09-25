@@ -63,16 +63,13 @@ resilience4j.timelimiter:
       timeoutDuration: 120s
       cancelRunningFuture: true
 
-feign:
-  circuitbreaker:
-    enabled: true
-  httpclient:
-    enabled: true
-  client:
-    config:
-      default:
-        connectTimeout: 10000
-        readTimeout: 15000
+reactive:
+  feign:
+    loadbalancer:
+      enabled: true
+    circuit:
+      breaker:
+        enabled: false
 
 # actuator相关配置
 management:

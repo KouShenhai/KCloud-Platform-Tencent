@@ -21,6 +21,9 @@ import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.auth.client.vo.LoginVO;
 import org.laokou.auth.client.vo.UserInfoVO;
 import org.laokou.auth.client.user.UserDetail;
+import org.laokou.common.utils.HttpResultUtil;
+import reactor.core.publisher.Mono;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -60,7 +63,7 @@ public interface SysAuthApplicationService {
      * @param method
      * @return
      */
-    UserDetail resource(String Authorization, String uri, String method);
+    Mono<HttpResultUtil<UserDetail>> resource(String Authorization, String uri, String method);
 
     /**
      * 获取用户信息

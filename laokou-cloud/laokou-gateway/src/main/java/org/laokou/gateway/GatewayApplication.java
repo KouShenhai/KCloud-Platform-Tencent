@@ -23,15 +23,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-
+import reactivefeign.spring.config.EnableReactiveFeignClients;
 /**
  * @author kou shen hai
  */
 @SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.gateway"})
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableReactiveFeignClients
 @EnableEncryptableProperties
 @EnableApolloConfig
 public class GatewayApplication {

@@ -15,8 +15,9 @@
  */
 package org.laokou.gateway.feign.auth.factory;
 import org.laokou.gateway.feign.auth.fallback.AuthApiFeignClientFallback;
-import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
+import reactivefeign.FallbackFactory;
+
 /**
  * 回调工厂
  * @author Kou Shenhai
@@ -25,8 +26,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AuthApiFeignClientFallbackFactory implements FallbackFactory<AuthApiFeignClientFallback> {
+
     @Override
-    public AuthApiFeignClientFallback create(Throwable throwable) {
+    public AuthApiFeignClientFallback apply(Throwable throwable) {
         return new AuthApiFeignClientFallback(throwable);
     }
 }

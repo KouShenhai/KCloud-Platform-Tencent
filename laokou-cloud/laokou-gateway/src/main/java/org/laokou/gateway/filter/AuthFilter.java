@@ -88,7 +88,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         //获取访问资源的权限
         //资源访问权限
         String language = request.getHeaders().getFirst(HttpHeaders.ACCEPT_LANGUAGE);
-        HttpResultUtil<UserDetail> result = authApiFeignClient.resource(language,Authorization,requestUri,method);
+        HttpResultUtil<UserDetail> result = authApiFeignClient.resource(language,Authorization,requestUri,method).block();
         log.info("result:{}",result);
         if (!result.success()) {
             return response(exchange,result);

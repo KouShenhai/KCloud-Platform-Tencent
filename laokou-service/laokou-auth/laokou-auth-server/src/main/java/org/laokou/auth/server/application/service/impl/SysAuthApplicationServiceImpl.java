@@ -57,6 +57,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
+import reactor.core.publisher.Mono;
+
 import javax.crypto.BadPaddingException;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -250,39 +252,39 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
 
     @Override
     @DataSource("master")
-    public UserDetail resource(String Authorization, String uri, String method) {
+    public Mono<HttpResultUtil<UserDetail>> resource(String Authorization, String uri, String method) {
         //region Description
         //1.获取用户信息
-        Long userId = getUserId(Authorization);
-        UserDetail userDetail = getUserDetail(userId);
-        //2.获取所有资源列表
-        List<SysMenuVO> resourceList = sysMenuService.getMenuList(null,null);
-        //3.判断资源是否在资源列表列表里
-        SysMenuVO resource = pathMatcher(uri, method, resourceList);
-        //4.无需认证
-        if (resource != null && AuthTypeEnum.NO_AUTH.ordinal() == resource.getAuthLevel()) {
-            return userDetail;
-        }
-        //5.登录认证
-        if (resource != null && AuthTypeEnum.LOGIN_AUTH.ordinal() == resource.getAuthLevel()) {
-            return userDetail;
-        }
-        //6.不在资源列表，只要登录了，就能访问
-        if (resource == null) {
-            return userDetail;
-        }
-        //7.当前登录用户为超级管理员
-        if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {
-            return userDetail;
-        }
-        //8. 需要鉴权，获取用户资源列表
-        resourceList = sysMenuService.getMenuList(userDetail,false,1);
-        //9.如果不在用户资源列表里，则无权访问
-        resource = pathMatcher(uri, method, resourceList);
-        if (resource != null) {
-            return userDetail;
-        }
-        throw new CustomException(ErrorCode.FORBIDDEN);
+        return Mono.just(getUserId(Authorization)).flatMap(userId -> Mono.just(getUserDetail(userId))).flatMap(userDetail -> {
+            //2.获取所有资源列表
+            List<SysMenuVO> resourceList = sysMenuService.getMenuList(null,null);
+            //3.判断资源是否在资源列表列表里
+            SysMenuVO resource = pathMatcher(uri, method, resourceList);
+            //4.无需认证
+            if (resource != null && AuthTypeEnum.NO_AUTH.ordinal() == resource.getAuthLevel()) {
+                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
+            }
+            //5.登录认证
+            if (resource != null && AuthTypeEnum.LOGIN_AUTH.ordinal() == resource.getAuthLevel()) {
+                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
+            }
+            //6.不在资源列表，只要登录了，就能访问
+            if (resource == null) {
+                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
+            }
+            //7.当前登录用户为超级管理员
+            if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {
+                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
+            }
+            //8. 需要鉴权，获取用户资源列表
+            resourceList = sysMenuService.getMenuList(userDetail, false, 1);
+            //9.如果不在用户资源列表里，则无权访问
+            resource = pathMatcher(uri, method, resourceList);
+            if (resource != null) {
+                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
+            }
+            return Mono.error(new CustomException(ErrorCode.FORBIDDEN));
+        });
         //endregion
     }
 

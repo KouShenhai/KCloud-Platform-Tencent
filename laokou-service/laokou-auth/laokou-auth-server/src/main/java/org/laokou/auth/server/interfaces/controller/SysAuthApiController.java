@@ -29,6 +29,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -75,13 +77,11 @@ public class SysAuthApiController {
             @ApiImplicitParam(name = Constant.URI,value = "请求路径",required = true,paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = Constant.METHOD,value = "请求方法",required = true,paramType = "query",dataType = "String")
     })
-    //@HystrixCommand(fallbackMethod = "fallback",ignoreExceptions = {CustomException.class})
-    public HttpResultUtil<UserDetail>  resource(@RequestParam(Constant.AUTHORIZATION_HEAD) String Authorization,
-                                                @RequestParam(Constant.URI)String uri,
-                                                @RequestParam(Constant.METHOD)String method) {
-        return new HttpResultUtil<UserDetail>().ok(sysAuthApplicationService.resource(Authorization, uri, method));
+    public Mono<HttpResultUtil<UserDetail>>  resource(@RequestParam(Constant.AUTHORIZATION_HEAD) String Authorization,
+                                                      @RequestParam(Constant.URI)String uri,
+                                                      @RequestParam(Constant.METHOD)String method) {
+        return sysAuthApplicationService.resource(Authorization, uri, method);
     }
-    public HttpResultUtil<UserDetail> fallback(String Authorization, String uri, String method) {return new HttpResultUtil<UserDetail>().error("服务已被降级熔断");}
 
     @GetMapping("/sys/auth/api/logout")
     @ApiOperation("系统认证>退出登录")

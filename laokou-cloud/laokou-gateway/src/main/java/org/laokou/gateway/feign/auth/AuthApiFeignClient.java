@@ -19,16 +19,18 @@ import org.laokou.common.constant.Constant;
 import org.laokou.common.constant.ServiceConstant;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.gateway.feign.auth.factory.AuthApiFeignClientFallbackFactory;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import reactivefeign.spring.config.ReactiveFeignClient;
+import reactor.core.publisher.Mono;
+
 /**
  * @author Kou Shenhai
  */
-@FeignClient(name = ServiceConstant.LAOKOU_AUTH, fallbackFactory = AuthApiFeignClientFallbackFactory.class)
+@ReactiveFeignClient(name = ServiceConstant.LAOKOU_AUTH, fallbackFactory = AuthApiFeignClientFallbackFactory.class)
 @Service
 public interface AuthApiFeignClient {
 
@@ -41,7 +43,7 @@ public interface AuthApiFeignClient {
      * @return
      */
     @GetMapping("/sys/auth/api/resource")
-    HttpResultUtil<UserDetail> resource(
+    Mono<HttpResultUtil<UserDetail>> resource(
                              @RequestHeader(HttpHeaders.ACCEPT_LANGUAGE) String language,
                              @RequestParam(Constant.AUTHORIZATION_HEAD) String Authorization,
                              @RequestParam(Constant.URI)String uri,
