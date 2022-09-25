@@ -34,7 +34,7 @@ import javax.annotation.Resource;
 @RefreshScope
 @Data
 @Slf4j
-public class CashHandler {
+public class CasHandler {
 
     @Resource
     private org.springframework.cloud.context.scope.refresh.RefreshScope refreshScope;

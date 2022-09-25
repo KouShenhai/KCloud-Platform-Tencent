@@ -44,13 +44,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .formLogin()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/authorize").authenticated()
                 .anyRequest().permitAll()
-                .and().csrf().disable().cors();
+                .and().cors();
     }
 
     @Override
