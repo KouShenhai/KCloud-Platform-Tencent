@@ -24,9 +24,18 @@
         <spring-boot.version>2.7.3</spring-boot.version>
         <!--cloud版本-->
         <spring-cloud.version>2021.0.4</spring-cloud.version>
+        <!--spring-data-bom版本 -->
+        <spring-data-bom.version>2021.2.3</spring-data-bom.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-bom</artifactId>
+                <version>${spring-data-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
             <!-- 定义公共版本-->
             <dependency>
                 <groupId>org.laokou</groupId>

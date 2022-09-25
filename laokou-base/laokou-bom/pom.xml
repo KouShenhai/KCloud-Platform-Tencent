@@ -97,11 +97,18 @@
         <archaius-core.version>0.7.4</archaius-core.version>
         <!-- elasticsearch版本 -->
         <elasticsearch.version>7.6.2</elasticsearch.version>
+        <!--r2dbc-mysql版本 -->
+        <r2dbc-mysql.version>0.8.2.RELEASE</r2dbc-mysql.version>
     </properties>
 
     <!-- 定义全局jar版本,模块使用需要再次引入但不用写版本号 -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>dev.miku</groupId>
+                <artifactId>r2dbc-mysql</artifactId>
+                <version>${r2dbc-mysql.version}</version>
+            </dependency>
             <!-- 定义 lombok 版本 -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
