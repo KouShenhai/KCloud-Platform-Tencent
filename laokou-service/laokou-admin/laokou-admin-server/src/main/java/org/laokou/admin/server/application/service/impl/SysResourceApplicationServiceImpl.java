@@ -50,6 +50,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
@@ -161,50 +162,52 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public Boolean syncAsyncBatchResource(String code) {
-        //总数
-        final Long resourceTotal = sysResourceService.getResourceTotal(code);
-        if (resourceTotal > 0) {
-            beforeSync();
-            //创建索引 - 时间分区
-            final String resourceIndex = "laokou_resource_" + code;
-            final String resourceIndexAlias = "laokou_resource";
-            final List<String> resourceYMPartitionList = sysResourceService.getResourceYMPartitionList(code);
-            for (String ym: resourceYMPartitionList) {
-                final CreateIndexModel model = new CreateIndexModel();
-                final String indexName = resourceIndex + "_" + ym;
-                final String indexAlias = resourceIndexAlias;
-                model.setIndexName(indexName);
-                model.setIndexAlias(indexAlias);
-                elasticsearchApiFeignClient.create(model);
-            }
-            //同步数据 - 异步
-            final int chunkSize = 500;
-            int pageIndex = 0;
-            //请求头对象
-            RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-            while (pageIndex < resourceTotal) {
-                final List<ResourceIndex> resourceIndexList = sysResourceService.getResourceIndexList(chunkSize, pageIndex,code);
-                final Map<String, List<ResourceIndex>> resourceDataMap = resourceIndexList.stream().collect(Collectors.groupingBy(ResourceIndex::getYm));
-                final Iterator<Map.Entry<String, List<ResourceIndex>>> iterator = resourceDataMap.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    final Map.Entry<String, List<ResourceIndex>> entry = iterator.next();
-                    final String ym = entry.getKey();
-                    final List<ResourceIndex> resourceDataList = entry.getValue();
+    public Mono<Void> syncAsyncBatchResource(Mono<String> codeMono) {
+        return codeMono.flatMap(code -> {
+            //总数
+            final Long resourceTotal = sysResourceService.getResourceTotal(code);
+            if (resourceTotal > 0) {
+                beforeSync();
+                //创建索引 - 时间分区
+                final String resourceIndex = "laokou_resource_" + code;
+                final String resourceIndexAlias = "laokou_resource";
+                final List<String> resourceYMPartitionList = sysResourceService.getResourceYMPartitionList(code);
+                for (String ym: resourceYMPartitionList) {
+                    final CreateIndexModel model = new CreateIndexModel();
                     final String indexName = resourceIndex + "_" + ym;
-                    final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
-                    final ElasticsearchModel model = new ElasticsearchModel();
+                    final String indexAlias = resourceIndexAlias;
                     model.setIndexName(indexName);
-                    model.setData(jsonDataList);
-                    model.setIndexAlias(resourceIndexAlias);
-                    //同步数据
-                    asyncTaskExecutor.execute(new SyncElasticsearchRun(indexName,jsonDataList,resourceIndexAlias,requestAttributes));
+                    model.setIndexAlias(indexAlias);
+                    elasticsearchApiFeignClient.create(model);
                 }
-                pageIndex += chunkSize;
+                //同步数据 - 异步
+                final int chunkSize = 500;
+                int pageIndex = 0;
+                //请求头对象
+                RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+                while (pageIndex < resourceTotal) {
+                    final List<ResourceIndex> resourceIndexList = sysResourceService.getResourceIndexList(chunkSize, pageIndex,code);
+                    final Map<String, List<ResourceIndex>> resourceDataMap = resourceIndexList.stream().collect(Collectors.groupingBy(ResourceIndex::getYm));
+                    final Iterator<Map.Entry<String, List<ResourceIndex>>> iterator = resourceDataMap.entrySet().iterator();
+                    while (iterator.hasNext()) {
+                        final Map.Entry<String, List<ResourceIndex>> entry = iterator.next();
+                        final String ym = entry.getKey();
+                        final List<ResourceIndex> resourceDataList = entry.getValue();
+                        final String indexName = resourceIndex + "_" + ym;
+                        final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
+                        final ElasticsearchModel model = new ElasticsearchModel();
+                        model.setIndexName(indexName);
+                        model.setData(jsonDataList);
+                        model.setIndexAlias(resourceIndexAlias);
+                        //同步数据
+                        asyncTaskExecutor.execute(new SyncElasticsearchRun(indexName,jsonDataList,resourceIndexAlias,requestAttributes));
+                    }
+                    pageIndex += chunkSize;
+                }
+                afterSync();
             }
-            afterSync();
-        }
-        return true;
+            return Mono.empty();
+        });
     }
 
     private class SyncElasticsearchRun extends Thread {
