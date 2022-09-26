@@ -18,9 +18,9 @@ public class ReactiveFeignConfig {
     @Bean
     public ReactiveOptions reactiveOptions() {
         return new WebReactiveOptions.Builder()
-                .setWriteTimeoutMillis(60000)
-                .setReadTimeoutMillis(60000)
-                .setConnectTimeoutMillis(60000)
+                .setWriteTimeoutMillis(30000)
+                .setReadTimeoutMillis(30000)
+                .setConnectTimeoutMillis(30000)
                 .build();
     }
 

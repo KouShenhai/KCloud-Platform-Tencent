@@ -60,7 +60,7 @@ resilience4j.circuitbreaker:
 resilience4j.timelimiter:
   instances:
     default:
-      timeoutDuration: 120s
+      timeoutDuration: 90s
       cancelRunningFuture: true
 
 reactive:
