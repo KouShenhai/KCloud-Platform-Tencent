@@ -44,6 +44,6 @@ public abstract class AbstractCloudStorageService {
      * @return
      * @throws Exception
      */
-    protected abstract String upload(InputStream inputStream,String fileName,Long fileSize) throws Exception;
+    public abstract String upload(InputStream inputStream,String fileName,Long fileSize) throws Exception;
 
 }
