@@ -19,7 +19,7 @@ import org.laokou.admin.server.infrastructure.config.CloudStorageConfig;
 import org.laokou.admin.client.enums.CloudTypeEnum;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.JacksonUtil;
-import org.apache.commons.lang3.StringUtils;
+import org.laokou.common.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 /**
@@ -33,17 +33,17 @@ public class CloudFactory {
 
    public  AbstractCloudStorageService build(){
        String oss = adminHandler.getOss();
-       if (StringUtils.isBlank(oss)){
+       if (StringUtil.isBlank(oss)){
            throw new CustomException("请配置OSS");
        }
        CloudStorageConfig config = JacksonUtil.toBean(oss, CloudStorageConfig.class);
        if (CloudTypeEnum.ALIYUN.ordinal() == config.getType()){
            return new AliyunCloudStorageService(config);
        }
-       else if (CloudTypeEnum.LOCAL.ordinal() == config.getType()){
+       if (CloudTypeEnum.LOCAL.ordinal() == config.getType()){
            return new LocalCloudStorageService(config);
        }
-       else if (CloudTypeEnum.FASTDFS.ordinal() == config.getType()){
+       if (CloudTypeEnum.FASTDFS.ordinal() == config.getType()){
            return new FastDFSCloudStorageService(config);
        }
        throw new CustomException("请检查OSS相关配置");
