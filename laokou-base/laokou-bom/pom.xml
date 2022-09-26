@@ -101,11 +101,19 @@
         <r2dbc-mysql.version>0.8.2.RELEASE</r2dbc-mysql.version>
         <!--feign-reactor版本 -->
         <feign-reactor.version>3.2.6</feign-reactor.version>
+        <!--jcommander版本 -->
+        <jcommander.version>1.72</jcommander.version>
     </properties>
 
     <!-- 定义全局jar版本,模块使用需要再次引入但不用写版本号 -->
     <dependencyManagement>
         <dependencies>
+            <!-- 命令行参数解析器 -->
+            <dependency>
+                <groupId>com.beust</groupId>
+                <artifactId>jcommander</artifactId>
+                <version>${jcommander.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.playtika.reactivefeign</groupId>
                 <artifactId>feign-reactor-spring-configuration</artifactId>
