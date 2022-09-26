@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.application.service.impl;
+import cn.hutool.core.thread.ThreadUtil;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipaySystemOauthTokenRequest;
@@ -69,6 +70,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.*;
+
 /**
  * auth实现类
  * @author Kou Shenhai
@@ -77,6 +80,16 @@ import java.util.Objects;
 @Slf4j
 @GlobalTransactional(rollbackFor = Exception.class)
 public class SysAuthApplicationServiceImpl implements SysAuthApplicationService {
+
+    public static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
+            8,
+            16,
+            60,
+            TimeUnit.SECONDS,
+            new LinkedBlockingQueue<>(512),
+            ThreadUtil.newNamedThreadFactory("laokou-auth-service",true),
+            new ThreadPoolExecutor.CallerRunsPolicy()
+    );
 
     private static AntPathMatcher antPathMatcher = new AntPathMatcher();
 
@@ -256,34 +269,61 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //region Description
         //1.获取用户信息
         return Mono.just(getUserId(Authorization)).flatMap(userId -> Mono.just(getUserDetail(userId))).flatMap(userDetail -> {
-            //2.获取所有资源列表
-            List<SysMenuVO> resourceList = sysMenuService.getMenuList(null,null);
-            //3.判断资源是否在资源列表列表里
-            SysMenuVO resource = pathMatcher(uri, method, resourceList);
-            //4.无需认证
-            if (resource != null && AuthTypeEnum.NO_AUTH.ordinal() == resource.getAuthLevel()) {
-                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
-            }
-            //5.登录认证
-            if (resource != null && AuthTypeEnum.LOGIN_AUTH.ordinal() == resource.getAuthLevel()) {
-                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
-            }
-            //6.不在资源列表，只要登录了，就能访问
-            if (resource == null) {
-                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
-            }
-            //7.当前登录用户为超级管理员
-            if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {
-                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
-            }
+            CompletableFuture<Boolean> booleanCompletableFuture1 = CompletableFuture.supplyAsync(() ->
+                        //2.获取所有资源列表
+                        sysMenuService.getMenuList(null,null),executorService)
+                        //异步回调
+                .thenApplyAsync((resourceList) ->
+                        //3.判断资源是否在资源列表列表里
+                        pathMatcher(uri, method, resourceList),executorService)
+                .thenApplyAsync((resource) -> {
+                    //4.无需认证
+                    if (resource != null && AuthTypeEnum.NO_AUTH.ordinal() == resource.getAuthLevel()) {
+                        return true;
+                    }
+                    //5.登录认证
+                    if (resource != null && AuthTypeEnum.LOGIN_AUTH.ordinal() == resource.getAuthLevel()) {
+                        return true;
+                    }
+                    //6.不在资源列表，只要登录了，就能访问
+                    if (resource == null) {
+                        return true;
+                    }
+                    //7.当前登录用户为超级管理员
+                    if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {
+                        return true;
+                    }
+                    return false;
+                },executorService);
             //8. 需要鉴权，获取用户资源列表
-            resourceList = sysMenuService.getMenuList(userDetail, false, 1);
-            //9.如果不在用户资源列表里，则无权访问
-            resource = pathMatcher(uri, method, resourceList);
-            if (resource != null) {
-                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
+            CompletableFuture<Boolean> booleanCompletableFuture2 = CompletableFuture.supplyAsync(() -> sysMenuService.getMenuList(userDetail, false, 1), executorService)
+                    .thenApplyAsync((resourceList) ->
+                            //9.如果不在用户资源列表里，则无权访问
+                            pathMatcher(uri, method, resourceList), executorService)
+                    .thenApplyAsync((resource) -> {
+                        if (resource != null) {
+                            return true;
+                        }
+                        return false;
+                    }, executorService);
+            Boolean flag = false;
+            try {
+                flag = booleanCompletableFuture1.thenCombineAsync(booleanCompletableFuture2, (a, b) -> {
+                    if (a || b) {
+                        return true;
+                    }
+                    return false;
+                },executorService).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
-            return Mono.error(new CustomException(ErrorCode.FORBIDDEN));
+            if (flag) {
+                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
+            } else {
+                return Mono.error(new CustomException(ErrorCode.FORBIDDEN));
+            }
         });
         //endregion
     }
@@ -348,9 +388,20 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             if (Objects.isNull(userDetail)) {
                 throw new CustomException(ErrorCode.ACCOUNT_NOT_EXIST);
             }
-            userDetail.setPermissionsList(getPermissionList(userDetail));
-            userDetail.setRoles(sysRoleService.getRoleListByUserId(userId));
-            userDetail.setDepts(getDeptList(userDetail));
+            CompletableFuture<UserDetail> c1 = CompletableFuture.supplyAsync(() -> getPermissionList(userDetail),executorService).thenApplyAsync(permissionList -> {
+                userDetail.setPermissionsList(permissionList);
+                return userDetail;
+            },executorService);
+            CompletableFuture<UserDetail> c2 = CompletableFuture.supplyAsync(() -> sysRoleService.getRoleListByUserId(userId),executorService).thenApplyAsync(roles -> {
+                userDetail.setRoles(roles);
+                return userDetail;
+            },executorService);
+            CompletableFuture<UserDetail> c3 = CompletableFuture.supplyAsync(() -> getDeptList(userDetail), executorService).thenApplyAsync(depts -> {
+                userDetail.setDepts(depts);
+                return userDetail;
+            }, executorService);
+            //等待所有任务都完成
+            CompletableFuture.allOf(c1,c2,c3).join();
             redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
         }
         return userDetail;
