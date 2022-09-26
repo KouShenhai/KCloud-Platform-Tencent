@@ -27,14 +27,14 @@ public abstract class AbstractCloudStorageService {
     /**
      * 配置文件
      */
-    CloudStorageConfig cloudStorageConfig;
+    protected CloudStorageConfig cloudStorageConfig;
 
     /**
      * 按10M分片
      */
-    public static final Long chunkSize = 10L * 1024 * 1024;
+    protected static final Long chunkSize = 10L * 1024 * 1024;
 
-    public static final String SEPARATOR = "/";
+    protected static final String SEPARATOR = "/";
 
     /**
      * 上传文件
@@ -44,6 +44,6 @@ public abstract class AbstractCloudStorageService {
      * @return
      * @throws Exception
      */
-    public abstract String upload(InputStream inputStream,String fileName,Long fileSize) throws Exception;
+    protected abstract String upload(InputStream inputStream,String fileName,Long fileSize) throws Exception;
 
 }

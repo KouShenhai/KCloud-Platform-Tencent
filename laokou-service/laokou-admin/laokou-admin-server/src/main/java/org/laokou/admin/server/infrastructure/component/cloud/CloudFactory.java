@@ -31,7 +31,7 @@ public class CloudFactory {
     @Autowired
     private AdminHandler adminHandler;
 
-   public  AbstractCloudStorageService build(){
+   public AbstractCloudStorageService build(){
        String oss = adminHandler.getOss();
        if (StringUtil.isBlank(oss)){
            throw new CustomException("请配置OSS");
