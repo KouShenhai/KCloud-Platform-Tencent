@@ -16,6 +16,7 @@
 package org.laokou.elasticsearch.server;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.laokou.common.utils.JvmUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -23,6 +24,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.regex.Matcher;
 
 /**
  * @author Kou Shenhai
@@ -33,7 +38,18 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication(scanBasePackages = {"org.laokou.elasticsearch"})
 public class ElasticsearchApplication {
 
-    public static void main(String[] args) {
+    private static final String MODULE_NAME = "laokou-service\\laokou-elasticsearch";
+
+    private static final String SERVICE_NAME = "laokou-elasticsearch-server";
+
+    private static final String PACK_NAME = "org.laokou.elasticsearch.server".replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+
+    private static final String APPLICATION_NAME = "ElasticsearchApplication";
+
+    public static void main(String[] args) throws IOException {
+        final String baseDir = System.getProperty("user.dir");
+        final String path = String.format("%s\\%s\\%s\\target\\classes\\%s\\%s.class",baseDir,MODULE_NAME,SERVICE_NAME,PACK_NAME,APPLICATION_NAME);
+        JvmUtil.getJvmInfo(path);
         SpringApplication.run(ElasticsearchApplication.class, args);
     }
     /**

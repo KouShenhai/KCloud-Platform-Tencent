@@ -22,7 +22,8 @@ public class DirEntry implements Entry {
 
     @Override
     public byte[] readClass(String className) throws IOException {
-        return Files.readAllBytes(absolutePath.resolve(className));
+        final Path resolve = absolutePath.resolve(className);
+        return Files.readAllBytes(resolve);
     }
 
     @Override

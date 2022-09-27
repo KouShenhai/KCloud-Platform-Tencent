@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.handler.impl;
+package org.laokou.admin.server.infrastructure.component.handler.wechat.impl;
 import org.laokou.admin.server.infrastructure.component.builder.TextBuilder;
-import org.laokou.admin.server.infrastructure.component.handler.AbstractHandler;
+import org.laokou.admin.server.infrastructure.component.handler.wechat.AbstractHandler;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;

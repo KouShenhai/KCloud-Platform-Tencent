@@ -20,7 +20,9 @@ public class ZipEntry implements Entry {
     @Override
     public byte[] readClass(String className) throws IOException {
         try (FileSystem fileSystem = FileSystems.newFileSystem(absolutePath,null)) {
-            return Files.readAllBytes(fileSystem.getPath(className));
+            final Path path = fileSystem.getPath(className);
+            final byte[] bytes = Files.readAllBytes(path);
+            return bytes;
         }
     }
 

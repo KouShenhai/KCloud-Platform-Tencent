@@ -15,7 +15,7 @@
  */
 package org.laokou.admin.server.infrastructure.component.run;
 
-import org.laokou.admin.server.infrastructure.component.handler.HandleHolder;
+import org.laokou.admin.server.infrastructure.component.handler.message.HandleHolder;
 import org.laokou.admin.client.dto.MessageDTO;
 import lombok.Data;
 import lombok.experimental.Accessors;

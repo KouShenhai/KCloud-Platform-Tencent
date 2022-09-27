@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.client.vo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package org.laokou.admin.server.infrastructure.component.handler.message;
+
+import org.laokou.admin.client.dto.MessageDTO;
 
 /**
- * @author Kou Shenhai
- * @version 1.0
- * @date 2021/1/24 0024 上午 11:16
+ * 消息处理器
  */
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class SysMsgVO {
-    private String data;
+public interface Handler {
+
+    void doHandler(MessageDTO dto);
+
 }

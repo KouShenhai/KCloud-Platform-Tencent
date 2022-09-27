@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.component.cloud;
-import org.laokou.admin.server.infrastructure.component.handler.impl.AdminHandler;
+import org.laokou.admin.server.infrastructure.component.handler.admin.AdminHandler;
 import org.laokou.admin.server.infrastructure.config.CloudStorageConfig;
 import org.laokou.admin.client.enums.CloudTypeEnum;
 import org.laokou.common.exception.CustomException;

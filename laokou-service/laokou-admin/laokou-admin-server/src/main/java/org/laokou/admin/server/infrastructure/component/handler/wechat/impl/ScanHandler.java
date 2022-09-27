@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.handler.impl;
-import org.laokou.admin.server.infrastructure.component.handler.AbstractHandler;
+package org.laokou.admin.server.infrastructure.component.handler.wechat.impl;
+import org.laokou.admin.server.infrastructure.component.handler.wechat.AbstractHandler;
+import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -22,19 +23,16 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.springframework.stereotype.Component;
 import java.util.Map;
 /**
- * 取消关注事件
+ * 扫码事件
  *
  * @author Binary Wang(https://github.com/binarywang)
  */
 @Component
-public class UnsubscribeHandler extends AbstractHandler {
+public class ScanHandler extends AbstractHandler {
     @Override
-    public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
-                                    Map<String, Object> context, WxMpService wxMpService,
-                                    WxSessionManager sessionManager) {
-        String openId = wxMessage.getFromUser();
-        this.logger.info("取消关注用户 OPENID: " + openId);
-        // TODO 可以更新本地数据库为取消关注状态
+    public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map,
+                                    WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
+        // 扫码事件处理
         return null;
     }
 }

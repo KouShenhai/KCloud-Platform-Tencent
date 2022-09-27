@@ -13,25 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.handler.impl;
+package org.laokou.admin.server.infrastructure.component.handler.message;
 
-import org.laokou.admin.client.enums.ChannelTypeEnum;
-import org.laokou.admin.server.infrastructure.component.event.PushMessageEvent;
-import org.laokou.admin.server.infrastructure.component.handler.BaseHandler;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.common.utils.SpringContextUtil;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Service
-public class PlatformHandler extends BaseHandler {
+import javax.annotation.PostConstruct;
 
-    public PlatformHandler() {
-        channelCode = ChannelTypeEnum.PLATFORM.ordinal();
+public abstract class BaseHandler implements Handler {
+
+    @Autowired
+    private HandleHolder handleHolder;
+
+    protected Integer channelCode;
+
+    @PostConstruct
+    public void init() {
+        handleHolder.putHandler(channelCode,this);
     }
 
     @Override
-    public boolean handler(MessageDTO dto) {
-        SpringContextUtil.publishEvent(new PushMessageEvent(dto));
-        return true;
+    public void doHandler(MessageDTO dto) {
+        handler(dto);
     }
+
+    public abstract boolean handler(MessageDTO dto);
+
 }

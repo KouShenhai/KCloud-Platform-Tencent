@@ -39,7 +39,9 @@ public class CompositeEntry implements Entry {
     public byte[] readClass(String className) throws IOException {
         for (Entry entry : entryList) {
             try {
-                return entry.readClass(className);
+                final byte[] bytes = entry.readClass(className);
+                System.out.println(bytes.length);
+                return bytes;
             } catch (Exception ignored) {
                 //ignored
             }

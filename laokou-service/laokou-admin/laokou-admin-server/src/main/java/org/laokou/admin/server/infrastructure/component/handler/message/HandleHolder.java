@@ -13,13 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.handler;
-import me.chanjar.weixin.mp.api.WxMpMessageHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-/**
- * @author Binary Wang(https://github.com/binarywang)
- */
-public abstract class AbstractHandler implements WxMpMessageHandler {
-    protected Logger logger = LoggerFactory.getLogger(getClass());
+package org.laokou.admin.server.infrastructure.component.handler.message;
+
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Component
+public class HandleHolder {
+
+    private Map<Integer, Handler> handlers = new HashMap<>(16);
+
+    public void putHandler(Integer channelCode,Handler handler) {
+        handlers.put(channelCode,handler);
+    }
+
+    public Handler route(Integer channelCode) {
+        return handlers.get(channelCode);
+    }
+
 }

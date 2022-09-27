@@ -12,17 +12,18 @@ import java.util.stream.Collectors;
 public class WildcardEntry extends CompositeEntry {
 
     public WildcardEntry(String pathList) {
-        super(pathList);
+        super(toPathList(pathList));
     }
 
     private static String toPathList(String wildcardPath) {
         final String baseDir = wildcardPath.replace("*", "");
         try {
-            return Files.walk(Paths.get(baseDir))
+            final String collectPath = Files.walk(Paths.get(baseDir))
                     .filter(Files::isRegularFile)
                     .map(Path::toString)
                     .filter(p -> p.endsWith(".jar") || p.endsWith(".JAR"))
                     .collect(Collectors.joining(File.pathSeparator));
+            return collectPath;
         } catch (Exception e) {
             return "";
         }

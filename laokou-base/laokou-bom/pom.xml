@@ -36,7 +36,7 @@
         <!--commons-collections版本-->
         <commons-collections.version>3.2.1</commons-collections.version>
         <!--hutool-all版本-->
-        <hutool-all.version>5.3.2</hutool-all.version>
+        <hutool-all.version>5.8.8</hutool-all.version>
         <!--commons-lang版本-->
         <commons-lang.version>2.6</commons-lang.version>
         <!--commons-beanutils版本-->
