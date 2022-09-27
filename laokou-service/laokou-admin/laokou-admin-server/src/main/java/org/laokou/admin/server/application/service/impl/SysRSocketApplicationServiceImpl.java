@@ -78,19 +78,19 @@ public class SysRSocketApplicationServiceImpl implements SysRSocketApplicationSe
     @Override
     public Mono<String> requestResponse() {
         //
-        return null;
+        return Mono.just("");
     }
 
     @Override
     public Flux<String> requestStream() {
         //
-        return null;
+        return Flux.just("");
     }
 
     @Override
     public Flux<String> requestChannel() {
         //
-        return null;
+        return Flux.just("");
     }
 
     @Override
