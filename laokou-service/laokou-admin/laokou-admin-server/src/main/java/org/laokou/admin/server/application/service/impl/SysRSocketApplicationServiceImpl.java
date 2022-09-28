@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.application.service.SysRSocketApplicationService;
 import org.springframework.messaging.rsocket.RSocketRequester;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -65,8 +64,27 @@ public class SysRSocketApplicationServiceImpl implements SysRSocketApplicationSe
     }
 
     @Override
-    public Flux<String> requestChannel() {
-        return Flux.just("");
+    public Mono<Void> requestChannel(RSocketRequester rSocketRequester, Long userId) {
+        rSocketRequester.rsocket().onClose()
+                .doFirst(() -> {
+                    this.socketRequester = rSocketRequester;
+                    this.userId = userId;
+                    if (sysRSocketCopyOnWriteArraySet.add(this)) {
+                        addOnlineCount();
+                    }
+                    log.info("新加入：{}",userId,",在线人数：{}",getOnlineCount());
+                })
+                .doOnError(error -> {
+                    log.error("发生错误：{}",error.getMessage());
+                    error.printStackTrace();
+                })
+                .doFinally(consumer -> {
+                    if (sysRSocketCopyOnWriteArraySet.remove(this)) {
+                        subOnlineCount();
+                    }
+                    log.info("当前在线人数：{}",getOnlineCount());
+                }).subscribe();
+        return Mono.empty();
     }
 
     @Override

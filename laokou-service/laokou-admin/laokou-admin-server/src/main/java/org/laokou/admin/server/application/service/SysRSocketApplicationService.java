@@ -1,6 +1,6 @@
 package org.laokou.admin.server.application.service;
 
-import reactor.core.publisher.Flux;
+import org.springframework.messaging.rsocket.RSocketRequester;
 import reactor.core.publisher.Mono;
 
 /**
@@ -10,9 +10,11 @@ public interface SysRSocketApplicationService {
 
     /**
      * 双向流
+     * @param rSocketRequester
+     * @param userId
      * @return
      */
-    Flux<String> requestChannel();
+    Mono<Void> requestChannel(RSocketRequester rSocketRequester, Long userId);
 
     /**
      * 推送消息
