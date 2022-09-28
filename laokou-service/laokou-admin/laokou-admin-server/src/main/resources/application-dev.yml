@@ -21,6 +21,11 @@ apollo:
       enabled: true
 
 spring:
+  rsocket:
+    server:
+      port: ${server.port}
+      transport: websocket
+      mapping-path: /ws
   boot:
     admin:
       client:

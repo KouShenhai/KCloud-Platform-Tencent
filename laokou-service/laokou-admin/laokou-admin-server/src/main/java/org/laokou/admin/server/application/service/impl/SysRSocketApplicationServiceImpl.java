@@ -20,7 +20,7 @@ public class SysRSocketApplicationServiceImpl implements SysRSocketApplicationSe
     /**
      * 路由地址
      */
-    private static final String ROUTE = "/ws";
+    private static final String ROUTE = "/send-message";
 
     /**
      * 接收userId
@@ -64,32 +64,8 @@ public class SysRSocketApplicationServiceImpl implements SysRSocketApplicationSe
         SysRSocketApplicationServiceImpl.onlineCount--;
     }
 
-    /**
-     * @param userId 编号
-     * @return
-     */
-    @Override
-    public Mono<Void> fireAndForget(RSocketRequester socketRequester,Long userId) {
-        //
-        this.socketRequester = socketRequester;
-        return Mono.empty();
-    }
-
-    @Override
-    public Mono<String> requestResponse() {
-        //
-        return Mono.just("");
-    }
-
-    @Override
-    public Flux<String> requestStream() {
-        //
-        return Flux.just("");
-    }
-
     @Override
     public Flux<String> requestChannel() {
-        //
         return Flux.just("");
     }
 
