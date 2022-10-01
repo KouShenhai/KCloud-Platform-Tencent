@@ -21,14 +21,13 @@ import org.laokou.admin.server.application.service.SysDictApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysDictDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysDictService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
+import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysDictQO;
 import org.laokou.admin.client.vo.SysDictVO;
 import org.laokou.admin.client.dto.SysDictDTO;
 import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
-import org.laokou.datasource.annotation.DataFilter;
-import org.laokou.datasource.annotation.DataSource;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +45,6 @@ public class SysDictApplicationServiceImpl implements SysDictApplicationService 
     private SysUserService sysUserService;
 
     @Override
-    @DataSource("master")
     @DataFilter(tableAlias = "boot_sys_dict")
     public IPage<SysDictVO> queryDictPage(SysDictQO qo) {
         IPage<SysDictVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
@@ -54,13 +52,11 @@ public class SysDictApplicationServiceImpl implements SysDictApplicationService 
     }
 
     @Override
-    @DataSource("master")
     public SysDictVO getDictById(Long id) {
         return sysDictService.getDictById(id);
     }
 
     @Override
-    @DataSource("master")
     public Boolean insertDict(SysDictDTO dto, HttpServletRequest request) {
         SysDictDO dictDO = ConvertUtil.sourceToTarget(dto, SysDictDO.class);
         dictDO.setCreator(SecurityUser.getUserId(request));
@@ -70,7 +66,6 @@ public class SysDictApplicationServiceImpl implements SysDictApplicationService 
     }
 
     @Override
-    @DataSource("master")
     public Boolean updateDict(SysDictDTO dto, HttpServletRequest request) {
         SysDictDO dictDO = ConvertUtil.sourceToTarget(dto, SysDictDO.class);
         dictDO.setEditor(SecurityUser.getUserId(request));
@@ -78,7 +73,6 @@ public class SysDictApplicationServiceImpl implements SysDictApplicationService 
     }
 
     @Override
-    @DataSource("master")
     public Boolean deleteDict(Long id) {
         sysDictService.deleteDict(id);
         return true;

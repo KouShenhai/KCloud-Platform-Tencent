@@ -16,10 +16,9 @@
     <modules>
         <module>laokou-common</module>
         <module>laokou-log</module>
-        <module>laokou-dynamic-datasource</module>
-        <module>laokou-security</module>
         <module>laokou-bom</module>
         <module>laokou-redis</module>
+        <module>laokou-datasource</module>
     </modules>
 
 </project>

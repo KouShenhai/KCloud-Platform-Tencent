@@ -45,7 +45,7 @@ import org.laokou.common.exception.ErrorCode;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.client.vo.SysDeptVO;
 import org.laokou.common.utils.*;
-import org.laokou.datasource.annotation.DataSource;
+
 import org.laokou.log.publish.PublishFactory;
 import org.laokou.redis.RedisUtil;
 import io.seata.spring.annotation.GlobalTransactional;
@@ -116,7 +116,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private RedisUtil redisUtil;
 
     @Override
-    @DataSource("master")
     public LoginVO login(LoginDTO loginDTO) throws Exception {
         //region Description
         //效验数据
@@ -264,7 +263,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    @DataSource("master")
     public Mono<HttpResultUtil<UserDetail>> resource(String Authorization, String uri, String method) {
         //region Description
         //1.获取用户信息
@@ -329,7 +327,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    @DataSource("master")
     public UserInfoVO userInfo(Long userId) {
         UserDetail userDetail = getUserDetail(userId);
         return UserInfoVO.builder().imgUrl(userDetail.getImgUrl())
@@ -342,7 +339,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    @DataSource("master")
     public BaseUserVO openUserInfo(Long userId) {
         UserDetail userDetail = getUserDetail(userId);
         return BaseUserVO.builder().imgUrl(userDetail.getImgUrl())
@@ -375,7 +371,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    @DataSource("master")
     public UserDetail getUserDetail(Long userId) {
         //region Description
         String userInfoKey = RedisKeyUtil.getUserInfoKey(userId);

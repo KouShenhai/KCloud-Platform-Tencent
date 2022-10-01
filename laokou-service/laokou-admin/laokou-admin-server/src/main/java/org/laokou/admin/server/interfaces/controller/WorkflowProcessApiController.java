@@ -22,7 +22,6 @@ import org.laokou.admin.client.vo.TaskVO;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.log.annotation.OperateLog;
 import org.laokou.redis.annotation.Lock4j;
-import org.laokou.security.annotation.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,6 @@ public class WorkflowProcessApiController {
 
     @PostMapping("/resource/query")
     @ApiOperation("流程处理>资源查询")
-    @PreAuthorize("workflow:process:resource:query")
     public HttpResultUtil<IPage<TaskVO>> queryResource(@RequestBody TaskQO qo, HttpServletRequest request) {
         return new HttpResultUtil<IPage<TaskVO>>().ok(workflowProcessApplicationService.queryResourceTaskPage(qo,request));
     }
@@ -46,7 +44,6 @@ public class WorkflowProcessApiController {
     @PostMapping(value = "/resource/audit")
     @ApiOperation(value = "流程处理>资源审批")
     @OperateLog(module = "流程处理",name = "资源审批")
-    @PreAuthorize("workflow:process:resource:audit")
     @Lock4j(key = "resource_audit_lock")
     public HttpResultUtil<Boolean> auditResource(@RequestBody AuditDTO dto, HttpServletRequest request) {
         return new HttpResultUtil<Boolean>().ok(workflowProcessApplicationService.auditResourceTask(dto,request));

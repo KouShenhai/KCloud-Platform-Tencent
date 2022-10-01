@@ -21,7 +21,6 @@ import org.laokou.admin.server.interfaces.qo.SysOauthQO;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.log.annotation.OperateLog;
-import org.laokou.security.annotation.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,6 @@ public class SysOauthApiController {
 
     @PostMapping("/query")
     @ApiOperation("系统认证>查询")
-    @PreAuthorize("sys:oauth:query")
     public HttpResultUtil<IPage<SysOauthVO>> query(@RequestBody SysOauthQO qo) {
         return new HttpResultUtil<IPage<SysOauthVO>>().ok(sysOauthApplicationService.queryOauthPage(qo));
     }
@@ -53,7 +51,6 @@ public class SysOauthApiController {
 
     @PostMapping(value = "/insert")
     @ApiOperation("系统认证>新增")
-    @PreAuthorize("sys:oauth:insert")
     @OperateLog(module = "系统授权",name = "认证新增")
     public HttpResultUtil<Boolean> insert(@RequestBody SysOauthDTO dto, HttpServletRequest request) {
         return new HttpResultUtil<Boolean>().ok(sysOauthApplicationService.insertOauth(dto,request));
@@ -61,7 +58,6 @@ public class SysOauthApiController {
 
     @PutMapping(value = "/update")
     @ApiOperation("系统认证>修改")
-    @PreAuthorize("sys:oauth:update")
     @OperateLog(module = "系统授权",name = "认证修改")
     public HttpResultUtil<Boolean> update(@RequestBody SysOauthDTO dto, HttpServletRequest request) {
         return new HttpResultUtil<Boolean>().ok(sysOauthApplicationService.updateOauth(dto,request));
@@ -69,7 +65,6 @@ public class SysOauthApiController {
 
     @DeleteMapping(value = "/delete")
     @ApiOperation("系统认证>删除")
-    @PreAuthorize("sys:oauth:delete")
     @OperateLog(module = "系统授权",name = "认证删除")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResultUtil<Boolean>().ok(sysOauthApplicationService.deleteOauth(id));

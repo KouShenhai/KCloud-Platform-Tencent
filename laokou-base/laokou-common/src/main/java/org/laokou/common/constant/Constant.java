@@ -63,10 +63,6 @@ public interface Constant {
      * yes
      */
     Integer YES = 1;
-    /**
-     * 认证标识
-     */
-    String TICKET = "ticket";
 
     String COMMA = ",";
 

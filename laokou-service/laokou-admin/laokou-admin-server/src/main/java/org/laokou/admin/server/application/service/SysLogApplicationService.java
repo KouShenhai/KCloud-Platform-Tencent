@@ -22,12 +22,13 @@ import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 import org.laokou.common.dto.LoginLogDTO;
 import org.laokou.common.dto.OperateLogDTO;
+import reactor.core.publisher.Mono;
 
 public interface SysLogApplicationService {
 
-    Boolean insertOperateLog(OperateLogDTO dto);
+    void insertOperateLog(Mono<OperateLogDTO> dtoMono);
 
-    Boolean insertLoginLog(LoginLogDTO dto);
+    void insertLoginLog(Mono<LoginLogDTO> dtoMono);
 
     IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQO qo);
 

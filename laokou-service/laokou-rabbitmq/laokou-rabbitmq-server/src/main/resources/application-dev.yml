@@ -1,0 +1,23 @@
+spring:
+  rabbitmq:
+    addresses: 124.222.196.51:5672
+    cache:
+      channel:
+        checkout-timeout: 5000
+        size: 100
+      connection:
+        size: 10
+    connection-timeout: 15000
+    listener:
+      direct:
+        acknowledge-mode: manual
+        retry:
+          enabled: true
+          max-attempts: 5
+      simple:
+        acknowledge-mode: manual
+    password: koushenhai
+    publisher-returns: true
+    username: root
+    virtual-host: /
+    publisher-confirm-type: correlated

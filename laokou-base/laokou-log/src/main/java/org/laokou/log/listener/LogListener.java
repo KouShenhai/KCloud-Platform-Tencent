@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 package org.laokou.log.listener;
+import org.laokou.common.constant.RabbitMqConstant;
 import org.laokou.common.dto.LoginLogDTO;
+import org.laokou.common.dto.MqDTO;
 import org.laokou.common.dto.OperateLogDTO;
+import org.laokou.common.utils.JacksonUtil;
 import org.laokou.log.event.LoginLogEvent;
 import org.laokou.log.event.OperateLogEvent;
-import org.laokou.log.feign.admin.LogApiFeignClient;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.log.feign.rabbitmq.RabbitMqApiFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.event.EventListener;
@@ -31,20 +34,24 @@ import org.springframework.stereotype.Component;
 public class LogListener {
 
     @Autowired
-    private LogApiFeignClient logApiFeignClient;
+    private RabbitMqApiFeignClient rabbitMqApiFeignClient;
 
     @Order
     @EventListener(OperateLogEvent.class)
     public void listenOperateLog(OperateLogEvent event) {
         OperateLogDTO dto = (OperateLogDTO) event.getSource();
-        logApiFeignClient.insertOperateLog(dto);
+        MqDTO mqDTO = new MqDTO();
+        mqDTO.setData(JacksonUtil.toJsonStr(dto));
+        rabbitMqApiFeignClient.sendMsg(RabbitMqConstant.LAOKOU_OPERATE_LOG_QUEUE,mqDTO);
     }
 
     @Order
     @EventListener(LoginLogEvent.class)
     public void listenLoginLog(LoginLogEvent event) {
         LoginLogDTO dto = (LoginLogDTO) event.getSource();
-        logApiFeignClient.insertLoginLog(dto);
+        MqDTO mqDTO = new MqDTO();
+        mqDTO.setData(JacksonUtil.toJsonStr(dto));
+        rabbitMqApiFeignClient.sendMsg(RabbitMqConstant.LAOKOU_LOGIN_LOG_QUEUE,mqDTO);
     }
 
 }

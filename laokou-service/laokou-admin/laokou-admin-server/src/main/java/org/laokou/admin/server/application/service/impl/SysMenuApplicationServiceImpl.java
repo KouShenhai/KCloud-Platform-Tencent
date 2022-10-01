@@ -28,7 +28,7 @@ import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.TreeUtil;
-import org.laokou.datasource.annotation.DataSource;
+
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,6 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     private SysUserService sysUserService;
 
     @Override
-    @DataSource("master")
     public SysMenuVO getMenuList(HttpServletRequest request) {
         Long userId = Long.valueOf(request.getHeader(Constant.USER_KEY_HEAD));
         UserDetail userDetail = sysUserService.getUserDetail(userId);
@@ -54,19 +53,16 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     }
 
     @Override
-    @DataSource("master")
     public List<SysMenuVO> queryMenuList(SysMenuQO qo) {
         return sysMenuService.queryMenuList(qo);
     }
 
     @Override
-    @DataSource("master")
     public SysMenuVO getMenuById(Long id) {
         return sysMenuService.getMenuById(id);
     }
 
     @Override
-    @DataSource("master")
     public Boolean updateMenu(SysMenuDTO dto, HttpServletRequest request) {
         SysMenuDO menuDO = ConvertUtil.sourceToTarget(dto, SysMenuDO.class);
         int count = sysMenuService.count(Wrappers.lambdaQuery(SysMenuDO.class).eq(SysMenuDO::getName, menuDO.getName()).eq(SysMenuDO::getDelFlag, Constant.NO).ne(SysMenuDO::getId,menuDO.getId()));
@@ -78,7 +74,6 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     }
 
     @Override
-    @DataSource("master")
     public Boolean insertMenu(SysMenuDTO dto, HttpServletRequest request) {
         SysMenuDO menuDO = ConvertUtil.sourceToTarget(dto, SysMenuDO.class);
         int count = sysMenuService.count(Wrappers.lambdaQuery(SysMenuDO.class).eq(SysMenuDO::getName, menuDO.getName()).eq(SysMenuDO::getDelFlag, Constant.NO));
@@ -90,14 +85,12 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     }
 
     @Override
-    @DataSource("master")
     public Boolean deleteMenu(Long id) {
         sysMenuService.deleteMenu(id);
         return true;
     }
 
     @Override
-    @DataSource("master")
     public SysMenuVO treeMenu(Long roleId) {
         List<SysMenuVO> menuList;
         if (null == roleId) {
@@ -109,7 +102,7 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     }
 
     @Override
-    @DataSource("master")
+
     public List<Long> getMenuIdsByRoleId(Long roleId) {
         return sysMenuService.getMenuIdsByRoleId(roleId);
     }

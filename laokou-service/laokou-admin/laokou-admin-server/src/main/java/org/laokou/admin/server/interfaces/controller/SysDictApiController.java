@@ -21,7 +21,6 @@ import org.laokou.admin.server.interfaces.qo.SysDictQO;
 import org.laokou.admin.client.vo.SysDictVO;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.log.annotation.OperateLog;
-import org.laokou.security.annotation.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,6 @@ public class SysDictApiController {
 
     @PostMapping(value = "/query")
     @ApiOperation("系统字典>查询")
-    @PreAuthorize("sys:dict:query")
     public HttpResultUtil<IPage<SysDictVO>> query(@RequestBody SysDictQO qo) {
         return new HttpResultUtil<IPage<SysDictVO>>().ok(sysDictApplicationService.queryDictPage(qo));
     }
@@ -54,7 +52,6 @@ public class SysDictApiController {
 
     @PostMapping(value = "/insert")
     @ApiOperation("系统字典>新增")
-    @PreAuthorize("sys:dict:insert")
     @OperateLog(module = "系统字典",name = "字典新增")
     public HttpResultUtil<Boolean> insert(@RequestBody SysDictDTO dto, HttpServletRequest request) {
         return new HttpResultUtil<Boolean>().ok(sysDictApplicationService.insertDict(dto,request));
@@ -62,7 +59,6 @@ public class SysDictApiController {
 
     @PutMapping(value = "/update")
     @ApiOperation("系统字典>修改")
-    @PreAuthorize("sys:dict:update")
     @OperateLog(module = "系统字典",name = "字典修改")
     public HttpResultUtil<Boolean> update(@RequestBody SysDictDTO dto, HttpServletRequest request) {
         return new HttpResultUtil<Boolean>().ok(sysDictApplicationService.updateDict(dto,request));
@@ -70,7 +66,6 @@ public class SysDictApiController {
 
     @DeleteMapping(value = "/delete")
     @ApiOperation("系统字典>删除")
-    @PreAuthorize("sys:dict:delete")
     @OperateLog(module = "系统字典",name = "字典删除")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResultUtil<Boolean>().ok(sysDictApplicationService.deleteDict(id));

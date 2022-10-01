@@ -22,7 +22,6 @@ import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.elasticsearch.client.model.ElasticsearchModel;
 import org.laokou.elasticsearch.client.vo.SearchVO;
-
 import java.util.Map;
 /**
  * 服务降级

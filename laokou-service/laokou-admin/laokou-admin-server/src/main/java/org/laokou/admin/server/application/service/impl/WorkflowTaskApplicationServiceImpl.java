@@ -24,7 +24,7 @@ import org.laokou.admin.client.dto.ClaimDTO;
 import org.laokou.admin.client.dto.UnClaimDTO;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.FileUtil;
-import org.laokou.datasource.annotation.DataSource;
+
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.MapUtils;
 import org.flowable.bpmn.model.BpmnModel;
@@ -70,7 +70,6 @@ public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicati
     private ProcessEngine processEngine;
 
     @Override
-    @DataSource("master")
     public Boolean auditTask(AuditDTO dto, HttpServletRequest request) {
         Task task = taskService.createTaskQuery().taskId(dto.getTaskId()).singleResult();
         if (null == task) {
@@ -93,7 +92,6 @@ public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicati
     }
 
     @Override
-    @DataSource("master")
     public Boolean claimTask(ClaimDTO dto,HttpServletRequest request) {
         final Task task = taskService.createTaskQuery()
                 .taskId(dto.getTaskId())
@@ -106,21 +104,18 @@ public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicati
     }
 
     @Override
-    @DataSource("master")
     public Boolean unClaimTask(UnClaimDTO dto) {
         taskService.unclaim(dto.getTaskId());
         return true;
     }
 
     @Override
-    @DataSource("master")
     public Boolean deleteTask(String taskId) {
         taskService.deleteTask(taskId);
         return true;
     }
 
     @Override
-    @DataSource("master")
     public void diagramProcess(String processInstanceId, HttpServletResponse response) throws IOException {
         final InputStream inputStream = getInputStream(processInstanceId);
         final BufferedImage image = ImageIO.read(inputStream);

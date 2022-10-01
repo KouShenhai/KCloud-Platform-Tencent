@@ -156,35 +156,6 @@ public class AuthApplication implements WebServerFactoryCustomizer<WebServerFact
 -Djava.library.path=./lib
 ```
 
-### 多数据源配置
-##### 代码引入
-```java
-@Service
-@GlobalTransactional(rollbackFor = Exception.class)
-public class SysUserApplicationServiceImpl implements SysUserApplicationService {
-
-    @Autowired
-    private SysUserService sysUserService;
-
-    @Override
-    @DataSource("master")
-    public IPage<SysUserVO> queryUserPage(SysUserQO qo) {
-        IPage<SysUserVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
-        return sysUserService.getUserPage(page,qo);
-    }
-}
-```
-##### YAML配置
-```yaml
-dynamic:
-  datasource:
-    slave:
-      driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/kcloud?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
-      username: root
-      password: 123456
-```
-
 ### 数据权限
 ##### 代码引入
 ```java
@@ -210,26 +181,6 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
 </if>
 ```
 
-### 服务认证
-##### 代码引入
-说明：@PreAuthorize 根据请求头携带的ticket判断，ticket有值且等于ticket，则说明已经在网关认证过了直接跳过，否则需要认证（注意：多个权限标识请用逗号,隔开）
-```java
-@RestController
-@AllArgsConstructor
-@Api(value = "系统用户API",protocols = "http",tags = "系统用户API")
-@RequestMapping("/sys/user/api")
-public class SysUserApiController {
-
-    private final SysUserApplicationService sysUserApplicationService;
-
-    @PostMapping("/query")
-    @ApiOperation("系统用户>查询")
-    @PreAuthorize("sys:user:query")
-    public HttpResultUtil<IPage<SysUserVO>> query(@RequestBody SysUserQO qo) {
-        return new HttpResultUtil<IPage<SysUserVO>>().ok(sysUserApplicationService.queryUserPage(qo));
-    }
-}
-```
 ### 金丝雀发布
 ##### Apollo配置
 ```yaml

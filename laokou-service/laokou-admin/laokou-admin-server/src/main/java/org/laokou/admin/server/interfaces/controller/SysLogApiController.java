@@ -24,11 +24,11 @@ import org.laokou.admin.client.vo.SysOperateLogVO;
 import org.laokou.common.dto.LoginLogDTO;
 import org.laokou.common.dto.OperateLogDTO;
 import org.laokou.common.utils.HttpResultUtil;
-import org.laokou.security.annotation.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 /**
  * 系统日志控制器
@@ -44,12 +44,11 @@ public class SysLogApiController {
 
     @PostMapping(value = "/operate/insert")
     @ApiOperation("系统日志>操作日志>新增")
-    public HttpResultUtil<Boolean> insertOperateLog(@RequestBody OperateLogDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysLogApplicationService.insertOperateLog(dto));
+    public Mono<Boolean> insertOperateLog(@RequestBody OperateLogDTO dto) {
+        return sysLogApplicationService.insertOperateLog(Mono.just(dto));
     }
 
     @PostMapping(value = "/operate/query")
-    @PreAuthorize("sys:log:operate:query")
     @ApiOperation("系统日志>操作日志>查询")
     public HttpResultUtil<IPage<SysOperateLogVO>> queryOperateLog(@RequestBody SysOperateLogQO qo) {
         return new HttpResultUtil<IPage<SysOperateLogVO>>().ok(sysLogApplicationService.queryOperateLogPage(qo));
@@ -57,13 +56,12 @@ public class SysLogApiController {
 
     @PostMapping(value = "/login/insert")
     @ApiOperation("系统日志>登录日志>新增")
-    public HttpResultUtil<Boolean> insertLoginLog(@RequestBody LoginLogDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysLogApplicationService.insertLoginLog(dto));
+    public Mono<Boolean> insertLoginLog(@RequestBody LoginLogDTO dto) {
+        return sysLogApplicationService.insertLoginLog(Mono.just(dto));
     }
 
     @PostMapping(value = "/login/query")
     @ApiOperation("系统日志>登录日志>查询")
-    @PreAuthorize("sys:log:login:query")
     public HttpResultUtil<IPage<SysLoginLogVO>> queryLoginLog(@RequestBody LoginLogQO qo) {
         return new HttpResultUtil<IPage<SysLoginLogVO>>().ok(sysLogApplicationService.queryLoginLogPage(qo));
     }

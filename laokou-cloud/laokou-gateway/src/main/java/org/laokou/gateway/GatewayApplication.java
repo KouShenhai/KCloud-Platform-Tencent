@@ -26,7 +26,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import reactivefeign.spring.config.EnableReactiveFeignClients;
 /**
- * @author kou shen hai
+ * @author kou Shenhai
  */
 @SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.gateway"})
 @EnableDiscoveryClient

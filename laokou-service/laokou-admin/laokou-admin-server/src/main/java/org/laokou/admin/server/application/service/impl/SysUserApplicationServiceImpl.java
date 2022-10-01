@@ -25,6 +25,7 @@ import org.laokou.admin.server.domain.sys.repository.service.SysRoleService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserRoleService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.client.vo.OptionVO;
+import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysUserQO;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.client.dto.SysUserDTO;
@@ -35,8 +36,6 @@ import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
-import org.laokou.datasource.annotation.DataFilter;
-import org.laokou.datasource.annotation.DataSource;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +59,6 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     private SysUserRoleService sysUserRoleService;
 
     @Override
-    @DataSource("master")
     public Boolean updateUser(SysUserDTO dto, HttpServletRequest request) {
         Long id = dto.getId();
         if (null == id) {
@@ -88,7 +86,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     }
 
     @Override
-    @DataSource("master")
+
     public Boolean insertUser(SysUserDTO dto, HttpServletRequest request) {
         SysUserDO sysUserDO = ConvertUtil.sourceToTarget(dto, SysUserDO.class);
         int count = sysUserService.count(Wrappers.lambdaQuery(SysUserDO.class).eq(SysUserDO::getUsername, sysUserDO.getUsername()).eq(SysUserDO::getDelFlag, Constant.NO));
@@ -106,7 +104,6 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     }
 
     @Override
-    @DataSource("master")
     @DataFilter(tableAlias = "boot_sys_user")
     public IPage<SysUserVO> queryUserPage(SysUserQO qo) {
         IPage<SysUserVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
@@ -114,7 +111,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     }
 
     @Override
-    @DataSource("master")
+
     public SysUserVO getUserById(Long id) {
         SysUserDO sysUserDO = sysUserService.getById(id);
         SysUserVO sysUserVO = ConvertUtil.sourceToTarget(sysUserDO, SysUserVO.class);
@@ -123,7 +120,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     }
 
     @Override
-    @DataSource("master")
+
     public Boolean deleteUser(Long id,HttpServletRequest request) {
         Long userId = SecurityUser.getUserId(request);
         UserDetail userDetail = sysUserService.getUserDetail(id);
@@ -136,7 +133,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     }
 
     @Override
-    @DataSource("master")
+
     public List<OptionVO> getOptionList() {
         return sysUserService.getOptionList();
     }

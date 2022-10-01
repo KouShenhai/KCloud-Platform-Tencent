@@ -20,7 +20,6 @@ import org.laokou.admin.server.interfaces.qo.SysMenuQO;
 import org.laokou.admin.client.vo.SysMenuVO;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.log.annotation.OperateLog;
-import org.laokou.security.annotation.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,6 @@ public class SysMenuApiController {
     }
 
     @PostMapping("/query")
-    @PreAuthorize("sys:menu:query")
     @ApiOperation("系统菜单>查询")
     public HttpResultUtil<List<SysMenuVO>> query(@RequestBody SysMenuQO qo) {
         return new HttpResultUtil<List<SysMenuVO>>().ok(sysMenuApplicationService.queryMenuList(qo));
@@ -59,7 +57,6 @@ public class SysMenuApiController {
     }
 
     @PutMapping("/update")
-    @PreAuthorize("sys:menu:update")
     @ApiOperation("系统菜单>修改")
     @OperateLog(module = "系统菜单",name = "菜单修改")
     public HttpResultUtil<Boolean> update(@RequestBody SysMenuDTO dto, HttpServletRequest request) {
@@ -67,7 +64,6 @@ public class SysMenuApiController {
     }
 
     @PostMapping("/insert")
-    @PreAuthorize("sys:menu:insert")
     @ApiOperation("系统菜单>新增")
     @OperateLog(module = "系统菜单",name = "菜单新增")
     public HttpResultUtil<Boolean> insert(@RequestBody SysMenuDTO dto, HttpServletRequest request) {
@@ -76,7 +72,6 @@ public class SysMenuApiController {
 
     @DeleteMapping("/delete")
     @ApiOperation("系统菜单>删除")
-    @PreAuthorize("sys:menu:delete")
     @OperateLog(module = "系统菜单",name = "菜单删除")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResultUtil<Boolean>().ok(sysMenuApplicationService.deleteMenu(id));

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ElasticsearchApiFeignClientFallbackFactory implements FallbackFactory<ElasticsearchApiFeignClientFallback> {
+
     @Override
     public ElasticsearchApiFeignClientFallback create(Throwable throwable) {
         return new ElasticsearchApiFeignClientFallback(throwable);

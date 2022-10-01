@@ -25,6 +25,7 @@ import org.laokou.admin.server.domain.sys.entity.SysMessageDetailDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageDetailService;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
+import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.infrastructure.component.event.SaveMessageEvent;
 import org.laokou.admin.server.infrastructure.component.pipeline.ProcessController;
 import org.laokou.admin.server.infrastructure.component.run.Task;
@@ -38,8 +39,6 @@ import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.SpringContextUtil;
-import org.laokou.datasource.annotation.DataFilter;
-import org.laokou.datasource.annotation.DataSource;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +107,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     }
 
     @Override
-    @DataSource("master")
+
     public Boolean insertMessage(MessageDTO dto) {
         SysMessageDO messageDO = ConvertUtil.sourceToTarget(dto, SysMessageDO.class);
         messageDO.setCreateDate(new Date());
@@ -134,7 +133,6 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     }
 
     @Override
-    @DataSource("master")
     @DataFilter(tableAlias = "boot_sys_message")
     public IPage<SysMessageVO> queryMessagePage(SysMessageQO qo) {
         IPage<SysMessageVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
@@ -142,20 +140,17 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     }
 
     @Override
-    @DataSource("master")
     public MessageDetailVO getMessageByDetailId(Long id) {
         sysMessageService.readMessage(id);
         return sysMessageService.getMessageByDetailId(id);
     }
 
     @Override
-    @DataSource("master")
     public MessageDetailVO getMessageById(Long id) {
         return sysMessageService.getMessageById(id);
     }
 
     @Override
-    @DataSource("master")
     public IPage<SysMessageVO> getUnReadList(HttpServletRequest request, SysMessageQO qo) {
         IPage<SysMessageVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         final Long userId = SecurityUser.getUserId(request);
@@ -163,7 +158,6 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     }
 
     @Override
-    @DataSource("master")
     public Integer unReadCount(HttpServletRequest request) {
         final Long userId = SecurityUser.getUserId(request);
         return sysMessageDetailService.count(Wrappers.lambdaQuery(SysMessageDetailDO.class).eq(SysMessageDetailDO::getUserId,userId)

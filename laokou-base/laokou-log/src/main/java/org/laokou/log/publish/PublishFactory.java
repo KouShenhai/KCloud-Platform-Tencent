@@ -27,6 +27,9 @@ import org.apache.http.HttpHeaders;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * @author Kou Shenhai
+ */
 public class PublishFactory {
 
     public static void recordLogin(String username,Integer status,String msg) throws IOException {

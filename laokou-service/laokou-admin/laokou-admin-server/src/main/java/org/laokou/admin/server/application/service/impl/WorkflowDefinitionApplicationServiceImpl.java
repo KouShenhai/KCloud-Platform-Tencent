@@ -21,7 +21,7 @@ import org.laokou.admin.server.application.service.WorkflowDefinitionApplication
 import org.laokou.admin.server.interfaces.qo.DefinitionQO;
 import org.laokou.admin.client.vo.DefinitionVO;
 import org.laokou.common.exception.CustomException;
-import org.laokou.datasource.annotation.DataSource;
+
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -55,7 +55,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     private RepositoryService repositoryService;
 
     @Override
-    @DataSource("master")
+
     public Boolean importFile(String name, InputStream in) {
         String processName = name + BPMN_FILE_SUFFIX;
         DeploymentBuilder deploymentBuilder = repositoryService.createDeployment()
@@ -67,7 +67,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-    @DataSource("master")
+
     public IPage<DefinitionVO> queryDefinitionPage(DefinitionQO qo) {
         ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
                 .latestVersion()
@@ -96,7 +96,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-    @DataSource("master")
+
     public void imageProcess(String definitionId, HttpServletResponse response) {
         //获取图片流
         DefaultProcessDiagramGenerator diagramGenerator = new DefaultProcessDiagramGenerator();
@@ -126,7 +126,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-    @DataSource("master")
+
     public Boolean deleteDefinition(String deploymentId) {
         // true允许级联删除 不设置会导致数据库关联异常
         repositoryService.deleteDeployment(deploymentId,true);
@@ -134,7 +134,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-    @DataSource("master")
+
     public Boolean suspendDefinition(String definitionId) {
         final ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(definitionId).singleResult();
         if (processDefinition.isSuspended()) {
@@ -147,7 +147,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-    @DataSource("master")
+
     public Boolean activateDefinition(String definitionId) {
         final ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(definitionId).singleResult();
         if (processDefinition.isSuspended()) {

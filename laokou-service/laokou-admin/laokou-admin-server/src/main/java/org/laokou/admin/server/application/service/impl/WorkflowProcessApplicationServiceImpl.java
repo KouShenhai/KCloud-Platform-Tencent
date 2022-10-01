@@ -32,7 +32,7 @@ import org.laokou.admin.server.interfaces.qo.TaskQO;
 import org.laokou.admin.client.vo.TaskVO;
 import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.exception.CustomException;
-import org.laokou.datasource.annotation.DataSource;
+
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.engine.RepositoryService;
@@ -79,7 +79,6 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     private SysResourceAuditLogService sysResourceAuditLogService;
 
     @Override
-    @DataSource("master")
     public StartProcessVO startResourceProcess(String processKey, String businessKey, String instanceName) {
         StartProcessVO vo = new StartProcessVO();
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
@@ -97,7 +96,6 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     }
 
     @Override
-    @DataSource("master")
     public IPage<TaskVO> queryResourceTaskPage(TaskQO qo, HttpServletRequest request) {
         final Integer pageNum = qo.getPageNum();
         final Integer pageSize = qo.getPageSize();

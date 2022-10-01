@@ -97,7 +97,6 @@ public class AuthFilter implements GlobalFilter,Ordered {
         final String userId = userDetail.getId().toString();
         final String username = userDetail.getUsername();
         ServerHttpRequest build = exchange.getRequest().mutate()
-                .header(Constant.TICKET,Constant.TICKET)
                 .header(Constant.USER_KEY_HEAD,userId )
                 .header(Constant.USERNAME_HEAD,username).build();
         return chain.filter(exchange.mutate().request(build).build());

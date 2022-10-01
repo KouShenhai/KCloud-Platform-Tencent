@@ -54,7 +54,7 @@
         </dependency>
         <dependency>
             <groupId>org.laokou</groupId>
-            <artifactId>laokou-dynamic-datasource</artifactId>
+            <artifactId>laokou-datasource</artifactId>
         </dependency>
         <dependency>
             <groupId>org.laokou</groupId>

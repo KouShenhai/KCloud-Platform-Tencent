@@ -1,0 +1,7 @@
+server:
+  port: 9995
+spring:
+  application:
+    name: laokou-rabbitmq
+  profiles:
+    active: @profile.active@

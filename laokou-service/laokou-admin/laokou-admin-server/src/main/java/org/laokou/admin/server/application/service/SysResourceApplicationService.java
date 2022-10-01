@@ -20,8 +20,6 @@ import org.laokou.admin.server.interfaces.qo.SysResourceQO;
 import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.admin.client.vo.UploadVO;
-import reactor.core.publisher.Mono;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.*;
@@ -44,7 +42,7 @@ public interface SysResourceApplicationService {
 
     UploadVO uploadResource(String code, String fileName, InputStream inputStream, Long fileSize) throws Exception;
 
-    Mono<Void> syncAsyncBatchResource(Mono<String> codeMono);
+    Boolean syncAsyncBatchResource(String code);
 
     List<SysResourceAuditLogVO> queryAuditLogList(Long resourceId);
 

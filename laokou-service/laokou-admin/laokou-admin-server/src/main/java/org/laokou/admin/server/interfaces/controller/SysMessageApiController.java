@@ -22,7 +22,6 @@ import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.log.annotation.OperateLog;
-import org.laokou.security.annotation.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -43,7 +42,6 @@ public class SysMessageApiController {
 
     @PostMapping("/insert")
     @ApiOperation("系统消息>新增")
-    @PreAuthorize("sys:message:insert")
     @OperateLog(module = "系统消息",name = "消息新增")
     public HttpResultUtil<Boolean> insert(@RequestBody MessageDTO dto, HttpServletRequest request) {
         return new HttpResultUtil<Boolean>().ok(sysMessageApplicationService.sendMessage(dto,request));
@@ -51,7 +49,6 @@ public class SysMessageApiController {
 
     @PostMapping("/query")
     @ApiOperation("系统消息>查询")
-    @PreAuthorize("sys:message:query")
     public HttpResultUtil<IPage<SysMessageVO>> query(@RequestBody SysMessageQO qo) {
         return new HttpResultUtil<IPage<SysMessageVO>>().ok(sysMessageApplicationService.queryMessagePage(qo));
     }
@@ -65,7 +62,6 @@ public class SysMessageApiController {
 
     @GetMapping("/detail")
     @ApiOperation("系统消息>详情")
-    @PreAuthorize("sys:message:detail")
     public HttpResultUtil<MessageDetailVO> detail(@RequestParam("id")Long id) {
         return new HttpResultUtil<MessageDetailVO>().ok(sysMessageApplicationService.getMessageById(id));
     }

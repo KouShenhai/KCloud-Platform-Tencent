@@ -32,12 +32,25 @@ import java.util.Map;
 @Service
 public interface ElasticsearchApiFeignClient {
 
+    /**
+     *
+     * @param model
+     */
     @PostMapping("/api/create")
     void create(@RequestBody final CreateIndexModel model);
 
+    /**
+     *
+     * @param model
+     */
     @PostMapping("/api/syncAsyncBatch")
     void syncAsyncBatch(@RequestBody final ElasticsearchModel model);
 
+    /**
+     *
+     * @param searchForm
+     * @return
+     */
     @PostMapping("/api/highlightSearch")
     HttpResultUtil<SearchVO<Map<String,Object>>> highlightSearch(@RequestBody final SearchForm searchForm);
 }

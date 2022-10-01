@@ -26,14 +26,11 @@ import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.log.annotation.OperateLog;
 import org.laokou.redis.annotation.Lock4j;
-import org.laokou.security.annotation.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import reactor.core.publisher.Mono;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -72,30 +69,26 @@ public class SysVideoApiController {
 
     @PostMapping("/query")
     @ApiOperation("视频管理>查询")
-    @PreAuthorize("sys:resource:video:query")
     public HttpResultUtil<IPage<SysResourceVO>> query(@RequestBody SysResourceQO qo) {
         return new HttpResultUtil<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
     }
 
     @PostMapping("/sync")
     @ApiOperation("视频管理>同步")
-    @PreAuthorize("sys:resource:video:sync")
     @Lock4j(key = "video_sync_lock")
     @OperateLog(module = "视频管理",name = "视频同步")
-    public HttpResultUtil<Mono<Void>> sync(@RequestParam("code") String code) {
-        return new HttpResultUtil<Mono<Void>>().ok(sysResourceApplicationService.syncAsyncBatchResource(Mono.just(code)));
+    public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) {
+        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncAsyncBatchResource(code));
     }
 
     @GetMapping(value = "/detail")
     @ApiOperation("视频管理>详情")
-    @PreAuthorize("sys:resource:video:detail")
     public HttpResultUtil<SysResourceVO> detail(@RequestParam("id") Long id) {
         return new HttpResultUtil<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
     }
 
     @PostMapping(value = "/insert")
     @ApiOperation("视频管理>新增")
-    @PreAuthorize("sys:resource:video:insert")
     @OperateLog(module = "视频管理",name = "视频新增")
     public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto, HttpServletRequest request) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto,request));
@@ -103,7 +96,6 @@ public class SysVideoApiController {
 
     @PutMapping(value = "/update")
     @ApiOperation("视频管理>修改")
-    @PreAuthorize("sys:resource:video:update")
     @OperateLog(module = "视频管理",name = "视频修改")
     public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto, HttpServletRequest request) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto,request));
@@ -111,7 +103,6 @@ public class SysVideoApiController {
 
     @DeleteMapping(value = "/delete")
     @ApiOperation("视频管理>删除")
-    @PreAuthorize("sys:resource:video:delete")
     @OperateLog(module = "视频管理",name = "视频删除")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.deleteResource(id));
@@ -119,14 +110,12 @@ public class SysVideoApiController {
 
     @GetMapping(value = "/diagram")
     @ApiOperation(value = "视频管理>流程图")
-    @PreAuthorize("sys:resource:video:diagram")
     public void diagram(@RequestParam("processInstanceId")String processInstanceId, HttpServletResponse response) throws IOException {
         workflowTaskApplicationService.diagramProcess(processInstanceId, response);
     }
 
     @GetMapping("/auditLog")
     @ApiOperation("视频管理>审批日志")
-    @PreAuthorize("sys:resource:video:auditLog")
     public HttpResultUtil<List<SysResourceAuditLogVO>> auditLog(@RequestParam("resourceId") Long resourceId) {
         return new HttpResultUtil<List<SysResourceAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(resourceId));
     }

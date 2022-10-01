@@ -22,6 +22,7 @@ import org.laokou.admin.server.domain.sys.entity.SysOperateLogDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysLoginLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysOperateLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
+import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.LoginLogQO;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
 import org.laokou.admin.client.vo.SysLoginLogVO;
@@ -30,8 +31,6 @@ import org.laokou.common.dto.LoginLogDTO;
 import org.laokou.common.dto.OperateLogDTO;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
-import org.laokou.datasource.annotation.DataFilter;
-import org.laokou.datasource.annotation.DataSource;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +49,6 @@ public class SysLogApplicationServiceImpl implements SysLogApplicationService {
     private SysUserService sysUserService;
 
     @Override
-    @DataSource("master")
     public Boolean insertOperateLog(OperateLogDTO dto) {
         SysOperateLogDO logDO = ConvertUtil.sourceToTarget(dto, SysOperateLogDO.class);
         final UserDetail userDetail = sysUserService.getUserDetail(logDO.getCreator());
@@ -59,14 +57,12 @@ public class SysLogApplicationServiceImpl implements SysLogApplicationService {
     }
 
     @Override
-    @DataSource("master")
     public Boolean insertLoginLog(LoginLogDTO dto) {
         SysLoginLogDO logDO = ConvertUtil.sourceToTarget(dto, SysLoginLogDO.class);
         return sysLoginLogService.save(logDO);
     }
 
     @Override
-    @DataSource("master")
     @DataFilter(tableAlias = "boot_sys_operate_log")
     public IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQO qo) {
         IPage<SysOperateLogVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
@@ -74,7 +70,6 @@ public class SysLogApplicationServiceImpl implements SysLogApplicationService {
     }
 
     @Override
-    @DataSource("master")
     public IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQO qo) {
         IPage<SysLoginLogVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysLoginLogService.getLoginLogList(page,qo);

@@ -39,7 +39,7 @@ import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.FileUtil;
 import org.laokou.common.utils.JacksonUtil;
-import org.laokou.datasource.annotation.DataSource;
+
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
@@ -50,8 +50,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import reactor.core.publisher.Mono;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -89,20 +87,17 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     private AsyncTaskExecutor asyncTaskExecutor;
 
     @Override
-    @DataSource("master")
     public IPage<SysResourceVO> queryResourcePage(SysResourceQO qo) {
         IPage<SysResourceVO> page = new Page(qo.getPageNum(),qo.getPageSize());
         return sysResourceService.getResourceList(page,qo);
     }
 
     @Override
-    @DataSource("master")
     public SysResourceVO getResourceById(Long id) {
         return sysResourceService.getResourceById(id);
     }
 
     @Override
-    @DataSource("master")
     public Boolean insertResource(SysResourceDTO dto, HttpServletRequest request) {
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
         sysResourceDO.setCreator(SecurityUser.getUserId(request));
@@ -124,7 +119,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    @DataSource("master")
     public Boolean updateResource(SysResourceDTO dto, HttpServletRequest request) {
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
         sysResourceDO.setEditor(SecurityUser.getUserId(request));
@@ -135,7 +129,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    @DataSource("master")
     public Boolean deleteResource(Long id) {
         sysResourceService.deleteResource(id);
         return true;
@@ -162,8 +155,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public Mono<Void> syncAsyncBatchResource(Mono<String> codeMono) {
-        return codeMono.flatMap(code -> {
+    public Boolean syncAsyncBatchResource(String code) {
             //总数
             final Long resourceTotal = sysResourceService.getResourceTotal(code);
             if (resourceTotal > 0) {
@@ -206,8 +198,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                 }
                 afterSync();
             }
-            return Mono.empty();
-        });
+        return true;
     }
 
     private class SyncElasticsearchRun extends Thread {

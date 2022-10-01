@@ -14,10 +14,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.laokou</groupId>
-			<artifactId>laokou-auth-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.laokou</groupId>
 			<artifactId>laokou-admin-client</artifactId>
 		</dependency>
 		<dependency>
@@ -34,7 +30,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.laokou</groupId>
-			<artifactId>laokou-dynamic-datasource</artifactId>
+			<artifactId>laokou-datasource</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.github.tobato</groupId>

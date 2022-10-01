@@ -21,7 +21,6 @@ import org.laokou.admin.client.vo.DefinitionVO;
 import org.laokou.common.enums.DataTypeEnum;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.log.annotation.OperateLog;
-import org.laokou.security.annotation.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,6 @@ public class WorkflowDefinitionApiController {
     private WorkflowDefinitionApplicationService workflowDefinitionApplicationService;
 
     @PostMapping("/insert")
-    @PreAuthorize("workflow:definition:insert")
     @ApiOperation("流程定义>新增")
     @OperateLog(module = "流程定义",name = "流程新增",type = DataTypeEnum.FILE)
     public HttpResultUtil<Boolean> insert(@RequestParam("name")String name, @RequestPart("file") MultipartFile file) throws IOException {
@@ -51,7 +49,6 @@ public class WorkflowDefinitionApiController {
     }
 
     @PostMapping("/query")
-    @PreAuthorize("workflow:definition:query")
     @ApiOperation("流程定义>查询")
     public HttpResultUtil<IPage<DefinitionVO>> query(@RequestBody DefinitionQO qo) {
         return new HttpResultUtil<IPage<DefinitionVO>>().ok(workflowDefinitionApplicationService.queryDefinitionPage(qo));
@@ -59,13 +56,11 @@ public class WorkflowDefinitionApiController {
 
     @GetMapping("/image")
     @ApiOperation("流程定义>图片")
-    @PreAuthorize("workflow:definition:image")
     public void image(@RequestParam("definitionId")String definitionId, HttpServletResponse response) {
         workflowDefinitionApplicationService.imageProcess(definitionId,response);
     }
 
     @DeleteMapping("/delete")
-    @PreAuthorize("workflow:definition:delete")
     @ApiOperation("流程定义>删除")
     @OperateLog(module = "流程定义",name = "流程删除")
     public HttpResultUtil<Boolean> delete(@RequestParam("deploymentId")String deploymentId) {
@@ -74,7 +69,6 @@ public class WorkflowDefinitionApiController {
 
     @PutMapping("/suspend")
     @ApiOperation("流程定义>挂起")
-    @PreAuthorize("workflow:definition:suspend")
     @OperateLog(module = "流程定义",name = "流程挂起")
     public HttpResultUtil<Boolean> suspend(@RequestParam("definitionId")String definitionId) {
         return new HttpResultUtil<Boolean>().ok(workflowDefinitionApplicationService.suspendDefinition(definitionId));
@@ -82,7 +76,6 @@ public class WorkflowDefinitionApiController {
 
     @PutMapping("/activate")
     @ApiOperation("流程定义>激活")
-    @PreAuthorize("workflow:definition:activate")
     @OperateLog(module = "流程定义",name = "流程激活")
     public HttpResultUtil<Boolean> activate(@RequestParam("definitionId")String definitionId) {
         return new HttpResultUtil<Boolean>().ok(workflowDefinitionApplicationService.activateDefinition(definitionId));

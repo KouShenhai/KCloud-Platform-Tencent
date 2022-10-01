@@ -22,6 +22,7 @@ import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysOauthService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.client.dto.SysOauthDTO;
+import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysOauthQO;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.laokou.common.constant.Constant;
@@ -29,8 +30,6 @@ import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
-import org.laokou.datasource.annotation.DataFilter;
-import org.laokou.datasource.annotation.DataSource;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +50,6 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
     private SysUserService sysUserService;
 
     @Override
-    @DataSource("master")
     @DataFilter(tableAlias = "boot_sys_oauth_client_details")
     public IPage<SysOauthVO> queryOauthPage(SysOauthQO qo) {
         IPage<SysOauthVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
@@ -59,7 +57,6 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
     }
 
     @Override
-    @DataSource("master")
     public Boolean insertOauth(SysOauthDTO dto, HttpServletRequest request) {
         SysOauthDO sysOauthDO = ConvertUtil.sourceToTarget(dto, SysOauthDO.class);
         final int count = sysOauthService.count(Wrappers.lambdaQuery(SysOauthDO.class).eq(SysOauthDO::getDelFlag, Constant.NO).eq(SysOauthDO::getClientId, sysOauthDO.getClientId()));
@@ -73,7 +70,6 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
     }
 
     @Override
-    @DataSource("master")
     public Boolean updateOauth(SysOauthDTO dto, HttpServletRequest request) {
         final SysOauthDO sysOauthDO = ConvertUtil.sourceToTarget(dto, SysOauthDO.class);
         final int count = sysOauthService.count(Wrappers.lambdaQuery(SysOauthDO.class).eq(SysOauthDO::getDelFlag, Constant.NO).eq(SysOauthDO::getClientId, sysOauthDO.getClientId()).ne(SysOauthDO::getId,dto.getId()));
@@ -85,14 +81,12 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
     }
 
     @Override
-    @DataSource("master")
     public Boolean deleteOauth(Long id) {
         sysOauthService.deleteOauth(id);
         return true;
     }
 
     @Override
-    @DataSource("master")
     public SysOauthVO getOauthById(Long id) {
         return sysOauthService.getOauthById(id);
     }
