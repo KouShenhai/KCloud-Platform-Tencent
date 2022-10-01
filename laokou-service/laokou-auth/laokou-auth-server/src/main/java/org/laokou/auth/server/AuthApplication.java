@@ -45,7 +45,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 @Slf4j
 @EnableEncryptableProperties
-@EnableFeignClients(basePackages = {"org.laokou.datasource","org.laokou.security","org.laokou.log"})
+@EnableFeignClients(basePackages = {"org.laokou.log"})
 public class AuthApplication implements CommandLineRunner, WebServerFactoryCustomizer<WebServerFactory> {
 
     public static void main(String[] args) {

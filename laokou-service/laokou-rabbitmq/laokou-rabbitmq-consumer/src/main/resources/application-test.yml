@@ -4,7 +4,7 @@ spring:
     password: koushenhai123456
     publisher-returns: true
     virtual-host: /
-    addresses: 124.222.196.51:5672
+    addresses: 192.168.62.128:5672
     connection-timeout: 15000
     listener:
       simple:
