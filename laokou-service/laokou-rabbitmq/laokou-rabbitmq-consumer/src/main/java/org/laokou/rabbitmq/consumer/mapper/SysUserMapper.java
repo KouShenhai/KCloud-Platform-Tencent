@@ -13,17 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.application.service;
+package org.laokou.rabbitmq.consumer.mapper;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.laokou.admin.server.interfaces.qo.LoginLogQO;
-import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
-import org.laokou.admin.client.vo.SysLoginLogVO;
-import org.laokou.admin.client.vo.SysOperateLogVO;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.laokou.auth.client.user.UserDetail;
+import org.springframework.stereotype.Repository;
 
-public interface SysLogApplicationService {
+/**
+ * 用户类
+ * @author  Kou Shenhai
+ */
+@Mapper
+@Repository
+public interface SysUserMapper {
 
-    IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQO qo);
-
-    IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQO qo);
+    /**
+     * 获取用户信息
+     * @param userId
+     * @param username
+     * @return
+     */
+    UserDetail getUserDetail(@Param("userId")Long userId, @Param("username")String username);
 }

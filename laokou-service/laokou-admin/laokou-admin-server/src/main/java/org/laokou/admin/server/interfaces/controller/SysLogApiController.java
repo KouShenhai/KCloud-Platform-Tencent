@@ -21,15 +21,11 @@ import org.laokou.admin.server.interfaces.qo.LoginLogQO;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
-import org.laokou.common.dto.LoginLogDTO;
-import org.laokou.common.dto.OperateLogDTO;
 import org.laokou.common.utils.HttpResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
-
 /**
  * 系统日志控制器
  * @author Kou Shenhai
@@ -42,22 +38,10 @@ public class SysLogApiController {
     @Autowired
     private SysLogApplicationService sysLogApplicationService;
 
-    @PostMapping(value = "/operate/insert")
-    @ApiOperation("系统日志>操作日志>新增")
-    public Mono<Boolean> insertOperateLog(@RequestBody OperateLogDTO dto) {
-        return sysLogApplicationService.insertOperateLog(Mono.just(dto));
-    }
-
     @PostMapping(value = "/operate/query")
     @ApiOperation("系统日志>操作日志>查询")
     public HttpResultUtil<IPage<SysOperateLogVO>> queryOperateLog(@RequestBody SysOperateLogQO qo) {
         return new HttpResultUtil<IPage<SysOperateLogVO>>().ok(sysLogApplicationService.queryOperateLogPage(qo));
-    }
-
-    @PostMapping(value = "/login/insert")
-    @ApiOperation("系统日志>登录日志>新增")
-    public Mono<Boolean> insertLoginLog(@RequestBody LoginLogDTO dto) {
-        return sysLogApplicationService.insertLoginLog(Mono.just(dto));
     }
 
     @PostMapping(value = "/login/query")

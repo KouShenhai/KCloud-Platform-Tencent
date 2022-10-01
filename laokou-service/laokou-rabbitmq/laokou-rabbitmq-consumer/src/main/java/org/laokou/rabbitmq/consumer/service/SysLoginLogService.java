@@ -13,17 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.application.service;
+package org.laokou.rabbitmq.consumer.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.laokou.admin.server.interfaces.qo.LoginLogQO;
-import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
-import org.laokou.admin.client.vo.SysLoginLogVO;
-import org.laokou.admin.client.vo.SysOperateLogVO;
 
-public interface SysLogApplicationService {
+import com.baomidou.mybatisplus.extension.service.IService;
+import org.laokou.common.dto.LoginLogDTO;
+import org.laokou.rabbitmq.consumer.entity.SysLoginLogDO;
 
-    IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQO qo);
-
-    IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQO qo);
+public interface SysLoginLogService extends IService<SysLoginLogDO> {
+    void insertLoginLog(LoginLogDTO dto);
 }

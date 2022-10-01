@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.application.service;
+package org.laokou.rabbitmq.consumer.mapper;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.laokou.admin.server.interfaces.qo.LoginLogQO;
-import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
-import org.laokou.admin.client.vo.SysLoginLogVO;
-import org.laokou.admin.client.vo.SysOperateLogVO;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.laokou.rabbitmq.consumer.entity.SysOperateLogDO;
+import org.springframework.stereotype.Repository;
 
-public interface SysLogApplicationService {
+@Mapper
+@Repository
+public interface SysOperateLogMapper extends BaseMapper<SysOperateLogDO> {
 
-    IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQO qo);
 
-    IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQO qo);
 }

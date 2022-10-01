@@ -17,8 +17,6 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.laokou.admin.server.application.service.SysLogApplicationService;
-import org.laokou.admin.server.domain.sys.entity.SysLoginLogDO;
-import org.laokou.admin.server.domain.sys.entity.SysOperateLogDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysLoginLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysOperateLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
@@ -27,10 +25,6 @@ import org.laokou.admin.server.interfaces.qo.LoginLogQO;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
-import org.laokou.common.dto.LoginLogDTO;
-import org.laokou.common.dto.OperateLogDTO;
-import org.laokou.auth.client.user.UserDetail;
-import org.laokou.common.utils.ConvertUtil;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,20 +41,6 @@ public class SysLogApplicationServiceImpl implements SysLogApplicationService {
 
     @Autowired
     private SysUserService sysUserService;
-
-    @Override
-    public Boolean insertOperateLog(OperateLogDTO dto) {
-        SysOperateLogDO logDO = ConvertUtil.sourceToTarget(dto, SysOperateLogDO.class);
-        final UserDetail userDetail = sysUserService.getUserDetail(logDO.getCreator());
-        logDO.setDeptId(userDetail.getDeptId());
-        return sysOperateLogService.save(logDO);
-    }
-
-    @Override
-    public Boolean insertLoginLog(LoginLogDTO dto) {
-        SysLoginLogDO logDO = ConvertUtil.sourceToTarget(dto, SysLoginLogDO.class);
-        return sysLoginLogService.save(logDO);
-    }
 
     @Override
     @DataFilter(tableAlias = "boot_sys_operate_log")
