@@ -48,7 +48,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @Slf4j
 @EnableAsync
 @EnableEncryptableProperties
-@EnableFeignClients
+@EnableFeignClients(basePackages = {"org.laokou.log","org.laokou.admin"})
 public class AdminApplication implements CommandLineRunner, WebServerFactoryCustomizer<WebServerFactory> {
 
 	public static void main(String[] args) {

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author Kou Shenhai
  */
-@FeignClient(name = ServiceConstant.LAOKOU_RABBITMQ,path = "/laokou-service/mq", fallback = RabbitMqApiFeignClientFallbackFactory.class)
+@FeignClient(name = ServiceConstant.LAOKOU_RABBITMQ,path = "/rabbitmq", fallback = RabbitMqApiFeignClientFallbackFactory.class)
 @Service
 public interface RabbitMqApiFeignClient {
 
