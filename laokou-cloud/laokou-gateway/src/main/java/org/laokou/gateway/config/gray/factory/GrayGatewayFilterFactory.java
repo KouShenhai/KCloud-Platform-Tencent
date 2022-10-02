@@ -1,21 +1,5 @@
-package org.laokou.gateway.factory;
+package org.laokou.gateway.config.gray.factory;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.exception.CustomException;
-import org.laokou.gateway.constant.GrayConstant;
-import org.springframework.cloud.gateway.filter.GatewayFilter;
-import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.cloud.gateway.route.Route;
-import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
-import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.server.ServerWebExchange;
-
-import java.net.URI;
-import java.util.List;
 /**
  * @author Kou Shenhai
  */

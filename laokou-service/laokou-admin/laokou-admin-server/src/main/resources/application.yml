@@ -24,7 +24,6 @@ spring:
       max-request-size: -1
   main:
     allow-circular-references: true
-    web-application-type: reactive
   cloud:
     inetutils:
       ignoredInterfaces:

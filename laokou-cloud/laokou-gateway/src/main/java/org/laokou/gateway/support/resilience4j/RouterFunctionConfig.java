@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.gateway.config;
+package org.laokou.gateway.support.resilience4j;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
-import org.laokou.gateway.component.Resilience4jFallbackHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;

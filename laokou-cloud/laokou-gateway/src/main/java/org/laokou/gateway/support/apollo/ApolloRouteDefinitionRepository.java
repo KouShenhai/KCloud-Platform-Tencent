@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.gateway.route;
+package org.laokou.gateway.support.apollo;
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
@@ -30,10 +30,9 @@ import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.ReactiveHashOperations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import java.util.List;
+import java.util.Collection;
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -52,11 +51,6 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
      */
     private final Cache<String,RouteDefinition> caffeineCache;
 
-//    /**
-//     * 响应式redis
-//     */
-//    private final ReactiveSt<String,String,RouteDefinition> reactiveHashOperations;
-
     @ApolloConfig
     private Config config;
 
@@ -74,22 +68,31 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
-        final String property = config.getProperty(ROUTES, null);
-        if (StringUtils.isBlank(property)) {
-            Flux.fromIterable(Lists.newArrayList());
+        Collection<RouteDefinition> routeDefinitions = caffeineCache.asMap().values();
+        if (routeDefinitions.isEmpty()) {
+            final String property = config.getProperty(ROUTES, null);
+            if (StringUtils.isBlank(property)) {
+                return Flux.fromIterable(Lists.newArrayList());
+            }
+            routeDefinitions = JacksonUtil.toList(property, RouteDefinition.class);
         }
-        final List<RouteDefinition> routeDefinitions = JacksonUtil.toList(property, RouteDefinition.class);
         return Flux.fromIterable(routeDefinitions);
     }
 
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
-        return null;
+        return route.flatMap(item -> {
+            this.caffeineCache.invalidateAll();
+            return Mono.empty();
+        });
     }
 
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
-        return null;
+        return routeId.flatMap(item -> {
+            this.caffeineCache.invalidateAll();
+            return Mono.empty();
+        });
     }
 
     @Override

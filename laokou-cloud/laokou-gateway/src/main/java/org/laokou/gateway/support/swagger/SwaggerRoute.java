@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.gateway.swagger;
+package org.laokou.gateway.support.swagger;
 import lombok.Data;
-/**
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import java.util.List;
+/***
  * @author Kou Shenhai
  */
 @Data
-public class SwaggerRouteProperties {
-    /**
-     * 文档名称
-     */
-    private String name;
-    /**
-     * 文档地址
-     */
-    private String location;
-
+@Configuration
+@ConfigurationProperties("gateway.swagger")
+public class SwaggerRoute {
+    private List<SwaggerRouteProperties> routes;
 }

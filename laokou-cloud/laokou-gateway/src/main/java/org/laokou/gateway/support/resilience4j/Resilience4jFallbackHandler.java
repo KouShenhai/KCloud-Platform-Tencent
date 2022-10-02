@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.gateway.component;
+package org.laokou.gateway.support.resilience4j;
 import cn.hutool.http.HttpStatus;
 import org.laokou.common.utils.HttpResultUtil;
 import lombok.extern.slf4j.Slf4j;

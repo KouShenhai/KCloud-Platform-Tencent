@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.gateway.config;
+package org.laokou.gateway.exception;
 
 import org.laokou.gateway.exception.GatewayExceptionHandler;
 import org.springframework.beans.factory.ObjectProvider;

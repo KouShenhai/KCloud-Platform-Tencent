@@ -38,7 +38,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  * DDD分层架构(分布式微服务架构) > 表现层 应用层 领域层 基础层
  * @author Kou Shenhai
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.auth","org.laokou.redis","org.laokou.log","org.laokou.security","org.laokou.datasource"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.auth","org.laokou.redis","org.laokou.log","org.laokou.datasource"})
 @EnableDiscoveryClient
 @EnableConfigurationProperties
 @EnableApolloConfig
