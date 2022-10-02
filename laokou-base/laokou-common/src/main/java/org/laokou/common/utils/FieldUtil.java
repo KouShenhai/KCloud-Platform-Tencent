@@ -15,9 +15,16 @@
  */
 package org.laokou.common.utils;
 
+import cn.hutool.core.util.ReflectUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.laokou.common.exception.CustomException;
+import org.laokou.common.function.FieldFunction;
+import org.springframework.util.StringUtils;
 
+import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +33,35 @@ import java.util.List;
  * 反射相关工具类
  * @author Kou Shenhai
  */
-public final class ReflectUtil {
+@Slf4j
+public final class FieldUtil extends ReflectUtil {
+
+    public static  <T> String getFieldName(FieldFunction<T> function) {
+        try {
+            final Method method = function.getClass().getDeclaredMethod("writeReplace");
+            method.setAccessible(true);
+            //序列化
+            final SerializedLambda serializedLambda = (SerializedLambda) method.invoke(function);
+            String getter = serializedLambda.getImplMethodName();
+            if (getter.startsWith("get")) {
+                getter = getter.substring(3);
+            } else if (getter.startsWith("is")) {
+                getter = getter.substring(2);
+            } else {
+                throw new CustomException("缺少get|is方法");
+            }
+            if (StringUtils.hasText(getter)) {
+                final char[] cs = getter.toCharArray();
+                //首字母转小写
+                cs[0] += 32;
+                return String.valueOf(cs);
+            }
+            throw new CustomException("属性字段值丢失");
+        } catch (Exception e) {
+            log.info("获取字段名称失败 信息:{},错误:{}",e.getMessage(),e);
+            return null;
+        }
+    }
 
     /**
      * 获取所有类的属性

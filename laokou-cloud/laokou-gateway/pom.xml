@@ -16,6 +16,10 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
         <!-- 可选, 用于进程内存使用图表 -->
         <dependency>
             <groupId>io.github.mweirauch</groupId>
