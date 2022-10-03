@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.gateway.component;
+package org.laokou.gateway.support.apollo;
 
 import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfigChangeListener;
@@ -33,7 +33,7 @@ import javax.annotation.Resource;
 @RefreshScope
 @Data
 @Slf4j
-public class GatewayHandler {
+public class ApolloHandler {
 
     @Resource
     private org.springframework.cloud.context.scope.refresh.RefreshScope refreshScope;
