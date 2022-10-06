@@ -15,7 +15,7 @@
  */
 package org.laokou.redis;
 import org.apache.commons.lang.StringUtils;
-import org.redisson.api.RedissonReactiveClient;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisCallback;
@@ -32,7 +32,7 @@ public final class RedisUtil {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
     @Autowired
-    private RedissonReactiveClient redissonReactiveClient;
+    private RedissonClient redissonClient;
     /**  默认过期时长为24小时，单位：秒 */
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24L;
     /**  过期时长为1小时，单位：秒 */
@@ -42,7 +42,7 @@ public final class RedisUtil {
     /**  不设置过期时长 */
     public final static long NOT_EXPIRE = -1L;
     public final void set(String key, Object value, long expire){
-        redissonReactiveClient.getBucket(key).set(value,expire, TimeUnit.SECONDS);
+        redissonClient.getBucket(key).set(value,expire, TimeUnit.SECONDS);
     }
 
     public final boolean hasKey(String key) {
@@ -62,27 +62,31 @@ public final class RedisUtil {
     }
 
     public final Boolean tryLock(String key,long expire,long timeout) throws InterruptedException {
-       return redissonReactiveClient.getLock(key).tryLock(expire, timeout, TimeUnit.SECONDS).block();
+       return redissonClient.getLock(key).tryLock(expire, timeout, TimeUnit.SECONDS);
     }
 
     public final void unlock(String key) {
-        redissonReactiveClient.getLock(key).unlock();
+        redissonClient.getLock(key).unlock();
     }
 
     public final void lock(String key) {
-        redissonReactiveClient.getLock(key).lock();
+        redissonClient.getLock(key).lock();
     }
 
     public final Boolean isLocked(String key) {
-        return redissonReactiveClient.getLock(key).isLocked().block();
+        return redissonClient.getLock(key).isLocked();
+    }
+
+    public final Boolean isHeldByCurrentThread(String key) {
+        return redissonClient.getLock(key).isHeldByCurrentThread();
     }
 
     public final Object get(String key) {
-        return redissonReactiveClient.getBucket(key).get();
+        return redissonClient.getBucket(key).get();
     }
 
     public final void delete(String key) {
-        redissonReactiveClient.getKeys().delete(key);
+        redissonClient.getKeys().delete(key);
     }
 
     public final void delete(Collection<String> keys) {

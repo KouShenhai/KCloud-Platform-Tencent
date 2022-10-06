@@ -74,8 +74,11 @@ public class LockAspect {
         } finally {
             if (redisUtil.isLocked(key)) {
                 log.info("{}对应的锁被持有，线程{}",key,threadName);
-                redisUtil.unlock(key);
-                log.info("解锁成功...");
+                if (redisUtil.isHeldByCurrentThread(key)) {
+                    log.info("当前线程{}持有锁",threadName);
+                    redisUtil.unlock(key);
+                    log.info("解锁成功...");
+                }
             } else {
                 log.info("无线程持有，无需解锁...");
             }
