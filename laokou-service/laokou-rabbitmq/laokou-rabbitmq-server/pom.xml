@@ -7,7 +7,7 @@
         <artifactId>laokou-service</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>io.laokou</groupId>
+    <groupId>org.laokou</groupId>
     <artifactId>laokou-rabbitmq-server</artifactId>
     <description>消息队列</description>
     <properties>

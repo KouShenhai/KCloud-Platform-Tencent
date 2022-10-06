@@ -7,7 +7,7 @@
         <artifactId>laokou-rabbitmq</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>io.laokou</groupId>
+    <groupId>org.laokou</groupId>
     <artifactId>laokou-rabbitmq-consumer</artifactId>
     <name>laokou-rabbitmq-consumer</name>
     <description>rabbitmq 消费者</description>

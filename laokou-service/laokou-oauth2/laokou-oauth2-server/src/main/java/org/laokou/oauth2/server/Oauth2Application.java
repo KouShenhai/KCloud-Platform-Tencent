@@ -25,7 +25,7 @@ import java.util.regex.Matcher;
 /**
  * @author Kou Shenhai
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.oauth2"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.oauth2","org.laokou.datasource"})
 public class Oauth2Application {
 
     private static final String MODULE_NAME = "laokou-service\\laokou-oauth2";
