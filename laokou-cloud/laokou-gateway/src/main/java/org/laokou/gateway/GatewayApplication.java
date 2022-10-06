@@ -18,6 +18,7 @@ package org.laokou.gateway;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.laokou.common.utils.JvmUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -25,6 +26,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import reactivefeign.spring.config.EnableReactiveFeignClients;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.regex.Matcher;
+
 /**
  * @author kou Shenhai
  */
@@ -34,8 +40,18 @@ import reactivefeign.spring.config.EnableReactiveFeignClients;
 @EnableEncryptableProperties
 @EnableApolloConfig
 public class GatewayApplication {
+    private static final String MODULE_NAME = "laokou-cloud";
 
-    public static void main(String[] args) {
+    private static final String SERVICE_NAME = "laokou-gateway";
+
+    private static final String PACK_NAME = "org.laokou.gateway".replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+
+    private static final String APPLICATION_NAME = "GatewayApplication";
+
+    public static void main(String[] args) throws IOException {
+        final String baseDir = System.getProperty("user.dir");
+        final String path = String.format("%s\\%s\\%s\\target\\classes\\%s\\%s.class",baseDir,MODULE_NAME,SERVICE_NAME,PACK_NAME,APPLICATION_NAME);
+        JvmUtil.getJvmInfo(path);
         SpringApplication.run(GatewayApplication.class, args);
     }
 
