@@ -33,7 +33,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
-
+import com.alibaba.cloud.seata.rest.SeataRestTemplateAutoConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -45,7 +45,7 @@ import java.util.regex.Matcher;
  * DDD分层架构(分布式微服务架构) > 表现层 应用层 领域层 基础层
  * @author Kou Shenhai
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.admin","org.laokou.redis","org.laokou.log","org.laokou.datasource"})
+@SpringBootApplication(exclude = {SeataRestTemplateAutoConfiguration.class},scanBasePackages = {"org.laokou.common","org.laokou.admin","org.laokou.redis","org.laokou.log","org.laokou.datasource"})
 @EnableDiscoveryClient
 @EnableConfigurationProperties
 @EnableApolloConfig
