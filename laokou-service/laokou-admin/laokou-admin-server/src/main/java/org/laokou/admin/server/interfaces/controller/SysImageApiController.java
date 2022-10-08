@@ -28,6 +28,7 @@ import org.laokou.log.annotation.OperateLog;
 import org.laokou.redis.annotation.Lock4j;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.laokou.redis.enums.LockScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,7 +71,7 @@ public class SysImageApiController {
 
     @PostMapping("/sync")
     @ApiOperation("图片管理>同步")
-    @Lock4j(key = "image_sync_lock")
+    @Lock4j(key = "image_sync_lock", scope = LockScope.DISTRIBUTED_LOCK)
     @OperateLog(module = "图片管理",name = "图片同步")
     public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncAsyncBatchResource(code));

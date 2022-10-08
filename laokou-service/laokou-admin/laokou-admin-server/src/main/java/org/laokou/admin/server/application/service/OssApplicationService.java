@@ -19,7 +19,19 @@ import org.laokou.admin.client.vo.UploadVO;
 
 import java.io.InputStream;
 
+/**
+ * oss应用
+ * @author Kou Shenhai
+ */
 public interface OssApplicationService {
 
+    /**
+     * 上传文件
+     * @param inputStream 文件流
+     * @param fileName 文件名
+     * @param fileSize 文件大小
+     * @return
+     * @throws Exception
+     */
     UploadVO upload(InputStream inputStream, String fileName, Long fileSize) throws Exception;
 }

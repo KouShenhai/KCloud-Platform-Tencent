@@ -15,6 +15,9 @@
  */
 package org.laokou.redis.annotation;
 
+import org.laokou.redis.enums.LockScope;
+import org.laokou.redis.enums.LockType;
+
 import java.lang.annotation.*;
 
 /**
@@ -47,4 +50,13 @@ public @interface Lock4j {
      */
     long timeout() default 500;
 
+    /**
+     * 类似
+     */
+    LockType type() default LockType.LOCK;
+
+    /**
+     * 范围
+     */
+    LockScope scope();
 }
