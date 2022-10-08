@@ -7,23 +7,28 @@ import org.laokou.redis.enums.LockType;
  */
 public abstract class AbstractLock<T> {
 
-    protected T lock;
-
     /**
      * 获取锁
      * @param type
+     * @param key
      * @return
      */
-    protected abstract T getLock(LockType type);
+    public abstract T getLock(LockType type,String key);
 
     /**
      * 获取锁
+     * @param lock
+     * @param expire
+     * @param timeout
+     * @return
+     * @throws InterruptedException
      */
-    protected abstract void lock();
+    public abstract Boolean tryLock(T lock,long expire,long timeout) throws InterruptedException;
 
     /**
      * 释放锁
+     * @param lock
      */
-    protected abstract void unlock();
+    public abstract void unlock(T lock);
 
 }

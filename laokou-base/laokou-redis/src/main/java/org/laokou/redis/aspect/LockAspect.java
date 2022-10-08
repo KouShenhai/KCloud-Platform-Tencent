@@ -24,9 +24,14 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.laokou.redis.enums.LockScope;
+import org.laokou.redis.enums.LockType;
+import org.laokou.redis.factory.AbstractLock;
+import org.laokou.redis.factory.LockFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
+
 /**
  * @author Kou Shenhai
  */
@@ -37,6 +42,7 @@ import java.lang.reflect.Method;
 public class LockAspect {
 
     private final RedisUtil redisUtil;
+    private final LockFactory factory;
 
     /**
      * 配置切入点
@@ -46,8 +52,6 @@ public class LockAspect {
 
     @Around(value = "lockPointCut()")
     public void around(ProceedingJoinPoint joinPoint) {
-        //线程名称
-        String threadName = Thread.currentThread().getName();
         //获取注解
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
@@ -62,26 +66,19 @@ public class LockAspect {
         String key = lock4j.key();
         long expire = lock4j.expire();
         long timeout = lock4j.timeout();
+        final LockType type = lock4j.type();
+        final LockScope scope = lock4j.scope();
+        final AbstractLock abstractLock = factory.build(scope);
+        final Object lock = abstractLock.getLock(type, key);
         try {
-            if (redisUtil.tryLock(key,expire, timeout)) {
-                log.info("加锁成功...");
+            if (abstractLock.tryLock(lock,expire,timeout)) {
                 joinPoint.proceed();
-            } else {
-                log.info("线程{}获取锁失败",threadName);
             }
         } catch (Throwable throwable) {
             log.error("异常信息：{}",throwable.getMessage());
         } finally {
-            if (redisUtil.isLocked(key)) {
-                log.info("{}对应的锁被持有，线程{}",key,threadName);
-                if (redisUtil.isHeldByCurrentThread(key)) {
-                    log.info("当前线程{}持有锁",threadName);
-                    redisUtil.unlock(key);
-                    log.info("解锁成功...");
-                }
-            } else {
-                log.info("无线程持有，无需解锁...");
-            }
+            //释放锁
+            abstractLock.unlock(lock);
         }
     }
 

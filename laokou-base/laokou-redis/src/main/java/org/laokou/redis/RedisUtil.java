@@ -15,6 +15,7 @@
  */
 package org.laokou.redis;
 import org.apache.commons.lang.StringUtils;
+import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
@@ -61,24 +62,59 @@ public final class RedisUtil {
         return value;
     }
 
+    public final RLock getLock(String key) {
+        return redissonClient.getLock(key);
+    }
+
+    public final RLock getFairLock(String key) {
+        return redissonClient.getFairLock(key);
+    }
+
+    public final RLock getReadLock(String key) {
+        return redissonClient.getReadWriteLock(key).readLock();
+    }
+
+    public final RLock getWriteLock(String key) {
+        return redissonClient.getReadWriteLock(key).writeLock();
+    }
+
+    public final Boolean tryLock(RLock lock,long expire,long timeout) throws InterruptedException {
+        return lock.tryLock(expire, timeout, TimeUnit.SECONDS);
+    }
     public final Boolean tryLock(String key,long expire,long timeout) throws InterruptedException {
-       return redissonClient.getLock(key).tryLock(expire, timeout, TimeUnit.SECONDS);
+        return tryLock(getLock(key),expire,timeout);
     }
 
     public final void unlock(String key) {
-        redissonClient.getLock(key).unlock();
+        getLock(key).unlock();
+    }
+
+    public final void unlock(RLock lock) {
+        lock.unlock();
     }
 
     public final void lock(String key) {
-        redissonClient.getLock(key).lock();
+        getLock(key).lock();
+    }
+
+    public final void lock(RLock lock) {
+        lock.lock();
     }
 
     public final Boolean isLocked(String key) {
-        return redissonClient.getLock(key).isLocked();
+        return getLock(key).isLocked();
+    }
+
+    public final Boolean isLocked(RLock lock) {
+        return lock.isLocked();
     }
 
     public final Boolean isHeldByCurrentThread(String key) {
-        return redissonClient.getLock(key).isHeldByCurrentThread();
+        return getLock(key).isHeldByCurrentThread();
+    }
+
+    public final Boolean isHeldByCurrentThread(RLock lock) {
+        return lock.isHeldByCurrentThread();
     }
 
     public final Object get(String key) {
