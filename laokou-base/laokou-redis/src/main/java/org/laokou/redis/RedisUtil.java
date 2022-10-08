@@ -88,7 +88,7 @@ public final class RedisUtil {
     }
 
     public final void unlock(String key) {
-        getLock(key).unlock();
+        unlock(getLock(key));
     }
 
     public final void unlock(RLock lock) {
@@ -96,7 +96,7 @@ public final class RedisUtil {
     }
 
     public final void lock(String key) {
-        getLock(key).lock();
+        lock(getLock(key));
     }
 
     public final void lock(RLock lock) {
@@ -104,7 +104,7 @@ public final class RedisUtil {
     }
 
     public final Boolean isLocked(String key) {
-        return getLock(key).isLocked();
+        return isLocked(getLock(key));
     }
 
     public final Boolean isLocked(RLock lock) {
@@ -112,7 +112,7 @@ public final class RedisUtil {
     }
 
     public final Boolean isHeldByCurrentThread(String key) {
-        return getLock(key).isHeldByCurrentThread();
+        return isHeldByCurrentThread(getLock(key));
     }
 
     public final Boolean isHeldByCurrentThread(RLock lock) {
