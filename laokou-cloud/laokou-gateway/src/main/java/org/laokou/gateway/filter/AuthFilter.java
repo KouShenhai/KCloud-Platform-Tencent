@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 package org.laokou.gateway.filter;
+import feign.FeignException;
 import org.laokou.common.constant.Constant;
 import org.laokou.auth.client.user.UserDetail;
+import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.common.utils.JacksonUtil;
 import org.laokou.gateway.feign.auth.AuthApiFeignClient;
@@ -88,7 +90,13 @@ public class AuthFilter implements GlobalFilter,Ordered {
         //获取访问资源的权限
         //资源访问权限
         String language = request.getHeaders().getFirst(HttpHeaders.ACCEPT_LANGUAGE);
-        HttpResultUtil<UserDetail> result = authApiFeignClient.resource(language,Authorization,requestUri,method).block();
+        HttpResultUtil<UserDetail> result;
+        try {
+            result = authApiFeignClient.resource(language, Authorization, requestUri, method).block();
+        } catch (FeignException e) {
+            log.info("报错信息:{}",e.getMessage());
+            return response(exchange,new HttpResultUtil<UserDetail>().error(ErrorCode.SERVICE_MAINTENANCE));
+        }
         log.info("result:{}",result);
         if (!result.success()) {
             return response(exchange,result);

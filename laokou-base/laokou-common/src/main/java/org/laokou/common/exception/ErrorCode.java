@@ -43,7 +43,7 @@ public interface ErrorCode {
      */
     int DB_RECORD_EXISTS = 10002;
     /**
-     *
+     * 获取参数失败
      */
     int PARAMS_GET_ERROR = 10003;
     /**

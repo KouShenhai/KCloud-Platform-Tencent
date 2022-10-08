@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 package org.laokou.log.listener;
+import feign.FeignException;
 import org.laokou.common.constant.RabbitMqConstant;
 import org.laokou.common.dto.LoginLogDTO;
 import org.laokou.common.dto.MqDTO;
 import org.laokou.common.dto.OperateLogDTO;
+import org.laokou.common.exception.CustomException;
+import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.JacksonUtil;
 import org.laokou.log.event.LoginLogEvent;
 import org.laokou.log.event.OperateLogEvent;
@@ -42,7 +45,12 @@ public class LogListener {
         OperateLogDTO dto = (OperateLogDTO) event.getSource();
         MqDTO mqDTO = new MqDTO();
         mqDTO.setData(JacksonUtil.toJsonStr(dto));
-        rabbitMqApiFeignClient.sendMsg(RabbitMqConstant.LAOKOU_OPERATE_LOG_QUEUE,mqDTO);
+        try {
+            rabbitMqApiFeignClient.sendMsg(RabbitMqConstant.LAOKOU_OPERATE_LOG_QUEUE, mqDTO);
+        } catch (FeignException e) {
+            log.info("报错信息：{}",e.getMessage());
+            throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
+        }
     }
 
     @Order
@@ -51,7 +59,12 @@ public class LogListener {
         LoginLogDTO dto = (LoginLogDTO) event.getSource();
         MqDTO mqDTO = new MqDTO();
         mqDTO.setData(JacksonUtil.toJsonStr(dto));
-        rabbitMqApiFeignClient.sendMsg(RabbitMqConstant.LAOKOU_LOGIN_LOG_QUEUE,mqDTO);
+        try {
+            rabbitMqApiFeignClient.sendMsg(RabbitMqConstant.LAOKOU_LOGIN_LOG_QUEUE, mqDTO);
+        } catch (FeignException e) {
+            log.info("报错信息：{}",e.getMessage());
+            throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
+        }
     }
 
 }

@@ -19,6 +19,7 @@ import feign.FeignException;
 import org.laokou.admin.server.application.service.SysSearchApplicationService;
 import org.laokou.admin.client.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.common.exception.CustomException;
+import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.HttpResultUtil;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.laokou.elasticsearch.client.form.SearchForm;
@@ -40,7 +41,7 @@ public class SysSearchApplicationServiceImpl implements SysSearchApplicationServ
         try {
              result = elasticsearchApiFeignClient.highlightSearch(form);
         } catch (FeignException ex) {
-            throw new CustomException(429,"系统繁忙，请稍后再试");
+            throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
         }
         return result.getData();
     }
