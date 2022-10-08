@@ -30,8 +30,10 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public final class RedisUtil {
+
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
     @Autowired
     private RedissonClient redissonClient;
     /**  默认过期时长为24小时，单位：秒 */
