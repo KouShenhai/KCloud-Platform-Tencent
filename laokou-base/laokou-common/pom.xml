@@ -12,6 +12,7 @@
     <artifactId>laokou-common</artifactId>
 
     <dependencies>
+        <!--解决jdk17缺少部分依赖 -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
