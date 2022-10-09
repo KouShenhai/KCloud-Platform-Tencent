@@ -74,8 +74,8 @@ public class SysMessageApiController {
 
     @GetMapping("/count")
     @ApiOperation("系统消息>统计")
-    public HttpResultUtil<Integer> count(HttpServletRequest request) {
-        return new HttpResultUtil<Integer>().ok(sysMessageApplicationService.unReadCount(request));
+    public HttpResultUtil<Long> count(HttpServletRequest request) {
+        return new HttpResultUtil<Long>().ok(sysMessageApplicationService.unReadCount(request));
     }
 
 }

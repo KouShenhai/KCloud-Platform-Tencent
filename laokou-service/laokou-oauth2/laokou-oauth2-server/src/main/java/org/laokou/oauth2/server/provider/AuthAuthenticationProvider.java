@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.oauth2.server.provider;
-import com.google.common.collect.Lists;
 import org.laokou.auth.client.enums.UserStatusEnum;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.auth.client.password.PasswordUtil;
@@ -31,6 +30,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -62,7 +64,7 @@ public class AuthAuthenticationProvider implements AuthenticationProvider {
         if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
         }
-        UserDetails userDetails = new User(username,password, Lists.newArrayList());
+        UserDetails userDetails = new User(username,password, new ArrayList());
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,authentication.getCredentials(),userDetails.getAuthorities());
         authenticationToken.setDetails(authentication.getDetails());
         return authenticationToken;

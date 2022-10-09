@@ -42,6 +42,6 @@ public interface SysMessageApplicationService {
 
     IPage<SysMessageVO> getUnReadList(HttpServletRequest request, SysMessageQO qo);
 
-    Integer unReadCount(HttpServletRequest request);
+    Long unReadCount(HttpServletRequest request);
 
 }

@@ -57,7 +57,7 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
     @Override
     public Boolean insertOauth(SysOauthDTO dto, HttpServletRequest request) {
         SysOauthDO sysOauthDO = ConvertUtil.sourceToTarget(dto, SysOauthDO.class);
-        final int count = sysOauthService.count(Wrappers.lambdaQuery(SysOauthDO.class).eq(SysOauthDO::getDelFlag, Constant.NO).eq(SysOauthDO::getClientId, sysOauthDO.getClientId()));
+        final long count = sysOauthService.count(Wrappers.lambdaQuery(SysOauthDO.class).eq(SysOauthDO::getDelFlag, Constant.NO).eq(SysOauthDO::getClientId, sysOauthDO.getClientId()));
         if (count > 0) {
             throw new CustomException("应用id已存在，请重新填写");
         }
@@ -70,7 +70,7 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
     @Override
     public Boolean updateOauth(SysOauthDTO dto, HttpServletRequest request) {
         final SysOauthDO sysOauthDO = ConvertUtil.sourceToTarget(dto, SysOauthDO.class);
-        final int count = sysOauthService.count(Wrappers.lambdaQuery(SysOauthDO.class).eq(SysOauthDO::getDelFlag, Constant.NO).eq(SysOauthDO::getClientId, sysOauthDO.getClientId()).ne(SysOauthDO::getId,dto.getId()));
+        final long count = sysOauthService.count(Wrappers.lambdaQuery(SysOauthDO.class).eq(SysOauthDO::getDelFlag, Constant.NO).eq(SysOauthDO::getClientId, sysOauthDO.getClientId()).ne(SysOauthDO::getId,dto.getId()));
         if (count > 0) {
             throw new CustomException("应用id已存在，请重新填写");
         }

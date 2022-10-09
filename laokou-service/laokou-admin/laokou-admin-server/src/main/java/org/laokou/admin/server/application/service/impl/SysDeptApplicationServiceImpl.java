@@ -57,7 +57,7 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
     @Override
     public Boolean insertDept(SysDeptDTO dto, HttpServletRequest request) {
         SysDeptDO sysDeptDO = ConvertUtil.sourceToTarget(dto, SysDeptDO.class);
-        int count = sysDeptService.count(Wrappers.lambdaQuery(SysDeptDO.class).eq(SysDeptDO::getName, dto.getName()).eq(SysDeptDO::getDelFlag, Constant.NO));
+        long count = sysDeptService.count(Wrappers.lambdaQuery(SysDeptDO.class).eq(SysDeptDO::getName, dto.getName()).eq(SysDeptDO::getDelFlag, Constant.NO));
         if (count > 0) {
             throw new CustomException("部门已存在，请重新填写");
         }
@@ -68,7 +68,7 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
     @Override
     public Boolean updateDept(SysDeptDTO dto,HttpServletRequest request) {
         SysDeptDO sysDeptDO = ConvertUtil.sourceToTarget(dto, SysDeptDO.class);
-        int count = sysDeptService.count(Wrappers.lambdaQuery(SysDeptDO.class).eq(SysDeptDO::getName, dto.getName()).eq(SysDeptDO::getDelFlag, Constant.NO).ne(SysDeptDO::getId,dto.getId()));
+        long count = sysDeptService.count(Wrappers.lambdaQuery(SysDeptDO.class).eq(SysDeptDO::getName, dto.getName()).eq(SysDeptDO::getDelFlag, Constant.NO).ne(SysDeptDO::getId,dto.getId()));
         if (count > 0) {
             throw new CustomException("部门已存在，请重新填写");
         }

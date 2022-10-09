@@ -156,7 +156,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     }
 
     @Override
-    public Integer unReadCount(HttpServletRequest request) {
+    public Long unReadCount(HttpServletRequest request) {
         final Long userId = SecurityUser.getUserId(request);
         return sysMessageDetailService.count(Wrappers.lambdaQuery(SysMessageDetailDO.class).eq(SysMessageDetailDO::getUserId,userId)
                 .eq(SysMessageDetailDO::getDelFlag,Constant.NO)

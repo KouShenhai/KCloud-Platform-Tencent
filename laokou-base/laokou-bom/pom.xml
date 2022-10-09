@@ -12,7 +12,7 @@
     <properties>
         <laokou.version>1.0-SNAPSHOT</laokou.version>
         <!--boot版本-->
-        <spring-boot.version>2.7.3</spring-boot.version>
+        <spring-boot.version>2.7.4</spring-boot.version>
         <!--lombok版本-->
         <lombok.version>1.18.20</lombok.version>
         <!--mysql版本-->
@@ -22,7 +22,7 @@
         <!--flowable版本-->
         <flowable.version>6.7.2</flowable.version>
         <!--mybatis-plus版本 -->
-        <mybatis-plus.version>3.4.3</mybatis-plus.version>
+        <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
         <!--commons-httpclient版本-->
         <commons-httpclient.version>3.1</commons-httpclient.version>
         <!--commons-configuration版本-->
@@ -87,10 +87,6 @@
         <oshi.version>5.8.0</oshi.version>
         <!-- spring-security-oauth2版本 -->
         <spring-security-oauth2.version>2.3.3.RELEASE</spring-security-oauth2.version>
-        <!-- ribbon版本 -->
-        <ribbon.version>2.2.2</ribbon.version>
-        <!-- archaius-core版本 -->
-        <archaius-core.version>0.7.4</archaius-core.version>
         <!-- elasticsearch版本 -->
         <elasticsearch.version>7.6.2</elasticsearch.version>
         <!--r2dbc-mysql版本 -->
@@ -99,6 +95,10 @@
         <feign-reactor.version>3.2.6</feign-reactor.version>
         <!--jcommander版本 -->
         <jcommander.version>1.72</jcommander.version>
+        <!--jaxb版本 -->
+        <jaxb.version>2.3.0</jaxb.version>
+        <!--activation版本 -->
+        <activation.version>1.1.1</activation.version>
     </properties>
 
     <!-- 定义全局jar版本,模块使用需要再次引入但不用写版本号 -->
@@ -448,26 +448,6 @@
                 <version>${laokou.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.netflix.ribbon</groupId>
-                <artifactId>ribbon-loadbalancer</artifactId>
-                <version>${ribbon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.netflix.archaius</groupId>
-                <artifactId>archaius-core</artifactId>
-                <version>${archaius-core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.netflix.ribbon</groupId>
-                <artifactId>ribbon-core</artifactId>
-                <version>${ribbon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.netflix.ribbon</groupId>
-                <artifactId>ribbon-httpclient</artifactId>
-                <version>${ribbon.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-high-level-client</artifactId>
                 <version>${elasticsearch.version}</version>
@@ -481,6 +461,26 @@
                         <artifactId>elasticsearch-rest-client</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${activation.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>

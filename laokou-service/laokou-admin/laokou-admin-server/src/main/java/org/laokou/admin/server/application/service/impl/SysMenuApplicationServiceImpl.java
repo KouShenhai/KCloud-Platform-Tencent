@@ -63,7 +63,7 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     @Override
     public Boolean updateMenu(SysMenuDTO dto, HttpServletRequest request) {
         SysMenuDO menuDO = ConvertUtil.sourceToTarget(dto, SysMenuDO.class);
-        int count = sysMenuService.count(Wrappers.lambdaQuery(SysMenuDO.class).eq(SysMenuDO::getName, menuDO.getName()).eq(SysMenuDO::getDelFlag, Constant.NO).ne(SysMenuDO::getId,menuDO.getId()));
+        long count = sysMenuService.count(Wrappers.lambdaQuery(SysMenuDO.class).eq(SysMenuDO::getName, menuDO.getName()).eq(SysMenuDO::getDelFlag, Constant.NO).ne(SysMenuDO::getId,menuDO.getId()));
         if (count > 0) {
             throw new CustomException("菜单已存在，请重新填写");
         }
@@ -74,7 +74,7 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     @Override
     public Boolean insertMenu(SysMenuDTO dto, HttpServletRequest request) {
         SysMenuDO menuDO = ConvertUtil.sourceToTarget(dto, SysMenuDO.class);
-        int count = sysMenuService.count(Wrappers.lambdaQuery(SysMenuDO.class).eq(SysMenuDO::getName, menuDO.getName()).eq(SysMenuDO::getDelFlag, Constant.NO));
+        long count = sysMenuService.count(Wrappers.lambdaQuery(SysMenuDO.class).eq(SysMenuDO::getName, menuDO.getName()).eq(SysMenuDO::getDelFlag, Constant.NO));
         if (count > 0) {
             throw new CustomException("菜单已存在，请重新填写");
         }
