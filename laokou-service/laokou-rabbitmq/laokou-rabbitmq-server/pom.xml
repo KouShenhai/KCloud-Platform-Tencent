@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.laokou</groupId>
-        <artifactId>laokou-service</artifactId>
+        <artifactId>laokou-rabbitmq</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>org.laokou</groupId>
     <artifactId>laokou-rabbitmq-server</artifactId>
     <description>消息队列</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
