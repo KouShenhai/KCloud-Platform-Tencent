@@ -40,7 +40,6 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
 | Spring Cloud                 | 2021.0.4   |
 | Spring Boot Admin            | 2.7.4      |
 | Apollo                       | 1.4.0      |
-| Seata                        | 1.5.2      |
 | Mysql                        | 5.7.9      |
 | Redis                        | 6.0.6      |
 | Elasticsearch                | 7.6.2      |
@@ -57,7 +56,6 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
 - 服务监控：Spring Boot Admin、Prometheus
 - 消息队列：使用 Spring Cloud 消息总线 Spring Cloud Bus 默认 Kafka 适配 RabbitMQ
 - 链路跟踪：Skywalking
-- 分布式事务：Seata
 - 数据库：MySQL、Oracle 
 - 数据缓存：Redis
 - 工作流：Flowable
@@ -89,6 +87,7 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
         └── laokou-generator -- 模板模块
         └── laokou-cas -- 认证授权模块
         └── laokou-elasticsearch -- 搜索模块
+        └── laokou-rabbitmq -- 消息模块
 ~~~
 
 ### 环境配置
@@ -160,7 +159,6 @@ public class AuthApplication implements WebServerFactoryCustomizer<WebServerFact
 ##### 代码引入
 ```java
 @Service
-@GlobalTransactional(rollbackFor = Exception.class)
 public class SysUserApplicationServiceImpl implements SysUserApplicationService {
 
     @Autowired

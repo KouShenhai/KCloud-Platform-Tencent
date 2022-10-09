@@ -30,7 +30,6 @@ import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
-import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +39,6 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2022/8/11 0011 上午 9:47
  */
 @Service
-@GlobalTransactional(rollbackFor = Exception.class)
 public class SysOauthApplicationServiceImpl implements SysOauthApplicationService {
 
     @Autowired

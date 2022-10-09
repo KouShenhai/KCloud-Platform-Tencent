@@ -93,21 +93,6 @@
 			<groupId>com.github.oshi</groupId>
 			<artifactId>oshi-core</artifactId>
 		</dependency>
-		<!-- seata -->
-		<dependency>
-			<groupId>io.seata</groupId>
-			<artifactId>seata-spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-seata</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>io.seata</groupId>
-					<artifactId>seata-spring-boot-starter</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 		<dependency>
 			<groupId>com.netflix.ribbon</groupId>
 			<artifactId>ribbon-loadbalancer</artifactId>
@@ -142,8 +127,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin}</version>
 				<configuration>
-					<source>16</source>
-					<target>16</target>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 <!--					<compilerArgument>-Xlint:-options,rawtypes,deprecation,unchecked</compilerArgument>-->
 				</configuration>
 			</plugin>

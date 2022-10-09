@@ -21,7 +21,6 @@ import org.laokou.admin.client.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.HttpResultUtil;
-import io.seata.spring.annotation.GlobalTransactional;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-@GlobalTransactional(rollbackFor = Exception.class)
 public class SysSearchApplicationServiceImpl implements SysSearchApplicationService {
 
     @Autowired

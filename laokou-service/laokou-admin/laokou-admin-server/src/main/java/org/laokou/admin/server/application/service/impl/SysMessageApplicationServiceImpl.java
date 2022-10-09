@@ -39,7 +39,6 @@ import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.SpringContextUtil;
-import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +49,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 @Service
-@GlobalTransactional(rollbackFor = Exception.class)
 public class SysMessageApplicationServiceImpl implements SysMessageApplicationService {
 
     private static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(

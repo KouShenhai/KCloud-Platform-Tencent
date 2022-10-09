@@ -36,7 +36,6 @@ import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
-import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +45,6 @@ import java.util.List;
  * @author Kou Shenhai
  */
 @Service
-@GlobalTransactional(rollbackFor = Exception.class)
 public class SysUserApplicationServiceImpl implements SysUserApplicationService {
 
     @Autowired

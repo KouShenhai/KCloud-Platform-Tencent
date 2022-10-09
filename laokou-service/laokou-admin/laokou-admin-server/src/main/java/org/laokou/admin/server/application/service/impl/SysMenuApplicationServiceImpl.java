@@ -29,13 +29,11 @@ import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.TreeUtil;
 
-import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 @Service
-@GlobalTransactional(rollbackFor = Exception.class)
 public class SysMenuApplicationServiceImpl implements SysMenuApplicationService {
 
     @Autowired

@@ -26,7 +26,6 @@ import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.TreeUtil;
 import org.laokou.auth.client.vo.SysDeptVO;
-import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +36,6 @@ import java.util.List;
  * @date 2022/7/26 0026 下午 4:30
  */
 @Service
-@GlobalTransactional(rollbackFor = Exception.class)
 public class SysDeptApplicationServiceImpl implements SysDeptApplicationService {
 
     @Autowired

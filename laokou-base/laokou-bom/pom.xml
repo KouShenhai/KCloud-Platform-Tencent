@@ -14,7 +14,7 @@
         <!--boot版本-->
         <spring-boot.version>2.7.3</spring-boot.version>
         <!--lombok版本-->
-        <lombok.version>1.18.10</lombok.version>
+        <lombok.version>1.18.20</lombok.version>
         <!--mysql版本-->
         <mysql.version>5.1.46</mysql.version>
         <!--admin版本-->
@@ -87,10 +87,6 @@
         <oshi.version>5.8.0</oshi.version>
         <!-- spring-security-oauth2版本 -->
         <spring-security-oauth2.version>2.3.3.RELEASE</spring-security-oauth2.version>
-        <!-- seata-spring-boot-starter版本 -->
-        <seata-spring-boot-starter.version>1.5.2</seata-spring-boot-starter.version>
-        <!-- spring-cloud-starter-alibaba-seata版本 -->
-        <spring-cloud-starter-alibaba-seata.version>2021.1</spring-cloud-starter-alibaba-seata.version>
         <!-- ribbon版本 -->
         <ribbon.version>2.2.2</ribbon.version>
         <!-- archaius-core版本 -->
@@ -450,17 +446,6 @@
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-elasticsearch-client</artifactId>
                 <version>${laokou.version}</version>
-            </dependency>
-            <!-- seata -->
-            <dependency>
-                <groupId>io.seata</groupId>
-                <artifactId>seata-spring-boot-starter</artifactId>
-                <version>${seata-spring-boot-starter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
-                <version>${spring-cloud-starter-alibaba-seata.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.netflix.ribbon</groupId>

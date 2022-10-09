@@ -25,12 +25,10 @@ import org.laokou.admin.server.interfaces.qo.LoginLogQO;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
-import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@GlobalTransactional(rollbackFor = Exception.class)
 public class SysLogApplicationServiceImpl implements SysLogApplicationService {
 
     @Autowired

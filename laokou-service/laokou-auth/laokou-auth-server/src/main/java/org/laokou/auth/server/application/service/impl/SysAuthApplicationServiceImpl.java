@@ -48,7 +48,6 @@ import org.laokou.common.utils.*;
 
 import org.laokou.log.publish.PublishFactory;
 import org.laokou.redis.RedisUtil;
-import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +77,6 @@ import java.util.concurrent.*;
  */
 @Service
 @Slf4j
-@GlobalTransactional(rollbackFor = Exception.class)
 public class SysAuthApplicationServiceImpl implements SysAuthApplicationService {
 
     public static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(

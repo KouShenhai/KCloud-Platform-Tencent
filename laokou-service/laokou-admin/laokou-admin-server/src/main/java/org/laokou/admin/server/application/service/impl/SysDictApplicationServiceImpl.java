@@ -28,14 +28,12 @@ import org.laokou.admin.client.dto.SysDictDTO;
 import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
-import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Service
-@GlobalTransactional(rollbackFor = Exception.class)
 public class SysDictApplicationServiceImpl implements SysDictApplicationService {
 
     @Autowired
