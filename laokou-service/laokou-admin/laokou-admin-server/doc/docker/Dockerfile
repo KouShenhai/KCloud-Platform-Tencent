@@ -1,7 +1,7 @@
 FROM jdk:1.8
 LABEL maintainer="koushenhai"
-LABEL description="laokou-admin"
-COPY laokou-admin.jar /opt/laokou-admin.jar
+LABEL description="laokou-admin-server"
+COPY laokou-admin-server.jar /opt/laokou-admin-server.jar
 COPY apr-1.7.0.tar.gz /opt/apr-1.7.0.tar.gz
 COPY apr-iconv-1.2.2.tar.gz /opt/apr-iconv-1.2.2.tar.gz
 COPY apr-util-1.6.1.tar.gz /opt/apr-util-1.6.1.tar.gz
@@ -35,4 +35,4 @@ RUN yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel exp
     && make install
 EXPOSE 8016
 VOLUME /data
-ENTRYPOINT java -Xms256m -Xmx512m -Ddruid.filters=mergeStat -Ddruid.useGlobalDataSourceStat=true -Djava.library.path=/usr/local/apr/lib -Djasypt.encryptor.password=koushenhai5201314wumeihua -Denv=DEV -Dapollo.configService=http://124.222.196.51:8080 -jar /opt/laokou-admin.jar --spring.profiles.active=prod > /opt/laokou-admin.log
+ENTRYPOINT java -Xms256m -Xmx512m -Ddruid.filters=mergeStat -Ddruid.useGlobalDataSourceStat=true -Djava.library.path=/usr/local/apr/lib -Djasypt.encryptor.password=koushenhai5201314wumeihua -Denv=DEV -Dapollo.configService=http://124.222.196.51:8080 -jar /opt/laokou-admin-server.jar --spring.profiles.active=prod > /opt/laokou-admin-server.log

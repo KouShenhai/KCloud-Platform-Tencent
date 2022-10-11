@@ -1,6 +1,6 @@
 server:
   port: 9000
-  address: 10.0.8.7
+  address: 192.168.62.137
   tomcat:
     uri-encoding: UTF-8
     max-threads: 1000
@@ -91,3 +91,6 @@ oauth:
 logging:
   file:
     name: /opt/logs/${spring.application.name}/error.log
+
+tomcat:
+  apr: true

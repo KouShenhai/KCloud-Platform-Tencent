@@ -1,5 +1,5 @@
 server:
-  address: 10.0.8.7
+  address: 192.168.62.137
   port: 5555
   tomcat:
     connection-timeout: 18000000

@@ -1,6 +1,6 @@
 server:
   port: 9999
-  address: 10.0.8.7
+  address: 192.168.62.137
   tomcat:
     uri-encoding: UTF-8
     max-threads: 1000
@@ -85,3 +85,6 @@ fdfs:
   connect-timeout: 6000
   so-timeout: 600000
   tracker-list: 124.222.196.51:22122
+
+tomcat:
+  apr: true

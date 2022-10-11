@@ -1,5 +1,3 @@
-server:
-  port: 9995
 spring:
   application:
     name: laokou-rabbitmq

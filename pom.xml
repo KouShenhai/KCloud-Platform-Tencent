@@ -155,7 +155,7 @@
                     <imageName>${docker.repostory}/${docker.registry.name}/${project.artifactId}:${project.version}</imageName>
                     <!-- 指定 Dockerfile 路径 , 根据实际情况改动! ${project.basedir}：项目根路径-->
                     <dockerDirectory>${project.basedir}/doc/docker</dockerDirectory>
-                    <dockerHost>http://192.168.62.141:2375</dockerHost>
+                    <dockerHost>http://192.168.62.137:2375</dockerHost>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>

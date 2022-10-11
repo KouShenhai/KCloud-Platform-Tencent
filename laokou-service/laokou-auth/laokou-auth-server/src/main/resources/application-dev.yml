@@ -90,3 +90,6 @@ oauth:
 logging:
   file:
     name: logs/${spring.application.name}/info.log
+
+tomcat:
+  apr: false
