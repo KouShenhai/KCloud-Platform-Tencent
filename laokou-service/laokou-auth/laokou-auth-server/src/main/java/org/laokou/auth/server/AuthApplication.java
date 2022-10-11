@@ -51,9 +51,6 @@ public class AuthApplication {
         SpringApplication.run(AuthApplication.class, args);
     }
 
-    @Value("tomcat:apr:false")
-    private Boolean enabled;
-
     /**
      * 监控服务
      * @param applicationName
@@ -68,9 +65,7 @@ public class AuthApplication {
     @Bean
     public ConfigurableServletWebServerFactory webServerFactory() {
         TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-        if (enabled) {
-            factory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
-        }
+        factory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
         return factory;
     }
 

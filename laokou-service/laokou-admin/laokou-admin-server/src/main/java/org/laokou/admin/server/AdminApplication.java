@@ -52,9 +52,6 @@ public class AdminApplication {
 		SpringApplication.run(AdminApplication.class, args);
 	}
 
-	@Value("tomcat:apr:false")
-	private Boolean enabled;
-
 	/**
 	 * 监控服务
 	 * @param applicationName
@@ -69,9 +66,7 @@ public class AdminApplication {
 	@Bean
 	public ConfigurableServletWebServerFactory webServerFactory() {
 		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-		if (enabled) {
-			factory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
-		}
+		factory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
 		return factory;
 	}
 }
