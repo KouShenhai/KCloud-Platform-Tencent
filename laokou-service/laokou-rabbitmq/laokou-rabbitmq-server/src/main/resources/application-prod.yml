@@ -1,6 +1,6 @@
 server:
   port: 9995
-  address: 192.168.62.137
+  address: 172.19.0.3
 spring:
   rabbitmq:
     addresses: 192.168.62.128:5672
