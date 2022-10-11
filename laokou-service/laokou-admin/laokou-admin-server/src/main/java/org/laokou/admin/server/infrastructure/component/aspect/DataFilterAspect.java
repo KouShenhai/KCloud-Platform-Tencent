@@ -56,8 +56,7 @@ public class DataFilterAspect {
         Object params = point.getArgs()[0];
         if (params != null && params instanceof BasePage) {
             HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-            final Long userId = SecurityUser.getUserId(request);
-            String userInfoKey = RedisKeyUtil.getUserInfoKey(userId);
+            String userInfoKey = RedisKeyUtil.getUserInfoKey(SecurityUser.getAuthorization(request));
             final Object obj = redisUtil.get(userInfoKey);
             if (obj == null) {
                 throw new CustomException(430,"系统繁忙，请刷新页面再试");
