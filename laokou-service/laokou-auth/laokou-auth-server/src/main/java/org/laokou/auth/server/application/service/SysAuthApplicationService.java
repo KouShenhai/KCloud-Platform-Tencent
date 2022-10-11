@@ -43,10 +43,10 @@ public interface SysAuthApplicationService {
 
     /**
      * 退出
-     * @param userId
+     * @param token
      * @return
      */
-    Boolean logout(Long userId);
+    Boolean logout(String token);
 
     /**
      * 生成验证码
@@ -67,24 +67,24 @@ public interface SysAuthApplicationService {
 
     /**
      * 获取用户信息
-     * @param userId
+     * @param token
      * @return
      */
-    UserInfoVO userInfo(Long userId);
+    UserInfoVO userInfo(String token);
 
     /**
      * 获取对外开放用户信息
-     * @param userId
+     * @param token
      * @return
      */
-    BaseUserVO openUserInfo(Long userId);
+    BaseUserVO openUserInfo(String token);
 
     /**
      * 获取用户信息
-     * @param userId
+     * @param token
      * @return
      */
-    UserDetail getUserDetail(Long userId);
+    UserDetail getUserDetail(String token);
 
     /**
      * 支付宝登录

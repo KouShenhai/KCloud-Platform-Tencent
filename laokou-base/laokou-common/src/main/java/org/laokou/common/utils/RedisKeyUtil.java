@@ -23,21 +23,21 @@ public final class RedisKeyUtil {
     /**
      * 验证码Key
      */
-    public final static String getUserCaptchaKey(String uuid) {
+    public static String getUserCaptchaKey(String uuid) {
         return "sys:user:captcha:" + uuid;
     }
 
     /**
      * 用户资源Key
      */
-    public final static String getUserResourceKey(Long userId) {
-        return "sys:user:resource:" + userId;
+    public static String getUserResourceKey(String token) {
+        return "sys:user:resource:" + token;
     }
 
     /**
      * 用户信息Key
      */
-    public final static String getUserInfoKey(Long userId) {
-        return "sys:user:info:" + userId;
+    public static String getUserInfoKey(String token) {
+        return "sys:user:info:" + token;
     }
 }

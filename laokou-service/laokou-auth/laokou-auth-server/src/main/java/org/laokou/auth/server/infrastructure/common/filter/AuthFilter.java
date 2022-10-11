@@ -69,7 +69,7 @@ public class AuthFilter extends AuthenticatingFilter {
         log.info("Authorization:{}",Authorization);
         if(StringUtils.isBlank(Authorization)){
             HttpServletResponse httpResponse = (HttpServletResponse) response;
-            httpResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
             String json = new Gson().toJson(new HttpResultUtil<Boolean>().error(ErrorCode.UNAUTHORIZED));
             httpResponse.getWriter().print(json);
             return false;
@@ -81,7 +81,7 @@ public class AuthFilter extends AuthenticatingFilter {
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         //处理登录失败的异常
         String json = new Gson().toJson(new HttpResultUtil().error(ErrorCode.UNAUTHORIZED, e.getCause() == null ? e.getMessage() : e.getCause().getMessage()));
         httpResponse.getWriter().print(json);

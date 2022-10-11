@@ -86,13 +86,13 @@ public class SysAuthApiController {
     @GetMapping("/sys/auth/api/logout")
     @ApiOperation("系统认证>退出登录")
     public HttpResultUtil<Boolean> logout(HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysAuthApplicationService.logout(SecurityUser.getUserId(request)));
+        return new HttpResultUtil<Boolean>().ok(sysAuthApplicationService.logout(SecurityUser.getAuthorization(request)));
     }
 
     @GetMapping("/sys/auth/api/userInfo")
     @ApiOperation("系统认证>用户信息")
     public HttpResultUtil<UserInfoVO> userInfo(HttpServletRequest request) {
-        return new HttpResultUtil<UserInfoVO>().ok(sysAuthApplicationService.userInfo(SecurityUser.getUserId(request)));
+        return new HttpResultUtil<UserInfoVO>().ok(sysAuthApplicationService.userInfo(SecurityUser.getAuthorization(request)));
     }
 
     @PostMapping("/sys/auth/api/open/login")
@@ -104,7 +104,7 @@ public class SysAuthApiController {
     @GetMapping("/sys/auth/api/open/userInfo")
     @ApiOperation("系统认证>对外开放用户信息")
     public HttpResultUtil<BaseUserVO> openUserInfo(HttpServletRequest request) {
-        return new HttpResultUtil<BaseUserVO>().ok(sysAuthApplicationService.openUserInfo(SecurityUser.getUserId(request)));
+        return new HttpResultUtil<BaseUserVO>().ok(sysAuthApplicationService.openUserInfo(SecurityUser.getAuthorization(request)));
     }
 
 }

@@ -74,8 +74,7 @@ public class AuthRealm extends AuthorizingRealm {
             throw new IncorrectCredentialsException(MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
         }
         //查询用户信息
-        Long userId = TokenUtil.getUserId(accessToken);
-        UserDetail userDetail = sysAuthApplicationService.getUserDetail(userId);
+        UserDetail userDetail = sysAuthApplicationService.getUserDetail(accessToken);
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(userDetail, accessToken, getName());
         return info;
     }

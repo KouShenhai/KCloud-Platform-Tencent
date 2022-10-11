@@ -147,7 +147,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
 
     private String getToken(String username,String password,boolean isUserPasswordFlag) throws Exception {
         //查询数据库
-        UserDetail userDetail = getUserDetail(username);
+        UserDetail userDetail = getUserDetail(null,username);
         log.info("查询的数据：{}",userDetail);
         if (!isUserPasswordFlag && null == userDetail) {
             PublishFactory.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.ACCOUNT_NOT_EXIST));
@@ -184,9 +184,9 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         String token = TokenUtil.getToken(TokenUtil.getClaims(userId,username));
         log.info("Token is：{}", token);
         //用户信息
-        String userInfoKey = RedisKeyUtil.getUserInfoKey(userId);
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         //资源列表放到redis中
-        String userResourceKey = RedisKeyUtil.getUserResourceKey(userId);
+        String userResourceKey = RedisKeyUtil.getUserResourceKey(token);
         //原子操作 -> 防止数据被修改，更新到redis的数据不是最新数据
         List<String> permissionList = getPermissionList(userDetail);
         userDetail.setPermissionsList(permissionList);
@@ -223,24 +223,24 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public Boolean logout(Long userId) {
+    public Boolean logout(String token) {
         //region Description
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         //删除相关信息
-        removeInfo(request,userId);
+        removeInfo(token);
+        //退出
+        request.removeAttribute(Constant.AUTHORIZATION_HEAD);
         return true;
         //endregion
     }
 
-    private void removeInfo(HttpServletRequest request,Long userId) {
+    private void removeInfo(String token) {
         //region Description
         //删除缓存
-        String userResourceKey = RedisKeyUtil.getUserResourceKey(userId);
-        String userInfoKey = RedisKeyUtil.getUserInfoKey(userId);
+        String userResourceKey = RedisKeyUtil.getUserResourceKey(token);
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         redisUtil.delete(userResourceKey);
         redisUtil.delete(userInfoKey);
-        //退出
-        request.removeAttribute(Constant.AUTHORIZATION_HEAD);
         //endregion
     }
 
@@ -264,7 +264,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     public Mono<HttpResultUtil<UserDetail>> resource(String Authorization, String uri, String method) {
         //region Description
         //1.获取用户信息
-        return Mono.just(getUserId(Authorization)).flatMap(userId -> Mono.just(getUserDetail(userId))).flatMap(userDetail -> {
+        return Mono.just(getUserDetail(Authorization)).flatMap(userDetail -> {
             CompletableFuture<Boolean> booleanCompletableFuture1 = CompletableFuture.supplyAsync(() ->
                         //2.获取所有资源列表
                         sysMenuService.getMenuList(null,null),executorService)
@@ -325,8 +325,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public UserInfoVO userInfo(Long userId) {
-        UserDetail userDetail = getUserDetail(userId);
+    public UserInfoVO userInfo(String token) {
+        UserDetail userDetail = getUserDetail(token);
         return UserInfoVO.builder().imgUrl(userDetail.getImgUrl())
                         .username(userDetail.getUsername())
                         .userId(userDetail.getId())
@@ -337,8 +337,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public BaseUserVO openUserInfo(Long userId) {
-        UserDetail userDetail = getUserDetail(userId);
+    public BaseUserVO openUserInfo(String token) {
+        UserDetail userDetail = getUserDetail(token);
         return BaseUserVO.builder().imgUrl(userDetail.getImgUrl())
                 .username(userDetail.getUsername())
                 .userId(userDetail.getId())
@@ -369,15 +369,16 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public UserDetail getUserDetail(Long userId) {
+    public UserDetail getUserDetail(String token) {
         //region Description
-        String userInfoKey = RedisKeyUtil.getUserInfoKey(userId);
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         final Object obj = redisUtil.get(userInfoKey);
         UserDetail userDetail;
         if (obj != null) {
             userDetail = (UserDetail) obj;
         } else {
-            userDetail = sysUserService.getUserDetail(userId,null);
+            final Long userId = getUserId(token);
+            userDetail = getUserDetail(userId,null);
             if (Objects.isNull(userDetail)) {
                 throw new CustomException(ErrorCode.ACCOUNT_NOT_EXIST);
             }
@@ -411,7 +412,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         String Authorization = SecurityUser.getAuthorization(request);
         final Long userId = SecurityUser.getUserId(request);
         final String zfbOpenid = request.getParameter("zfb_openid");
-        final UserDetail userDetail = sysUserService.getUserDetail(userId,null);
+        final UserDetail userDetail = getUserDetail(userId,null);
         if (StringUtils.isBlank(userDetail.getZfbOpenid())) {
             sysUserService.updateZfbOpenid(userId,zfbOpenid);
             response.sendRedirect(String.format(INDEX_URL,Authorization));
@@ -439,8 +440,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         response.sendRedirect(redirectUrl + params);
     }
 
-    private UserDetail getUserDetail(String username) {
-        return sysUserService.getUserDetail(null, username);
+    private UserDetail getUserDetail(Long userId,String username) {
+        return sysUserService.getUserDetail(userId, username);
     }
 
     @Component
