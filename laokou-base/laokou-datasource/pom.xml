@@ -30,5 +30,18 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 取消查找本项目下的Main方法：为了解决Unable to find main class的问题 -->
+                    <mainClass>none</mainClass>
+                    <!-- 为了解决依赖模块找不到此模块中的类或属性 -->
+                    <classifier>execute</classifier>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
