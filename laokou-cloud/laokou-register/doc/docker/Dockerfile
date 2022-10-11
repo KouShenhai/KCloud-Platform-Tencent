@@ -8,7 +8,7 @@ EXPOSE 1111
 # 挂载
 VOLUME /data
 # 复制文件
-COPY register.jar /opt/register.jar
+COPY laokou-register.jar /opt/laokou-register.jar
 RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo Asia/Shanghai > /etc/timezone
 # 执行命令
-ENTRYPOINT java -Xms256m -Xmx512m -jar /opt/register.jar --spring.profiles.active=prod > /opt/register.log
+ENTRYPOINT java -Xms256m -Xmx512m -jar /opt/laokou-register.jar --spring.profiles.active=prod > /opt/laokou-register.log

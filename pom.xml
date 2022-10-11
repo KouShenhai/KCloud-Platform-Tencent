@@ -151,9 +151,17 @@
                     <serverId>docker-aliyun</serverId>
                     <registryUrl>${docker.repostory}</registryUrl>
                     <pushImage>true</pushImage>
-                    <dockerDirectory>${project.basedir}/doc/docker</dockerDirectory>
                     <!--指定生成的镜像名 推送阿里云镜像仓库用 -->
                     <imageName>${docker.repostory}/${docker.registry.name}/${project.artifactId}:${project.version}</imageName>
+                    <!-- 指定 Dockerfile 路径 , 根据实际情况改动! ${project.basedir}：项目根路径-->
+                    <dockerDirectory>${project.basedir}/doc/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.artifactId}.jar</include>
+                        </resource>
+                    </resources>
                 </configuration>
             </plugin>
         </plugins>

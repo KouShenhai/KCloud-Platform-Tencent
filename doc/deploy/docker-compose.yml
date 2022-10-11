@@ -1,29 +1,15 @@
 version: '3.8'
 services:
-  laokou-apollo-service:
-    image: apollo:1.0
-    container_name: laokou-apollo
-    environment:
-      - TZ="Asia/Shanghai"
-    ports:
-      - 8070:8070
-      - 8090:8090
-      - 8080:8080
-    networks:
-      - laokou
-    restart: on-failure:10
-    depends_on:
-      - laokou-register-service
   laokou-gateway-service:
     image: gateway:1.0
     container_name: laokou-gateway
     environment:
       - TZ="Asia/Shanghai"
-    restart: on-failure:10
+    restart: on-failure
     networks:
       - laokou
     ports:
-      - 5555:5555
+      - "5555:5555"
     depends_on:
       - laokou-register-service
   laokou-register-service:
@@ -34,8 +20,8 @@ services:
     networks:
       - laokou
     ports:
-      - 1111:1111
-    restart: on-failure:10
+      - "1111:1111"
+    restart: on-failure
   laokou-admin-service:
     image: admin:1.0
     container_name: laokou-admin
@@ -44,8 +30,8 @@ services:
     networks:
       - laokou
     ports:
-      - 9999:9999
-    restart: on-failure:10
+      - "9999:9999"
+    restart: on-failure
     depends_on:
       - laokou-register-service
   laokou-auth-service:
@@ -56,8 +42,8 @@ services:
     networks:
       - laokou
     ports:
-      - 9000:9000
-    restart: on-failure:10
+      - "9000:9000"
+    restart: on-failure
     depends_on:
       - laokou-register-service
   laokou-monitor-service:
@@ -68,8 +54,8 @@ services:
     networks:
       - laokou
     ports:
-      - 5000:5000
-    restart: on-failure:10
+      - "5000:5000"
+    restart: on-failure
     depends_on:
       - laokou-register-service
 networks:
