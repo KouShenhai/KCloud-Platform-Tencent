@@ -9,4 +9,4 @@ EXPOSE 5555
 COPY laokou-gateway.jar /opt/laokou-gateway.jar
 RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo Asia/Shanghai > /etc/timezone
 # 执行命令
-ENTRYPOINT java -Xms256m -Xmx512m --add-opens=java.base/java.lang=ALL-UNNAMED -Djasypt.encryptor.password=koushenhai5201314wumeihua -Denv=DEV -Dapollo.configService=http://124.222.196.51:8080 /opt/laokou-gateway.jar --spring.profiles.active=prod > /opt/laokou-gateway.log
+ENTRYPOINT java -Xms256m -Xmx512m --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED -Djasypt.encryptor.password=koushenhai5201314wumeihua -Denv=DEV -Dapollo.configService=http://124.222.196.51:8080 /opt/laokou-gateway.jar --spring.profiles.active=prod > /opt/laokou-gateway.log
