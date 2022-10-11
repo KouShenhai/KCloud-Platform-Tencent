@@ -1,5 +1,5 @@
 # 基础镜像
-FROM jdk:1.8
+FROM jdk:17
 # 信息
 LABEL maintainer="koushenhai"
 LABEL description="laokou-apollo"

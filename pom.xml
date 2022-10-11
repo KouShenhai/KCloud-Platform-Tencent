@@ -125,24 +125,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <configuration>
-                    <finalName>${project.artifactId}</finalName>
-                    <layers>
-                        <enabled>true</enabled>
-                    </layers>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker.version}</version>
@@ -173,6 +155,7 @@
                 <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>application*.yml</exclude>
+                    <exclude>application*.properties</exclude>
                 </excludes>
             </resource>
             <!--添加需要包含的文件-->

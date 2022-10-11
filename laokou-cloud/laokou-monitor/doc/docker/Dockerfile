@@ -1,5 +1,5 @@
 # 基础镜像
-FROM openjdk:8-jre-alpine
+FROM docker.io/sunrdocker/jdk17-jre-font-openssl-alpine:latest
 # 信息
 LABEL maintainer="koushenhai"
 LABEL description="laokou-monitor"

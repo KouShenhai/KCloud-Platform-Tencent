@@ -1,7 +1,8 @@
-version: '3.8'
+version: '3.2'
 services:
   laokou-gateway-service:
-    image: gateway:1.0
+    tty: true
+    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-gateway:1.0-SNAPSHOT
     container_name: laokou-gateway
     environment:
       - TZ="Asia/Shanghai"
@@ -13,7 +14,8 @@ services:
     depends_on:
       - laokou-register-service
   laokou-register-service:
-    image: register:1.0
+    tty: true
+    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-register:1.0-SNAPSHOT
     container_name: laokou-register
     environment:
       - TZ="Asia/Shanghai"
@@ -23,7 +25,8 @@ services:
       - "1111:1111"
     restart: on-failure
   laokou-admin-service:
-    image: admin:1.0
+    tty: true
+    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-admin-server:1.0-SNAPSHOT
     container_name: laokou-admin
     environment:
       - TZ="Asia/Shanghai"
@@ -35,7 +38,8 @@ services:
     depends_on:
       - laokou-register-service
   laokou-auth-service:
-    image: auth:1.0
+    tty: true
+    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-auth-server:1.0-SNAPSHOT
     container_name: laokou-auth
     environment:
       - TZ="Asia/Shanghai"
@@ -47,7 +51,8 @@ services:
     depends_on:
       - laokou-register-service
   laokou-monitor-service:
-    image: monitor:1.0
+    tty: true
+    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-monitor:1.0-SNAPSHOT
     container_name: laokou-monitor
     environment:
       - TZ="Asia/Shanghai"
@@ -56,8 +61,43 @@ services:
     ports:
       - "5000:5000"
     restart: on-failure
+  laokou-elasticsearch-service:
+    tty: true
+    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-elasticsearch-server:1.0-SNAPSHOT
+    container_name: laokou-elasticsearch
+    environment:
+      - TZ="Asia/Shanghai"
+    networks:
+      - laokou
+    ports:
+      - "9998:9998"
+    restart: on-failure
     depends_on:
       - laokou-register-service
+  laokou-rabbitmq-server-service:
+    tty: true
+    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-rabbitmq-server:1.0-SNAPSHOT
+    container_name: laokou-rabbitmq-server
+    environment:
+      - TZ="Asia/Shanghai"
+    networks:
+      - laokou
+    ports:
+      - "9995:9995"
+    restart: on-failure
+    depends_on:
+      - laokou-register-service
+  laokou-rabbitmq-consumer-service:
+    tty: true
+    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-rabbitmq-consumer:1.0-SNAPSHOT
+    container_name: laokou-rabbitmq-consumer
+    environment:
+      - TZ="Asia/Shanghai"
+    networks:
+      - laokou
+    ports:
+      - "9994:9994"
+    restart: on-failure
 networks:
   laokou:
     driver: bridge

@@ -1,4 +1,4 @@
-FROM jdk:1.8
+FROM jdk:17
 LABEL maintainer="koushenhai"
 LABEL description="laokou-admin-server"
 COPY laokou-admin-server.jar /opt/laokou-admin-server.jar
