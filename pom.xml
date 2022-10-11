@@ -26,16 +26,12 @@
         <spring-cloud.version>2021.0.4</spring-cloud.version>
         <!--spring-data-bom版本 -->
         <spring-data-bom.version>2021.2.3</spring-data-bom.version>
+        <docker.repostory>registry.cn-hangzhou.aliyuncs.com</docker.repostory>
+        <docker.registry.name>koushenhai</docker.registry.name>
+        <docker.version>1.2.2</docker.version>
     </properties>
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-bom</artifactId>
-                <version>${spring-data-bom.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
             <!-- 定义公共版本-->
             <dependency>
                 <groupId>org.laokou</groupId>
@@ -62,6 +58,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <!--配置maven阿里云仓库开始,不用去改maven的setting -->
     <repositories>
         <repository>
@@ -86,6 +83,7 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
     <!--配置maven阿里云结束 -->
     <profiles>
         <!--开发环境-->
@@ -113,13 +111,9 @@
             </properties>
         </profile>
     </profiles>
+
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -128,6 +122,38 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
 <!--                    <compilerArgument>-Xlint:-options,rawtypes,deprecation,unchecked</compilerArgument>-->
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <finalName>${project.artifactId}</finalName>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.version}</version>
+                <configuration>
+                    <!--        推送至阿里云Docker仓库            -->
+                    <serverId>docker-aliyun</serverId>
+                    <registryUrl>${docker.repostory}</registryUrl>
+                    <pushImage>true</pushImage>
+                    <dockerDirectory>${project.basedir}/doc/docker</dockerDirectory>
+                    <!--指定生成的镜像名 推送阿里云镜像仓库用 -->
+                    <imageName>${docker.repostory}/${docker.registry.name}/${project.artifactId}:${project.version}</imageName>
                 </configuration>
             </plugin>
         </plugins>
@@ -149,7 +175,6 @@
                 <includes>
                     <include>application.yml</include>
                     <include>application-${profile.active}.yml</include>
-                    <include>application.properties</include>
                     <include>application-${profile.active}.properties</include>
                 </includes>
             </resource>
