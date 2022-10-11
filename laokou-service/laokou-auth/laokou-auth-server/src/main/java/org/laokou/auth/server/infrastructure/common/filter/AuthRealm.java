@@ -78,4 +78,22 @@ public class AuthRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(userDetail, accessToken, getName());
         return info;
     }
+
+    /**
+     * 清除当前用户的认证缓存
+     * @param principals
+     */
+    @Override
+    protected void clearCachedAuthenticationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthenticationInfo(principals);
+    }
+
+    /**
+     * 清除当前用户的授权缓存
+     * @param principals
+     */
+    @Override
+    protected void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthorizationInfo(principals);
+    }
 }
