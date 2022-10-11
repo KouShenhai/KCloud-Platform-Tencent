@@ -53,6 +53,6 @@ public interface SysMenuService {
      * @param type
      * @return
      */
-    List<SysMenuVO> getMenuList(UserDetail userDetail, boolean noCache, Integer type);
+    List<SysMenuVO> getMenuList(String Authorization,UserDetail userDetail, boolean noCache, Integer type);
 
 }

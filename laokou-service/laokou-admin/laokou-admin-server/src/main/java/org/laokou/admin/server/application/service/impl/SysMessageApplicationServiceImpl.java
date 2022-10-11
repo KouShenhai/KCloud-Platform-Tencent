@@ -110,7 +110,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
         SysMessageDO messageDO = ConvertUtil.sourceToTarget(dto, SysMessageDO.class);
         messageDO.setCreateDate(new Date());
         messageDO.setCreator(dto.getUserId());
-        final UserDetail userDetail = sysUserService.getUserDetail(messageDO.getCreator());
+        final UserDetail userDetail = sysUserService.getUserDetail(messageDO.getCreator(),null);
         messageDO.setDeptId(userDetail.getDeptId());
         sysMessageService.save(messageDO);
         Iterator<String> iterator = dto.getReceiver().iterator();

@@ -39,17 +39,12 @@ public interface SysUserService extends IService<SysUserDO> {
 
     /**
      * 获取用户信息
-     * @param userId
+     * @param Authorization
      * @return
      */
-    UserDetail getUserDetail(Long userId);
+    UserDetail getUserDetail(String Authorization);
 
-    /**
-     * 根据openid获取username
-     * @param zfbOpenid 支付宝唯一用户标识
-     * @return
-     */
-    String getUsernameByOpenid(String zfbOpenid);
+    UserDetail getUserDetail(Long userId,String username);
 
     /**
      * 分页查询用户
@@ -64,19 +59,6 @@ public interface SysUserService extends IService<SysUserDO> {
      * @param id
      */
     void deleteUser(Long id);
-
-    /**
-     * 获取用户列表
-     * @return
-     */
-    List<SysUserVO> getUserList();
-
-    /**
-     * 根据id获取用户列表
-     * @param id
-     * @return
-     */
-    List<SysUserVO> getUserListByUserId(Long id);
 
     /**
      * 获取用户列表下拉框

@@ -25,6 +25,9 @@ import org.laokou.admin.server.domain.sys.repository.mapper.SysUserMapper;
 import org.laokou.auth.client.password.PasswordUtil;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
+import org.laokou.auth.client.utils.TokenUtil;
+import org.laokou.common.exception.CustomException;
+import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.RedisKeyUtil;
 import org.laokou.redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -51,28 +54,36 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
             dto.setPassword(PasswordUtil.encode(password));
         }
         this.baseMapper.updateUser(dto);
-        //删除用户缓存数据
-        redisUtil.delete(RedisKeyUtil.getUserInfoKey(dto.getId()));
     }
 
     @Override
-    public UserDetail getUserDetail(Long userId) {
+    public UserDetail getUserDetail(String Authorization) {
         //region Description
-        String userInfoKey = RedisKeyUtil.getUserInfoKey(userId);
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(Authorization);
         final Object obj = redisUtil.get(userInfoKey);
         UserDetail userDetail;
         if (null != obj) {
             userDetail = (UserDetail) obj;
         } else {
-            userDetail = this.baseMapper.getUserDetail(userId,null);
+            Long userId = getUserId(Authorization);
+            userDetail = getUserDetail(userId,null);
         }
         return userDetail;
         //endregion
     }
 
     @Override
-    public String getUsernameByOpenid(String zfbOpenid) {
-        return this.baseMapper.getUsernameByOpenid(zfbOpenid);
+    public UserDetail getUserDetail(Long userId, String username) {
+        return this.baseMapper.getUserDetail(userId,username);
+    }
+
+    private Long getUserId(String Authorization) {
+        //region Description
+        if (TokenUtil.isExpiration(Authorization)) {
+            throw new CustomException(ErrorCode.AUTHORIZATION_INVALID);
+        }
+        return TokenUtil.getUserId(Authorization);
+        //endregion
     }
 
     @Override
@@ -83,16 +94,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
     @Override
     public void deleteUser(Long id) {
         this.baseMapper.deleteUser(id);
-    }
-
-    @Override
-    public List<SysUserVO> getUserList() {
-        return this.baseMapper.getUserList();
-    }
-
-    @Override
-    public List<SysUserVO> getUserListByUserId(Long id) {
-        return this.baseMapper.getUserListByUserId(id);
     }
 
     @Override

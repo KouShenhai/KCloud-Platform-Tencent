@@ -62,17 +62,17 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
         if (null == id) {
             throw new CustomException("主键不存在");
         }
-        Long userId = SecurityUser.getUserId(request);
-        UserDetail userDetail = sysUserService.getUserDetail(id);
-        UserDetail userDetail2 = sysUserService.getUserDetail(userId);
-        if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin() && SuperAdminEnum.YES.ordinal() != userDetail2.getSuperAdmin()) {
+        String Authorization = SecurityUser.getAuthorization(request);
+        SysUserDO sysUser = sysUserService.getById(id);
+        UserDetail userDetail = sysUserService.getUserDetail(Authorization);
+        if (SuperAdminEnum.YES.ordinal() == sysUser.getSuperAdmin() && SuperAdminEnum.YES.ordinal() != userDetail.getSuperAdmin()) {
             throw new CustomException("只有超级管理员才能修改");
         }
         long count = sysUserService.count(Wrappers.lambdaQuery(SysUserDO.class).eq(SysUserDO::getUsername, dto.getUsername()).eq(SysUserDO::getDelFlag, Constant.NO).ne(SysUserDO::getId,id));
         if (count > 0) {
             throw new CustomException("账号已存在，请重新填写");
         }
-        dto.setEditor(userId);
+        dto.setEditor(userDetail.getId());
         sysUserService.updateUser(dto);
         List<Long> roleIds = dto.getRoleIds();
         //删除中间表
@@ -120,10 +120,9 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     @Override
 
     public Boolean deleteUser(Long id,HttpServletRequest request) {
-        Long userId = SecurityUser.getUserId(request);
-        UserDetail userDetail = sysUserService.getUserDetail(id);
-        UserDetail userDetail2 = sysUserService.getUserDetail(userId);
-        if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin() && SuperAdminEnum.YES.ordinal() != userDetail2.getSuperAdmin()) {
+        SysUserDO sysUser = sysUserService.getById(id);
+        UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getAuthorization(request));
+        if (SuperAdminEnum.YES.ordinal() == sysUser.getSuperAdmin() && SuperAdminEnum.YES.ordinal() != userDetail.getSuperAdmin()) {
             throw new CustomException("只有超级管理员才能删除");
         }
         sysUserService.deleteUser(id);

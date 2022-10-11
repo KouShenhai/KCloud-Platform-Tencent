@@ -45,13 +45,6 @@ public interface SysUserMapper extends BaseMapper<SysUserDO> {
     UserDetail getUserDetail(@Param("userId")Long userId,@Param("username")String username);
 
     /**
-     * 根据openid获取username
-     * @param zfbOpenid 支付宝用户唯一标识
-     * @return
-     */
-    String getUsernameByOpenid(@Param("zfbOpenid")String zfbOpenid);
-
-    /**
      * 分页查询用户
      * @param page
      * @param qo
@@ -66,10 +59,6 @@ public interface SysUserMapper extends BaseMapper<SysUserDO> {
     void updateUser(@Param("dto") SysUserDTO dto);
 
     void deleteUser(@Param("id") Long id);
-
-    List<SysUserVO> getUserListByUserId(@Param("id") Long id);
-
-    List<SysUserVO> getUserList();
 
     List<OptionVO> getOptionList();
 }

@@ -82,7 +82,7 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
         if (count > 0) {
             throw new CustomException("角色已存在，请重新填写");
         }
-        final UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getUserId(request));
+        final UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getUserId(request),null);
         roleDO.setCreator(userDetail.getId());
         roleDO.setDeptId(userDetail.getDeptId());
         sysRoleService.save(roleDO);

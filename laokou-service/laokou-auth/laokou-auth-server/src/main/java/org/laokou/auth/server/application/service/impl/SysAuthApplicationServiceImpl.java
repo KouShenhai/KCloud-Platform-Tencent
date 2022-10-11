@@ -165,7 +165,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             PublishFactory.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
             throw new CustomException(ErrorCode.ACCOUNT_DISABLE);
         }
-        List<SysMenuVO> resourceList = sysMenuService.getMenuList(userDetail,true,1);
+        List<SysMenuVO> resourceList = sysMenuService.getMenuList(null,userDetail,true,1);
         if (CollectionUtils.isEmpty(resourceList) && SuperAdminEnum.NO.ordinal() == userDetail.getSuperAdmin()) {
             PublishFactory.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
             throw new CustomException(ErrorCode.NOT_PERMISSIONS);
@@ -292,7 +292,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                     return false;
                 },executorService);
             //8. 需要鉴权，获取用户资源列表
-            CompletableFuture<Boolean> booleanCompletableFuture2 = CompletableFuture.supplyAsync(() -> sysMenuService.getMenuList(userDetail, false, 1), executorService)
+            CompletableFuture<Boolean> booleanCompletableFuture2 = CompletableFuture.supplyAsync(() -> sysMenuService.getMenuList(Authorization,userDetail, false, 1), executorService)
                     .thenApplyAsync((resourceList) ->
                             //9.如果不在用户资源列表里，则无权访问
                             pathMatcher(uri, method, resourceList), executorService)
