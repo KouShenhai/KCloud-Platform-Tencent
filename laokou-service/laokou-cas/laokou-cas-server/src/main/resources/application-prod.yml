@@ -1,6 +1,6 @@
 server:
   port: 9002
-  address: 172.19.0.7
+  address: 172.19.0.17
 
 spring:
   boot:
