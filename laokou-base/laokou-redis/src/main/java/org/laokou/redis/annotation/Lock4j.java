@@ -29,6 +29,12 @@ import java.lang.annotation.*;
 public @interface Lock4j {
 
     /**
+     * 键
+     * @return
+     */
+    String key();
+
+    /**
      * 过期时间 单位：毫秒
      * <pre>
      *     过期时间一定是要长于业务的执行时间.

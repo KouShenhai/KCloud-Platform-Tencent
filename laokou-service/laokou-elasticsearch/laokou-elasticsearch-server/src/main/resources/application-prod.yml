@@ -1,6 +1,5 @@
 server:
   port: 9998
-  address: 172.19.0.15
 
 elasticsearch:
   host: 101.33.251.11:9200
@@ -12,11 +11,11 @@ spring:
   boot:
     admin:
       client:
-        url: http://124.222.196.51:5000/monitor
+        url: http://192.168.62.137:5000/monitor
         username: ENC(7j+MYBNM2fhq8WST3DE3WA==)
         password: ENC(nj35dMcOWEmR5EASEZR3yfaT4IdT9TPm)
         instance:
-          service-base-url: http://175.178.69.253:${server.port}
+          service-base-url: http://192.168.62.137:${server.port}
 
 logging:
   file:

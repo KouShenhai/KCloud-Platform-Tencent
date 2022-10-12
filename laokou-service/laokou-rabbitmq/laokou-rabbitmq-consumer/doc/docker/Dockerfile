@@ -6,7 +6,7 @@ LABEL description="laokou-rabbitmq-consumer"
 # 暴露端口
 EXPOSE 9994
 # 复制文件
-COPY laokou-rabbitmq-consumer.jar /opt/laokou-rabbitmq-consumer.jar
+COPY laokou-rabbitmq-consumer.jar app.jar
 RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo Asia/Shanghai > /etc/timezone
 # 执行命令
-ENTRYPOINT java -Xms256m -Xmx512m -Djasypt.encryptor.password=koushenhai5201314wumeihua -jar /opt/laokou-rabbitmq-consumer.jar --spring.profiles.active=prod > /opt/laokou-rabbitmq-consumer.log
+ENTRYPOINT java -Xms256m -Xmx512m -Djasypt.encryptor.password=koushenhai5201314wumeihua -jar app.jar --spring.profiles.active=prod > app.log
