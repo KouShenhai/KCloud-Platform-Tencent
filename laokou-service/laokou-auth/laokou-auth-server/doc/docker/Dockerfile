@@ -35,4 +35,30 @@ RUN yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel exp
     && make install
 EXPOSE 8016
 VOLUME /data
-ENTRYPOINT java -Xms256m -Xmx512m --add-opens=java.base/java.lang=ALL-UNNAMED -Ddruid.filters=mergeStat -Ddruid.useGlobalDataSourceStat=true -Djava.library.path=/usr/local/apr/lib -Djasypt.encryptor.password=koushenhai5201314wumeihua -Denv=DEV -Dapollo.configService=http://124.222.196.51:8080 -jar app.jar --spring.profiles.active=prod > app.log
+ENTRYPOINT java -Xms256m -Xmx512m --add-opens \
+                                  java.base/java.lang=ALL-UNNAMED \
+                                  --add-opens \
+                                  java.base/java.io=ALL-UNNAMED \
+                                  --add-opens \
+                                  java.base/java.math=ALL-UNNAMED \
+                                  --add-opens \
+                                  java.base/java.net=ALL-UNNAMED \
+                                  --add-opens \
+                                  java.base/java.nio=ALL-UNNAMED \
+                                  --add-opens \
+                                  java.base/java.security=ALL-UNNAMED \
+                                  --add-opens \
+                                  java.base/java.text=ALL-UNNAMED \
+                                  --add-opens \
+                                  java.base/java.time=ALL-UNNAMED \
+                                  --add-opens \
+                                  java.base/java.util=ALL-UNNAMED \
+                                  --add-opens \
+                                  java.base/jdk.internal.access=ALL-UNNAMED \
+                                  --add-opens \
+                                  java.base/jdk.internal.misc=ALL-UNNAMED \
+                                -Ddruid.filters=mergeStat -Ddruid.useGlobalDataSourceStat=true \
+                                -Djava.library.path=/usr/local/apr/lib \
+                                -Djasypt.encryptor.password=koushenhai5201314wumeihua \
+                                -Denv=DEV -Dapollo.configService=http://124.222.196.51:8080 -jar \
+                                app.jar --spring.profiles.active=prod > app.log
