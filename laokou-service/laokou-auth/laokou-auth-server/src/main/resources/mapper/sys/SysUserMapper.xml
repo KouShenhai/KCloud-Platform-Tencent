@@ -21,6 +21,7 @@
     <if test="username != null and username != ''">
         and a.username = #{username}
     </if>
+    limit 1
     </select>
 
     <select id="getUsernameByOpenid" resultType="string">
@@ -29,6 +30,7 @@
         <if test="zfbOpenid != null and zfbOpenid != ''">
             and zfb_openid = #{zfbOpenid}
         </if>
+        limit 1
     </select>
 
     <update id="updateZfbOpenid">
