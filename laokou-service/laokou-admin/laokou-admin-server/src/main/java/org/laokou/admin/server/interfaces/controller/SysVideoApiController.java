@@ -76,7 +76,7 @@ public class SysVideoApiController {
 
     @PostMapping("/sync")
     @ApiOperation("视频管理>同步")
-    @Lock4j(key = "video_sync_lock",scope = LockScope.DISTRIBUTED_LOCK)
+    @Lock4j(scope = LockScope.DISTRIBUTED_LOCK)
     @OperateLog(module = "视频管理",name = "视频同步")
     public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncAsyncBatchResource(code));

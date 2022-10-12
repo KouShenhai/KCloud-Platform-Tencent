@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.redis.aspect;
-import org.laokou.redis.RedisUtil;
+import cn.hutool.core.lang.UUID;
 import org.laokou.redis.annotation.Lock4j;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +41,9 @@ import java.lang.reflect.Method;
 @AllArgsConstructor
 public class LockAspect {
 
-    private final RedisUtil redisUtil;
     private final LockFactory factory;
+
+    protected final UUID uuid = UUID.randomUUID();
 
     /**
      * 配置切入点
@@ -63,7 +64,7 @@ public class LockAspect {
         if (lock4j == null) {
             lock4j = AnnotationUtils.findAnnotation(method,Lock4j.class);
         }
-        String key = lock4j.key();
+        String key = getKey();
         long expire = lock4j.expire();
         long timeout = lock4j.timeout();
         final LockType type = lock4j.type();
@@ -80,6 +81,10 @@ public class LockAspect {
             //释放锁
             abstractLock.unlock(lock);
         }
+    }
+
+    private String getKey() {
+        return uuid + ":" + Thread.currentThread().getId();
     }
 
 }

@@ -45,7 +45,7 @@ public class WorkflowProcessApiController {
     @PostMapping(value = "/resource/audit")
     @ApiOperation(value = "流程处理>资源审批")
     @OperateLog(module = "流程处理",name = "资源审批")
-    @Lock4j(key = "resource_audit_lock", scope = LockScope.DISTRIBUTED_LOCK)
+    @Lock4j(scope = LockScope.DISTRIBUTED_LOCK)
     public HttpResultUtil<Boolean> auditResource(@RequestBody AuditDTO dto, HttpServletRequest request) {
         return new HttpResultUtil<Boolean>().ok(workflowProcessApplicationService.auditResourceTask(dto,request));
     }
