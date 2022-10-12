@@ -6,6 +6,7 @@ COPY apr-1.7.0.tar.gz /opt/apr-1.7.0.tar.gz
 COPY apr-iconv-1.2.2.tar.gz /opt/apr-iconv-1.2.2.tar.gz
 COPY apr-util-1.6.1.tar.gz /opt/apr-util-1.6.1.tar.gz
 COPY tomcat-native-1.2.33-src.tar.gz /opt/tomcat-native-1.2.33-src.tar.gz
+COPY libfreetype.so.6 /usr/local/jdk/lib/
 ENV LD_LIBRARY_PATH /usr/local/apr/lib
 RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo Asia/Shanghai > /etc/timezone
 RUN yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel expat-devel \
@@ -37,28 +38,9 @@ EXPOSE 8016
 VOLUME /data
 ENTRYPOINT java -Xms256m -Xmx512m --add-opens \
                                   java.base/java.lang=ALL-UNNAMED \
-                                  --add-opens \
-                                  java.base/java.io=ALL-UNNAMED \
-                                  --add-opens \
-                                  java.base/java.math=ALL-UNNAMED \
-                                  --add-opens \
-                                  java.base/java.net=ALL-UNNAMED \
-                                  --add-opens \
-                                  java.base/java.nio=ALL-UNNAMED \
-                                  --add-opens \
-                                  java.base/java.security=ALL-UNNAMED \
-                                  --add-opens \
-                                  java.base/java.text=ALL-UNNAMED \
-                                  --add-opens \
-                                  java.base/java.time=ALL-UNNAMED \
-                                  --add-opens \
-                                  java.base/java.util=ALL-UNNAMED \
-                                  --add-opens \
-                                  java.base/jdk.internal.access=ALL-UNNAMED \
-                                  --add-opens \
-                                  java.base/jdk.internal.misc=ALL-UNNAMED \
                                 -Ddruid.filters=mergeStat -Ddruid.useGlobalDataSourceStat=true \
                                 -Djava.library.path=/usr/local/apr/lib \
                                 -Djasypt.encryptor.password=koushenhai5201314wumeihua \
+                                -Djava.awt.headless=true \
                                 -Denv=DEV -Dapollo.configService=http://124.222.196.51:8080 -jar \
                                 app.jar --spring.profiles.active=prod > app.log
