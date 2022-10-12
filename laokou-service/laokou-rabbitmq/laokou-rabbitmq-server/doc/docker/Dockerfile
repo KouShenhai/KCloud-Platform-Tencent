@@ -6,7 +6,7 @@ LABEL description="laokou-rabbitmq-server"
 # 暴露端口
 EXPOSE 9995
 # 复制文件
-COPY laokou-rabbitmq-server.jar /opt/laokou-rabbitmq-server.jar
+COPY laokou-rabbitmq-server.jar app.jar
 RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo Asia/Shanghai > /etc/timezone
 # 执行命令
-ENTRYPOINT java -Xms256m -Xmx512m -jar /opt/laokou-rabbitmq-server.jar --spring.profiles.active=prod > /opt/laokou-rabbitmq-server.log
+ENTRYPOINT java -Xms256m -Xmx512m -jar app.jar --spring.profiles.active=prod > app.log

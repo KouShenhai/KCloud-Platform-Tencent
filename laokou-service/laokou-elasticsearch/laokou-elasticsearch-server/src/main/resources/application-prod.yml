@@ -1,6 +1,6 @@
 server:
   port: 9998
-  address: 172.19.0.3
+  address: 172.19.0.5
 
 elasticsearch:
   host: 101.33.251.11:9200

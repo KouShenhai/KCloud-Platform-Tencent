@@ -1,6 +1,6 @@
 server:
   port: 9000
-  address: 172.19.0.3
+  address: 172.19.0.4
   tomcat:
     uri-encoding: UTF-8
     max-threads: 1000
