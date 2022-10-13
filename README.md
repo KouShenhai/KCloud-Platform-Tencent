@@ -63,7 +63,7 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
 - 持久层框架：Mybatis Plus
 - JSON 序列化：Jackson
 - 文件服务：Local/阿里云 OSS/Fastdfs
-- 服务部署：Shell、Docker
+- 服务部署：Docker-Compose
 - 持续交付：Jenkins
 - 服务发布：金丝雀发布
 
