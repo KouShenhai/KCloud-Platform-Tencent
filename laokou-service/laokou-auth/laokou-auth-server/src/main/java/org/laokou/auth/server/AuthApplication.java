@@ -24,8 +24,7 @@ import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCusto
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.server.WebServerFactory;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -46,7 +45,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @Slf4j
 @EnableEncryptableProperties
 @EnableFeignClients(basePackages = {"org.laokou.log"})
-public class AuthApplication implements WebServerFactoryCustomizer<WebServerFactory> {
+public class AuthApplication{
 
     public static void main(String[] args) {
         SpringApplication.run(AuthApplication.class, args);
@@ -63,10 +62,11 @@ public class AuthApplication implements WebServerFactoryCustomizer<WebServerFact
         return (registry) -> registry.config().commonTags("application", applicationName);
     }
 
-    @Override
-    public void customize(WebServerFactory factory) {
-        TomcatServletWebServerFactory containerFactory = (TomcatServletWebServerFactory) factory;
-        containerFactory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
+    @Bean
+    public ConfigurableServletWebServerFactory webServerFactory() {
+        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
+        factory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
+        return factory;
     }
 
 }
