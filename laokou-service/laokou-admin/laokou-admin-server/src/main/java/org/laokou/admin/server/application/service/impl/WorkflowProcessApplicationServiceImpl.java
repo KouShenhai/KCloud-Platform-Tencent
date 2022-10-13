@@ -142,9 +142,9 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         Map<String, Object> values = dto.getValues();
         workflowTaskApplicationService.auditTask(dto, request);
         String auditUser = workFlowUtil.getAuditUser(dto.getDefinitionId(), null, dto.getInstanceId());
-        Integer status;
         Integer auditStatus = Integer.valueOf(values.get("auditStatus").toString());
         SysResourceDO sysResourceDO = sysResourceService.getById(dto.getBusinessKey());
+        Integer status;
         if (null != auditUser) {
             //审批中
             status = 1;
