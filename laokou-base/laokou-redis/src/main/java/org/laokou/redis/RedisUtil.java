@@ -131,11 +131,11 @@ public final class RedisUtil {
         redisTemplate.delete(keys);
     }
 
-    public final Object hGet(String key, String field) {
+    public final Object hMGet(String key, String field) {
         return redisTemplate.opsForHash().get(key, field);
     }
 
-    public final Map<String, Object> hGetAll(String key){
+    public final Map<String, Object> hMGetAll(String key){
         HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
         return hashOperations.entries(key);
     }
@@ -151,11 +151,11 @@ public final class RedisUtil {
         }
     }
 
-    public final void hSet(String key, String field, String value) {
-        hSet(key, field, value, DEFAULT_EXPIRE);
+    public final void hMSet(String key, String field, String value) {
+        hMSet(key, field, value, DEFAULT_EXPIRE);
     }
 
-    public final void hSet(String key, String field, String value, long expire) {
+    public final void hMSet(String key, String field, String value, long expire) {
         redisTemplate.opsForHash().put(key, field, value);
         if(expire != NOT_EXPIRE){
             expire(key, expire);
@@ -166,7 +166,7 @@ public final class RedisUtil {
         redisTemplate.expire(key, expire, TimeUnit.SECONDS);
     }
 
-    public final void hDel(String key, Object... fields){
+    public final void hMDel(String key, Object... fields){
         redisTemplate.opsForHash().delete(key, fields);
     }
 
