@@ -22,6 +22,8 @@ import com.alipay.api.request.AlipayUserInfoShareRequest;
 import com.alipay.api.response.AlipaySystemOauthTokenResponse;
 import com.alipay.api.response.AlipayUserInfoShareResponse;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.auth.client.utils.TokenUtil;
 import org.laokou.auth.server.domain.sys.repository.service.*;
@@ -88,6 +90,11 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             ThreadUtil.newNamedThreadFactory("laokou-auth-service",true),
             new ThreadPoolExecutor.CallerRunsPolicy()
     );
+
+    /**
+     * 高性能缓存
+     */
+    private static final Cache<String,UserDetail> caffeineCache = Caffeine.newBuilder().initialCapacity(128).maximumSize(1024).build();;
 
     private static AntPathMatcher antPathMatcher = new AntPathMatcher();
 
@@ -195,6 +202,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         redisUtil.delete(userInfoKey);
         redisUtil.delete(userResourceKey);
         redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
+        caffeineCache.asMap().put(userInfoKey,userDetail);
         redisUtil.set(userResourceKey,resourceList,RedisUtil.HOUR_ONE_EXPIRE);
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         request.setAttribute(Constant.AUTHORIZATION_HEAD, token);
@@ -241,6 +249,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         redisUtil.delete(userResourceKey);
         redisUtil.delete(userInfoKey);
+        caffeineCache.asMap().remove(userInfoKey);
         //endregion
     }
 
@@ -372,6 +381,10 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     public UserDetail getUserDetail(String token) {
         //region Description
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
+        UserDetail userInfo = caffeineCache.asMap().get(userInfoKey);
+        if (null != userInfo) {
+            return userInfo;
+        }
         final Object obj = redisUtil.get(userInfoKey);
         UserDetail userDetail;
         if (obj != null) {
@@ -398,6 +411,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             CompletableFuture.allOf(c1,c2,c3).join();
             redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
         }
+        caffeineCache.asMap().put(userInfoKey,userDetail);
         return userDetail;
         //endregion
     }

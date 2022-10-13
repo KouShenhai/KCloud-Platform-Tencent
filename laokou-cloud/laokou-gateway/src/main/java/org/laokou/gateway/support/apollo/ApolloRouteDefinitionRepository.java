@@ -49,7 +49,7 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     /**
      * 高性能缓存
      */
-    private final Cache<String,RouteDefinition> caffeineCache;
+    private final Cache<String,Collection<RouteDefinition>> caffeineCache;
 
     @ApolloConfig
     private Config config;
@@ -68,13 +68,14 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
-        Collection<RouteDefinition> routeDefinitions = caffeineCache.asMap().values();
-        if (routeDefinitions.isEmpty()) {
+        Collection<RouteDefinition> routeDefinitions = caffeineCache.asMap().get(ROUTES);
+        if (routeDefinitions == null) {
             final String property = config.getProperty(ROUTES, null);
             if (StringUtils.isBlank(property)) {
                 return Flux.fromIterable(Lists.newArrayList());
             }
             routeDefinitions = JacksonUtil.toList(property, RouteDefinition.class);
+            caffeineCache.asMap().put(ROUTES,routeDefinitions);
         }
         return Flux.fromIterable(routeDefinitions);
     }
