@@ -44,19 +44,19 @@ public final class RedisUtil {
     public final static long HOUR_SIX_EXPIRE = 60 * 60 * 6L;
     /**  不设置过期时长 */
     public final static long NOT_EXPIRE = -1L;
-    public final void set(String key, Object value, long expire){
+    public void set(String key, Object value, long expire){
         redissonClient.getBucket(key).set(value,expire, TimeUnit.SECONDS);
     }
 
-    public final boolean hasKey(String key) {
+    public boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
     }
 
-    public final void set(String key, Object value){
+    public void set(String key, Object value){
         set(key, value, DEFAULT_EXPIRE);
     }
 
-    public final Object get(String key, long expire) {
+    public Object get(String key, long expire) {
         Object value = redisTemplate.opsForValue().get(key);
         if(expire != NOT_EXPIRE){
             expire(key, expire);
@@ -64,133 +64,133 @@ public final class RedisUtil {
         return value;
     }
 
-    public final RLock getLock(String key) {
+    public RLock getLock(String key) {
         return redissonClient.getLock(key);
     }
 
-    public final RLock getFairLock(String key) {
+    public RLock getFairLock(String key) {
         return redissonClient.getFairLock(key);
     }
 
-    public final RLock getReadLock(String key) {
+    public RLock getReadLock(String key) {
         return redissonClient.getReadWriteLock(key).readLock();
     }
 
-    public final RLock getWriteLock(String key) {
+    public RLock getWriteLock(String key) {
         return redissonClient.getReadWriteLock(key).writeLock();
     }
 
-    public final Boolean tryLock(RLock lock,long expire,long timeout) throws InterruptedException {
+    public Boolean tryLock(RLock lock, long expire, long timeout) throws InterruptedException {
         return lock.tryLock(timeout, expire, TimeUnit.SECONDS);
     }
-    public final Boolean tryLock(String key,long expire,long timeout) throws InterruptedException {
+    public Boolean tryLock(String key, long expire, long timeout) throws InterruptedException {
         return tryLock(getLock(key),expire,timeout);
     }
 
-    public final void unlock(String key) {
+    public void unlock(String key) {
         unlock(getLock(key));
     }
 
-    public final void unlock(RLock lock) {
+    public void unlock(RLock lock) {
         lock.unlock();
     }
 
-    public final void lock(String key) {
+    public void lock(String key) {
         lock(getLock(key));
     }
 
-    public final void lock(RLock lock) {
+    public void lock(RLock lock) {
         lock.lock();
     }
 
-    public final Boolean isLocked(String key) {
+    public Boolean isLocked(String key) {
         return isLocked(getLock(key));
     }
 
-    public final Boolean isLocked(RLock lock) {
+    public Boolean isLocked(RLock lock) {
         return lock.isLocked();
     }
 
-    public final Boolean isHeldByCurrentThread(String key) {
+    public Boolean isHeldByCurrentThread(String key) {
         return isHeldByCurrentThread(getLock(key));
     }
 
-    public final Boolean isHeldByCurrentThread(RLock lock) {
+    public Boolean isHeldByCurrentThread(RLock lock) {
         return lock.isHeldByCurrentThread();
     }
 
-    public final Object get(String key) {
+    public Object get(String key) {
         return redissonClient.getBucket(key).get();
     }
 
-    public final void delete(String key) {
+    public void delete(String key) {
         redissonClient.getKeys().delete(key);
     }
 
-    public final void delete(Collection<String> keys) {
+    public void delete(Collection<String> keys) {
         redisTemplate.delete(keys);
     }
 
-    public final Object hMGet(String key, String field) {
+    public Object hMGet(String key, String field) {
         return redisTemplate.opsForHash().get(key, field);
     }
 
-    public final Map<String, Object> hMGetAll(String key){
+    public Map<String, Object> hMGetAll(String key){
         HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
         return hashOperations.entries(key);
     }
 
-    public final void hMSet(String key, Map<String, Object> map){
+    public void hMSet(String key, Map<String, Object> map){
         hMSet(key, map, DEFAULT_EXPIRE);
     }
 
-    public final void hMSet(String key, Map<String, Object> map, long expire){
+    public void hMSet(String key, Map<String, Object> map, long expire){
         redisTemplate.opsForHash().putAll(key, map);
         if(expire != NOT_EXPIRE){
             expire(key, expire);
         }
     }
 
-    public final void hMSet(String key, String field, String value) {
+    public void hMSet(String key, String field, String value) {
         hMSet(key, field, value, DEFAULT_EXPIRE);
     }
 
-    public final void hMSet(String key, String field, String value, long expire) {
+    public void hMSet(String key, String field, String value, long expire) {
         redisTemplate.opsForHash().put(key, field, value);
         if(expire != NOT_EXPIRE){
             expire(key, expire);
         }
     }
 
-    public final void expire(String key, long expire){
+    public void expire(String key, long expire){
         redisTemplate.expire(key, expire, TimeUnit.SECONDS);
     }
 
-    public final void hMDel(String key, Object... fields){
+    public void hMDel(String key, Object... fields){
         redisTemplate.opsForHash().delete(key, fields);
     }
 
-    public final void leftPush(String key, String value){
+    public void leftPush(String key, String value){
         leftPush(key, value, DEFAULT_EXPIRE);
     }
 
-    public final void leftPush(String key, String value, long expire){
+    public void leftPush(String key, String value, long expire){
         redisTemplate.opsForList().leftPush(key, value);
         if(expire != NOT_EXPIRE){
             expire(key, expire);
         }
     }
 
-    public final Object rightPop(String key){
+    public Object rightPop(String key){
         return redisTemplate.opsForList().rightPop(key);
     }
 
-    public final Long getKeysSize() {
+    public Long getKeysSize() {
         final Object obj = redisTemplate.execute((RedisCallback) connection -> connection.dbSize());
         return obj == null ? 0 : Long.valueOf(obj.toString());
     }
 
-    public final List<Map<String, String>> getCommandStatus() {
+    public List<Map<String, String>> getCommandStatus() {
         final Properties commandStats = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info("commandstats"));
         List<Map<String, String>> pieList = new ArrayList<>();
         commandStats.stringPropertyNames().forEach(key -> {
@@ -203,7 +203,7 @@ public final class RedisUtil {
         return pieList;
     }
 
-    public final Map<String, String> getInfo() {
+    public Map<String, String> getInfo() {
         final Properties properties = (Properties) redisTemplate.execute((RedisCallback) connection -> connection.info());
         final Set<String> set = properties.stringPropertyNames();
         final Iterator<String> iterator = set.iterator();
