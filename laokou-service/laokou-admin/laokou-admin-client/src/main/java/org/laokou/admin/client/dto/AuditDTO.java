@@ -16,6 +16,9 @@
 package org.laokou.admin.client.dto;
 import lombok.Data;
 import java.util.Map;
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class AuditDTO {
 

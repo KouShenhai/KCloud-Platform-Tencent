@@ -46,9 +46,9 @@ public class SubscribeHandler extends AbstractHandler {
                 // TODO 可以添加关注用户到本地数据库
             }
         } catch (WxErrorException e) {
-            if (e.getError().getErrorCode() == 48001) {
-                this.logger.info("该公众号没有获取用户信息权限！");
-            }
+//            if (e.getError().getErrorCode() == 48001) {
+//                this.logger.info("该公众号没有获取用户信息权限！");
+//            }
         }
         WxMpXmlOutMessage responseResult = null;
         try {
