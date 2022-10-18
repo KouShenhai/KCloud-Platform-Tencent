@@ -275,7 +275,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //1.获取用户信息
         return Mono.just(getUserDetail(Authorization)).flatMap(userDetail -> {
             CompletableFuture<Boolean> booleanCompletableFuture1 = CompletableFuture.supplyAsync(() ->
-                        //2.获取所有资源列表
+                        //2.获取所有按钮资源列表
                         sysMenuService.getMenuList(null,1),executorService)
                         //异步回调
                 .thenApplyAsync((resourceList) ->
