@@ -194,7 +194,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         //资源列表放到redis中
         String userResourceKey = RedisKeyUtil.getUserResourceKey(token);
-        //原子操作 -> 防止数据被修改，更新到redis的数据不是最新数据
         List<String> permissionList = getPermissionList(userDetail);
         userDetail.setPermissionsList(permissionList);
         userDetail.setRoles(sysRoleService.getRoleListByUserId(userDetail.getId()));
