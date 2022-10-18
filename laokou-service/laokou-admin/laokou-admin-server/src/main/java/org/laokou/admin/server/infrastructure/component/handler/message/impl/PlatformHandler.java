@@ -22,6 +22,9 @@ import org.laokou.admin.client.dto.MessageDTO;
 import org.laokou.common.utils.SpringContextUtil;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author Kou Shenhai
+ */
 @Service
 public class PlatformHandler extends BaseHandler {
 
