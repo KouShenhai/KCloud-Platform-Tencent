@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  *
  * @author Kou Shenhai
  */
-public class ConvertUtil {
+public class ConvertUtil extends BeanUtils{
     private static final Logger logger = LoggerFactory.getLogger(ConvertUtil.class);
 
     public static <T> T sourceToTarget(Object source, Class<T> target) {
