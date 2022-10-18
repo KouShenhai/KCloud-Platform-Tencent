@@ -22,6 +22,7 @@ import org.laokou.cas.server.service.SysUserService;
 import org.laokou.cas.server.utils.AuthUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +65,9 @@ public class AuthAuthenticationProvider implements AuthenticationProvider {
             throw new RenOAuth2Exception(ErrorCode.ACCOUNT_NOT_EXIST, MessageUtil.getMessage(ErrorCode.ACCOUNT_NOT_EXIST));
         }
         Set<GrantedAuthority> authorities = new HashSet<>();
-        UserDetail userDetail = sysUserService.getUserDetail(vo.getUserId(), null);
+        UserDetail userDetail = sysUserService.getUserDetail(vo.getUserId(), vo.getUsername());
         List<String> permissionList;
-        if(1 == userDetail.getSuperAdmin()) {
+        if(SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {
             permissionList = sysMenuService.getPermissionsList();
         } else {
             permissionList = sysMenuService.getPermissionsListByUserId(vo.getUserId());

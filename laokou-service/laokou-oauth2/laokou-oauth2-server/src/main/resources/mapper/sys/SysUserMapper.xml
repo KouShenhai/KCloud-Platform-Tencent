@@ -21,5 +21,6 @@
         <if test="username != null and username != ''">
             and a.username = #{username}
         </if>
+       limit 1
     </select>
 </mapper>
