@@ -26,6 +26,9 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import java.util.Optional;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ORIGINAL_REQUEST_URL_ATTR;
+/**
+ * @author Kou Shenhai
+ */
 @Component
 @Slf4j
 public class Resilience4jFallbackHandler implements HandlerFunction<ServerResponse> {
