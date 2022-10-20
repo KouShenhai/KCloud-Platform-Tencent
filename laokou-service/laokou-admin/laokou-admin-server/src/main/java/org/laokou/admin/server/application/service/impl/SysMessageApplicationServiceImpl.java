@@ -27,8 +27,8 @@ import org.laokou.admin.server.domain.sys.repository.service.SysMessageService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.infrastructure.component.event.SaveMessageEvent;
+import org.laokou.admin.server.infrastructure.component.handler.message.HandleHolder;
 import org.laokou.admin.server.infrastructure.component.pipeline.ProcessController;
-import org.laokou.admin.server.infrastructure.component.run.Task;
 import org.laokou.admin.server.infrastructure.config.WebSocketServer;
 import org.laokou.admin.client.dto.MessageDTO;
 import org.laokou.admin.server.interfaces.qo.SysMessageQO;
@@ -76,6 +76,9 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     @Autowired
     private SysMessageDetailService sysMessageDetailService;
 
+    @Autowired
+    private HandleHolder handleHolder;
+
     @Override
     public Boolean pushMessage(MessageDTO dto) throws IOException {
         Iterator<String> iterator = dto.getReceiver().iterator();
@@ -100,8 +103,10 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
         //1.插入日志
         SpringContextUtil.publishEvent(new SaveMessageEvent(dto));
         //2.推送消息
-        Task task = SpringContextUtil.getBean(Task.class).setDto(dto);
-        executorService.execute(task);
+        executorService.execute(() -> {
+            //发送消息
+            handleHolder.route(dto.getSendChannel()).doHandler(dto);
+        });
     }
 
     @Override

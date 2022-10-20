@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 /**
  * 通知配置
+ * @author Kou Shenhai
  */
 @Slf4j
 @Component
