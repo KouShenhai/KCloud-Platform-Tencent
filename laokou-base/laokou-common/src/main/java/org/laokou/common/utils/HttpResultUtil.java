@@ -27,10 +27,10 @@ import lombok.Data;
 @ApiModel("响应")
 public class HttpResultUtil<T> {
     /**
-     * 编码：0标识成功，其他值表示失败
+     * 编码：200标识成功，其他值表示失败
      */
-    @ApiModelProperty(value = "编码：0标识成功，其他值表示失败",example = "0")
-    private int code = 0;
+    @ApiModelProperty(value = "编码：200标识成功，其他值表示失败",example = "0")
+    private int code = 200;
 
     /**
      * 消息内容
@@ -46,7 +46,7 @@ public class HttpResultUtil<T> {
     private T data;
 
     public boolean success(){
-        return code == 0;
+        return code == 200;
     }
 
     public HttpResultUtil<T> error(){

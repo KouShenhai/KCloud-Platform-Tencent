@@ -29,7 +29,7 @@ import org.laokou.auth.client.utils.TokenUtil;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.RedisKeyUtil;
-import org.laokou.redis.RedisUtil;
+import org.laokou.redis.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

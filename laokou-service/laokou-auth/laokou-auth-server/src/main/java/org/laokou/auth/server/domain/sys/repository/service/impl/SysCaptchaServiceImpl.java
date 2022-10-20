@@ -17,7 +17,7 @@ package org.laokou.auth.server.domain.sys.repository.service.impl;
 import com.google.code.kaptcha.Producer;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.common.utils.RedisKeyUtil;
-import org.laokou.redis.RedisUtil;
+import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.awt.image.BufferedImage;

@@ -17,7 +17,7 @@ package org.laokou.redis.factory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.redis.RedisUtil;
+import org.laokou.redis.utils.RedisUtil;
 import org.laokou.redis.enums.LockType;
 import org.redisson.api.RLock;
 

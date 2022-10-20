@@ -83,7 +83,7 @@ public class AuthFilter extends AuthenticatingFilter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         //处理登录失败的异常
-        String json = JacksonUtil.toJsonStr(new HttpResultUtil().error(ErrorCode.UNAUTHORIZED, e.getCause() == null ? e.getMessage() : e.getCause().getMessage()));
+        String json = JacksonUtil.toJsonStr(new HttpResultUtil().error(ErrorCode.AUTHORIZATION_INVALID, e.getCause() == null ? e.getMessage() : e.getCause().getMessage()));
         httpResponse.getWriter().print(json);
         return false;
     }

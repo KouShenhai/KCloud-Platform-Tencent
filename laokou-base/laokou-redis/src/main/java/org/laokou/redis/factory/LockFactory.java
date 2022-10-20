@@ -15,13 +15,10 @@
  */
 package org.laokou.redis.factory;
 
-import org.laokou.redis.RedisUtil;
+import org.laokou.redis.utils.RedisUtil;
 import org.laokou.redis.enums.LockScope;
-import org.laokou.redis.enums.LockType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.locks.Lock;
 
 /**
  * @author Kou Shenhai

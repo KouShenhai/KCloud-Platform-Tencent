@@ -38,7 +38,7 @@ public class TokenUtil {
     /**
      * 超时时间
      */
-    private static final Long EXPIRE = 1800L;
+    private static final Long EXPIRE = 3600L;
 
     public static Long getExpire() {
         return EXPIRE;
@@ -51,12 +51,17 @@ public class TokenUtil {
         return claims;
     }
 
+    public static String getToken(Map<String,Object> claims) {
+        Date expirationDate = DateTime.now().plusSeconds(EXPIRE.intValue()).toDate();
+        return getToken(claims,expirationDate);
+    }
+
     /**
      * 获取token
      * @param claims
      * @return
      */
-    public static String getToken(Map<String,Object> claims){
+    public static String getToken(Map<String,Object> claims,Date expirationDate){
         return Jwts.builder()
                 //签发编号
                 .setId(IdUtil.simpleUUID())
@@ -72,7 +77,7 @@ public class TokenUtil {
                 //签发时间
                 .setIssuedAt(DateTime.now().toDate())
                 //过期时间
-                .setExpiration(DateTime.now().plusSeconds(EXPIRE.intValue()).toDate())
+                .setExpiration(expirationDate)
                 //数据压缩方式
                 .compressWith(CompressionCodecs.GZIP)
                 //加密方式

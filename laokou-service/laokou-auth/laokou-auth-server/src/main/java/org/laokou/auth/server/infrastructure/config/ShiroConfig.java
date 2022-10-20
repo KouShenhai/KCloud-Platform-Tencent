@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.laokou.auth.server.infrastructure.common.filter.AuthFilter;
 import org.laokou.auth.server.infrastructure.common.filter.AuthRealm;
@@ -77,6 +78,10 @@ public class ShiroConfig {
         defaultWebSecurityManager.setSubjectDAO(subjectDAO);
         //配置realm
         defaultWebSecurityManager.setRealm(authRealm());
+        defaultWebSecurityManager.setRememberMeManager(null);
+        defaultWebSecurityManager.setSessionManager(sessionManager());
+        //ThreadContext绑定SecurityManager
+        ThreadContext.bind(defaultWebSecurityManager);
         return defaultWebSecurityManager;
     }
 

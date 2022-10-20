@@ -112,3 +112,5 @@ auth:
       url: /sys/zfb_bind_fail.html
     - permission: anon
       url: /sys/zfb_loading.html
+    - permission: anon
+      url: /sys/auth/api/logout

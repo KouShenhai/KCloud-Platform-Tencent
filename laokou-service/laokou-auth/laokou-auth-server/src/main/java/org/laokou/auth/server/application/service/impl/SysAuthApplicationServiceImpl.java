@@ -49,7 +49,7 @@ import org.laokou.auth.client.vo.SysDeptVO;
 import org.laokou.common.utils.*;
 
 import org.laokou.log.publish.PublishFactory;
-import org.laokou.redis.RedisUtil;
+import org.laokou.redis.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +59,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
-import reactor.core.publisher.Mono;
-
 import javax.crypto.BadPaddingException;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -70,6 +68,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.*;
 
@@ -188,7 +187,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         final Long userId = userDetail.getId();
         final String username = userDetail.getUsername();
         //登录成功 > 生成token
-        String token = TokenUtil.getToken(TokenUtil.getClaims(userId,username));
+        Map<String, Object> claims = TokenUtil.getClaims(userId, username);
+        String token = TokenUtil.getToken(claims);
         log.info("Token is：{}", token);
         //用户信息
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
@@ -201,8 +201,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         redisUtil.delete(userInfoKey);
         redisUtil.delete(userResourceKey);
         redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
-        caffeineCache.asMap().put(userInfoKey,userDetail);
         redisUtil.set(userResourceKey,resourceList,RedisUtil.HOUR_ONE_EXPIRE);
+        caffeineCache.asMap().put(userInfoKey,userDetail);
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         request.setAttribute(Constant.AUTHORIZATION_HEAD, token);
         return token;
@@ -230,14 +230,16 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public Boolean logout(String token) {
+    public void logout(HttpServletRequest request) {
         //region Description
-        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
+        String token = SecurityUser.getAuthorization(request);
+        if (StringUtils.isBlank(token)) {
+            return;
+        }
         //删除相关信息
         removeInfo(token);
         //退出
         request.removeAttribute(Constant.AUTHORIZATION_HEAD);
-        return true;
         //endregion
     }
 
@@ -269,14 +271,14 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public Mono<HttpResultUtil<UserDetail>> resource(String Authorization, String uri, String method) {
+    public UserDetail resource(String Authorization, String uri, String method) {
         //region Description
         //1.获取用户信息
-        return Mono.just(getUserDetail(Authorization)).flatMap(userDetail -> {
-            CompletableFuture<Boolean> booleanCompletableFuture1 = CompletableFuture.supplyAsync(() ->
+        UserDetail userDetail = getUserDetail(Authorization);
+        CompletableFuture<Boolean> booleanCompletableFuture1 = CompletableFuture.supplyAsync(() ->
                         //2.获取所有按钮资源列表
                         sysMenuService.getMenuList(null,1),executorService)
-                        //异步回调
+                //异步回调
                 .thenApplyAsync((resourceList) ->
                         //3.判断资源是否在资源列表列表里
                         pathMatcher(uri, method, resourceList),executorService)
@@ -299,41 +301,41 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                     }
                     return false;
                 },executorService);
-            //8. 需要鉴权，获取用户资源列表
-            CompletableFuture<Boolean> booleanCompletableFuture2 = CompletableFuture.supplyAsync(() -> sysMenuService.getMenuList(Authorization,userDetail, false, 1), executorService)
-                    .thenApplyAsync((resourceList) ->
-                            //9.如果不在用户资源列表里，则无权访问
-                            pathMatcher(uri, method, resourceList), executorService)
-                    .thenApplyAsync((resource) -> {
-                        if (resource != null) {
-                            return true;
-                        }
-                        return false;
-                    }, executorService);
-            Boolean flag = false;
-            try {
-                flag = booleanCompletableFuture1.thenCombineAsync(booleanCompletableFuture2, (a, b) -> {
-                    if (a || b) {
+        //8. 需要鉴权，获取用户资源列表
+        CompletableFuture<Boolean> booleanCompletableFuture2 = CompletableFuture.supplyAsync(() -> sysMenuService.getMenuList(Authorization,userDetail, false, 1), executorService)
+                .thenApplyAsync((resourceList) ->
+                        //9.如果不在用户资源列表里，则无权访问
+                        pathMatcher(uri, method, resourceList), executorService)
+                .thenApplyAsync((resource) -> {
+                    if (resource != null) {
                         return true;
                     }
                     return false;
-                },executorService).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            if (flag) {
-                return Mono.just(new HttpResultUtil<UserDetail>().ok(userDetail));
-            } else {
-                return Mono.error(new CustomException(ErrorCode.FORBIDDEN));
-            }
-        });
+                }, executorService);
+        Boolean flag = false;
+        try {
+            flag = booleanCompletableFuture1.thenCombineAsync(booleanCompletableFuture2, (a, b) -> {
+                if (a || b) {
+                    return true;
+                }
+                return false;
+            },executorService).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        if (flag) {
+            return userDetail;
+        } else {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
         //endregion
     }
 
     @Override
-    public UserInfoVO userInfo(String token) {
+    public UserInfoVO userInfo(HttpServletRequest request) {
+        String token = SecurityUser.getAuthorization(request);
         UserDetail userDetail = getUserDetail(token);
         return UserInfoVO.builder().imgUrl(userDetail.getImgUrl())
                         .username(userDetail.getUsername())
@@ -345,7 +347,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public BaseUserVO openUserInfo(String token) {
+    public BaseUserVO openUserInfo(HttpServletRequest request) {
+        String token = SecurityUser.getAuthorization(request);
         UserDetail userDetail = getUserDetail(token);
         return BaseUserVO.builder().imgUrl(userDetail.getImgUrl())
                 .username(userDetail.getUsername())

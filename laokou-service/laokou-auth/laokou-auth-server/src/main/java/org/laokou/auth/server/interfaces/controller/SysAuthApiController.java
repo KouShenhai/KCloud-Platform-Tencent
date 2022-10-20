@@ -19,7 +19,6 @@ import org.laokou.auth.client.dto.LoginDTO;
 import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.auth.client.vo.LoginVO;
 import org.laokou.auth.client.vo.UserInfoVO;
-import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.constant.Constant;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.HttpResultUtil;
@@ -80,19 +79,20 @@ public class SysAuthApiController {
     public Mono<HttpResultUtil<UserDetail>>  resource(@RequestParam(Constant.AUTHORIZATION_HEAD) String Authorization,
                                                       @RequestParam(Constant.URI)String uri,
                                                       @RequestParam(Constant.METHOD)String method) {
-        return sysAuthApplicationService.resource(Authorization, uri, method);
+        return Mono.create(callback -> callback.success(new HttpResultUtil<UserDetail>().ok(sysAuthApplicationService.resource(Authorization, uri, method))));
     }
 
     @GetMapping("/sys/auth/api/logout")
     @ApiOperation("系统认证>退出登录")
-    public HttpResultUtil<Boolean> logout(HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysAuthApplicationService.logout(SecurityUser.getAuthorization(request)));
+    public Mono<Void> logout(HttpServletRequest request) {
+        sysAuthApplicationService.logout(request);
+        return Mono.empty();
     }
 
     @GetMapping("/sys/auth/api/userInfo")
     @ApiOperation("系统认证>用户信息")
     public HttpResultUtil<UserInfoVO> userInfo(HttpServletRequest request) {
-        return new HttpResultUtil<UserInfoVO>().ok(sysAuthApplicationService.userInfo(SecurityUser.getAuthorization(request)));
+        return new HttpResultUtil<UserInfoVO>().ok(sysAuthApplicationService.userInfo(request));
     }
 
     @PostMapping("/sys/auth/api/open/login")
@@ -104,7 +104,7 @@ public class SysAuthApiController {
     @GetMapping("/sys/auth/api/open/userInfo")
     @ApiOperation("系统认证>对外开放用户信息")
     public HttpResultUtil<BaseUserVO> openUserInfo(HttpServletRequest request) {
-        return new HttpResultUtil<BaseUserVO>().ok(sysAuthApplicationService.openUserInfo(SecurityUser.getAuthorization(request)));
+        return new HttpResultUtil<BaseUserVO>().ok(sysAuthApplicationService.openUserInfo(request));
     }
 
 }

@@ -21,9 +21,6 @@ import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.auth.client.vo.LoginVO;
 import org.laokou.auth.client.vo.UserInfoVO;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.common.utils.HttpResultUtil;
-import reactor.core.publisher.Mono;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -43,10 +40,10 @@ public interface SysAuthApplicationService {
 
     /**
      * 退出
-     * @param token
+     * @param request
      * @return
      */
-    Boolean logout(String token);
+    void logout(HttpServletRequest request);
 
     /**
      * 生成验证码
@@ -63,21 +60,21 @@ public interface SysAuthApplicationService {
      * @param method
      * @return
      */
-    Mono<HttpResultUtil<UserDetail>> resource(String Authorization, String uri, String method);
+    UserDetail resource(String Authorization, String uri, String method);
 
     /**
      * 获取用户信息
-     * @param token
+     * @param request
      * @return
      */
-    UserInfoVO userInfo(String token);
+    UserInfoVO userInfo(HttpServletRequest request);
 
     /**
      * 获取对外开放用户信息
-     * @param token
+     * @param request
      * @return
      */
-    BaseUserVO openUserInfo(String token);
+    BaseUserVO openUserInfo(HttpServletRequest request);
 
     /**
      * 支付宝登录

@@ -23,7 +23,7 @@ import org.laokou.admin.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.RedisKeyUtil;
-import org.laokou.redis.RedisUtil;
+import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
