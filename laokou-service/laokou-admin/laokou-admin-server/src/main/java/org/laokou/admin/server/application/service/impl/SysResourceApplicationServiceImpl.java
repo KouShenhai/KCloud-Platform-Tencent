@@ -54,6 +54,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 /**
  * @author Kou Shenhai
@@ -153,7 +154,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public Boolean syncAsyncBatchResource(String code) {
+    public Boolean syncAsyncBatchResource(String code) throws InterruptedException {
             //总数
             final Long resourceTotal = sysResourceService.getResourceTotal(code);
             if (resourceTotal > 0) {
@@ -162,14 +163,19 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                 final String resourceIndex = "laokou_resource_" + code;
                 final String resourceIndexAlias = "laokou_resource";
                 final List<String> resourceYMPartitionList = sysResourceService.getResourceYMPartitionList(code);
-                for (String ym: resourceYMPartitionList) {
-                    final CreateIndexModel model = new CreateIndexModel();
-                    final String indexName = resourceIndex + "_" + ym;
-                    final String indexAlias = resourceIndexAlias;
-                    model.setIndexName(indexName);
-                    model.setIndexAlias(indexAlias);
-                    elasticsearchApiFeignClient.create(model);
+                CountDownLatch countDownLatch = new CountDownLatch(resourceYMPartitionList.size());
+                for (String ym : resourceYMPartitionList) {
+                    asyncTaskExecutor.execute(() -> {
+                        final CreateIndexModel model = new CreateIndexModel();
+                        final String indexName = resourceIndex + "_" + ym;
+                        final String indexAlias = resourceIndexAlias;
+                        model.setIndexName(indexName);
+                        model.setIndexAlias(indexAlias);
+                        elasticsearchApiFeignClient.create(model);
+                        countDownLatch.countDown();
+                    });
                 }
+                countDownLatch.await();
                 //同步数据 - 异步
                 final int chunkSize = 500;
                 int pageIndex = 0;
@@ -183,45 +189,26 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         final Map.Entry<String, List<ResourceIndex>> entry = iterator.next();
                         final String ym = entry.getKey();
                         final List<ResourceIndex> resourceDataList = entry.getValue();
-                        final String indexName = resourceIndex + "_" + ym;
-                        final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
-                        final ElasticsearchModel model = new ElasticsearchModel();
-                        model.setIndexName(indexName);
-                        model.setData(jsonDataList);
-                        model.setIndexAlias(resourceIndexAlias);
                         //同步数据
-                        asyncTaskExecutor.execute(new SyncElasticsearchRun(indexName,jsonDataList,resourceIndexAlias,requestAttributes));
+                        asyncTaskExecutor.execute(() -> {
+                            //解决请求头丢失问题
+                            //每一个线程都共享之前的请求头
+                            RequestContextHolder.setRequestAttributes(requestAttributes);
+                            final String indexName = resourceIndex + "_" + ym;
+                            final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
+                            final ElasticsearchModel model = new ElasticsearchModel();
+                            model.setIndexName(indexName);
+                            model.setData(jsonDataList);
+                            model.setIndexAlias(resourceIndexAlias);
+                            //同步数据
+                            elasticsearchApiFeignClient.syncAsyncBatch(model);
+                        });
                     }
                     pageIndex += chunkSize;
                 }
                 afterSync();
             }
         return true;
-    }
-
-    private class SyncElasticsearchRun extends Thread {
-        private String indexName;
-        private String resourceIndexAlias;
-        private String jsonDataList;
-        private RequestAttributes requestAttributes;
-        SyncElasticsearchRun(String indexName,String jsonDataList,String resourceIndexAlias,RequestAttributes requestAttributes) {
-            this.indexName = indexName;
-            this.jsonDataList = jsonDataList;
-            this.resourceIndexAlias = resourceIndexAlias;
-            this.requestAttributes = requestAttributes;
-        }
-        @Override
-        public void run() {
-            //解决请求头丢失问题
-            //每一个线程都共享之前的请求头
-            RequestContextHolder.setRequestAttributes(requestAttributes);
-            final ElasticsearchModel model = new ElasticsearchModel();
-            model.setIndexName(indexName);
-            model.setData(jsonDataList);
-            model.setIndexAlias(resourceIndexAlias);
-            //同步数据
-            elasticsearchApiFeignClient.syncAsyncBatch(model);
-        }
     }
 
     @Override

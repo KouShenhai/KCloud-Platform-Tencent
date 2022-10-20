@@ -73,7 +73,7 @@ public class SysImageApiController {
     @ApiOperation("图片管理>同步")
     @Lock4j(key = "image_sync_lock", scope = LockScope.DISTRIBUTED_LOCK)
     @OperateLog(module = "图片管理",name = "图片同步")
-    public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) {
+    public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncAsyncBatchResource(code));
     }
 

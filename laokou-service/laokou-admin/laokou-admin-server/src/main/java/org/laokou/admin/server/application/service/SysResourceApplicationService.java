@@ -42,7 +42,7 @@ public interface SysResourceApplicationService {
 
     UploadVO uploadResource(String code, String fileName, InputStream inputStream, Long fileSize) throws Exception;
 
-    Boolean syncAsyncBatchResource(String code);
+    Boolean syncAsyncBatchResource(String code) throws InterruptedException;
 
     List<SysResourceAuditLogVO> queryAuditLogList(Long resourceId);
 
