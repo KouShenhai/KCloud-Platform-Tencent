@@ -62,7 +62,7 @@
         <!--alipay-sdk-java版本-->
         <alipay-sdk-java.version>4.22.34.ALL</alipay-sdk-java.version>
         <!--shiro版本-->
-        <shiro.version>1.4.0</shiro.version>
+        <shiro.version>1.9.0</shiro.version>
         <!--druid版本-->
         <druid.version>1.1.17</druid.version>
         <!--kaptcha版本-->
@@ -349,12 +349,7 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-core</artifactId>
-                <version>${shiro.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-spring</artifactId>
+                <artifactId>shiro-spring-boot-starter</artifactId>
                 <version>${shiro.version}</version>
             </dependency>
             <dependency>

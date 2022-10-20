@@ -20,6 +20,9 @@ import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
 import org.apache.commons.lang.StringUtils;
 import javax.servlet.http.HttpServletRequest;
+/**
+ * @author Kou Shenhai
+ */
 public class SecurityUser {
 
     public static Long getUserId(HttpServletRequest request) {

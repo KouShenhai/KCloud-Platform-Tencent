@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.config;
-import org.apache.shiro.util.ThreadContext;
+import lombok.RequiredArgsConstructor;
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
+import org.apache.shiro.realm.Realm;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.laokou.auth.server.infrastructure.common.filter.AuthFilter;
 import org.laokou.auth.server.infrastructure.common.filter.AuthRealm;
 import org.laokou.auth.server.infrastructure.component.AuthHandler;
 import org.laokou.auth.server.infrastructure.component.AuthProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -44,10 +45,10 @@ import org.apache.shiro.mgt.SecurityManager;
  */
 @Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class ShiroConfig {
 
-    @Autowired
-    private AuthHandler authHandler;
+    private final AuthHandler authHandler;
 
     @Bean("sessionManager")
     public DefaultWebSessionManager sessionManager(){
@@ -57,15 +58,38 @@ public class ShiroConfig {
         return sessionManager;
     }
 
-    @Bean("securityManager")
-    public SecurityManager securityManager(AuthRealm authRealm, SessionManager sessionManager){
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(authRealm);
-        securityManager.setRememberMeManager(null);
-        securityManager.setSessionManager(sessionManager);
-        //ThreadContext绑定SecurityManager
-        ThreadContext.bind(securityManager);
-        return securityManager;
+    @Bean("shiroFilterFactoryBean")
+    public ShiroFilterFactoryBean shiroFilterFactoryBean() {
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        //设置安全管理器
+        shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager());
+        return shiroFilterFactoryBean;
+    }
+
+    @Bean("defaultWebSecurityManager")
+    public DefaultWebSecurityManager defaultWebSecurityManager() {
+        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
+        //关闭shiro自带的session
+        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+        DefaultSessionStorageEvaluator sessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+        sessionStorageEvaluator.setSessionStorageEnabled(false);
+        subjectDAO.setSessionStorageEvaluator(sessionStorageEvaluator);
+        defaultWebSecurityManager.setSubjectDAO(subjectDAO);
+        //配置realm
+        defaultWebSecurityManager.setRealm(authRealm());
+        return defaultWebSecurityManager;
+    }
+
+    @Bean("authRealm")
+    public Realm authRealm() {
+        AuthRealm realm = new AuthRealm();
+        //设置缓存管理器
+        realm.setCachingEnabled(false);
+        realm.setAuthenticationCachingEnabled(true);
+        realm.setAuthenticationCacheName("AuthenticationCache");
+        realm.setAuthorizationCachingEnabled(true);
+        realm.setAuthorizationCacheName("AuthorizationCache");
+        return realm;
     }
 
     @Bean("shiroFilter")
@@ -98,7 +122,7 @@ public class ShiroConfig {
         return new LifecycleBeanPostProcessor();
     }
 
-    @Bean
+    @Bean("authorizationAttributeSourceAdvisor")
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
         advisor.setSecurityManager(securityManager);
@@ -109,7 +133,7 @@ public class ShiroConfig {
      * 下面的代码是添加注解支持
      * @return
      */
-    @Bean
+    @Bean("defaultAdvisorAutoProxyCreator")
     @DependsOn("lifecycleBeanPostProcessor")
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();

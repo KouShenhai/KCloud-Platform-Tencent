@@ -376,8 +376,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //endregion
     }
 
-    @Override
-    public UserDetail getUserDetail(String token) {
+    private UserDetail getUserDetail(String token) {
         //region Description
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         UserDetail userInfo = caffeineCache.asMap().get(userInfoKey);

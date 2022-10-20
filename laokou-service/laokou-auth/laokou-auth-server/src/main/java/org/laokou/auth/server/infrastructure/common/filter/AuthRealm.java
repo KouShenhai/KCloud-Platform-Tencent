@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.common.filter;
-import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.auth.client.utils.TokenUtil;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.auth.client.user.UserDetail;
@@ -26,8 +25,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,12 +32,8 @@ import java.util.Set;
  * 认证授权
  * @author Kou Shenhai
  */
-@Component
 @Slf4j
 public class AuthRealm extends AuthorizingRealm {
-
-    @Autowired
-    private SysAuthApplicationService sysAuthApplicationService;
 
     /**
      * 授权(验证权限时调用)
@@ -73,9 +66,7 @@ public class AuthRealm extends AuthorizingRealm {
         if (expiration) {
             throw new IncorrectCredentialsException(MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
         }
-        //查询用户信息
-        UserDetail userDetail = sysAuthApplicationService.getUserDetail(accessToken);
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(userDetail, accessToken, getName());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(accessToken, accessToken, this.getName());
         return info;
     }
 

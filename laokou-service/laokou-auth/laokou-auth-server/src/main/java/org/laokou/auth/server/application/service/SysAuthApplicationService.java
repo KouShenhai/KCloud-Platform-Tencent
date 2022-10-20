@@ -80,13 +80,6 @@ public interface SysAuthApplicationService {
     BaseUserVO openUserInfo(String token);
 
     /**
-     * 获取用户信息
-     * @param token
-     * @return
-     */
-    UserDetail getUserDetail(String token);
-
-    /**
      * 支付宝登录
      * @param request
      * @param response

@@ -67,7 +67,8 @@ public class WebFluxConfig {
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
-        factory.setMaxFileSize(DataSize.ofBytes(999 * 1024 * 1024 * 1024)); // 限制上传文件大小
+        // 限制上传文件大小
+        factory.setMaxFileSize(DataSize.ofBytes(999 * 1024 * 1024 * 1024));
         return factory.createMultipartConfig();
     }
 

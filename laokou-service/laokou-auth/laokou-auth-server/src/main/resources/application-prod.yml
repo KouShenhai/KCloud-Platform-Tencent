@@ -8,6 +8,11 @@ server:
       cookie:
         http-only: true
     connection-timeout: -1
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
 
 app:
   id: auth # 应用全局唯一的身份标识

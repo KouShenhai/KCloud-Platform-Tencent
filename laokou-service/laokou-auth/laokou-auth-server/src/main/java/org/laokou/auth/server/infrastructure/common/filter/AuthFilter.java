@@ -15,7 +15,6 @@
  */
 package org.laokou.auth.server.infrastructure.common.filter;
 
-import com.google.gson.Gson;
 import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.HttpResultUtil;
@@ -26,6 +25,7 @@ import org.apache.http.HttpStatus;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
+import org.laokou.common.utils.JacksonUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -70,7 +70,7 @@ public class AuthFilter extends AuthenticatingFilter {
         if(StringUtils.isBlank(Authorization)){
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            String json = new Gson().toJson(new HttpResultUtil<Boolean>().error(ErrorCode.UNAUTHORIZED));
+            String json = JacksonUtil.toJsonStr(new HttpResultUtil<Boolean>().error(ErrorCode.UNAUTHORIZED));
             httpResponse.getWriter().print(json);
             return false;
         }
@@ -83,7 +83,7 @@ public class AuthFilter extends AuthenticatingFilter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         //处理登录失败的异常
-        String json = new Gson().toJson(new HttpResultUtil().error(ErrorCode.UNAUTHORIZED, e.getCause() == null ? e.getMessage() : e.getCause().getMessage()));
+        String json = JacksonUtil.toJsonStr(new HttpResultUtil().error(ErrorCode.UNAUTHORIZED, e.getCause() == null ? e.getMessage() : e.getCause().getMessage()));
         httpResponse.getWriter().print(json);
         return false;
     }
