@@ -18,6 +18,7 @@ import org.laokou.common.enums.DataTypeEnum;
 import java.lang.annotation.*;
 /**
  * 自定义操作日志注解
+ * @author Kou Shenhai
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

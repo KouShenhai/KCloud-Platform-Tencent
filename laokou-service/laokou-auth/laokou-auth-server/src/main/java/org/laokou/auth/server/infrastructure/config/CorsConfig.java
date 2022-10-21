@@ -38,7 +38,7 @@ import java.util.TimeZone;
  */
 @Configuration
 @Slf4j
-public class WebFluxConfig {
+public class CorsConfig {
 
     /**
      * SimpleDateFormat线程不安全

@@ -21,5 +21,6 @@
         <module>laokou-elasticsearch</module>
         <module>laokou-cas</module>
         <module>laokou-rabbitmq</module>
+        <module>laokou-kafka</module>
     </modules>
 </project>
