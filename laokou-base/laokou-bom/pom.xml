@@ -502,6 +502,21 @@
                 <artifactId>laokou-rabbitmq-consumer</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-kafka-server</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-kafka-client</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-kafka-consumer</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
