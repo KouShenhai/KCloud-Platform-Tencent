@@ -1,5 +1,35 @@
 version: '3.2'
 services:
+  zookeeper:
+    tty: true
+    image: docker.io/wurstmeister/zookeeper:latest
+    container_name: zookeeper
+    environment:
+      - TZ="Asia/Shanghai"
+    restart: on-failure
+    ports:
+      - "2181:2181"
+    volumes:
+      - /etc/localtime:/etc/localtime
+  kafka:
+    tty: true
+    image: docker.io/wurstmeister/kafka:2.13-2.8.1
+    container_name: kafka
+    environment:
+      - TZ="Asia/Shanghai"
+      - KAFKA_BROKER_ID=0
+      - KAFKA_ZOOKEEPER_CONNECT=192.168.62.137:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.62.137:9092
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+    restart: on-failure
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    links:
+      - zookeeper
+    volumes:
+      - /etc/localtime:/etc/localtime
   laokou-gateway-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-gateway:1.0-SNAPSHOT
@@ -11,6 +41,8 @@ services:
       - "5555:5555"
     depends_on:
       - laokou-register-service
+    volumes:
+      - /etc/localtime:/etc/localtime
   laokou-register-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-register:1.0-SNAPSHOT
@@ -20,6 +52,8 @@ services:
     ports:
       - "1111:1111"
     restart: on-failure
+    volumes:
+      - /etc/localtime:/etc/localtime
   laokou-admin-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-admin-server:1.0-SNAPSHOT
@@ -31,6 +65,8 @@ services:
     restart: on-failure
     depends_on:
       - laokou-register-service
+    volumes:
+      - /etc/localtime:/etc/localtime
   laokou-auth-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-auth-server:1.0-SNAPSHOT
@@ -42,6 +78,8 @@ services:
     restart: on-failure
     depends_on:
       - laokou-register-service
+    volumes:
+      - /etc/localtime:/etc/localtime
   laokou-monitor-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-monitor:1.0-SNAPSHOT
@@ -51,6 +89,8 @@ services:
     ports:
       - "5000:5000"
     restart: on-failure
+    volumes:
+      - /etc/localtime:/etc/localtime
   laokou-elasticsearch-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-elasticsearch-server:1.0-SNAPSHOT
@@ -62,10 +102,12 @@ services:
     restart: on-failure
     depends_on:
       - laokou-register-service
-  laokou-rabbitmq-server-service:
+    volumes:
+      - /etc/localtime:/etc/localtime
+  laokou-kafka-server-service:
     tty: true
-    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-rabbitmq-server:1.0-SNAPSHOT
-    container_name: laokou-rabbitmq-server
+    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-kafka-server:1.0-SNAPSHOT
+    container_name: laokou-kafka-server
     environment:
       - TZ="Asia/Shanghai"
     ports:
@@ -73,12 +115,23 @@ services:
     restart: on-failure
     depends_on:
       - laokou-register-service
-  laokou-rabbitmq-consumer-service:
+      - kafka
+    links:
+      - kafka
+    volumes:
+      - /etc/localtime:/etc/localtime
+  laokou-kafka-consumer-service:
     tty: true
-    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-rabbitmq-consumer:1.0-SNAPSHOT
-    container_name: laokou-rabbitmq-consumer
+    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-kafka-consumer:1.0-SNAPSHOT
+    container_name: laokou-kafka-consumer
     environment:
       - TZ="Asia/Shanghai"
     ports:
       - "9994:9994"
     restart: on-failure
+    depends_on:
+      - kafka
+    links:
+      - kafka
+    volumes:
+      - /etc/localtime:/etc/localtime

@@ -7,6 +7,6 @@ LABEL description="laokou-kafka-consumer"
 EXPOSE 9994
 # 复制文件
 COPY laokou-kafka-consumer.jar app.jar
-RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo Asia/Shanghai > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 # 执行命令
 ENTRYPOINT java -Xms256m -Xmx512m -Djasypt.encryptor.password=koushenhai5201314wumeihua -jar app.jar --spring.profiles.active=prod > app.log

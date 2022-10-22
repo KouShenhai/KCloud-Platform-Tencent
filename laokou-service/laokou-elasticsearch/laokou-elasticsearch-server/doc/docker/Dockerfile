@@ -7,6 +7,6 @@ LABEL description="laokou-elasticsearch-server"
 EXPOSE 9998
 # 复制文件
 COPY laokou-elasticsearch-server.jar app.jar
-RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo Asia/Shanghai > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 # 执行命令
 ENTRYPOINT java -Xms256m -Xmx512m --add-opens=java.base/java.lang=ALL-UNNAMED -Djasypt.encryptor.password=koushenhai5201314wumeihua -Denv=DEV -Dapollo.configService=http://124.222.196.51:8080 -jar app.jar --spring.profiles.active=prod > app.log

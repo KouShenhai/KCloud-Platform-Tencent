@@ -9,6 +9,6 @@ EXPOSE 5000
 VOLUME /data
 # 复制文件
 COPY laokou-monitor.jar app.jar
-RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo Asia/Shanghai > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 # 执行命令
 ENTRYPOINT java -Xms256m -Xmx512m -jar app.jar --spring.profiles.active=prod > app.log
