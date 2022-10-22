@@ -30,9 +30,8 @@ import java.time.Duration;
 /**
  * @ConditionalOnBean -> spring容器中存在指定的class实例对象，对应的配置才生效
  * @ConditionalOnMissingBean -> ConditionalOnMissingBean 保证只有一个bean被注入
- */
-/**
  * 某个class位于类路径上，才会实例化一个bean
+ * @author Kou Shenhai
  */
 @ConditionalOnClass(Redisson.class)
 /**

@@ -38,10 +38,12 @@ import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
 import org.laokou.common.utils.JacksonUtil;
+import org.laokou.common.utils.RedisKeyUtil;
 import org.laokou.kafka.client.constant.KafkaConstant;
 import org.laokou.kafka.client.dto.KafkaDTO;
 import org.laokou.kafka.client.dto.ResourceAuditLogDTO;
 import org.laokou.log.feign.rabbitmq.KafkaApiFeignClient;
+import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -73,6 +75,9 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
 
     @Autowired
     private WorkFlowUtil workFlowUtil;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public StartProcessVO startResourceProcess(String processKey, String businessKey, String instanceName) {
@@ -157,8 +162,17 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
                 status = 3;
             }
         }
+        Long resourceId = Long.valueOf(dto.getBusinessKey());
+        String resourceAuditKey = RedisKeyUtil.getResourceAuditKey(resourceId);
+        String taskId = dto.getTaskId();
+        Object obj = redisUtil.hGet(resourceAuditKey, taskId);
+        if (obj != null) {
+            return false;
+        } else {
+            redisUtil.hSet(resourceAuditKey,taskId,taskId,RedisUtil.HOUR_ONE_EXPIRE);
+        }
         ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
-        auditLogDTO.setResourceId(Long.valueOf(dto.getBusinessKey()));
+        auditLogDTO.setResourceId(resourceId);
         auditLogDTO.setStatus(status);
         auditLogDTO.setAuditStatus(auditStatus);
         auditLogDTO.setAuditDate(new Date());

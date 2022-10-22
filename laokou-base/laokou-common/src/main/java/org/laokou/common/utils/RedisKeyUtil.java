@@ -40,4 +40,11 @@ public final class RedisKeyUtil {
     public static String getUserInfoKey(String token) {
         return "sys:user:info:" + token;
     }
+
+    /**
+     * 资源审批Key
+     */
+    public static String getResourceAuditKey(Long id) {
+        return "sys:resource:audit:" + id;
+    }
 }

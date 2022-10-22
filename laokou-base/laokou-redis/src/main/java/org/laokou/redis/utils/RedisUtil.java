@@ -15,13 +15,17 @@
  */
 package org.laokou.redis.utils;
 import org.apache.commons.lang.StringUtils;
+import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
+import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 /**
@@ -36,32 +40,38 @@ public final class RedisUtil {
 
     @Autowired
     private RedissonClient redissonClient;
+
+    /**
+     * 布隆过滤器
+     */
+    private static final String BLOOM_FILTER = "bloom-filter";
+
+    private static volatile RBloomFilter<Object> bloomFilter;
+
     /**  默认过期时长为24小时，单位：秒 */
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24L;
+
     /**  过期时长为1小时，单位：秒 */
     public final static long HOUR_ONE_EXPIRE = 60 * 60 * 1L;
+
     /**  过期时长为6小时，单位：秒 */
     public final static long HOUR_SIX_EXPIRE = 60 * 60 * 6L;
+
     /**  不设置过期时长 */
     public final static long NOT_EXPIRE = -1L;
-    public void set(String key, Object value, long expire){
-        redissonClient.getBucket(key).set(value,expire, TimeUnit.SECONDS);
-    }
 
-    public boolean hasKey(String key) {
-        return redisTemplate.hasKey(key);
-    }
-
-    public void set(String key, Object value){
-        set(key, value, DEFAULT_EXPIRE);
-    }
-
-    public Object get(String key, long expire) {
-        Object value = redisTemplate.opsForValue().get(key);
-        if(expire != NOT_EXPIRE){
-            expire(key, expire);
+    @PostMapping
+    public RBloomFilter<Object> getSingleBloomFilter() {
+        if (bloomFilter == null) {
+            synchronized (RedisUtil.class) {
+                if (bloomFilter == null) {
+                    bloomFilter = redissonClient.getBloomFilter(BLOOM_FILTER);
+                    //初始化数量为200，期望误差率为0.01
+                    bloomFilter.tryInit(200,0.01);
+                }
+            }
         }
-        return value;
+        return bloomFilter;
     }
 
     public RLock getLock(String key) {
@@ -83,6 +93,7 @@ public final class RedisUtil {
     public Boolean tryLock(RLock lock, long expire, long timeout) throws InterruptedException {
         return lock.tryLock(timeout, expire, TimeUnit.SECONDS);
     }
+
     public Boolean tryLock(String key, long expire, long timeout) throws InterruptedException {
         return tryLock(getLock(key),expire,timeout);
     }
@@ -119,7 +130,19 @@ public final class RedisUtil {
         return lock.isHeldByCurrentThread();
     }
 
+    public void set(String key, Object value){
+        set(key, value, DEFAULT_EXPIRE);
+    }
+
+    public void set(String key, Object value, long expire){
+        bloomFilter.add(value);
+        redissonClient.getBucket(key).set(value,expire, TimeUnit.SECONDS);
+    }
+
     public Object get(String key) {
+        if (!bloomFilter.contains(key)) {
+            return null;
+        }
         return redissonClient.getBucket(key).get();
     }
 
@@ -127,62 +150,18 @@ public final class RedisUtil {
         redissonClient.getKeys().delete(key);
     }
 
-    public void delete(Collection<String> keys) {
-        redisTemplate.delete(keys);
+    public void hSet(String key,String field, Object value,long expire) {
+        RMap<Object, Object> map = redissonClient.getMap(key);
+        map.put(field,value);
+        map.expire(Duration.ofSeconds(expire));
     }
 
-    public Object hMGet(String key, String field) {
-        return redisTemplate.opsForHash().get(key, field);
+    public void hSet(String key,String field, Object value) {
+        hSet(key, field, value,NOT_EXPIRE);
     }
 
-    public Map<String, Object> hMGetAll(String key){
-        HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
-        return hashOperations.entries(key);
-    }
-
-    public void hMSet(String key, Map<String, Object> map){
-        hMSet(key, map, DEFAULT_EXPIRE);
-    }
-
-    public void hMSet(String key, Map<String, Object> map, long expire){
-        redisTemplate.opsForHash().putAll(key, map);
-        if(expire != NOT_EXPIRE){
-            expire(key, expire);
-        }
-    }
-
-    public void hMSet(String key, String field, String value) {
-        hMSet(key, field, value, DEFAULT_EXPIRE);
-    }
-
-    public void hMSet(String key, String field, String value, long expire) {
-        redisTemplate.opsForHash().put(key, field, value);
-        if(expire != NOT_EXPIRE){
-            expire(key, expire);
-        }
-    }
-
-    public void expire(String key, long expire){
-        redisTemplate.expire(key, expire, TimeUnit.SECONDS);
-    }
-
-    public void hMDel(String key, Object... fields){
-        redisTemplate.opsForHash().delete(key, fields);
-    }
-
-    public void leftPush(String key, String value){
-        leftPush(key, value, DEFAULT_EXPIRE);
-    }
-
-    public void leftPush(String key, String value, long expire){
-        redisTemplate.opsForList().leftPush(key, value);
-        if(expire != NOT_EXPIRE){
-            expire(key, expire);
-        }
-    }
-
-    public Object rightPop(String key){
-        return redisTemplate.opsForList().rightPop(key);
+    public Object hGet(String key,String field) {
+        return redissonClient.getMap(key).get(field);
     }
 
     public Long getKeysSize() {
