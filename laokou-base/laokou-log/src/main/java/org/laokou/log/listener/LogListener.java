@@ -15,17 +15,17 @@
  */
 package org.laokou.log.listener;
 import feign.FeignException;
-import org.laokou.common.constant.RabbitMqConstant;
-import org.laokou.common.dto.LoginLogDTO;
-import org.laokou.common.dto.MqDTO;
-import org.laokou.common.dto.OperateLogDTO;
+import org.laokou.kafka.client.dto.LoginLogDTO;
+import org.laokou.kafka.client.dto.OperateLogDTO;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.JacksonUtil;
+import org.laokou.kafka.client.constant.KafkaConstant;
+import org.laokou.kafka.client.dto.KafkaDTO;
 import org.laokou.log.event.LoginLogEvent;
 import org.laokou.log.event.OperateLogEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.log.feign.rabbitmq.RabbitMqApiFeignClient;
+import org.laokou.log.feign.rabbitmq.KafkaApiFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.event.EventListener;
@@ -37,16 +37,16 @@ import org.springframework.stereotype.Component;
 public class LogListener {
 
     @Autowired
-    private RabbitMqApiFeignClient rabbitMqApiFeignClient;
+    private KafkaApiFeignClient kafkaApiFeignClient;
 
     @Order
     @EventListener(OperateLogEvent.class)
     public void listenOperateLog(OperateLogEvent event) {
         OperateLogDTO dto = (OperateLogDTO) event.getSource();
-        MqDTO mqDTO = new MqDTO();
-        mqDTO.setData(JacksonUtil.toJsonStr(dto));
+        KafkaDTO kafkaDTO = new KafkaDTO();
+        kafkaDTO.setData(JacksonUtil.toJsonStr(dto));
         try {
-            rabbitMqApiFeignClient.sendMsg(RabbitMqConstant.LAOKOU_OPERATE_LOG_QUEUE, mqDTO);
+            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_OPERATE_LOG_TOPIC, kafkaDTO);
         } catch (FeignException e) {
             log.info("报错信息：{}",e.getMessage());
             throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
@@ -57,10 +57,10 @@ public class LogListener {
     @EventListener(LoginLogEvent.class)
     public void listenLoginLog(LoginLogEvent event) {
         LoginLogDTO dto = (LoginLogDTO) event.getSource();
-        MqDTO mqDTO = new MqDTO();
-        mqDTO.setData(JacksonUtil.toJsonStr(dto));
+        KafkaDTO kafkaDTO = new KafkaDTO();
+        kafkaDTO.setData(JacksonUtil.toJsonStr(dto));
         try {
-            rabbitMqApiFeignClient.sendMsg(RabbitMqConstant.LAOKOU_LOGIN_LOG_QUEUE, mqDTO);
+            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_LOGIN_LOG_TOPIC, kafkaDTO);
         } catch (FeignException e) {
             log.info("报错信息：{}",e.getMessage());
             throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);

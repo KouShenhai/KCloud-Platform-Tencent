@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.event;
-
-import org.laokou.kafka.client.dto.OperateLogDTO;
-import org.springframework.context.ApplicationEvent;
+package org.laokou.log.feign.rabbitmq.factory;
+import org.laokou.log.feign.rabbitmq.fallback.KafkaApiFeignClientFallback;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
 
 /**
- * 操作日志事件
+ * 回调工厂
+ * @author Kou Shenhai
+ * @version 1.0
+ * @date 2020/9/5 0005 上午 12:12
  */
-public class OperateLogEvent extends ApplicationEvent {
-    public OperateLogEvent(OperateLogDTO source) {
-        super(source);
+@Component
+public class KafkaApiFeignClientFallbackFactory implements FallbackFactory<KafkaApiFeignClientFallback> {
+
+    @Override
+    public KafkaApiFeignClientFallback create(Throwable throwable) {
+        return new KafkaApiFeignClientFallback(throwable);
     }
 }

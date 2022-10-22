@@ -19,10 +19,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import org.laokou.admin.server.application.service.WorkflowProcessApplicationService;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
-import org.laokou.admin.server.domain.sys.entity.SysResourceAuditLogDO;
-import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
-import org.laokou.admin.server.domain.sys.repository.service.SysResourceAuditLogService;
-import org.laokou.admin.server.domain.sys.repository.service.SysResourceService;
 import org.laokou.admin.client.enums.ChannelTypeEnum;
 import org.laokou.admin.client.enums.MessageTypeEnum;
 import org.laokou.admin.server.infrastructure.utils.WorkFlowUtil;
@@ -41,6 +37,11 @@ import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
+import org.laokou.common.utils.JacksonUtil;
+import org.laokou.kafka.client.constant.KafkaConstant;
+import org.laokou.kafka.client.dto.KafkaDTO;
+import org.laokou.kafka.client.dto.ResourceAuditLogDTO;
+import org.laokou.log.feign.rabbitmq.KafkaApiFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -68,13 +69,10 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     private WorkflowTaskApplicationService workflowTaskApplicationService;
 
     @Autowired
+    private KafkaApiFeignClient kafkaApiFeignClient;
+
+    @Autowired
     private WorkFlowUtil workFlowUtil;
-
-    @Autowired
-    private SysResourceService sysResourceService;
-
-    @Autowired
-    private SysResourceAuditLogService sysResourceAuditLogService;
 
     @Override
     public StartProcessVO startResourceProcess(String processKey, String businessKey, String instanceName) {
@@ -140,11 +138,11 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     @Override
     public Boolean auditResourceTask(AuditDTO dto, HttpServletRequest request) {
         Map<String, Object> values = dto.getValues();
-        workflowTaskApplicationService.auditTask(dto, request);
+        Boolean auditFlag = workflowTaskApplicationService.auditTask(dto, request);
         String auditUser = workFlowUtil.getAuditUser(dto.getDefinitionId(), null, dto.getInstanceId());
         Integer auditStatus = Integer.valueOf(values.get("auditStatus").toString());
-        SysResourceDO sysResourceDO = sysResourceService.getById(dto.getBusinessKey());
         Integer status;
+        //1 审核中 2 审批拒绝 3审核通过
         if (null != auditUser) {
             //审批中
             status = 1;
@@ -159,17 +157,18 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
                 status = 3;
             }
         }
-        sysResourceDO.setStatus(status);
-        sysResourceService.updateById(sysResourceDO);
-        //插入审批日志
-        SysResourceAuditLogDO logDO = new SysResourceAuditLogDO();
-        logDO.setAuditDate(new Date());
-        logDO.setAuditName(SecurityUser.getUsername(request));
-        logDO.setCreator(SecurityUser.getUserId(request));
-        logDO.setComment(dto.getComment());
-        logDO.setResourceId(Long.valueOf(dto.getBusinessKey()));
-        logDO.setAuditStatus(auditStatus);
-        return sysResourceAuditLogService.save(logDO);
+        ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
+        auditLogDTO.setResourceId(Long.valueOf(dto.getBusinessKey()));
+        auditLogDTO.setStatus(status);
+        auditLogDTO.setAuditStatus(auditStatus);
+        auditLogDTO.setAuditDate(new Date());
+        auditLogDTO.setAuditName(SecurityUser.getUsername(request));
+        auditLogDTO.setCreator(SecurityUser.getUserId(request));
+        auditLogDTO.setComment(dto.getComment());
+        KafkaDTO kafkaDTO = new KafkaDTO();
+        kafkaDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
+        kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_RESOURCE_AUDIT_TOPIC,kafkaDTO);
+        return auditFlag;
     }
 
 }

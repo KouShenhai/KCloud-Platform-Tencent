@@ -13,15 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.constant;
+package org.laokou.kafka.consumer.entity;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import org.laokou.datasource.entity.BaseDO;
 
 /**
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/8/19 0019 下午 3:51
  */
-public interface ServiceConstant {
+@Data
+@TableName("boot_sys_resource")
+public class SysResourceDO extends BaseDO {
 
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_KAFKA = "laokou-kafka";
+    private String title;
+    private String author;
+    private String uri;
+    /**
+     * 0待审核  1审核中 2审批拒绝 3审批通过
+     */
+    private Integer status;
+    private String code;
+    private String remark;
+    private String tags;
+    /**
+     * 流程id
+     */
+    private String processInstanceId;
+    private String md5;
 
 }

@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.event;
+package org.laokou.kafka.consumer.mapper;
 
-import org.laokou.kafka.client.dto.OperateLogDTO;
-import org.springframework.context.ApplicationEvent;
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.laokou.kafka.consumer.entity.SysResourceDO;
+import org.springframework.stereotype.Repository;
 /**
- * 操作日志事件
+ * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/8/19 0019 下午 4:11
  */
-public class OperateLogEvent extends ApplicationEvent {
-    public OperateLogEvent(OperateLogDTO source) {
-        super(source);
-    }
+@Mapper
+@Repository
+public interface SysResourceMapper extends BaseMapper<SysResourceDO> {
 }

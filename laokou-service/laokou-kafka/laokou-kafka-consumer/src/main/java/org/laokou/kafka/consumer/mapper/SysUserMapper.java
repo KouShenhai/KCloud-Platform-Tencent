@@ -13,16 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.event;
+package org.laokou.kafka.consumer.mapper;
 
-import org.laokou.kafka.client.dto.OperateLogDTO;
-import org.springframework.context.ApplicationEvent;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.laokou.auth.client.user.UserDetail;
+import org.springframework.stereotype.Repository;
 
 /**
- * 操作日志事件
+ * 用户类
+ * @author  Kou Shenhai
  */
-public class OperateLogEvent extends ApplicationEvent {
-    public OperateLogEvent(OperateLogDTO source) {
-        super(source);
-    }
+@Mapper
+@Repository
+public interface SysUserMapper {
+
+    /**
+     * 获取用户信息
+     * @param userId
+     * @param username
+     * @return
+     */
+    UserDetail getUserDetail(@Param("userId")Long userId, @Param("username")String username);
 }

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author Kou Shenhai
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.datasource","org.laokou.kafka.consumer"})
 public class KafkaConsumerApplication {
 
     public static void main(String[] args) {

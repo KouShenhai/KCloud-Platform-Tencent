@@ -16,7 +16,7 @@
 package org.laokou.log.aspect;
 import com.google.common.collect.Lists;
 import org.laokou.auth.client.user.SecurityUser;
-import org.laokou.common.dto.OperateLogDTO;
+import org.laokou.kafka.client.dto.OperateLogDTO;
 import org.laokou.common.enums.DataTypeEnum;
 import org.laokou.common.enums.ResultStatusEnum;
 import org.laokou.common.utils.*;

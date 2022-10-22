@@ -16,7 +16,7 @@
 package org.laokou.log.publish;
 
 import eu.bitwalker.useragentutils.UserAgent;
-import org.laokou.common.dto.LoginLogDTO;
+import org.laokou.kafka.client.dto.LoginLogDTO;
 import org.laokou.common.utils.AddressUtil;
 import org.laokou.common.utils.HttpContextUtil;
 import org.laokou.common.utils.IpUtil;

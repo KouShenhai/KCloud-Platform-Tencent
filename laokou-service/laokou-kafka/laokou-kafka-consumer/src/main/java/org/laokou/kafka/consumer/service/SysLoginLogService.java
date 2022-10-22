@@ -13,16 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.event;
+package org.laokou.kafka.consumer.service;
 
-import org.laokou.kafka.client.dto.OperateLogDTO;
-import org.springframework.context.ApplicationEvent;
 
-/**
- * 操作日志事件
- */
-public class OperateLogEvent extends ApplicationEvent {
-    public OperateLogEvent(OperateLogDTO source) {
-        super(source);
-    }
+import com.baomidou.mybatisplus.extension.service.IService;
+import org.laokou.kafka.client.dto.LoginLogDTO;
+import org.laokou.kafka.consumer.entity.SysLoginLogDO;
+
+public interface SysLoginLogService extends IService<SysLoginLogDO> {
+    void insertLoginLog(LoginLogDTO dto);
 }

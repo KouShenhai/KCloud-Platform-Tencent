@@ -13,16 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.event;
+package org.laokou.kafka.consumer.entity;
 
-import org.laokou.kafka.client.dto.OperateLogDTO;
-import org.springframework.context.ApplicationEvent;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import org.laokou.datasource.entity.BaseDO;
+
+import java.util.Date;
 
 /**
- * 操作日志事件
+ * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/8/26 0026 下午 5:31
  */
-public class OperateLogEvent extends ApplicationEvent {
-    public OperateLogEvent(OperateLogDTO source) {
-        super(source);
-    }
+@Data
+@TableName("boot_sys_resource_audit_log")
+public class SysResourceAuditLogDO extends BaseDO {
+
+    private Long resourceId;
+
+    private String auditName;
+
+    private Date auditDate;
+
+    private Integer auditStatus;
+
+    private String comment;
+
 }

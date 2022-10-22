@@ -13,16 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.event;
+package org.laokou.kafka.client.dto;
+import lombok.Data;
 
-import org.laokou.kafka.client.dto.OperateLogDTO;
-import org.springframework.context.ApplicationEvent;
+@Data
+public class LoginLogDTO {
 
-/**
- * 操作日志事件
- */
-public class OperateLogEvent extends ApplicationEvent {
-    public OperateLogEvent(OperateLogDTO source) {
-        super(source);
-    }
+    /**
+     * 登录用户
+     */
+    private String loginName;
+
+    /**
+     * ip地址
+     */
+    private String requestIp;
+    /**
+     * 操作地点
+     */
+    private String requestAddress;
+
+    /**
+     * 浏览器
+     */
+    private String browser;
+
+    /**
+     * 操作系统
+     */
+    private String os;
+
+    /**
+     * 状态  0：成功   1：失败
+     */
+    private Integer requestStatus;
+
+    /**
+     * 提示信息
+     */
+    private String msg;
+
 }
