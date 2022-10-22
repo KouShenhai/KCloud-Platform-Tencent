@@ -99,7 +99,7 @@ gateway:
     - /swagger/api-docs
     - /swagger-resources/**
     - /doc.html
-    - /v3/api-docs
+    - /v2/api-docs
     - /webjars/**
     - /druid/**
     - /ws/**

@@ -89,7 +89,7 @@ auth:
     - permission: anon
       url: /actuator/**
     - permission: anon
-      url: /v3/api-docs
+      url: /v2/api-docs
     - permission: anon
       url: /doc.html
     - permission: anon
