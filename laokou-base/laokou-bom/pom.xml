@@ -99,6 +99,8 @@
         <jaxb.version>2.3.0</jaxb.version>
         <!--activation版本 -->
         <activation.version>1.1.1</activation.version>
+        <!--springfox版本 -->
+        <springfox.version>3.0.0</springfox.version>
     </properties>
 
     <!-- 定义全局jar版本,模块使用需要再次引入但不用写版本号 -->
@@ -516,6 +518,11 @@
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-kafka-consumer</artifactId>
                 <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

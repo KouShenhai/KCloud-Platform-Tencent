@@ -15,7 +15,6 @@
  */
 package org.laokou.redis.utils;
 import org.apache.commons.lang.StringUtils;
-import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
@@ -23,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
-
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -41,13 +38,6 @@ public final class RedisUtil {
     @Autowired
     private RedissonClient redissonClient;
 
-    /**
-     * 布隆过滤器
-     */
-    private static final String BLOOM_FILTER = "bloom-filter";
-
-    private static volatile RBloomFilter<Object> bloomFilter;
-
     /**  默认过期时长为24小时，单位：秒 */
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24L;
 
@@ -59,20 +49,6 @@ public final class RedisUtil {
 
     /**  不设置过期时长 */
     public final static long NOT_EXPIRE = -1L;
-
-    @PostMapping
-    public RBloomFilter<Object> getSingleBloomFilter() {
-        if (bloomFilter == null) {
-            synchronized (RedisUtil.class) {
-                if (bloomFilter == null) {
-                    bloomFilter = redissonClient.getBloomFilter(BLOOM_FILTER);
-                    //初始化数量为200，期望误差率为0.01
-                    bloomFilter.tryInit(200,0.01);
-                }
-            }
-        }
-        return bloomFilter;
-    }
 
     public RLock getLock(String key) {
         return redissonClient.getLock(key);
@@ -135,14 +111,10 @@ public final class RedisUtil {
     }
 
     public void set(String key, Object value, long expire){
-        bloomFilter.add(value);
         redissonClient.getBucket(key).set(value,expire, TimeUnit.SECONDS);
     }
 
     public Object get(String key) {
-        if (!bloomFilter.contains(key)) {
-            return null;
-        }
         return redissonClient.getBucket(key).get();
     }
 

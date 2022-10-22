@@ -29,7 +29,7 @@ import java.util.List;
 @Component
 @Primary
 public class SwaggerProvider implements SwaggerResourcesProvider {
-    public static final String API_URI = "/v2/api-docs";
+    public static final String API_URI = "/v3/api-docs";
     @Autowired
     private SwaggerRoute swaggerRoute;
 
@@ -44,7 +44,7 @@ public class SwaggerProvider implements SwaggerResourcesProvider {
         SwaggerResource swaggerResource = new SwaggerResource();
         swaggerResource.setName(name);
         swaggerResource.setLocation(location);
-        swaggerResource.setSwaggerVersion("3.x");
+        swaggerResource.setSwaggerVersion("3.0");
         return swaggerResource;
     }
 }

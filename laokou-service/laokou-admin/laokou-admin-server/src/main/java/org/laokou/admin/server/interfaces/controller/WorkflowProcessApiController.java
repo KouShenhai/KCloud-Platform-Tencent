@@ -28,6 +28,9 @@ import org.laokou.redis.enums.LockScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+/**
+ * @author Kou Shenhai
+ */
 @RestController
 @Api(value = "流程处理API",protocols = "http",tags = "流程处理API")
 @RequestMapping("/workflow/process/api")
