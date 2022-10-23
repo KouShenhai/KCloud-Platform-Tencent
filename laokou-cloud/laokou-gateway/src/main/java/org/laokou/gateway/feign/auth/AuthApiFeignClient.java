@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.gateway.feign.auth;
-import org.laokou.auth.client.user.UserDetail;
+import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.constant.ServiceConstant;
 import org.laokou.common.utils.HttpResultUtil;
@@ -43,7 +43,7 @@ public interface AuthApiFeignClient {
      * @return
      */
     @GetMapping("/sys/auth/api/resource")
-    Mono<HttpResultUtil<UserDetail>> resource(
+    Mono<HttpResultUtil<BaseUserVO>> resource(
                              @RequestHeader(HttpHeaders.ACCEPT_LANGUAGE) String language,
                              @RequestParam(Constant.AUTHORIZATION_HEAD) String Authorization,
                              @RequestParam(Constant.URI)String uri,

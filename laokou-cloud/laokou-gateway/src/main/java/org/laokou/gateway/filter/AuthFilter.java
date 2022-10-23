@@ -15,6 +15,7 @@
  */
 package org.laokou.gateway.filter;
 import feign.FeignException;
+import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.common.constant.Constant;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.exception.ErrorCode;
@@ -90,7 +91,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         //获取访问资源的权限
         //资源访问权限
         String language = request.getHeaders().getFirst(HttpHeaders.ACCEPT_LANGUAGE);
-        HttpResultUtil<UserDetail> result;
+        HttpResultUtil<BaseUserVO> result;
         try {
             result = authApiFeignClient.resource(language, Authorization, requestUri, method).block();
         } catch (FeignException e) {
@@ -101,9 +102,9 @@ public class AuthFilter implements GlobalFilter,Ordered {
         if (!result.success()) {
             return response(exchange,result);
         }
-        UserDetail userDetail = result.getData();
-        final String userId = userDetail.getId().toString();
-        final String username = userDetail.getUsername();
+        BaseUserVO userVO = result.getData();
+        final String userId = userVO.getUserId().toString();
+        final String username = userVO.getUsername();
         ServerHttpRequest build = exchange.getRequest().mutate()
                 .header(Constant.USER_KEY_HEAD,userId )
                 .header(Constant.USERNAME_HEAD,username).build();

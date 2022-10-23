@@ -20,7 +20,6 @@ import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.auth.client.vo.LoginVO;
 import org.laokou.auth.client.vo.UserInfoVO;
 import org.laokou.common.constant.Constant;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.HttpResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -76,10 +75,10 @@ public class SysAuthApiController {
             @ApiImplicitParam(name = Constant.URI,value = "请求路径",required = true,paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = Constant.METHOD,value = "请求方法",required = true,paramType = "query",dataType = "String")
     })
-    public Mono<HttpResultUtil<UserDetail>>  resource(@RequestParam(Constant.AUTHORIZATION_HEAD) String Authorization,
+    public Mono<HttpResultUtil<BaseUserVO>>  resource(@RequestParam(Constant.AUTHORIZATION_HEAD) String Authorization,
                                                       @RequestParam(Constant.URI)String uri,
                                                       @RequestParam(Constant.METHOD)String method) {
-        return Mono.create(callback -> callback.success(new HttpResultUtil<UserDetail>().ok(sysAuthApplicationService.resource(Authorization, uri, method))));
+        return Mono.create(callback -> callback.success(new HttpResultUtil<BaseUserVO>().ok(sysAuthApplicationService.resource(Authorization, uri, method))));
     }
 
     @GetMapping("/sys/auth/api/logout")

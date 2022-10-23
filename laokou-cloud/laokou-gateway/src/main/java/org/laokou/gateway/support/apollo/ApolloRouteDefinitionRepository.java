@@ -33,6 +33,8 @@ import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -55,7 +57,7 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     private Config config;
 
     public ApolloRouteDefinitionRepository() {
-        caffeineCache = Caffeine.newBuilder().initialCapacity(128).maximumSize(1024).build();
+        caffeineCache = Caffeine.newBuilder().initialCapacity(128).expireAfterAccess(10, TimeUnit.MINUTES).maximumSize(1024).build();
     }
 
     @ApolloConfigChangeListener(value = "application")
@@ -68,14 +70,14 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
-        Collection<RouteDefinition> routeDefinitions = caffeineCache.asMap().get(ROUTES);
+        Collection<RouteDefinition> routeDefinitions = caffeineCache.getIfPresent(ROUTES);
         if (routeDefinitions == null) {
             final String property = config.getProperty(ROUTES, null);
             if (StringUtils.isBlank(property)) {
                 return Flux.fromIterable(Lists.newArrayList());
             }
             routeDefinitions = JacksonUtil.toList(property, RouteDefinition.class);
-            caffeineCache.asMap().put(ROUTES,routeDefinitions);
+            caffeineCache.put(ROUTES,routeDefinitions);
         }
         return Flux.fromIterable(routeDefinitions);
     }
@@ -83,7 +85,7 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
         return route.flatMap(item -> {
-            this.caffeineCache.invalidateAll();
+            this.caffeineCache.invalidate(ROUTES);
             return Mono.empty();
         });
     }
@@ -91,7 +93,7 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
         return routeId.flatMap(item -> {
-            this.caffeineCache.invalidateAll();
+            this.caffeineCache.invalidate(ROUTES);
             return Mono.empty();
         });
     }

@@ -20,7 +20,6 @@ import org.laokou.auth.client.dto.LoginDTO;
 import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.auth.client.vo.LoginVO;
 import org.laokou.auth.client.vo.UserInfoVO;
-import org.laokou.auth.client.user.UserDetail;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -60,7 +59,7 @@ public interface SysAuthApplicationService {
      * @param method
      * @return
      */
-    UserDetail resource(String Authorization, String uri, String method);
+    BaseUserVO resource(String Authorization, String uri, String method);
 
     /**
      * 获取用户信息

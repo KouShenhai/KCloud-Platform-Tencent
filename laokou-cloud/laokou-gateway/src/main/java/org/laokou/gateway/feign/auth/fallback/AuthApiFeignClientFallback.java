@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.gateway.feign.auth.fallback;
-import org.laokou.auth.client.user.UserDetail;
+import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.gateway.feign.auth.AuthApiFeignClient;
 import lombok.AllArgsConstructor;
@@ -34,8 +34,8 @@ public class AuthApiFeignClientFallback implements AuthApiFeignClient {
     private Throwable throwable;
 
     @Override
-    public Mono<HttpResultUtil<UserDetail>> resource(String language, String Authorization, String uri, String method) {
+    public Mono<HttpResultUtil<BaseUserVO>> resource(String language, String Authorization, String uri, String method) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return Mono.just(new HttpResultUtil<UserDetail>().error("服务调用失败，请联系管理员"));
+        return Mono.just(new HttpResultUtil<BaseUserVO>().error("服务调用失败，请联系管理员"));
     }
 }

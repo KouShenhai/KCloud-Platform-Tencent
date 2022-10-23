@@ -92,14 +92,9 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     );
 
     /**
-     * 最大key
-     */
-    private static final Integer MAX_KEY_SIZE = 256;
-
-    /**
      * 高性能缓存
      */
-    private static final Cache<String,UserDetail> caffeineCache = Caffeine.newBuilder().initialCapacity(128).maximumSize(1024).build();;
+    private static final Cache<String,UserDetail> caffeineCache = Caffeine.newBuilder().initialCapacity(128).expireAfterAccess(10,TimeUnit.MINUTES).maximumSize(1024).build();;
 
     private static AntPathMatcher antPathMatcher = new AntPathMatcher();
 
@@ -215,7 +210,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         redisUtil.delete(userResourceKey);
         redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
         redisUtil.set(userResourceKey,resourceList,RedisUtil.HOUR_ONE_EXPIRE);
-        caffeineCache.asMap().put(userInfoKey,userDetail);
+        caffeineCache.put(userInfoKey,userDetail);
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         request.setAttribute(Constant.AUTHORIZATION_HEAD, token);
     }
@@ -261,7 +256,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         redisUtil.delete(userResourceKey);
         redisUtil.delete(userInfoKey);
-        caffeineCache.asMap().remove(userInfoKey);
+        caffeineCache.invalidate(userInfoKey);
         //endregion
     }
 
@@ -282,65 +277,38 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public UserDetail resource(String Authorization, String uri, String method) {
+    public BaseUserVO resource(String Authorization, String uri, String method) {
         //region Description
         //1.获取用户信息
         UserDetail userDetail = getUserDetail(Authorization);
-        CompletableFuture<Boolean> booleanCompletableFuture1 = CompletableFuture.supplyAsync(() ->
-                        //2.获取所有按钮资源列表
-                        sysMenuService.getMenuList(null,1),executorService)
-                //异步回调
-                .thenApplyAsync((resourceList) ->
-                        //3.判断资源是否在资源列表列表里
-                        pathMatcher(uri, method, resourceList),executorService)
-                .thenApplyAsync((resource) -> {
-                    //4.无需认证
-                    if (resource != null && AuthTypeEnum.NO_AUTH.ordinal() == resource.getAuthLevel()) {
-                        return true;
-                    }
-                    //5.登录认证
-                    if (resource != null && AuthTypeEnum.LOGIN_AUTH.ordinal() == resource.getAuthLevel()) {
-                        return true;
-                    }
-                    //6.不在资源列表，只要登录了，就能访问
-                    if (resource == null) {
-                        return true;
-                    }
-                    //7.当前登录用户为超级管理员
-                    if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {
-                        return true;
-                    }
-                    return false;
-                },executorService);
+        BaseUserVO userVO = BaseUserVO.builder().userId(userDetail.getId()).username(userDetail.getUsername()).imgUrl(userDetail.getImgUrl()).email(userDetail.getEmail()).mobile(userDetail.getMobile()).build();
+        //2.获取所有按钮资源列表
+        List<SysMenuVO> resourceList = sysMenuService.getMenuList(null,1);
+        //3.判断资源是否在资源列表列表里
+        SysMenuVO resource = pathMatcher(uri, method, resourceList);
+        //4.无需认证
+        if (resource != null && AuthTypeEnum.NO_AUTH.ordinal() == resource.getAuthLevel()) {
+            return userVO;
+        }
+        //5.登录认证
+        if (resource != null && AuthTypeEnum.LOGIN_AUTH.ordinal() == resource.getAuthLevel()) {
+            return userVO;
+        }
+        //6.不在资源列表，只要登录了，就能访问
+        if (resource == null) {
+            return userVO;
+        }
+        //7.当前登录用户为超级管理员
+        if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {
+            return userVO;
+        }
         //8. 需要鉴权，获取用户资源列表
-        CompletableFuture<Boolean> booleanCompletableFuture2 = CompletableFuture.supplyAsync(() -> sysMenuService.getMenuList(Authorization,userDetail, false, 1), executorService)
-                .thenApplyAsync((resourceList) ->
-                        //9.如果不在用户资源列表里，则无权访问
-                        pathMatcher(uri, method, resourceList), executorService)
-                .thenApplyAsync((resource) -> {
-                    if (resource != null) {
-                        return true;
-                    }
-                    return false;
-                }, executorService);
-        Boolean flag = false;
-        try {
-            flag = booleanCompletableFuture1.thenCombineAsync(booleanCompletableFuture2, (a, b) -> {
-                if (a || b) {
-                    return true;
-                }
-                return false;
-            },executorService).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        resourceList = sysMenuService.getMenuList(Authorization,userDetail, false, 1);
+        //9.如果不在用户资源列表里，则无权访问
+        if(pathMatcher(uri, method, resourceList) != null) {
+            return userVO;
         }
-        if (flag) {
-            return userDetail;
-        } else {
-            throw new CustomException(ErrorCode.FORBIDDEN);
-        }
+        throw new CustomException(ErrorCode.FORBIDDEN);
         //endregion
     }
 
@@ -393,12 +361,9 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private UserDetail getUserDetail(String token) {
         //region Description
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
-        UserDetail userInfo = caffeineCache.asMap().get(userInfoKey);
+        UserDetail userInfo = caffeineCache.getIfPresent(userInfoKey);
         if (null != userInfo) {
             return userInfo;
-        }
-        if (caffeineCache.asMap().size() >= MAX_KEY_SIZE){
-            caffeineCache.asMap().clear();
         }
         final Object obj = redisUtil.get(userInfoKey);
         UserDetail userDetail;
@@ -426,7 +391,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             CompletableFuture.allOf(c1,c2,c3).join();
             redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
         }
-        caffeineCache.asMap().put(userInfoKey,userDetail);
+        caffeineCache.put(userInfoKey,userDetail);
         return userDetail;
         //endregion
     }
