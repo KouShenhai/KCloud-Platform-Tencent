@@ -16,8 +16,6 @@
 package org.laokou.auth.server.infrastructure.common.filter;
 import org.laokou.auth.client.utils.TokenUtil;
 import org.laokou.common.exception.ErrorCode;
-import org.laokou.auth.client.user.UserDetail;
-import org.laokou.common.utils.JacksonUtil;
 import org.laokou.common.utils.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
@@ -25,9 +23,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * 认证授权
  * @author Kou Shenhai
@@ -40,13 +35,7 @@ public class AuthRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        UserDetail user = (UserDetail) principalCollection.getPrimaryPrincipal();
-        //用户权限列表
-        Set<String> permsSet = new HashSet<>(user.getPermissionsList());
-        log.info("获取权限标识:{}", JacksonUtil.toJsonStr(permsSet));
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setStringPermissions(permsSet);
-        return info;
+        return new SimpleAuthorizationInfo();
     }
 
     @Override
@@ -60,14 +49,12 @@ public class AuthRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        String accessToken = (String) authenticationToken.getPrincipal();
+        String accessToken = authenticationToken.getPrincipal().toString();
         //token失效
-        boolean expiration = TokenUtil.isExpiration(accessToken);
-        if (expiration) {
+        if (TokenUtil.isExpiration(accessToken)) {
             throw new IncorrectCredentialsException(MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
         }
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(accessToken, accessToken, this.getName());
-        return info;
+        return new SimpleAuthenticationInfo(accessToken, accessToken, this.getName());
     }
 
     /**
