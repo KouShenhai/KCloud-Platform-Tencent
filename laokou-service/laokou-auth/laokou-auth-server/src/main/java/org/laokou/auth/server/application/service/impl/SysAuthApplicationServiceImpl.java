@@ -92,6 +92,11 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     );
 
     /**
+     * 最大key
+     */
+    private static final Integer MAX_KEY_SIZE = 256;
+
+    /**
      * 高性能缓存
      */
     private static final Cache<String,UserDetail> caffeineCache = Caffeine.newBuilder().initialCapacity(128).maximumSize(1024).build();;
@@ -391,6 +396,9 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         UserDetail userInfo = caffeineCache.asMap().get(userInfoKey);
         if (null != userInfo) {
             return userInfo;
+        }
+        if (caffeineCache.asMap().size() >= MAX_KEY_SIZE){
+            caffeineCache.asMap().clear();
         }
         final Object obj = redisUtil.get(userInfoKey);
         UserDetail userDetail;
