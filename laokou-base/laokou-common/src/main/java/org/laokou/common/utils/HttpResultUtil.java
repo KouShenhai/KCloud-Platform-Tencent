@@ -15,8 +15,6 @@
  */
 package org.laokou.common.utils;
 import org.laokou.common.exception.ErrorCode;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -24,25 +22,21 @@ import lombok.Data;
  * @author  Kou Shenhai
  */
 @Data
-@ApiModel("响应")
 public class HttpResultUtil<T> {
     /**
      * 编码：200标识成功，其他值表示失败
      */
-    @ApiModelProperty(value = "编码：200标识成功，其他值表示失败",example = "0")
     private int code = 200;
 
     /**
      * 消息内容
      */
-    @ApiModelProperty(value = "消息内容",example = "success")
     private String msg = "success";
 
 
     /**
      * 响应数据
      */
-    @ApiModelProperty(value = "响应数据",example = "")
     private T data;
 
     public boolean success(){

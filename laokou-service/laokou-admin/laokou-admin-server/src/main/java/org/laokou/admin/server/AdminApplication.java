@@ -17,7 +17,8 @@ package org.laokou.admin.server;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.micrometer.core.instrument.MeterRegistry;
-import lombok.extern.slf4j.Slf4j;
+import org.laokou.swagger.config.AsyncConfig;
+import org.laokou.swagger.config.CorsConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -29,6 +30,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
@@ -43,8 +45,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableConfigurationProperties
 @EnableApolloConfig
 @EnableAspectJAutoProxy
-@Slf4j
 @EnableAsync
+@Import({CorsConfig.class, AsyncConfig.class})
 @EnableEncryptableProperties
 @EnableFeignClients(basePackages = {"org.laokou.log","org.laokou.admin"})
 public class AdminApplication {

@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.elasticsearch.server.config;
+package org.laokou.swagger.config;
+
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
@@ -49,7 +50,7 @@ import java.util.List;
 @Configuration
 @EnableSwagger2
 @EnableKnife4j
-public class SwaggerConfig {
+public class Knife4jConfig {
 
     @Bean
     public Docket createRestApi() {
@@ -66,8 +67,8 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("API文档")
-                .version("2.0.0")
-                .description("搜索引擎API")
+                .version("3.0.0")
+                .description("API文档")
                 //作者信息
                 .contact(new Contact("寇申海", "https://blog.csdn.net/qq_39893313", "2413176044@qq.com"))
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")

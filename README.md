@@ -34,15 +34,16 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
 ### 技术体系
 
 #### Spring全家桶及核心技术版本
-| 组件                          | 版本       |
-| :--------------------------- | :----------|
-| Spring Boot                  | 2.7.3      |
-| Spring Cloud                 | 2021.0.4   |
-| Spring Boot Admin            | 2.7.4      |
-| Apollo                       | 1.4.0      |
-| Mysql                        | 5.7.9      |
-| Redis                        | 6.0.6      |
-| Elasticsearch                | 7.6.2      |
+| 组件                | 版本       |
+|:------------------|:---------|
+| Spring Boot       | 2.7.3    |
+| Spring Cloud      | 2021.0.4 |
+| Spring Boot Admin | 2.7.4    |
+| Apollo            | 1.4.0    |
+| Mysql             | 5.7.9    |
+| Redis             | 6.0.6    |
+| Elasticsearch     | 7.6.2    |
+| Kafka             | 2.8.1    |
 
 > Spring 全家桶版本对应关系，详见：[版本说明](https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)
 
@@ -54,7 +55,7 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
 - 负载均衡：Spring Cloud Loadbalancer
 - 服务熔断&降级&限流：Resilience4j
 - 服务监控：Spring Boot Admin、Prometheus
-- 消息队列：使用 Spring Cloud 消息总线 Spring Cloud Bus 默认 Kafka 适配 RabbitMQ
+- 消息队列：使用 Spring Cloud 消息总线 Spring Cloud Bus 默认 Kafka
 - 链路跟踪：Skywalking
 - 数据库：MySQL、Oracle 
 - 数据缓存：Redis
@@ -70,16 +71,17 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
 #### 项目结构
 ~~~
 ├── laokou-base
+        └── laokou-bom -- 依赖版本库
         └── laokou-common -- 公共组件
-        └── laokou-dynamic-datasource 多数据源组件
+        └── laokou-datasource 数据库组件
         └── laokou-log -- 日志组件
-        └── laokou-security -- 认证组件
+        └── laokou-swagger -- 文档组件
         └── laokou-redis -- 缓存模块
 ├── laokou-cloud
         └── laokou-gateway -- API网关
         └── laokou-monitor -- 服务监控
         └── laokou-register -- 服务注册&发现
-├── laokou-parent -- 版本依赖
+├── laokou-parent
 ├── laokou-service
         └── laokou-admin -- 后台管理模块
         └── laokou-auth -- 认证授权模块
@@ -87,7 +89,7 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
         └── laokou-generator -- 模板模块
         └── laokou-cas -- 认证授权模块
         └── laokou-elasticsearch -- 搜索模块
-        └── laokou-rabbitmq -- 消息模块
+        └── laokou-kafka -- 消息模块
 ~~~
 
 ### 环境配置
@@ -102,7 +104,8 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
 [centos7 安装jenkins](https://kcloud.blog.csdn.net/article/details/112171878)  
 [centos7 安装apr](https://kcloud.blog.csdn.net/article/details/125473896)  
 [centos7 安装nacos](https://kcloud.blog.csdn.net/article/details/82589017)  
-[centos7 安装elasticsearch7.6.2](https://kcloud.blog.csdn.net/article/details/123123229)  
+[centos7 安装elasticsearch7.6.2](https://kcloud.blog.csdn.net/article/details/123123229)
+[centos7 安装kafka](https://kcloud.blog.csdn.net/article/details/123771040)
 
 #### 安装包
 [百度网盘](https://pan.baidu.com/s/1swrV9ffJnmz4S0mfkuBbIw) 提取码：1111

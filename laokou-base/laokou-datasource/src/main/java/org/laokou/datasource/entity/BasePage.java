@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.datasource.entity;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.validation.constraints.NotNull;
 
@@ -24,7 +21,6 @@ import javax.validation.constraints.NotNull;
  * @author Kou Shenhai
  */
 @Data
-@ApiModel("分页类")
 public abstract class BasePage {
 
     @NotNull(message = "请填写显示页数")
@@ -33,7 +29,9 @@ public abstract class BasePage {
     @NotNull(message = "请填写显示条数")
     private Integer pageSize;
 
-    @ApiModelProperty("数据过滤sql")
+    /**
+     * sql拼接
+     */
     private String sqlFilter;
 
 }

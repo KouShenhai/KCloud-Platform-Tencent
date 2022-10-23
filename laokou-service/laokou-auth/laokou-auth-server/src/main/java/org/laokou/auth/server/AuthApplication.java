@@ -18,6 +18,8 @@ import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.swagger.config.AsyncConfig;
+import org.laokou.swagger.config.CorsConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -29,6 +31,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * 架构演变
@@ -43,6 +47,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableApolloConfig
 @EnableAspectJAutoProxy
 @Slf4j
+@EnableAsync(proxyTargetClass = true)
+@Import({CorsConfig.class, AsyncConfig.class})
 @EnableEncryptableProperties
 @EnableFeignClients(basePackages = {"org.laokou.log"})
 public class AuthApplication{

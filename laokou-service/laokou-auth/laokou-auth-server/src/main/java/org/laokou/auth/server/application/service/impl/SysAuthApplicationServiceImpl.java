@@ -55,6 +55,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
@@ -190,6 +191,13 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         Map<String, Object> claims = TokenUtil.getClaims(userId, username);
         String token = TokenUtil.getToken(claims);
         log.info("Token is：{}", token);
+        setToken(userDetail,resourceList,token);
+        return token;
+        //endregion
+    }
+
+    @Async
+    public void setToken(UserDetail userDetail,List<SysMenuVO> resourceList,String token) {
         //用户信息
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         //资源列表放到redis中
@@ -205,8 +213,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         caffeineCache.asMap().put(userInfoKey,userDetail);
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         request.setAttribute(Constant.AUTHORIZATION_HEAD, token);
-        return token;
-        //endregion
     }
 
     private List<String> getPermissionList(UserDetail userDetail) {

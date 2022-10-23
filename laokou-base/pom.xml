@@ -19,6 +19,7 @@
         <module>laokou-bom</module>
         <module>laokou-redis</module>
         <module>laokou-datasource</module>
+        <module>laokou-swagger</module>
     </modules>
 
 </project>

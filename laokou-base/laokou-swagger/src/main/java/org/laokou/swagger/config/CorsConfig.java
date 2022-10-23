@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.auth.server.infrastructure.config;
+package org.laokou.swagger.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.laokou.common.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.common.utils.DateUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -60,6 +60,7 @@ public class CorsConfig {
         config.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
         configurationSource.registerCorsConfiguration("/**",config);
+        log.info("cors加载完毕");
         return new CorsFilter(configurationSource);
     }
 
@@ -77,6 +78,7 @@ public class CorsConfig {
         javaTimeModule.addSerializer(Long.TYPE,ToStringSerializer.instance);
         mapper.registerModule(javaTimeModule);
         converter.setObjectMapper(mapper);
+        log.info("jackson配置加载完毕");
         return converter;
     }
 

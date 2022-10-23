@@ -16,6 +16,7 @@
 package org.laokou.elasticsearch.server;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.laokou.swagger.config.CorsConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -23,6 +24,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Kou Shenhai
@@ -30,6 +32,7 @@ import org.springframework.context.annotation.Bean;
 @EnableDiscoveryClient
 @EnableConfigurationProperties
 @EnableApolloConfig
+@Import({CorsConfig.class})
 @SpringBootApplication(scanBasePackages = {"org.laokou.elasticsearch"})
 public class ElasticsearchApplication {
     public static void main(String[] args) {

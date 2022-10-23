@@ -88,6 +88,8 @@ gateway:
         location: /admin
       - name: laokou-auth
         location: /auth
+      - name: laokou-elasticsearch
+        location: /elasticsearch
   uris:
     - /sys/auth/api/captcha
     - /sys/auth/api/login

@@ -18,6 +18,8 @@ package org.laokou.gateway;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.laokou.swagger.config.CorsConfig;
+import org.laokou.swagger.config.Knife4jConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -28,7 +30,7 @@ import reactivefeign.spring.config.EnableReactiveFeignClients;
 /**
  * @author kou Shenhai
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.gateway"})
+@SpringBootApplication(exclude = {Knife4jConfig.class, CorsConfig.class},scanBasePackages = {"org.laokou.common","org.laokou.gateway"})
 @EnableDiscoveryClient
 @EnableReactiveFeignClients
 @EnableEncryptableProperties

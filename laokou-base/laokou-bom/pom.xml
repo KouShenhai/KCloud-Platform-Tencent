@@ -524,6 +524,11 @@
                 <artifactId>springfox-boot-starter</artifactId>
                 <version>${springfox.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-swagger</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
