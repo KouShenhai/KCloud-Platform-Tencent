@@ -104,7 +104,7 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
 [centos7 安装jenkins](https://kcloud.blog.csdn.net/article/details/112171878)  
 [centos7 安装apr](https://kcloud.blog.csdn.net/article/details/125473896)  
 [centos7 安装nacos](https://kcloud.blog.csdn.net/article/details/82589017)  
-[centos7 安装elasticsearch7.6.2](https://kcloud.blog.csdn.net/article/details/123123229)
+[centos7 安装elasticsearch7.6.2](https://kcloud.blog.csdn.net/article/details/123123229)  
 [centos7 安装kafka](https://kcloud.blog.csdn.net/article/details/123771040)
 
 #### 安装包
