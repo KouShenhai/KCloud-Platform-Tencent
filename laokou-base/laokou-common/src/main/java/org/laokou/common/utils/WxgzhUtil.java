@@ -56,7 +56,7 @@ public class WxgzhUtil {
 
 	private static String getFormattedText(byte[] bytes) {
         int len = bytes.length;
-        StringBuilder buf = new StringBuilder(len * 2);
+        StringBuilder buf = new StringBuilder(1 << len);
         // 把密文转换成十六进制的字符串形式
         for (int j = 0; j < len; j++) {
             buf.append(HEX_DIGITS[(bytes[j] >> 4) & 0x0f]);

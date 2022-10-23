@@ -282,7 +282,7 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
         g.setPaint(originalPaint);
         // text
         if (scaleFactor == 1.0 && name != null && name.length() > 0) {
-            int boxWidth = width - (2 * TEXT_PADDING);
+            int boxWidth = width - (1 << TEXT_PADDING);
             int boxHeight = height - 16 - ICON_PADDING - ICON_PADDING - MARKER_WIDTH - 2 - 2;
             int boxX = x + width / 2 - boxWidth / 2;
             int boxY = y + height / 2 - boxHeight / 2 + ICON_PADDING + ICON_PADDING - 2 - 2;
@@ -332,7 +332,6 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
                 graphicInfo.getWidth(), graphicInfo.getHeight());
         g.fill(circle);
         g.setPaint(EVENT_BORDER_COLOR);
-//        g.setPaint(HIGHLIGHT_COLOR);
         if (scaleFactor == 1.0) {
             g.setStroke(END_EVENT_STROKE);
         } else {
