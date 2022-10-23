@@ -17,6 +17,9 @@ package org.laokou.auth.server.infrastructure.component;
 
 import lombok.Data;
 
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class AuthProperties {
 

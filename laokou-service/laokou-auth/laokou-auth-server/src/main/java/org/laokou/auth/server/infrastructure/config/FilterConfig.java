@@ -15,9 +15,8 @@
  */
 package org.laokou.auth.server.infrastructure.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.server.infrastructure.common.xss.XssFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,9 +29,8 @@ import javax.servlet.DispatcherType;
  * @author Kou Shenhai
  */
 @Configuration
+@Slf4j
 public class FilterConfig {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FilterConfig.class);
 
     @Bean
     public FilterRegistrationBean shiroFilterRegistration(){
@@ -48,7 +46,7 @@ public class FilterConfig {
 
     @Bean
     public FilterRegistrationBean xssFilterRegistration(){
-        LOGGER.info("xssFilter被注入啦");
+        log.info("xssFilter被注入啦");
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setDispatcherTypes(DispatcherType.REQUEST);
         registrationBean.setFilter(new XssFilter());
