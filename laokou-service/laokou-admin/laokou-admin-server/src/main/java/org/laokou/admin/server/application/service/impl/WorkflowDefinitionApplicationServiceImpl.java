@@ -65,7 +65,6 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-
     public IPage<DefinitionVO> queryDefinitionPage(DefinitionQO qo) {
         ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
                 .latestVersion()
@@ -94,7 +93,6 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-
     public void imageProcess(String definitionId, HttpServletResponse response) {
         //获取图片流
         DefaultProcessDiagramGenerator diagramGenerator = new DefaultProcessDiagramGenerator();
@@ -124,7 +122,6 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-
     public Boolean deleteDefinition(String deploymentId) {
         // true允许级联删除 不设置会导致数据库关联异常
         repositoryService.deleteDeployment(deploymentId,true);
@@ -132,7 +129,6 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-
     public Boolean suspendDefinition(String definitionId) {
         final ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(definitionId).singleResult();
         if (processDefinition.isSuspended()) {
@@ -145,7 +141,6 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-
     public Boolean activateDefinition(String definitionId) {
         final ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(definitionId).singleResult();
         if (processDefinition.isSuspended()) {
