@@ -148,24 +148,26 @@ CREATE TABLE `boot_sys_user_role` (
 
 ------------------------------------用户------------------------------------
 CREATE TABLE `boot_sys_user` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
-  `username` varchar(20) NOT NULL COMMENT '用户名',
-  `password` varchar(100) NOT NULL COMMENT '密码',
-  `super_admin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '超级管理员：0否 1是',
-  `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
-  `editor` bigint(20) DEFAULT NULL COMMENT '编辑人',
-  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1已删除 0未删除',
-  `email` varchar(50) DEFAULT NULL COMMENT '电子邮箱',
-  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 0正常 1停用',
-  `img_url` varchar(400) NOT NULL DEFAULT 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F1a3626475345x3078425090b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1657902941&t=73f98a243f12f3eabe1dce87d2b6401b' COMMENT '头像url',
-  `mobile` varchar(11) DEFAULT NULL COMMENT '手机号',
-  `zfb_openid` varchar(32) DEFAULT NULL COMMENT '支付宝用户唯一标识',
-  PRIMARY KEY (`id`,`username`) USING BTREE,
-  UNIQUE KEY `idx_email` (`email`) USING BTREE,
-  UNIQUE KEY `idx_mobile` (`mobile`) USING BTREE,
-  UNIQUE KEY `idx_zfb` (`zfb_openid`) USING BTREE
+`id` bigint(20) NOT NULL COMMENT 'id',
+`username` varchar(20) NOT NULL COMMENT '用户名',
+`password` varchar(100) NOT NULL COMMENT '密码',
+`super_admin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '超级管理员：0否 1是',
+`creator` bigint(20) DEFAULT NULL COMMENT '创建人',
+`editor` bigint(20) DEFAULT NULL COMMENT '编辑人',
+`create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`update_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+`del_flag` tinyint(1) NOT NULL COMMENT '1已删除 0未删除',
+`email` varchar(50) DEFAULT NULL COMMENT '电子邮箱',
+`status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 0正常 1停用',
+`img_url` varchar(400) NOT NULL DEFAULT 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F1a3626475345x3078425090b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1657902941&t=73f98a243f12f3eabe1dce87d2b6401b' COMMENT '头像url',
+`mobile` varchar(11) DEFAULT NULL COMMENT '手机号',
+`zfb_openid` varchar(32) DEFAULT NULL COMMENT '支付宝用户唯一标识',
+`dept_id` bigint(20) DEFAULT NULL COMMENT '部门id',
+PRIMARY KEY (`id`),
+UNIQUE KEY `idx_username` (`username`) USING BTREE,
+UNIQUE KEY `idx_email` (`email`) USING BTREE,
+UNIQUE KEY `idx_mobile` (`mobile`) USING BTREE,
+UNIQUE KEY `idx_zfb` (`zfb_openid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户';
 INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1341620898007281665', 'admin', '$2a$10$n94v8BWjCb5zcvUwxxi9COKDS7Fn2n3WXbVs0Qeg5B1AkkagK1qO6', '1', '1341620898007281665', '1341620898007281665', '2021-11-29 20:13:11', '2022-07-27 22:10:26', '0', '2413176044@qq.com', '0', 'http://175.178.69.253/upload/node3/7904fff1c08a4883b40f1ee0336017dc.webp', '18974432576', '2088722720196501', '1535887940687765505');
 INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1341623527018004481', 'test', '$2a$10$cdEXE9uaSqkqoKa.73.XBuhHFPiOLomStfzUlmkuVqfA2wldqEfIG', '0', '1341620898007281665', '1341620898007281665', '2020-12-23 13:55:50', '2022-07-27 22:20:39', '0', '2314176044@qq.com', '0', 'http://175.178.69.253/upload/node2/b4e5bb3944a046a6bb54f8bfd2c830c1.webp', '18888888888', NULL, '1535881356595175426');
