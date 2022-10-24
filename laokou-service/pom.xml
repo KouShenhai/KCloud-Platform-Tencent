@@ -21,5 +21,6 @@
         <module>laokou-elasticsearch</module>
         <module>laokou-cas</module>
         <module>laokou-kafka</module>
+        <module>laokou-job</module>
     </modules>
 </project>
