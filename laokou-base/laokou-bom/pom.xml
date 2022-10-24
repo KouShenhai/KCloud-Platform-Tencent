@@ -484,7 +484,7 @@
             </dependency>
             <dependency>
                 <groupId>org.laokou</groupId>
-                <artifactId>laokou-datasource</artifactId>
+                <artifactId>laokou-mybatis-plus</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
             <dependency>
@@ -530,6 +530,31 @@
             <dependency>
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-oss-server</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-sms-client</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-sms-server</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-async</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-xxl-job-server</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-xxl-job-client</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
         </dependencies>

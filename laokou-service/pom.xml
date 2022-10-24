@@ -15,13 +15,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>laokou-admin</module>
-        <module>laokou-auth</module>
         <module>laokou-generator</module>
-        <module>laokou-oauth2</module>
-        <module>laokou-elasticsearch</module>
-        <module>laokou-cas</module>
-        <module>laokou-kafka</module>
-        <module>laokou-job</module>
         <module>laokou-module</module>
+        <module>laokou-security</module>
     </modules>
 </project>

@@ -17,7 +17,7 @@ package org.laokou.admin.server.infrastructure.component.aspect;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.utils.RedisKeyUtil;
-import org.laokou.datasource.entity.BasePage;
+import org.laokou.mybatis.plus.entity.BasePage;
 import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;

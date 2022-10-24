@@ -17,7 +17,7 @@ package org.laokou.admin.server;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.laokou.swagger.config.AsyncConfig;
+import org.laokou.async.config.AsyncConfig;
 import org.laokou.swagger.config.CorsConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -40,7 +40,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * DDD分层架构(分布式微服务架构) > 表现层 应用层 领域层 基础层
  * @author Kou Shenhai
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.admin","org.laokou.redis","org.laokou.log","org.laokou.datasource"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.admin","org.laokou.redis","org.laokou.log","org.laokou.mybatis"})
 @EnableDiscoveryClient
 @EnableConfigurationProperties
 @EnableApolloConfig

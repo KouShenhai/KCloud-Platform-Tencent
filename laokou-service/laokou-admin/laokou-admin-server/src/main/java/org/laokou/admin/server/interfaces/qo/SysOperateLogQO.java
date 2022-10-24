@@ -15,7 +15,7 @@
  */
 package org.laokou.admin.server.interfaces.qo;
 
-import org.laokou.datasource.entity.BasePage;
+import org.laokou.mybatis.plus.entity.BasePage;
 import lombok.Data;
 
 @Data

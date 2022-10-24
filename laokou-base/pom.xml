@@ -17,9 +17,9 @@
         <module>laokou-common</module>
         <module>laokou-log</module>
         <module>laokou-bom</module>
-        <module>laokou-redis</module>
-        <module>laokou-datasource</module>
         <module>laokou-swagger</module>
+        <module>laokou-mybatis-plus</module>
+        <module>laokou-async</module>
     </modules>
 
 </project>

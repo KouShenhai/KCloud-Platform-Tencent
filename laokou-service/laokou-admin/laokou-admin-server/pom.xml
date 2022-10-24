@@ -29,7 +29,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.laokou</groupId>
-			<artifactId>laokou-datasource</artifactId>
+			<artifactId>laokou-mybatis-plus</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.github.tobato</groupId>
@@ -80,6 +80,10 @@
 		<dependency>
 			<groupId>com.github.oshi</groupId>
 			<artifactId>oshi-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.laokou</groupId>
+			<artifactId>laokou-async</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

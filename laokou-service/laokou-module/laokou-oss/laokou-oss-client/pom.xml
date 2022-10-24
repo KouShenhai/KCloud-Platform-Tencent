@@ -9,4 +9,11 @@
     <groupId>org.laokou</groupId>
     <artifactId>laokou-oss-client</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-common</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
