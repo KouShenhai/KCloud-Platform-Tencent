@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.laokou</groupId>
     <artifactId>laokou-redis</artifactId>
-    <description>redis</description>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

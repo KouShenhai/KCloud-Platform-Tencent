@@ -11,6 +11,5 @@
 
     <groupId>org.laokou</groupId>
     <artifactId>laokou-oauth2-client</artifactId>
-    <name>laokou-oauth2-client</name>
 
 </project>

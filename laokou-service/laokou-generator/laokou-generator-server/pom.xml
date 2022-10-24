@@ -9,7 +9,6 @@
     </parent>
     <groupId>org.laokou</groupId>
     <artifactId>laokou-generator-server</artifactId>
-    <name>laokou-generator-server</name>
     <description>模板模块</description>
     <dependencies>
         <dependency>

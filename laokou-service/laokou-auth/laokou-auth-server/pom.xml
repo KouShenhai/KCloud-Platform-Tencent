@@ -9,7 +9,6 @@
     </parent>
     <groupId>org.laokou</groupId>
     <artifactId>laokou-auth-server</artifactId>
-    <name>laokou-auth-server</name>
     <description>认证模块</description>
     <dependencies>
         <dependency>

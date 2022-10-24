@@ -9,7 +9,6 @@
 	</parent>
 	<groupId>org.laokou</groupId>
 	<artifactId>laokou-admin-server</artifactId>
-	<name>laokou-admin-server</name>
 	<description>后台管理模块</description>
 	<dependencies>
 		<dependency>
