@@ -4,40 +4,42 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.laokou</groupId>
-        <artifactId>laokou-kafka</artifactId>
+        <artifactId>laokou-oauth2</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>org.laokou</groupId>
-    <artifactId>laokou-kafka-consumer</artifactId>
+    <artifactId>laokou-oauth2-server</artifactId>
+    <description>oauth2认证</description>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bus-kafka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.laokou</groupId>
-            <artifactId>laokou-kafka-client</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.laokou</groupId>
             <artifactId>laokou-auth-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-common</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>org.laokou</groupId>
-                    <artifactId>laokou-swagger</artifactId>
+                    <groupId>com.github.xiaoymin</groupId>
+                    <artifactId>knife4j-spring-boot-starter</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-mybatis-plus</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.laokou</groupId>
-            <artifactId>laokou-datasource</artifactId>
-        </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -47,7 +49,7 @@
                 <configuration>
                     <finalName>${project.artifactId}</finalName>
                     <!-- main方法的地址 只需要修改这个地址-->
-                    <mainClass>org.laokou.kafka.consumer.KafkaConsumerApplication</mainClass>
+                    <mainClass>org.laokou.oauth2.server.Oauth2Application</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -59,4 +61,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

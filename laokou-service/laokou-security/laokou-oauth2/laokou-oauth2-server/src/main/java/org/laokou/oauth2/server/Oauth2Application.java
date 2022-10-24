@@ -20,7 +20,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author Kou Shenhai
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.oauth2","org.laokou.datasource"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.oauth2","org.laokou.mybatis"})
 public class Oauth2Application {
     public static void main(String[] args) {
         SpringApplication.run(Oauth2Application.class, args);
