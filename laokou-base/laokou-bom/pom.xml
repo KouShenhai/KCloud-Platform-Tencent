@@ -529,6 +529,31 @@
                 <artifactId>laokou-swagger</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-job</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-module</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-oss</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-sms</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-email</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

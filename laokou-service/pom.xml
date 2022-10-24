@@ -22,5 +22,6 @@
         <module>laokou-cas</module>
         <module>laokou-kafka</module>
         <module>laokou-job</module>
+        <module>laokou-module</module>
     </modules>
 </project>
