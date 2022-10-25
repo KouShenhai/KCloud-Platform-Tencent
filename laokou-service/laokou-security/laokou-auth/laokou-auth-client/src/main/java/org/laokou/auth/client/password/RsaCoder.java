@@ -40,38 +40,38 @@ public class RsaCoder {
     public RsaCoder() {
     }
 
-    public static byte[] decryptBASE64(String key) {
+    public static byte[] decryptBase64(String key) {
         return Base64.decodeBase64(key);
     }
 
-    public static String encryptBASE64(byte[] bytes) {
+    public static String encryptBase64(byte[] bytes) {
         return Base64.encodeBase64String(bytes);
     }
 
     public static String sign(byte[] data, String privateKey) throws Exception {
-        byte[] keyBytes = decryptBASE64(privateKey);
+        byte[] keyBytes = decryptBase64(privateKey);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PrivateKey priKey = keyFactory.generatePrivate(pkcs8KeySpec);
         Signature signature = Signature.getInstance("MD5withRSA");
         signature.initSign(priKey);
         signature.update(data);
-        return encryptBASE64(signature.sign());
+        return encryptBase64(signature.sign());
     }
 
     public static boolean verify(byte[] data, String publicKey, String sign) throws Exception {
-        byte[] keyBytes = decryptBASE64(publicKey);
+        byte[] keyBytes = decryptBase64(publicKey);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PublicKey pubKey = keyFactory.generatePublic(keySpec);
         Signature signature = Signature.getInstance("MD5withRSA");
         signature.initVerify(pubKey);
         signature.update(data);
-        return signature.verify(decryptBASE64(sign));
+        return signature.verify(decryptBase64(sign));
     }
 
     public static byte[] decryptByPrivateKey(byte[] data, String key) throws Exception {
-        byte[] keyBytes = decryptBASE64(key);
+        byte[] keyBytes = decryptBase64(key);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         Key privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
@@ -81,16 +81,16 @@ public class RsaCoder {
     }
 
     public static byte[] decryptByPrivateKey(String data, String key) throws Exception {
-        return decryptByPrivateKey(decryptBASE64(data), key);
+        return decryptByPrivateKey(decryptBase64(data), key);
     }
 
     public static String decryptByPrivateKey(String data) throws Exception {
-        byte[] bytes = decryptByPrivateKey(decryptBASE64(data), getPrivateKey());
+        byte[] bytes = decryptByPrivateKey(decryptBase64(data), getPrivateKey());
         return new String(bytes);
     }
 
     public static byte[] decryptByPublicKey(byte[] data, String key) throws Exception {
-        byte[] keyBytes = decryptBASE64(key);
+        byte[] keyBytes = decryptBase64(key);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         Key publicKey = keyFactory.generatePublic(x509KeySpec);
@@ -100,7 +100,7 @@ public class RsaCoder {
     }
 
     public static byte[] encryptByPublicKey(String data, String key) throws Exception {
-        byte[] keyBytes = decryptBASE64(key);
+        byte[] keyBytes = decryptBase64(key);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         Key publicKey = keyFactory.generatePublic(x509KeySpec);
@@ -110,7 +110,7 @@ public class RsaCoder {
     }
 
     public static byte[] encryptByPrivateKey(byte[] data, String key) throws Exception {
-        byte[] keyBytes = decryptBASE64(key);
+        byte[] keyBytes = decryptBase64(key);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         Key privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
@@ -121,12 +121,12 @@ public class RsaCoder {
 
     public static String getPrivateKey(Map<String, Key> keyMap) throws Exception {
         Key key = keyMap.get("RSAPrivateKey");
-        return encryptBASE64(key.getEncoded());
+        return encryptBase64(key.getEncoded());
     }
 
     public static String getPublicKey(Map<String, Key> keyMap) throws Exception {
         Key key = keyMap.get("RSAPublicKey");
-        return encryptBASE64(key.getEncoded());
+        return encryptBase64(key.getEncoded());
     }
 
     public static String getPrivateKey() {
