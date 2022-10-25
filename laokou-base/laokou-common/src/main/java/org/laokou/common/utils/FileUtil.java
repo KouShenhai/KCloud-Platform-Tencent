@@ -421,7 +421,6 @@ public class FileUtil extends FileUtils {
             return true;
         } catch (Exception e) {
             log.info("复制整个文件夹内容操作出错。错误原因:" + e.getMessage());
-//			e.printStackTrace();
             return false;
         }
     }
