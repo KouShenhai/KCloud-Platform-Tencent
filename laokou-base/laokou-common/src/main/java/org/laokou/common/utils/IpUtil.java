@@ -133,8 +133,9 @@ public class IpUtil {
                     for (i = 0; i < 2; ++i)
                     {
                         l = Integer.parseInt(elements[i]);
-                        if ((l < 0L) || (l > 255L))
+                        if ((l < 0L) || (l > 255L)) {
                             return null;
+                        }
                         bytes[i] = (byte) (int) (l & 0xFF);
                     }
                     l = Integer.parseInt(elements[2]);

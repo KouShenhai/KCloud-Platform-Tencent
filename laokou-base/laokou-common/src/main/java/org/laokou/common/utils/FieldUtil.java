@@ -38,14 +38,15 @@ public final class FieldUtil extends ReflectUtil {
 
     public static  <T> String getFieldName(FieldFunction<T> function) {
         try {
+            String get = "get", is = "is";
             final Method method = function.getClass().getDeclaredMethod("writeReplace");
             method.setAccessible(true);
             //序列化
             final SerializedLambda serializedLambda = (SerializedLambda) method.invoke(function);
             String getter = serializedLambda.getImplMethodName();
-            if (getter.startsWith("get")) {
+            if (getter.startsWith(get)) {
                 getter = getter.substring(3);
-            } else if (getter.startsWith("is")) {
+            } else if (getter.startsWith(is)) {
                 getter = getter.substring(2);
             } else {
                 throw new CustomException("缺少get|is方法");

@@ -178,10 +178,11 @@ public class FileUtil extends FileUtils {
      * 将文件路径规则化，去掉其中多余的/和\，去掉可能造成文件信息泄漏的../
      */
     public static String normalizePath(String path) {
+        String doubleSpot = "..";
         path = path.replace('\\', '/');
         path = FileUtil.replaceEx(path, "../", "/");
         path = FileUtil.replaceEx(path, "./", "/");
-        if (path != null && path.endsWith("..")) {
+        if (path != null && path.endsWith(doubleSpot)) {
             path = path.substring(0, path.length() - 2);
         }
         if (path != null) {
@@ -332,6 +333,7 @@ public class FileUtil extends FileUtils {
      * 复制单个文件
      */
     private static boolean copyFile(File oldFile, String newPath) {
+        String thumbsDb = "Thumbs.db";
         oldFile = normalizeFile(oldFile);
         newPath = normalizePath(newPath);
         if (!oldFile.exists()) { // 文件存在时
@@ -342,7 +344,7 @@ public class FileUtil extends FileUtils {
             log.info(oldFile + "不是文件");
             return false;
         }
-        if("Thumbs.db".equalsIgnoreCase(oldFile.getName())){
+        if(thumbsDb.equalsIgnoreCase(oldFile.getName())){
             log.info(oldFile + "忽略此文件");
             return true;
         }
@@ -747,6 +749,7 @@ public class FileUtil extends FileUtils {
      */
     public static void zipFiles(String srcDirName, String fileName,
                                 String descFileName) {
+        String star = "*";
         // 判断目录是否存在
         if (srcDirName == null) {
             log.debug("文件压缩失败，目录 " + srcDirName + " 不存在!");
@@ -763,7 +766,7 @@ public class FileUtil extends FileUtils {
         try {
             zouts = new ZipOutputStream(new FileOutputStream(
                     descFile));
-            if ("*".equals(fileName) || "".equals(fileName)) {
+            if (star.equals(fileName) || "".equals(fileName)) {
                 FileUtil.zipDirectoryToZipFile(dirPath, fileDir, zouts);
             } else {
                 File file = new File(fileDir, fileName);
