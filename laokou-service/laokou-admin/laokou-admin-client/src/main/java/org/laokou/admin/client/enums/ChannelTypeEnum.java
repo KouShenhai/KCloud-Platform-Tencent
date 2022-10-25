@@ -15,9 +15,22 @@
  */
 package org.laokou.admin.client.enums;
 
+/**
+ * @author Kou Shenhai
+ */
+
 public enum ChannelTypeEnum {
 
+    /**
+     * 平台
+     */
     PLATFORM,
+    /**
+     * 微信公众号
+     */
     WXMP,
+    /**
+     * 邮件
+     */
     EMAIL;
 }

@@ -24,7 +24,7 @@ import java.security.SecureRandom;
 /**
  * @author Kou Shenhai
  */
-public class Bcrypt {
+public class BCrypt {
 	// BCrypt parameters
 
 	private static final int GENSALT_DEFAULT_LOG2_ROUNDS = 10;
@@ -515,7 +515,7 @@ public class Bcrypt {
 	 * @throws IllegalArgumentException if invalid salt is passed
 	 */
 	public static String hashpw(String password, String salt) throws IllegalArgumentException {
-		Bcrypt bCrypt;
+		BCrypt bCrypt;
 		String realSalt;
 		byte[] passwordb, saltb, hashed;
 		char minor = (char) 0;
@@ -567,7 +567,7 @@ public class Bcrypt {
 
 		saltb = decodeBase64(realSalt, BCRYPT_SALT_LEN);
 
-		bCrypt = new Bcrypt();
+		bCrypt = new BCrypt();
 		hashed = bCrypt.cryptRaw(passwordb, saltb, rounds);
 
 		rs.append("$2");

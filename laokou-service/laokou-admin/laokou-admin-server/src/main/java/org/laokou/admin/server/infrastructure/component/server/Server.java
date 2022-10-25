@@ -309,15 +309,15 @@ class Jvm implements Serializable {
         Date date = new Date(time);
 
         //运行多少分钟
-        long runMS = DateUtil.between(date, new Date(), DateUnit.MS);
+        long runMs = DateUtil.between(date, new Date(), DateUnit.MS);
 
         long nd = 1000 * 24 * 60 * 60;
         long nh = 1000 * 60 * 60;
         long nm = 1000 * 60;
 
-        long day = runMS / nd;
-        long hour = runMS % nd / nh;
-        long min = runMS % nd % nh / nm;
+        long day = runMs / nd;
+        long hour = runMs % nd / nh;
+        long min = runMs % nd % nh / nm;
         return day + "天" + hour + "小时" + min + "分钟";
     }
 }

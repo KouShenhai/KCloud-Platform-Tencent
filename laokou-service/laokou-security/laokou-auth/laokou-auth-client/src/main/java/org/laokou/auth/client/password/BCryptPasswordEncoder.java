@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * @author Dave Syer
  *
  */
-public class BcryptPasswordEncoder implements PasswordEncoder {
+public class BCryptPasswordEncoder implements PasswordEncoder {
 	private final Pattern bcryptPattern = Pattern
 			.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
 	private final Log logger = LogFactory.getLog(getClass());
@@ -40,14 +40,14 @@ public class BcryptPasswordEncoder implements PasswordEncoder {
 
 	private final SecureRandom random;
 
-	public BcryptPasswordEncoder() {
+	public BCryptPasswordEncoder() {
 		this(-1);
 	}
 
 	/**
 	 * @param strength the log rounds to use, between 4 and 31
 	 */
-	public BcryptPasswordEncoder(int strength) {
+	public BCryptPasswordEncoder(int strength) {
 		this(strength, null);
 	}
 
@@ -56,8 +56,8 @@ public class BcryptPasswordEncoder implements PasswordEncoder {
 	 * @param random the secure random instance to use
 	 *
 	 */
-	public BcryptPasswordEncoder(int strength, SecureRandom random) {
-		boolean flag = strength != -1 && (strength < Bcrypt.MIN_LOG_ROUNDS || strength > Bcrypt.MAX_LOG_ROUNDS);
+	public BCryptPasswordEncoder(int strength, SecureRandom random) {
+		boolean flag = strength != -1 && (strength < BCrypt.MIN_LOG_ROUNDS || strength > BCrypt.MAX_LOG_ROUNDS);
 		if (flag) {
 			throw new CustomException("Bad strength");
 		}
@@ -70,16 +70,16 @@ public class BcryptPasswordEncoder implements PasswordEncoder {
 		String salt;
 		if (strength > 0) {
 			if (random != null) {
-				salt = Bcrypt.gensalt(strength, random);
+				salt = BCrypt.gensalt(strength, random);
 			}
 			else {
-				salt = Bcrypt.gensalt(strength);
+				salt = BCrypt.gensalt(strength);
 			}
 		}
 		else {
-			salt = Bcrypt.gensalt();
+			salt = BCrypt.gensalt();
 		}
-		return Bcrypt.hashpw(rawPassword.toString(), salt);
+		return BCrypt.hashpw(rawPassword.toString(), salt);
 	}
 
     @Override
@@ -94,6 +94,6 @@ public class BcryptPasswordEncoder implements PasswordEncoder {
 			return false;
 		}
 
-		return Bcrypt.checkpw(rawPassword.toString(), encodedPassword);
+		return BCrypt.checkpw(rawPassword.toString(), encodedPassword);
 	}
 }

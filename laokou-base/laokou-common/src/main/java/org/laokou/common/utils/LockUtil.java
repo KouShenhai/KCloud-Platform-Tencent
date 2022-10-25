@@ -35,7 +35,7 @@ public class LockUtil {
      * 获取本机网卡地址
      * @return
      */
-    public static String getLocalMAC() {
+    public static String getLocalMac() {
         try {
             InetAddress ia = InetAddress.getLocalHost();
             //获取网络接口对象(即网卡),并得到mac地址，MAC地址存在一个byte数组中

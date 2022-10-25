@@ -36,7 +36,7 @@ public interface AuthApiFeignClient {
 
     /**
      * 根据token获取用户信息
-     * @param Authorization
+     * @param token
      * @param uri
      * @param method
      * @param language
@@ -45,7 +45,7 @@ public interface AuthApiFeignClient {
     @GetMapping("/sys/auth/api/resource")
     Mono<HttpResultUtil<BaseUserVO>> resource(
                              @RequestHeader(HttpHeaders.ACCEPT_LANGUAGE) String language,
-                             @RequestParam(Constant.AUTHORIZATION_HEAD) String Authorization,
+                             @RequestParam(Constant.AUTHORIZATION_HEAD) String token,
                              @RequestParam(Constant.URI)String uri,
                              @RequestParam(Constant.METHOD)String method);
 }
