@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.common.filter;
-import lombok.Data;
 import org.apache.shiro.authc.AuthenticationToken;
 
 /**
  * @author Kou Shenhai
  */
-@Data
 public record AuthToken(String token) implements AuthenticationToken {
 
     @Override

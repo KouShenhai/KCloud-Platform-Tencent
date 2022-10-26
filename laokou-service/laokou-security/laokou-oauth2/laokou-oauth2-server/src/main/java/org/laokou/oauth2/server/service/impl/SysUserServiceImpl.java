@@ -41,11 +41,10 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public BaseUserVO getUserInfo(String username) {
         UserDetail userDetail = sysUserMapper.getUserDetail(null,username);
-        return BaseUserVO.builder().imgUrl(userDetail.getImgUrl())
+        return BaseUserVO.builder()
                 .username(userDetail.getUsername())
                 .userId(userDetail.getId())
-                .mobile(userDetail.getMobile())
-                .email(userDetail.getEmail()).build();
+                .build();
     }
 
 }
