@@ -25,7 +25,7 @@ import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.TreeUtil;
-import org.laokou.auth.client.vo.SysDeptVO;
+import org.laokou.admin.client.vo.SysDeptVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;

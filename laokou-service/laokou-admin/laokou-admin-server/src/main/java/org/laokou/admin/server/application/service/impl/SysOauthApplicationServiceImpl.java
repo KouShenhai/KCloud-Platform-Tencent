@@ -62,7 +62,7 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
             throw new CustomException("应用id已存在，请重新填写");
         }
         sysOauthDO.setCreator(SecurityUser.getUserId(request));
-        final UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getAuthorization(request));
+        final UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getToken(request));
         sysOauthDO.setDeptId(userDetail.getDeptId());
         return sysOauthService.save(sysOauthDO);
     }

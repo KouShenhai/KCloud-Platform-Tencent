@@ -18,7 +18,7 @@ package org.laokou.admin.server.domain.sys.repository.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.laokou.admin.server.domain.sys.entity.SysDeptDO;
 import org.laokou.admin.server.interfaces.qo.SysDeptQO;
-import org.laokou.auth.client.vo.SysDeptVO;
+import org.laokou.admin.client.vo.SysDeptVO;
 
 import java.util.List;
 

@@ -37,7 +37,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.stream.Collectors;
 /**
  * @author Kou Shenhai
  */
@@ -56,7 +55,7 @@ public class DataFilterAspect {
         Object params = point.getArgs()[0];
         if (params != null && params instanceof BasePage) {
             HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-            String userInfoKey = RedisKeyUtil.getUserInfoKey(SecurityUser.getAuthorization(request));
+            String userInfoKey = RedisKeyUtil.getUserInfoKey(SecurityUser.getToken(request));
             final Object obj = redisUtil.get(userInfoKey);
             if (obj == null) {
                 throw new CustomException(430,"系统繁忙，请刷新页面再试");
@@ -94,8 +93,8 @@ public class DataFilterAspect {
         }
         StringBuilder sqlFilter = new StringBuilder();
         //用户列表
-        if (CollectionUtils.isNotEmpty(userDetail.getDepts())) {
-            List<Long> deptIds = userDetail.getDepts().stream().map(item -> item.getId()).collect(Collectors.toList());
+        List<Long> deptIds = userDetail.getDepIds();
+        if (CollectionUtils.isNotEmpty(deptIds)) {
             sqlFilter.append(" find_in_set(").append(tableAlias).append(dataFilter.deptId()).append(" , ").append("'").append(StringUtils.join(deptIds,",")).append("'").append(") or ");
         }
         sqlFilter.append(tableAlias).append(dataFilter.userId()).append(" = ").append("'").append(userDetail.getId()).append("' ");

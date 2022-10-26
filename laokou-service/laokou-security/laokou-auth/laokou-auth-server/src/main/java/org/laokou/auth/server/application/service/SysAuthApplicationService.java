@@ -18,6 +18,7 @@ package org.laokou.auth.server.application.service;
 import com.alipay.api.AlipayApiException;
 import org.laokou.auth.client.dto.LoginDTO;
 import org.laokou.auth.client.user.BaseUserVO;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.client.vo.LoginVO;
 import org.laokou.auth.client.vo.UserInfoVO;
 import javax.servlet.http.HttpServletRequest;
@@ -54,12 +55,19 @@ public interface SysAuthApplicationService {
 
     /**
      * 访问资源权限
-     * @param Authorization
+     * @param token
      * @param uri
      * @param method
      * @return
      */
-    BaseUserVO resource(String Authorization, String uri, String method);
+    BaseUserVO resource(String token, String uri, String method);
+
+    /***
+     * 用户详细信息
+     * @param request
+     * @return
+     */
+    UserDetail userDetail(HttpServletRequest request);
 
     /**
      * 获取用户信息

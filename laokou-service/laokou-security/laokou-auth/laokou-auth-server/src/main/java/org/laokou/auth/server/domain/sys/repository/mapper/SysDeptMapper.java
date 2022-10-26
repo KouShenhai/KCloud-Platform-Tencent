@@ -15,16 +15,27 @@
  */
 package org.laokou.auth.server.domain.sys.repository.mapper;
 
-import org.laokou.auth.client.vo.SysDeptVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.util.*;
+/**
+ * @author Kou Shenhai
+ */
 @Repository
 @Mapper
 public interface SysDeptMapper {
 
-    List<SysDeptVO> getDeptListByUserId(@Param("userId")Long userId);
+    /**
+     * 根据userId查询deptIds
+     * @param userId
+     * @return
+     */
+    List<Long> getDeptIdsByUserId(@Param("userId")Long userId);
 
-    List<SysDeptVO> getDeptList();
+    /**
+     * 查询deptIds
+     * @return
+     */
+    List<Long> getDeptIds();
 }

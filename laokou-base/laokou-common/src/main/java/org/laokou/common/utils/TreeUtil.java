@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.common.utils;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.collect.Lists;
 import org.laokou.common.exception.CustomException;
 import lombok.Data;
@@ -52,9 +50,6 @@ public class TreeUtil<T> {
         for (T treeNo : treeNodes) {
             T parent = nodeMap.get(treeNo.getPid());
             if (parent != null && treeNo.getPid().equals(parent.getId())) {
-                if (parent.getChildren() == null) {
-                    parent.setChildren(Lists.newArrayList());
-                }
                 parent.getChildren().add(treeNo);
             }
         }
@@ -72,12 +67,10 @@ public class TreeUtil<T> {
         return null;
     }
     public static class TreeNo<T> {
-        @JsonSerialize(using = ToStringSerializer.class)
         private Long id;
         private String name;
-        @JsonSerialize(using = ToStringSerializer.class)
         private Long pid;
-        private List<T> children;
+        private List<T> children = Lists.newArrayList();
         public TreeNo() {}
         public TreeNo(Long id, String name, Long pid, List<T> children) {
             this.id = id;

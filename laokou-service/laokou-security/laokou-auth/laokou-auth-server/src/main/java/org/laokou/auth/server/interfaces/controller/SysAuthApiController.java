@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.interfaces.controller;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.auth.client.dto.LoginDTO;
 import org.laokou.auth.client.user.BaseUserVO;
@@ -75,10 +76,10 @@ public class SysAuthApiController {
             @ApiImplicitParam(name = Constant.URI,value = "请求路径",required = true,paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = Constant.METHOD,value = "请求方法",required = true,paramType = "query",dataType = "String")
     })
-    public Mono<HttpResultUtil<BaseUserVO>>  resource(@RequestParam(Constant.AUTHORIZATION_HEAD) String Authorization,
+    public Mono<HttpResultUtil<BaseUserVO>>  resource(@RequestParam(Constant.AUTHORIZATION_HEAD) String token,
                                                       @RequestParam(Constant.URI)String uri,
                                                       @RequestParam(Constant.METHOD)String method) {
-        return Mono.create(callback -> callback.success(new HttpResultUtil<BaseUserVO>().ok(sysAuthApplicationService.resource(Authorization, uri, method))));
+        return Mono.create(callback -> callback.success(new HttpResultUtil<BaseUserVO>().ok(sysAuthApplicationService.resource(token, uri, method))));
     }
 
     @GetMapping("/sys/auth/api/logout")
@@ -92,6 +93,12 @@ public class SysAuthApiController {
     @ApiOperation("系统认证>用户信息")
     public HttpResultUtil<UserInfoVO> userInfo(HttpServletRequest request) {
         return new HttpResultUtil<UserInfoVO>().ok(sysAuthApplicationService.userInfo(request));
+    }
+
+    @GetMapping("/sys/auth/api/userDetail")
+    @ApiOperation("系统认证>用户信息")
+    public HttpResultUtil<UserDetail> userDetail(HttpServletRequest request) {
+        return new HttpResultUtil<UserDetail>().ok(sysAuthApplicationService.userDetail(request));
     }
 
     @PostMapping("/sys/auth/api/open/login")

@@ -34,7 +34,7 @@ public class AuthApiFeignClientFallback implements AuthApiFeignClient {
     private Throwable throwable;
 
     @Override
-    public Mono<HttpResultUtil<BaseUserVO>> resource(String language, String Authorization, String uri, String method) {
+    public Mono<HttpResultUtil<BaseUserVO>> resource(String language, String token, String uri, String method) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
         return Mono.just(new HttpResultUtil<BaseUserVO>().error("服务调用失败，请联系管理员"));
     }

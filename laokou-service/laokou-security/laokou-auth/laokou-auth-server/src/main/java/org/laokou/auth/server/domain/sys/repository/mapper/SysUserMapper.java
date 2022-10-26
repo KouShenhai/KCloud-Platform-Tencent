@@ -41,6 +41,11 @@ public interface SysUserMapper {
      */
     String getUsernameByOpenid(@Param("zfbOpenid")String zfbOpenid);
 
+    /**
+     * 根据id修改支付宝id
+     * @param id
+     * @param zfbOpenid
+     */
     void updateZfbOpenid(@Param("id")Long id, @Param("zfbOpenid")String zfbOpenid);
 
 }

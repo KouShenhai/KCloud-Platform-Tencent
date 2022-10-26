@@ -32,7 +32,7 @@ import org.laokou.admin.client.dto.SysRoleDTO;
 import org.laokou.common.constant.Constant;
 import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.auth.client.vo.SysRoleVO;
+import org.laokou.admin.client.vo.SysRoleVO;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.ConvertUtil;
 import org.apache.commons.collections.CollectionUtils;

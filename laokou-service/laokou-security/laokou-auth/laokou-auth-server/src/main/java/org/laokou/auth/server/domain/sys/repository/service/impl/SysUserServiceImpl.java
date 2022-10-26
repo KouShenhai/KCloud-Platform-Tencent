@@ -47,5 +47,4 @@ public class SysUserServiceImpl implements SysUserService {
         sysUserMapper.updateZfbOpenid(id,zfbOpenid);
     }
 
-
 }

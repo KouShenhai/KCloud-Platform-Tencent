@@ -57,19 +57,23 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
     }
 
     @Override
-    public UserDetail getUserDetail(String Authorization) {
+    public UserDetail getUserDetail(String token) {
         //region Description
-        String userInfoKey = RedisKeyUtil.getUserInfoKey(Authorization);
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         final Object obj = redisUtil.get(userInfoKey);
         UserDetail userDetail;
         if (null != obj) {
             userDetail = (UserDetail) obj;
         } else {
-            Long userId = getUserId(Authorization);
-            userDetail = getUserDetail(userId,null);
+            Long userId = getUserId(token);
+            userDetail = getUserDetailById(userId);
         }
         return userDetail;
         //endregion
+    }
+
+    private UserDetail getUserDetailById(Long userId) {
+        return getUserDetail(userId,null);
     }
 
     @Override
@@ -77,12 +81,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
         return this.baseMapper.getUserDetail(userId,username);
     }
 
-    private Long getUserId(String Authorization) {
+    private Long getUserId(String token) {
         //region Description
-        if (TokenUtil.isExpiration(Authorization)) {
+        if (TokenUtil.isExpiration(token)) {
             throw new CustomException(ErrorCode.AUTHORIZATION_INVALID);
         }
-        return TokenUtil.getUserId(Authorization);
+        return TokenUtil.getUserId(token);
         //endregion
     }
 

@@ -18,7 +18,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.application.service.SysRoleApplicationService;
 import org.laokou.admin.client.dto.SysRoleDTO;
 import org.laokou.admin.server.interfaces.qo.SysRoleQO;
-import org.laokou.auth.client.vo.SysRoleVO;
+import org.laokou.admin.client.vo.SysRoleVO;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.log.annotation.OperateLog;
 import io.swagger.annotations.Api;

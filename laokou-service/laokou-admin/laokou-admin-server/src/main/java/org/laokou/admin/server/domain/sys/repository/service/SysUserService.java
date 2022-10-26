@@ -39,10 +39,10 @@ public interface SysUserService extends IService<SysUserDO> {
 
     /**
      * 获取用户信息
-     * @param Authorization
+     * @param token
      * @return
      */
-    UserDetail getUserDetail(String Authorization);
+    UserDetail getUserDetail(String token);
 
     UserDetail getUserDetail(Long userId,String username);
 

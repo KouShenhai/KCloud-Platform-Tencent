@@ -39,9 +39,9 @@ spring:
                 # 降级接口地址
                 fallbackUri: 'forward:/fallback'
         - id: laokou-cas
-          uri: lb://laokou-cas
+          uri: lb://laokou-ump
           predicates:
-            - Path=/cas/**
+            - Path=/ump/**
           filters:
             - StripPrefix=1
             # 限流

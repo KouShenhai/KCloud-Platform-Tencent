@@ -19,7 +19,7 @@ import org.laokou.admin.server.domain.sys.entity.SysDeptDO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysDeptMapper;
 import org.laokou.admin.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.admin.server.interfaces.qo.SysDeptQO;
-import org.laokou.auth.client.vo.SysDeptVO;
+import org.laokou.admin.client.vo.SysDeptVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;

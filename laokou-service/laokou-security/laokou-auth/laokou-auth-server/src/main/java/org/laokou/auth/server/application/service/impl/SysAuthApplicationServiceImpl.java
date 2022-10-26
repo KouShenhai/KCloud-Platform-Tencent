@@ -45,9 +45,7 @@ import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.auth.client.vo.SysDeptVO;
 import org.laokou.common.utils.*;
-
 import org.laokou.log.publish.PublishFactory;
 import org.laokou.redis.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -114,8 +112,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @Lazy
     private ZfbOauth zfbOauth;
     @Autowired
-    private SysRoleService sysRoleService;
-    @Autowired
     private SysDeptService sysDeptService;
     @Autowired
     private RedisUtil redisUtil;
@@ -154,7 +150,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
 
     private String getToken(String username,String password,boolean isUserPasswordFlag) throws Exception {
         //查询数据库
-        UserDetail userDetail = getUserDetail(null,username);
+        UserDetail userDetail = getUserDetailByName(username);
         log.info("查询的数据：{}",userDetail);
         if (!isUserPasswordFlag && null == userDetail) {
             PublishFactory.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.ACCOUNT_NOT_EXIST));
@@ -177,7 +173,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             PublishFactory.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
             throw new CustomException(ErrorCode.NOT_PERMISSIONS);
         }
-        PublishFactory.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
+        //PublishFactory.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
         //获取token
         return getToken(userDetail,resourceList);
     }
@@ -202,12 +198,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         //资源列表放到redis中
         String userResourceKey = RedisKeyUtil.getUserResourceKey(token);
-        List<String> permissionList = getPermissionList(userDetail);
-        userDetail.setPermissionsList(permissionList);
-        userDetail.setRoles(sysRoleService.getRoleListByUserId(userDetail.getId()));
-        userDetail.setDepts(getDeptList(userDetail));
-        redisUtil.delete(userInfoKey);
-        redisUtil.delete(userResourceKey);
+        userDetail.setPermissionsList(getPermissionList(userDetail));
+        userDetail.setDepIds(getDeptIds(userDetail));
         redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
         redisUtil.set(userResourceKey,resourceList,RedisUtil.HOUR_ONE_EXPIRE);
         caffeineCache.put(userInfoKey,userDetail);
@@ -225,20 +217,20 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //endregion
     }
 
-    private List<SysDeptVO> getDeptList(UserDetail userDetail) {
+    private List<Long> getDeptIds(UserDetail userDetail) {
         Integer superAdmin = userDetail.getSuperAdmin();
         Long userId = userDetail.getId();
         if (SuperAdminEnum.YES.ordinal() == superAdmin) {
-            return sysDeptService.getDeptList();
+            return sysDeptService.getDeptIds();
         } else {
-            return sysDeptService.getDeptListByUserId(userId);
+            return sysDeptService.getDeptIdsByUserId(userId);
         }
     }
 
     @Override
     public void logout(HttpServletRequest request) {
         //region Description
-        String token = SecurityUser.getAuthorization(request);
+        String token = SecurityUser.getToken(request);
         if (StringUtils.isBlank(token)) {
             return;
         }
@@ -277,11 +269,11 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public BaseUserVO resource(String Authorization, String uri, String method) {
+    public BaseUserVO resource(String token, String uri, String method) {
         //region Description
         //1.获取用户信息
-        UserDetail userDetail = getUserDetail(Authorization);
-        BaseUserVO userVO = BaseUserVO.builder().userId(userDetail.getId()).username(userDetail.getUsername()).imgUrl(userDetail.getImgUrl()).email(userDetail.getEmail()).mobile(userDetail.getMobile()).build();
+        UserDetail userDetail = getUserDetail(token);
+        BaseUserVO userVO = BaseUserVO.builder().userId(userDetail.getId()).username(userDetail.getUsername()).build();
         //2.获取所有按钮资源列表
         List<SysMenuVO> resourceList = sysMenuService.getMenuList(null,1);
         //3.判断资源是否在资源列表列表里
@@ -303,7 +295,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             return userVO;
         }
         //8. 需要鉴权，获取用户资源列表
-        resourceList = sysMenuService.getMenuList(Authorization,userDetail, false, 1);
+        resourceList = sysMenuService.getMenuList(token,userDetail, false, 1);
         //9.如果不在用户资源列表里，则无权访问
         if(pathMatcher(uri, method, resourceList) != null) {
             return userVO;
@@ -313,27 +305,32 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
+    public UserDetail userDetail(HttpServletRequest request) {
+        String token = SecurityUser.getToken(request);
+        return getUserDetail(token);
+    }
+
+    @Override
     public UserInfoVO userInfo(HttpServletRequest request) {
-        String token = SecurityUser.getAuthorization(request);
+        String token = SecurityUser.getToken(request);
         UserDetail userDetail = getUserDetail(token);
         return UserInfoVO.builder().imgUrl(userDetail.getImgUrl())
                         .username(userDetail.getUsername())
                         .userId(userDetail.getId())
                         .mobile(userDetail.getMobile())
                         .email(userDetail.getEmail())
-                        .roles(userDetail.getRoles())
+                        .depId(userDetail.getDeptId())
                         .permissionList(userDetail.getPermissionsList()).build();
     }
 
     @Override
     public BaseUserVO openUserInfo(HttpServletRequest request) {
-        String token = SecurityUser.getAuthorization(request);
+        String token = SecurityUser.getToken(request);
         UserDetail userDetail = getUserDetail(token);
-        return BaseUserVO.builder().imgUrl(userDetail.getImgUrl())
+        return BaseUserVO.builder()
                 .username(userDetail.getUsername())
                 .userId(userDetail.getId())
-                .mobile(userDetail.getMobile())
-                .email(userDetail.getEmail()).build();
+                .build();
     }
 
     private SysMenuVO pathMatcher(String url, String method, List<SysMenuVO> resourceList) {
@@ -349,12 +346,12 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //endregion
     }
 
-    private Long getUserId(String Authorization) {
+    private Long getUserId(String token) {
         //region Description
-        if (TokenUtil.isExpiration(Authorization)) {
+        if (TokenUtil.isExpiration(token)) {
             throw new CustomException(ErrorCode.AUTHORIZATION_INVALID);
         }
-        return TokenUtil.getUserId(Authorization);
+        return TokenUtil.getUserId(token);
         //endregion
     }
 
@@ -379,16 +376,12 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 userDetail.setPermissionsList(permissionList);
                 return userDetail;
             },executorService);
-            CompletableFuture<UserDetail> c2 = CompletableFuture.supplyAsync(() -> sysRoleService.getRoleListByUserId(userId),executorService).thenApplyAsync(roles -> {
-                userDetail.setRoles(roles);
-                return userDetail;
-            },executorService);
-            CompletableFuture<UserDetail> c3 = CompletableFuture.supplyAsync(() -> getDeptList(userDetail), executorService).thenApplyAsync(depts -> {
-                userDetail.setDepts(depts);
+            CompletableFuture<UserDetail> c2 = CompletableFuture.supplyAsync(() -> getDeptIds(userDetail), executorService).thenApplyAsync(deptIds -> {
+                userDetail.setDepIds(deptIds);
                 return userDetail;
             }, executorService);
             //等待所有任务都完成
-            CompletableFuture.allOf(c1,c2,c3).join();
+            CompletableFuture.allOf(c1,c2).join();
             redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
         }
         caffeineCache.put(userInfoKey,userDetail);
@@ -403,13 +396,13 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
 
     @Override
     public void zfbBind(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String Authorization = SecurityUser.getAuthorization(request);
+        String token = SecurityUser.getToken(request);
         final Long userId = SecurityUser.getUserId(request);
         final String zfbOpenid = request.getParameter("zfb_openid");
-        final UserDetail userDetail = getUserDetail(userId,null);
+        final UserDetail userDetail = getUserDetailById(userId);
         if (StringUtils.isBlank(userDetail.getZfbOpenid())) {
             sysUserService.updateZfbOpenid(userId,zfbOpenid);
-            response.sendRedirect(String.format(INDEX_URL,Authorization));
+            response.sendRedirect(String.format(INDEX_URL,token));
         } else {
             response.sendRedirect(CALLBACK_FAIL_URL);
         }
@@ -436,6 +429,14 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
 
     private UserDetail getUserDetail(Long userId,String username) {
         return sysUserService.getUserDetail(userId, username);
+    }
+
+    private UserDetail getUserDetailByName(String username) {
+        return getUserDetail(null,username);
+    }
+
+    private UserDetail getUserDetailById(Long userId) {
+        return getUserDetail(userId,null);
     }
 
     @Component

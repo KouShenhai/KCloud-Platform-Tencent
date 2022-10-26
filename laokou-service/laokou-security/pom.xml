@@ -13,7 +13,7 @@
 
     <modules>
         <module>laokou-auth</module>
-        <module>laokou-cas</module>
+        <module>laokou-ump</module>
         <module>laokou-oauth2</module>
     </modules>
 

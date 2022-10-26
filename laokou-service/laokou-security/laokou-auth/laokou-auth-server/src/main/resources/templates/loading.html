@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>laokou-cas</title>
+    <title>laokou-ump</title>
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
 </head>
 <body>
@@ -10,7 +10,7 @@
 </body>
 <script>
     let queryAttr = window.location.search;
-    let Authorization;
+    let token;
 
     if (queryAttr.length > 0) {
         queryAttr = queryAttr.substring(1);
@@ -61,19 +61,19 @@
         }
     });
     function setData(token) {
-        localStorage.setItem("Authorization",token);
+        localStorage.setItem("access_token",token);
     }
     function toIndex(msg) {
-        Authorization = getAuthorization();
-        if (Authorization != "undefined" && Authorization != null && Authorization != '' && Authorization != undefined) {
-            window.location.href = "http://192.168.62.1:8000/user/login?access_token=" + Authorization;
+        token = getToken();
+        if (token != "undefined" && token != null && token != '' && token != undefined) {
+            window.location.href = "http://192.168.62.1:8000/user/login?access_token=" + token;
         } else {
             alert(msg);
             toLogin();
         }
     }
-    function getAuthorization() {
-        return localStorage.getItem("Authorization") == null ? "" : localStorage.getItem("Authorization");
+    function getToken() {
+        return localStorage.getItem("access_token") == null ? "" : localStorage.getItem("access_token");
     }
     function toLogin() {
         localStorage.clear();

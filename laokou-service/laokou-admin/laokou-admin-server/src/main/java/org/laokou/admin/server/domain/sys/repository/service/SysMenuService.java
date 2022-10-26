@@ -53,7 +53,7 @@ public interface SysMenuService extends IService<SysMenuDO> {
      * @param type
      * @return
      */
-    List<SysMenuVO> getMenuList(String Authorization,UserDetail userDetail, boolean noCache, Integer type);
+    List<SysMenuVO> getMenuList(String token,UserDetail userDetail, boolean noCache, Integer type);
 
     /**
      * 查询列表

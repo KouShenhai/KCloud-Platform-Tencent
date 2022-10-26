@@ -83,17 +83,17 @@ public class AuthFilter implements GlobalFilter,Ordered {
             return chain.filter(exchange);
         }
         //获取用户token
-        String Authorization = request.getHeaders().getFirst(Constant.AUTHORIZATION_HEAD);
-        if (StringUtils.isBlank(Authorization)){
-            Authorization = request.getQueryParams().getFirst(Constant.AUTHORIZATION_HEAD);
+        String token = request.getHeaders().getFirst(Constant.AUTHORIZATION_HEAD);
+        if (StringUtils.isBlank(token)){
+            token = request.getQueryParams().getFirst(Constant.AUTHORIZATION_HEAD);
         }
-        log.info("Authorization:{}",Authorization);
+        log.info("token:{}",token);
         //获取访问资源的权限
         //资源访问权限
         String language = request.getHeaders().getFirst(HttpHeaders.ACCEPT_LANGUAGE);
         HttpResultUtil<BaseUserVO> result;
         try {
-            result = authApiFeignClient.resource(language, Authorization, requestUri, method).block();
+            result = authApiFeignClient.resource(language, token, requestUri, method).block();
         } catch (FeignException e) {
             log.info("报错信息:{}",e.getMessage());
             return response(exchange,new HttpResultUtil<UserDetail>().error(ErrorCode.SERVICE_MAINTENANCE));

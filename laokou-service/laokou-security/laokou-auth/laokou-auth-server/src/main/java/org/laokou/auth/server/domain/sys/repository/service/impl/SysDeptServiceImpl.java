@@ -17,13 +17,15 @@ package org.laokou.auth.server.domain.sys.repository.service.impl;
 
 import org.laokou.auth.server.domain.sys.repository.mapper.SysDeptMapper;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
-import org.laokou.auth.client.vo.SysDeptVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * @author Kou Shenhai
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class SysDeptServiceImpl implements SysDeptService {
@@ -32,12 +34,12 @@ public class SysDeptServiceImpl implements SysDeptService {
     private SysDeptMapper sysDeptMapper;
 
     @Override
-    public List<SysDeptVO> getDeptListByUserId(Long userId) {
-        return sysDeptMapper.getDeptListByUserId(userId);
+    public List<Long> getDeptIdsByUserId(Long userId) {
+        return sysDeptMapper.getDeptIdsByUserId(userId);
     }
 
     @Override
-    public List<SysDeptVO> getDeptList() {
-        return sysDeptMapper.getDeptList();
+    public List<Long> getDeptIds() {
+        return sysDeptMapper.getDeptIds();
     }
 }

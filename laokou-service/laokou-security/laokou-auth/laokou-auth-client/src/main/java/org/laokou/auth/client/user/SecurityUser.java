@@ -28,7 +28,7 @@ public class SecurityUser {
     public static Long getUserId(HttpServletRequest request) {
         String userId = request.getHeader(Constant.USER_KEY_HEAD);
         if (StringUtils.isBlank(userId)) {
-            String authHeader = getAuthorization(request);
+            String authHeader = getToken(request);
             if (StringUtils.isBlank(authHeader)) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED);
             }
@@ -43,7 +43,7 @@ public class SecurityUser {
     public static String getUsername(HttpServletRequest request) {
         String username = request.getHeader(Constant.USERNAME_HEAD);
         if (StringUtils.isBlank(username)) {
-            String authHeader = getAuthorization(request);
+            String authHeader = getToken(request);
             if (StringUtils.isBlank(authHeader)) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED);
             }
@@ -58,14 +58,14 @@ public class SecurityUser {
     /**
      * 获取请求的token
      */
-    public static String getAuthorization(HttpServletRequest request){
+    public static String getToken(HttpServletRequest request){
         //从header中获取token
-        String Authorization = request.getHeader(Constant.AUTHORIZATION_HEAD);
+        String token = request.getHeader(Constant.AUTHORIZATION_HEAD);
         //如果header中不存在Authorization，则从参数中获取Authorization
-        if(org.apache.commons.lang3.StringUtils.isBlank(Authorization)){
-            Authorization = request.getParameter(Constant.AUTHORIZATION_HEAD);
+        if(org.apache.commons.lang3.StringUtils.isBlank(token)){
+            token = request.getParameter(Constant.AUTHORIZATION_HEAD);
         }
-        return Authorization;
+        return token;
     }
 
 }

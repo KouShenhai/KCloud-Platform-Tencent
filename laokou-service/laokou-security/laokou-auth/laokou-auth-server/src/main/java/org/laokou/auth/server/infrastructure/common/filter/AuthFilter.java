@@ -45,11 +45,11 @@ public class AuthFilter extends AuthenticatingFilter {
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response){
         //获取请求token
-        String Authorization = SecurityUser.getAuthorization((HttpServletRequest) request);
-        if(StringUtils.isBlank(Authorization)){
+        String token = SecurityUser.getToken((HttpServletRequest) request);
+        if(StringUtils.isBlank(token)){
             return null;
         }
-        return new AuthToken(Authorization);
+        return new AuthToken(token);
     }
 
     @Override
@@ -65,9 +65,9 @@ public class AuthFilter extends AuthenticatingFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         //获取请求token，如果token为空，直接返回401
-        String Authorization = SecurityUser.getAuthorization((HttpServletRequest) request);
-        log.info("Authorization:{}",Authorization);
-        if(StringUtils.isBlank(Authorization)){
+        String token = SecurityUser.getToken((HttpServletRequest) request);
+        log.info("token:{}",token);
+        if(StringUtils.isBlank(token)){
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
             String json = JacksonUtil.toJsonStr(new HttpResultUtil<Boolean>().error(ErrorCode.UNAUTHORIZED));

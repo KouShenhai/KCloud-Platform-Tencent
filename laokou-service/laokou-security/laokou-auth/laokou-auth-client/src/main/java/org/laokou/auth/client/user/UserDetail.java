@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.auth.client.user;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import org.laokou.auth.client.vo.SysDeptVO;
-import org.laokou.auth.client.vo.SysRoleVO;
 import lombok.Data;
-
 import java.io.Serializable;
 import java.util.List;
 /**
@@ -27,7 +22,6 @@ import java.util.List;
  */
 @Data
 public class UserDetail implements Serializable {
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String username;
     private String imgUrl;
@@ -37,12 +31,7 @@ public class UserDetail implements Serializable {
     private String mobile;
     private String password;
     private String zfbOpenid;
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long deptId;
     private List<String> permissionsList;
-    private List<SysRoleVO> roles;
-    /**
-     * 数据权限
-     */
-    private List<SysDeptVO> depts;
+    private List<Long> depIds;
 }

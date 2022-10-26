@@ -16,14 +16,12 @@
 package org.laokou.auth.server.infrastructure.common.filter;
 import lombok.Data;
 import org.apache.shiro.authc.AuthenticationToken;
+
 /**
- * authorize
  * @author Kou Shenhai
  */
 @Data
-public class AuthToken implements AuthenticationToken {
-
-    private final String token;
+public record AuthToken(String token) implements AuthenticationToken {
 
     @Override
     public Object getPrincipal() {

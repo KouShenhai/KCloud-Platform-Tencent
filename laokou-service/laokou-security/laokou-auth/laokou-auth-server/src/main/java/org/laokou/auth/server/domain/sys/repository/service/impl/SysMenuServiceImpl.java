@@ -60,12 +60,12 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public List<SysMenuVO> getMenuList(String Authorization,UserDetail userDetail, boolean noCache, Integer type) {
+    public List<SysMenuVO> getMenuList(String token,UserDetail userDetail, boolean noCache, Integer type) {
         //region Description
         if (noCache) {
             return getMenuList(userDetail.getId(),userDetail.getSuperAdmin(),type);
         }
-        String userResourceKey = RedisKeyUtil.getUserResourceKey(Authorization);
+        String userResourceKey = RedisKeyUtil.getUserResourceKey(token);
         final Object obj = redisUtil.get(userResourceKey);
         List<SysMenuVO> resourceList;
         if (null != obj) {

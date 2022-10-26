@@ -18,7 +18,6 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.RedisClient;
 import org.redisson.client.codec.Codec;
-import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -28,20 +27,16 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import java.time.Duration;
 /**
+ * @EnableConfigurationProperties -> ConfigurationProperties的类进行一次注入
+ * AutoConfiguration -> 给插件使用
+ * Configuration -> 直接使用
  * @ConditionalOnBean -> spring容器中存在指定的class实例对象，对应的配置才生效
  * @ConditionalOnMissingBean -> ConditionalOnMissingBean 保证只有一个bean被注入
  * 某个class位于类路径上，才会实例化一个bean
  * @author Kou Shenhai
  */
 @ConditionalOnClass(Redisson.class)
-/**
- * AutoConfiguration -> 给插件使用
- * Configuration -> 直接使用
- */
 @AutoConfiguration
-/**
- * @EnableConfigurationProperties -> ConfigurationProperties的类进行一次注入
- */
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedisSessionConfig {
 
@@ -68,7 +63,7 @@ public class RedisSessionConfig {
                 .setPassword(properties.getPassword())
                 .setTimeout(timeout);
         //使用json序列化方式
-        Codec codec = new JsonJacksonCodec();
+        Codec codec = new CustomJsonJacksonCodec();
         config.setCodec(codec);
         return Redisson.create(config);
     }

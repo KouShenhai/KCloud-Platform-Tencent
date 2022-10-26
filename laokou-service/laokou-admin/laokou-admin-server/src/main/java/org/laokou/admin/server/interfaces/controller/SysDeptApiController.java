@@ -18,7 +18,7 @@ import org.laokou.admin.server.application.service.SysDeptApplicationService;
 import org.laokou.admin.client.dto.SysDeptDTO;
 import org.laokou.admin.server.interfaces.qo.SysDeptQO;
 import org.laokou.common.utils.HttpResultUtil;
-import org.laokou.auth.client.vo.SysDeptVO;
+import org.laokou.admin.client.vo.SysDeptVO;
 import org.laokou.log.annotation.OperateLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

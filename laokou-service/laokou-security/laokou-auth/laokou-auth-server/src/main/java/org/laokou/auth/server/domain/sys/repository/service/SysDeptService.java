@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.domain.sys.repository.service;
-
-import org.laokou.auth.client.vo.SysDeptVO;
-
 import java.util.List;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysDeptService {
 
-    List<SysDeptVO> getDeptListByUserId(Long userId);
+    /**
+     * 根据userId查询deptIds
+     * @param userId
+     * @return
+     */
+    List<Long> getDeptIdsByUserId(Long userId);
 
-    List<SysDeptVO> getDeptList();
+    /**
+     * 查询deptIds
+     * @return
+     */
+    List<Long> getDeptIds();
 
 }

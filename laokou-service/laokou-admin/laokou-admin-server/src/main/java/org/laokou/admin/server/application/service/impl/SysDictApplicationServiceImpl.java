@@ -58,7 +58,7 @@ public class SysDictApplicationServiceImpl implements SysDictApplicationService 
     public Boolean insertDict(SysDictDTO dto, HttpServletRequest request) {
         SysDictDO dictDO = ConvertUtil.sourceToTarget(dto, SysDictDO.class);
         dictDO.setCreator(SecurityUser.getUserId(request));
-        final UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getAuthorization(request));
+        final UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getToken(request));
         dictDO.setDeptId(userDetail.getDeptId());
         return sysDictService.save(dictDO);
     }

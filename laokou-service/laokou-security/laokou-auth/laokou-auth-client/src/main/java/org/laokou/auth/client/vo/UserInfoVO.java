@@ -21,7 +21,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 /**
@@ -54,7 +53,7 @@ public class UserInfoVO {
     @ApiModelProperty(name = "permissionList",value = "资源标识",required = true,example = "['sys:user:query']")
     private List<String> permissionList;
 
-    @ApiModelProperty(name = "roles",value = "角色集合",required = true,example = "['超级管理员']")
-    private List<SysRoleVO> roles;
+    @ApiModelProperty(name = "depId",value = "部门编号",required = true,example = "1535887940687765505")
+    private Long depId;
 
 }
