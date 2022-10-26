@@ -87,7 +87,7 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
         └── laokou-security
                 └── laokou-auth -- 认证授权模块        
                 └── laokou-oauth2 -- 认证授权模块
-                └── laokou-cas -- 认证授权模块
+                └── laokou-ump -- 认证授权模块
         └── laokou-modlule
                 └── laokou-sms 短信模块 
                 └── laokou-email 邮件模块
