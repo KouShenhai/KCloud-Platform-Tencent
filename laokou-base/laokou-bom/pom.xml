@@ -86,7 +86,7 @@
         <!--oshi版本-->
         <oshi.version>5.8.0</oshi.version>
         <!-- spring-security-oauth2版本 -->
-        <spring-security-oauth2.version>2.3.3.RELEASE</spring-security-oauth2.version>
+        <spring-security-oauth2.version>2.5.2.RELEASE</spring-security-oauth2.version>
         <!-- elasticsearch版本 -->
         <elasticsearch.version>7.6.2</elasticsearch.version>
         <!--feign-reactor版本 -->
