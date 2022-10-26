@@ -96,7 +96,7 @@ public class SysAuthApiController {
     }
 
     @GetMapping("/sys/auth/api/userDetail")
-    @ApiOperation("系统认证>用户信息")
+    @ApiOperation("系统认证>用户详情")
     public HttpResultUtil<UserDetail> userDetail(HttpServletRequest request) {
         return new HttpResultUtil<UserDetail>().ok(sysAuthApplicationService.userDetail(request));
     }

@@ -275,7 +275,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         UserDetail userDetail = getUserDetail(token);
         BaseUserVO userVO = BaseUserVO.builder().userId(userDetail.getId()).username(userDetail.getUsername()).build();
         //2.获取所有按钮资源列表
-        List<SysMenuVO> resourceList = sysMenuService.getMenuList(null,1);
+        List<SysMenuVO> resourceList = sysMenuService.getMenuList(1);
         //3.判断资源是否在资源列表列表里
         SysMenuVO resource = pathMatcher(uri, method, resourceList);
         //4.无需认证

@@ -38,8 +38,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Autowired
     private SysMenuMapper sysMenuMapper;
 
-    @Override
-    public List<SysMenuVO> getMenuList(Long userId, Integer type) {
+    private List<SysMenuVO> getMenuList(Long userId, Integer type) {
         List<SysMenuVO> menuList;
         if (userId == null) {
             menuList = sysMenuMapper.getMenuList(type);
@@ -47,6 +46,11 @@ public class SysMenuServiceImpl implements SysMenuService {
             menuList = sysMenuMapper.getMenuListByUserId(userId,type);
         }
         return menuList;
+    }
+
+    @Override
+    public List<SysMenuVO> getMenuList(Integer type) {
+        return getMenuList(null,type);
     }
 
     @Override

@@ -27,11 +27,11 @@ import java.util.List;
 public interface SysMenuService {
 
     /**
-     * 获取所有资源列表
-     * @param userId
+     * 根据type获取资源
+     * @param type
      * @return
      */
-    List<SysMenuVO> getMenuList(Long userId, Integer type);
+    List<SysMenuVO> getMenuList(Integer type);
 
     /**
      * 查询所有权限列表
@@ -48,6 +48,7 @@ public interface SysMenuService {
 
     /**
      * 获取菜单列表
+     * @param Authorization
      * @param userDetail
      * @param noCache
      * @param type

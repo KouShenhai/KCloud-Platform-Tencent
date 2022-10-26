@@ -73,8 +73,7 @@ public class AuthAuthenticationProvider implements AuthenticationProvider {
             permissionList = sysMenuService.getPermissionsListByUserId(vo.getUserId());
         }
         authorities.addAll(permissionList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(vo,password,authorities);
-        authenticationToken.setDetails(authentication.getDetails());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authentication.getDetails(),password,authorities);
         return authenticationToken;
     }
 
