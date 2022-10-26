@@ -130,7 +130,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
     }
 
     @Bean(value = "ipKeyResolver")
-    KeyResolver ipKeyResolver() {
+    public KeyResolver ipKeyResolver() {
         return exchange -> {
             String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
             log.info("获取到ip为{}的请求",ip);
