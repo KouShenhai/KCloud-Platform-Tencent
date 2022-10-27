@@ -102,7 +102,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         //oauth过滤
-        Map<String, Filter> filter = new HashMap<>();
+        Map<String, Filter> filter = new HashMap<>(1);
         filter.put("oauth2", new AuthFilter());
         shiroFilter.setFilters(filter);
         Map<String, String> filterMap = new LinkedHashMap<>();

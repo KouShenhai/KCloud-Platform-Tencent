@@ -15,6 +15,7 @@
  */
 package org.laokou.redis.config;
 import org.redisson.Redisson;
+import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.RedisClient;
 import org.redisson.client.codec.Codec;
@@ -66,6 +67,13 @@ public class RedisSessionConfig {
         Codec codec = new CustomJsonJacksonCodec();
         config.setCodec(codec);
         return Redisson.create(config);
+    }
+
+    @Bean
+    public RBloomFilter<String> bloomFilter(RedissonClient redisson) {
+        RBloomFilter<String> bloomFilter = redisson.getBloomFilter("bloomFilter");
+        bloomFilter.tryInit(100,0.001);
+        return bloomFilter;
     }
 
 }

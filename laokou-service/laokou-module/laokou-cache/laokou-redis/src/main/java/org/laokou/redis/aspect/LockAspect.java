@@ -67,6 +67,7 @@ public class LockAspect {
         final LockType type = lock4j.type();
         final LockScope scope = lock4j.scope();
         final AbstractLock abstractLock = factory.build(scope);
+        // 设置锁的自动过期时间，则执行业务的时间一定要小于锁的自动过期时间，否则就会报错
         final Object lock = abstractLock.getLock(type, key);
         try {
             if (abstractLock.tryLock(lock,expire,timeout)) {

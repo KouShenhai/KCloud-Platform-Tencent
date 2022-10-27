@@ -15,6 +15,7 @@
  */
 package org.laokou.redis.utils;
 import org.apache.commons.lang.StringUtils;
+import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
@@ -37,6 +38,9 @@ public final class RedisUtil {
 
     @Autowired
     private RedissonClient redissonClient;
+
+    @Autowired
+    private RBloomFilter<String> bloomFilter;
 
     /**  默认过期时长为24小时，单位：秒 */
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24L;
@@ -111,10 +115,15 @@ public final class RedisUtil {
     }
 
     public void set(String key, Object value, long expire){
+        bloomFilter.add(key);
+        bloomFilter.expire(Duration.ofSeconds(expire));
         redissonClient.getBucket(key).set(value,expire, TimeUnit.SECONDS);
     }
 
     public Object get(String key) {
+        if (!bloomFilter.contains(key)) {
+            return null;
+        }
         return redissonClient.getBucket(key).get();
     }
 

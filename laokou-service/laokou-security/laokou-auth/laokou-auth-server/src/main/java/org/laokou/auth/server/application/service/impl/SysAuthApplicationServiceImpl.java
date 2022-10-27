@@ -94,7 +94,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
      */
     private static final Cache<String,UserDetail> caffeineCache = Caffeine.newBuilder().initialCapacity(128).expireAfterAccess(10,TimeUnit.MINUTES).maximumSize(1024).build();;
 
-    private static AntPathMatcher antPathMatcher = new AntPathMatcher();
+    private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     private static final String CALLBACK_LOGIN_URL = "http://192.168.62.1:5555/auth/sys/login.html?redirect_url=%s&error_info=%s";
 
