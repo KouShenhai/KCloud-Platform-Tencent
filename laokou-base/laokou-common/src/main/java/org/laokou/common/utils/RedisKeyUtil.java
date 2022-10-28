@@ -47,4 +47,11 @@ public final class RedisKeyUtil {
     public static String getResourceAuditKey(Long id) {
         return "sys:resource:audit:" + id;
     }
+
+    /**
+     * 布隆过滤器Key
+     */
+    public static String getBloomFilterKey() {
+        return "sys:bloom:filter";
+    }
 }
