@@ -50,7 +50,7 @@ public class FileUtil extends FileUtils {
     );
 
     static {
-        // 其中images,flashs,medias,files,对应文件夹名称,对应dirName
+        // 其中image,audio,video对应文件夹名称,对应dirName
         // key文件夹名称
         // value该文件夹内可以上传文件的后缀名
         extMap.put("image", ".gif,.GIF,.jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.bmp,.BMP,.webp,.WEBP");
