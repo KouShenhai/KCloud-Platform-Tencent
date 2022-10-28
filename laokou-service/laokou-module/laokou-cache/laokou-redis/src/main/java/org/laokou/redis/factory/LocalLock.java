@@ -15,6 +15,7 @@
  */
 package org.laokou.redis.factory;
 
+import lombok.extern.slf4j.Slf4j;
 import org.laokou.redis.enums.LockType;
 
 import java.util.concurrent.TimeUnit;
@@ -25,6 +26,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * @author Kou Shenhai
  */
+@Slf4j
 public class LocalLock extends AbstractLock<Lock> {
 
     @Override
@@ -34,8 +36,8 @@ public class LocalLock extends AbstractLock<Lock> {
             case FAIR: return new ReentrantLock(true);
             case READ: return new ReentrantReadWriteLock().readLock();
             case WRITE: return new ReentrantReadWriteLock().writeLock();
-            default: return null;
         }
+        return null;
     }
 
     @Override
@@ -46,7 +48,28 @@ public class LocalLock extends AbstractLock<Lock> {
     @Override
     public void unlock(Lock lock) {
         if (lock != null) {
-            lock.unlock();
+            if (lock instanceof ReentrantLock reentrantLock) {
+                if (reentrantLock.isLocked()) {
+                    if (reentrantLock.isHeldByCurrentThread()) {
+                        log.info("当前线程持有锁，进行锁释放");
+                        lock.unlock();
+                    }
+                } else {
+                    log.info("线程没有持有锁，锁无需释放");
+                }
+            } else if (lock instanceof ReentrantReadWriteLock.WriteLock writeLock) {
+                //当前线程保持锁定的个数
+                if (writeLock.getHoldCount() == 0) {
+                    if (writeLock.isHeldByCurrentThread()) {
+                        log.info("当前线程持有锁，进行锁释放");
+                        lock.unlock();
+                    }
+                } else {
+                    log.info("当前线程保持锁定的个数不为0，锁无法释放");
+                }
+            } else {
+                lock.unlock();
+            }
         }
     }
 

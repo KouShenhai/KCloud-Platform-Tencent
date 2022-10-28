@@ -56,17 +56,19 @@ public class RedissonLock extends AbstractLock<RLock>{
 
     @Override
     public void unlock(RLock lock) {
-        //线程名称
-        String threadName = Thread.currentThread().getName();
-        if (redisUtil.isLocked(lock)) {
-            log.info("{}对应的锁被持有，线程{}",lock,threadName);
-            if (redisUtil.isHeldByCurrentThread(lock)) {
-                log.info("当前线程{}持有锁",threadName);
-                redisUtil.unlock(lock);
-                log.info("解锁成功...");
+        if (lock != null) {
+            //线程名称
+            String threadName = Thread.currentThread().getName();
+            if (redisUtil.isLocked(lock)) {
+                log.info("{}对应的锁被持有，线程{}", lock, threadName);
+                if (redisUtil.isHeldByCurrentThread(lock)) {
+                    log.info("当前线程{}持有锁", threadName);
+                    redisUtil.unlock(lock);
+                    log.info("解锁成功...");
+                }
+            } else {
+                log.info("无线程持有，无需解锁...");
             }
-        } else {
-            log.info("无线程持有，无需解锁...");
         }
     }
 }
