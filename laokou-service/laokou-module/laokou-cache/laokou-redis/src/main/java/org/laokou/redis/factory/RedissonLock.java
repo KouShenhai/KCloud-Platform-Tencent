@@ -41,6 +41,14 @@ public class RedissonLock extends AbstractLock<RLock>{
         }
     }
 
+    /**
+     * 获取锁
+     * @param lock 锁
+     * @param expire 过期时间
+     * @param timeout 超时时间
+     * @return
+     * @throws InterruptedException
+     */
     @Override
     public Boolean tryLock(RLock lock,long expire,long timeout) throws InterruptedException {
         //线程名称
@@ -54,6 +62,10 @@ public class RedissonLock extends AbstractLock<RLock>{
         }
     }
 
+    /**
+     * 释放锁
+     * @param lock 锁
+     */
     @Override
     public void unlock(RLock lock) {
         if (lock != null) {
