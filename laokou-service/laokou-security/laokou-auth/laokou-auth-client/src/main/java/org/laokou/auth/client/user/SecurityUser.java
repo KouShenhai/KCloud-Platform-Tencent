@@ -65,7 +65,7 @@ public class SecurityUser {
         if(org.apache.commons.lang3.StringUtils.isBlank(token)){
             token = request.getParameter(Constant.AUTHORIZATION_HEAD);
         }
-        return token;
+        return token.replace(Constant.BEARER,"");
     }
 
 }

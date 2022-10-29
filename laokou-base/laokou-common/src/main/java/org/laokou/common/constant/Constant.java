@@ -20,6 +20,8 @@ package org.laokou.common.constant;
  */
 public interface Constant {
 
+    String BEARER = "Bearer ";
+
     String ACCESS_TOKEN = "access_token";
 
     String PASSWORD_HEAD = "password";
@@ -44,10 +46,6 @@ public interface Constant {
      */
     Integer SUCCESS = 200;
     /**
-     * header
-     */
-    String HEADER = "header";
-    /**
      * 用户标识
      */
     String USER_KEY_HEAD = "userId";
@@ -59,13 +57,5 @@ public interface Constant {
      * no
      */
     Integer NO = 0;
-    /**
-     * yes
-     */
-    Integer YES = 1;
-
-    String COMMA = ",";
-
     String UNKNOWN = "unknown";
-
 }

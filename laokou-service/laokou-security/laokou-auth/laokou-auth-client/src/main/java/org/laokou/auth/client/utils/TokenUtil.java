@@ -128,4 +128,7 @@ public class TokenUtil {
         return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
     }
 
+    public static void main(String[] args) {
+        System.out.println(isExpiration("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWSq0oULIyNDMzNzC2NLa01FEqLU4t8kwBihmbGJoZGVhYWhgYmBtZAJWY6ihlJpbAVJuaw1TnJeamKlkpJabkZuYp1QIAmds3v1MAAAA.r5pao_HTpps8rUVg4yP5qWdBTQMOYv4j4WEhncuPsPGn6yldkoXXeYfV-cC_7QZNEcZSKRGgMGuA-O8cmR5gWg"));
+    }
 }

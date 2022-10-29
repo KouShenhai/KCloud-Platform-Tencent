@@ -376,6 +376,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     private Long getUserId(String token) {
+        token = token.replace(Constant.BEARER,"");
         //region Description
         if (TokenUtil.isExpiration(token)) {
             throw new CustomException(ErrorCode.AUTHORIZATION_INVALID);
