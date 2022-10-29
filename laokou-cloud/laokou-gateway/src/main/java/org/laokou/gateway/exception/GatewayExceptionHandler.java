@@ -15,7 +15,6 @@
  */
 package org.laokou.gateway.exception;
 import com.alibaba.ttl.TransmittableThreadLocal;
-import feign.FeignException;
 import org.laokou.common.utils.HttpResultUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,10 +54,7 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 	public Mono<Void> handle(ServerWebExchange exchange, Throwable e) {
 		log.error("网关全局处理异常，异常信息:{}",e.getMessage());
 		HttpResultUtil<Boolean> result = new HttpResultUtil<>();
-		if (e instanceof FeignException) {
-			log.error("远程调用失败：{}",e.getMessage());
-			result = parseFeignException(e);
-		} else if (e instanceof NotFoundException || e instanceof RuntimeException){
+		if (e instanceof NotFoundException || e instanceof RuntimeException){
 			log.error("服务未启动或服务运行异常");
 			result = result.error("服务正在维护，请联系管理员");
 		}
@@ -98,16 +94,6 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 		public List<ViewResolver> viewResolvers() {
 			return GatewayExceptionHandler.this.viewResolvers;
 		}
-	}
-
-	private HttpResultUtil<Boolean> parseFeignException(Throwable e) {
-		FeignException fx = (FeignException) e;
-		HttpResultUtil<Boolean> result = new HttpResultUtil<>();
-		int status = fx.status();
-		switch (status) {
-			default: result.error("服务调用失败，请联系管理员");
-		}
-		return result;
 	}
 
 }
