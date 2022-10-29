@@ -14,30 +14,18 @@
  * limitations under the License.
  */
 package org.laokou.gateway.filter;
-import feign.FeignException;
-import org.laokou.auth.client.user.BaseUserVO;
-import org.laokou.common.constant.Constant;
-import org.laokou.auth.client.user.UserDetail;
-import org.laokou.common.exception.ErrorCode;
-import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.common.utils.JacksonUtil;
-import org.laokou.gateway.feign.auth.AuthApiFeignClient;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
@@ -65,50 +53,10 @@ public class AuthFilter implements GlobalFilter,Ordered {
      */
     private List<String> uris;
 
-    @Autowired
-    @Lazy
-    private AuthApiFeignClient authApiFeignClient;
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info("加载 AuthFilter");
-        //获取request对象
-        ServerHttpRequest request = exchange.getRequest();
-        //获取uri
-        String requestUri = request.getPath().pathWithinApplication().value();
-        String method = request.getMethod().toString();
-        log.info("uri：{}", requestUri);
-        //请求放行，无需验证权限
-        if (pathMatcher(requestUri)){
-            return chain.filter(exchange);
-        }
-        //获取用户token
-        String token = request.getHeaders().getFirst(Constant.AUTHORIZATION_HEAD);
-        if (StringUtils.isBlank(token)){
-            token = request.getQueryParams().getFirst(Constant.AUTHORIZATION_HEAD);
-        }
-        log.info("token:{}",token);
-        //获取访问资源的权限
-        //资源访问权限
-        String language = request.getHeaders().getFirst(HttpHeaders.ACCEPT_LANGUAGE);
-        HttpResultUtil<BaseUserVO> result;
-        try {
-            result = authApiFeignClient.resource(language, token, requestUri, method).block();
-        } catch (FeignException e) {
-            log.info("报错信息:{}",e.getMessage());
-            return response(exchange,new HttpResultUtil<UserDetail>().error(ErrorCode.SERVICE_MAINTENANCE));
-        }
-        log.info("result:{}",result);
-        if (!result.success()) {
-            return response(exchange,result);
-        }
-        BaseUserVO userVO = result.getData();
-        final String userId = userVO.getUserId().toString();
-        final String username = userVO.getUsername();
-        ServerHttpRequest build = exchange.getRequest().mutate()
-                .header(Constant.USER_KEY_HEAD,userId )
-                .header(Constant.USERNAME_HEAD,username).build();
-        return chain.filter(exchange.mutate().request(build).build());
+        return chain.filter(exchange);
     }
 
     private boolean pathMatcher(String requestUri) {

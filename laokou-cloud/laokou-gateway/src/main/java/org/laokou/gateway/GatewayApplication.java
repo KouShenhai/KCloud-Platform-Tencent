@@ -25,13 +25,11 @@ import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCusto
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
-import reactivefeign.spring.config.EnableReactiveFeignClients;
 /**
  * @author kou Shenhai
  */
 @SpringBootApplication(exclude = {Knife4jConfig.class},scanBasePackages = {"org.laokou.common","org.laokou.gateway"})
 @EnableDiscoveryClient
-@EnableReactiveFeignClients
 @EnableEncryptableProperties
 @EnableApolloConfig
 public class GatewayApplication {
