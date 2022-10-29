@@ -15,7 +15,7 @@
  */
 package org.laokou.ump.server.token;
 import org.joda.time.DateTime;
-import org.laokou.auth.client.user.BaseUserVO;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.client.utils.TokenUtil;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -34,8 +34,8 @@ public class RenTokenEnhancer implements TokenEnhancer {
         if (accessToken instanceof DefaultOAuth2AccessToken) {
             DefaultOAuth2AccessToken token = (DefaultOAuth2AccessToken) accessToken;
             //添加授权码
-            BaseUserVO vo = (BaseUserVO) auth.getUserAuthentication().getPrincipal();
-            token.setValue(TokenUtil.getToken(TokenUtil.getClaims(vo.getUserId(),vo.getUsername())));
+            UserDetail userDetail = (UserDetail) auth.getUserAuthentication().getPrincipal();
+            token.setValue(TokenUtil.getToken(userDetail));
             token.setExpiration(DateTime.now().plusSeconds(TokenUtil.getExpire().intValue()).toDate());
             return token;
         }

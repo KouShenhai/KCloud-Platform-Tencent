@@ -10,6 +10,9 @@ spring:
     active: @profile.active@
   application:
     name: laokou-ump
+  messages:
+    encoding: UTF-8
+    basename: i18n/messages
 
 management:
   endpoints:

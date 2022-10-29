@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.feign.rabbitmq.fallback;
+package org.laokou.log.feign.kafka.fallback;
 import org.laokou.kafka.client.dto.KafkaDTO;
-import org.laokou.log.feign.rabbitmq.KafkaApiFeignClient;
+import org.laokou.log.feign.kafka.KafkaApiFeignClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

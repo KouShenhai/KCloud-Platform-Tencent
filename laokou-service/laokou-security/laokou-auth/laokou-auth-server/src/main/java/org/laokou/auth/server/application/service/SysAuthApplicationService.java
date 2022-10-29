@@ -64,10 +64,10 @@ public interface SysAuthApplicationService {
 
     /***
      * 用户详细信息
-     * @param request
+     * @param token
      * @return
      */
-    UserDetail userDetail(HttpServletRequest request);
+    UserDetail userDetail(String token);
 
     /**
      * 获取用户信息

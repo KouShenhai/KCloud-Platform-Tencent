@@ -41,7 +41,7 @@ import org.laokou.common.utils.RedisKeyUtil;
 import org.laokou.kafka.client.constant.KafkaConstant;
 import org.laokou.kafka.client.dto.KafkaDTO;
 import org.laokou.kafka.client.dto.ResourceAuditLogDTO;
-import org.laokou.log.feign.rabbitmq.KafkaApiFeignClient;
+import org.laokou.log.feign.kafka.KafkaApiFeignClient;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -29,7 +29,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -97,8 +96,8 @@ public class SysAuthApiController {
 
     @GetMapping("/sys/auth/api/userDetail")
     @ApiOperation("系统认证>用户详情")
-    public HttpResultUtil<UserDetail> userDetail(HttpServletRequest request) {
-        return new HttpResultUtil<UserDetail>().ok(sysAuthApplicationService.userDetail(request));
+    public HttpResultUtil<UserDetail> userDetail(@RequestParam(Constant.AUTHORIZATION_HEAD)String token) {
+        return new HttpResultUtil<UserDetail>().ok(sysAuthApplicationService.userDetail(token));
     }
 
     @PostMapping("/sys/auth/api/open/login")

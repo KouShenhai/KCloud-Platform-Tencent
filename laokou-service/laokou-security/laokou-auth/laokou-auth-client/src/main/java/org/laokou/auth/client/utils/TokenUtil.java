@@ -17,6 +17,7 @@ package org.laokou.auth.client.utils;
 
 import cn.hutool.core.util.IdUtil;
 import io.jsonwebtoken.*;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.constant.Constant;
 import lombok.Data;
 import org.joda.time.DateTime;
@@ -53,6 +54,11 @@ public class TokenUtil {
 
     public static String getToken(Map<String,Object> claims) {
         Date expirationDate = DateTime.now().plusSeconds(EXPIRE.intValue()).toDate();
+        return getToken(claims,expirationDate);    }
+
+    public static String getToken(UserDetail userDetail) {
+        Date expirationDate = DateTime.now().plusSeconds(EXPIRE.intValue()).toDate();
+        Map<String, Object> claims = getClaims(userDetail.getId(), userDetail.getUsername());
         return getToken(claims,expirationDate);
     }
 

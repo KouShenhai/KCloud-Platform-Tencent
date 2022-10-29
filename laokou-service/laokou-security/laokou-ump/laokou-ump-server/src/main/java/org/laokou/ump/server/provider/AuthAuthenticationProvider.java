@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 package org.laokou.ump.server.provider;
-import org.laokou.auth.client.user.BaseUserVO;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.ump.server.exception.RenOAuth2Exception;
-import org.laokou.ump.server.service.SysMenuService;
-import org.laokou.ump.server.service.SysUserService;
-import org.laokou.ump.server.utils.AuthUtil;
+import org.laokou.ump.server.auth.handler.AuthHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.enums.SuperAdminEnum;
-import org.laokou.common.exception.ErrorCode;
-import org.laokou.common.utils.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,35 +38,16 @@ import java.util.stream.Collectors;
 public class AuthAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private AuthUtil authUtil;
-
-    @Autowired
-    private SysMenuService sysMenuService;
-
-    @Autowired
-    private SysUserService sysUserService;
+    private AuthHandler authHandler;
 
     @SneakyThrows
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String code = authentication.getName();
-        String password = (String)authentication.getCredentials();
-        log.info("code：{}",code);
-        String accessToken = authUtil.getAccessToken(code);
-        BaseUserVO vo = authUtil.getUerInfo(accessToken);
-        if (null == vo) {
-            throw new RenOAuth2Exception(ErrorCode.ACCOUNT_NOT_EXIST, MessageUtil.getMessage(ErrorCode.ACCOUNT_NOT_EXIST));
-        }
+        UserDetail userDetail = authHandler.getUserDetail(authentication);
+        List<String> permissionsList = userDetail.getPermissionsList();
         Set<GrantedAuthority> authorities = new HashSet<>();
-        UserDetail userDetail = sysUserService.getUserDetail(vo.getUserId(), vo.getUsername());
-        List<String> permissionList;
-        if(SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {
-            permissionList = sysMenuService.getPermissionsList();
-        } else {
-            permissionList = sysMenuService.getPermissionsListByUserId(vo.getUserId());
-        }
-        authorities.addAll(permissionList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authentication.getDetails(),password,authorities);
+        authorities.addAll(permissionsList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetail,authentication.getName(),authorities);
         return authenticationToken;
     }
 

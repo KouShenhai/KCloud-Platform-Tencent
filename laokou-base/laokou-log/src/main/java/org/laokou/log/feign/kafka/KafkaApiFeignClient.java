@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.feign.rabbitmq;
+package org.laokou.log.feign.kafka;
 import org.laokou.common.constant.ServiceConstant;
 import org.laokou.kafka.client.dto.KafkaDTO;
-import org.laokou.log.feign.rabbitmq.factory.KafkaApiFeignClientFallbackFactory;
+import org.laokou.log.feign.kafka.factory.KafkaApiFeignClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;

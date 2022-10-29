@@ -15,6 +15,12 @@
         <dependency>
             <groupId>org.laokou</groupId>
             <artifactId>laokou-auth-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.laokou</groupId>
+                    <artifactId>laokou-swagger</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
@@ -23,12 +29,6 @@
         <dependency>
             <groupId>org.laokou</groupId>
             <artifactId>laokou-common</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.github.xiaoymin</groupId>
-                    <artifactId>knife4j-spring-boot-starter</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.laokou</groupId>

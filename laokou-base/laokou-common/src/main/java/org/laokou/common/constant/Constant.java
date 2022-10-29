@@ -24,6 +24,10 @@ public interface Constant {
 
     String PASSWORD_HEAD = "password";
 
+    String TYPE = "type";
+
+    String CAPTCHA = "captcha";
+
     String REDIRECT_URL_HEAD = "redirectUrl";
 
     String URI = "uri";
@@ -38,11 +42,7 @@ public interface Constant {
     /**
      * 成功
      */
-    Integer SUCCESS = 1;
-    /**
-     * 失败
-     */
-    Integer FAIL = 0;
+    Integer SUCCESS = 200;
     /**
      * header
      */
@@ -67,4 +67,5 @@ public interface Constant {
     String COMMA = ",";
 
     String UNKNOWN = "unknown";
+
 }

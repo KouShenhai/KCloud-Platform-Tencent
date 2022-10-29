@@ -16,19 +16,23 @@
 package org.laokou.ump.server;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.laokou.swagger.config.CorsConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-
+import org.springframework.context.annotation.Import;
 /**
  * @author Kou Shenhai
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.ump"})
 @EnableDiscoveryClient
 @EnableApolloConfig
+@Import({CorsConfig.class})
+@EnableFeignClients
 public class UmpApplication {
     public static void main(String[] args) {
         SpringApplication.run(UmpApplication.class, args);

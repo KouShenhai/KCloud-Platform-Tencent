@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.feign.rabbitmq.factory;
-import org.laokou.log.feign.rabbitmq.fallback.KafkaApiFeignClientFallback;
+package org.laokou.ump.server.feign.auth.factory;
+import org.laokou.ump.server.feign.auth.fallback.AuthApiFeignClientFallback;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
-
 /**
  * 回调工厂
  * @author Kou Shenhai
@@ -25,10 +24,11 @@ import org.springframework.stereotype.Component;
  * @date 2020/9/5 0005 上午 12:12
  */
 @Component
-public class KafkaApiFeignClientFallbackFactory implements FallbackFactory<KafkaApiFeignClientFallback> {
+public class AuthApiFeignClientFallbackFactory implements FallbackFactory<AuthApiFeignClientFallback> {
 
     @Override
-    public KafkaApiFeignClientFallback create(Throwable throwable) {
-        return new KafkaApiFeignClientFallback(throwable);
+    public AuthApiFeignClientFallback create(Throwable cause) {
+        return new AuthApiFeignClientFallback(cause);
     }
+
 }

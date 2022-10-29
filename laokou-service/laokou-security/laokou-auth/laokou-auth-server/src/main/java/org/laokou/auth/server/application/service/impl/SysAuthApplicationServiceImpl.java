@@ -272,7 +272,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     public BaseUserVO resource(String token, String uri, String method) {
         //region Description
         //1.获取用户信息
-        UserDetail userDetail = getUserDetail(token);
+        UserDetail userDetail = userDetail(token);
         BaseUserVO userVO = BaseUserVO.builder().userId(userDetail.getId()).username(userDetail.getUsername()).build();
         //2.获取所有按钮资源列表
         List<SysMenuVO> resourceList = sysMenuService.getMenuList(1);
@@ -305,57 +305,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public UserDetail userDetail(HttpServletRequest request) {
-        String token = SecurityUser.getToken(request);
-        return getUserDetail(token);
-    }
-
-    @Override
-    public UserInfoVO userInfo(HttpServletRequest request) {
-        String token = SecurityUser.getToken(request);
-        UserDetail userDetail = getUserDetail(token);
-        return UserInfoVO.builder().imgUrl(userDetail.getImgUrl())
-                        .username(userDetail.getUsername())
-                        .userId(userDetail.getId())
-                        .mobile(userDetail.getMobile())
-                        .email(userDetail.getEmail())
-                        .depId(userDetail.getDeptId())
-                        .permissionList(userDetail.getPermissionsList()).build();
-    }
-
-    @Override
-    public BaseUserVO openUserInfo(HttpServletRequest request) {
-        String token = SecurityUser.getToken(request);
-        UserDetail userDetail = getUserDetail(token);
-        return BaseUserVO.builder()
-                .username(userDetail.getUsername())
-                .userId(userDetail.getId())
-                .build();
-    }
-
-    private SysMenuVO pathMatcher(String url, String method, List<SysMenuVO> resourceList) {
-        //region Description
-        for (SysMenuVO resource : resourceList) {
-            if (StringUtils.isNotEmpty(url) && antPathMatcher.match(resource.getUrl(), url)
-                    && method.equalsIgnoreCase(resource.getMethod())) {
-                log.info("匹配成功");
-                return resource;
-            }
-        }
-        return null;
-        //endregion
-    }
-
-    private Long getUserId(String token) {
-        //region Description
-        if (TokenUtil.isExpiration(token)) {
-            throw new CustomException(ErrorCode.AUTHORIZATION_INVALID);
-        }
-        return TokenUtil.getUserId(token);
-        //endregion
-    }
-
-    private UserDetail getUserDetail(String token) {
+    public UserDetail userDetail(String token) {
         //region Description
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         UserDetail userInfo = caffeineCache.getIfPresent(userInfoKey);
@@ -386,6 +336,51 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         }
         caffeineCache.put(userInfoKey,userDetail);
         return userDetail;
+        //endregion
+    }
+
+    @Override
+    public UserInfoVO userInfo(HttpServletRequest request) {
+        String token = SecurityUser.getToken(request);
+        UserDetail userDetail = userDetail(token);
+        return UserInfoVO.builder().imgUrl(userDetail.getImgUrl())
+                        .username(userDetail.getUsername())
+                        .userId(userDetail.getId())
+                        .mobile(userDetail.getMobile())
+                        .email(userDetail.getEmail())
+                        .depId(userDetail.getDeptId())
+                        .permissionList(userDetail.getPermissionsList()).build();
+    }
+
+    @Override
+    public BaseUserVO openUserInfo(HttpServletRequest request) {
+        String token = SecurityUser.getToken(request);
+        UserDetail userDetail = userDetail(token);
+        return BaseUserVO.builder()
+                .username(userDetail.getUsername())
+                .userId(userDetail.getId())
+                .build();
+    }
+
+    private SysMenuVO pathMatcher(String url, String method, List<SysMenuVO> resourceList) {
+        //region Description
+        for (SysMenuVO resource : resourceList) {
+            if (StringUtils.isNotEmpty(url) && antPathMatcher.match(resource.getUrl(), url)
+                    && method.equalsIgnoreCase(resource.getMethod())) {
+                log.info("匹配成功");
+                return resource;
+            }
+        }
+        return null;
+        //endregion
+    }
+
+    private Long getUserId(String token) {
+        //region Description
+        if (TokenUtil.isExpiration(token)) {
+            throw new CustomException(ErrorCode.AUTHORIZATION_INVALID);
+        }
+        return TokenUtil.getUserId(token);
         //endregion
     }
 

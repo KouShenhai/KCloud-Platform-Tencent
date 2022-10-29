@@ -25,7 +25,7 @@ import org.laokou.kafka.client.dto.KafkaDTO;
 import org.laokou.log.event.LoginLogEvent;
 import org.laokou.log.event.OperateLogEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.log.feign.rabbitmq.KafkaApiFeignClient;
+import org.laokou.log.feign.kafka.KafkaApiFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.event.EventListener;

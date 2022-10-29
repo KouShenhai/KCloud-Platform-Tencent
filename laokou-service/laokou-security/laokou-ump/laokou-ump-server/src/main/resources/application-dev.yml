@@ -64,7 +64,7 @@ logging:
     name: logs/${spring.application.name}/info.log
 
 app:
-  id: cas # 应用全局唯一的身份标识
+  id: ump # 应用全局唯一的身份标识
 apollo:
   cacheDir: config # 自定义本地配置文件缓存路径
   bootstrap:
