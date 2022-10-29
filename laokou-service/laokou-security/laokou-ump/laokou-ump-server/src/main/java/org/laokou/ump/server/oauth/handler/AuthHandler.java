@@ -1,10 +1,10 @@
-package org.laokou.ump.server.auth.handler;
+package org.laokou.ump.server.oauth.handler;
 
 import org.laokou.auth.client.dto.LoginDTO;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.constant.Constant;
-import org.laokou.ump.server.auth.UsernamePasswordAuth;
-import org.laokou.ump.server.auth.enums.LoginTypeEnum;
+import org.laokou.ump.server.oauth.UsernamePasswordAuth;
+import org.laokou.ump.server.oauth.enums.LoginTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;

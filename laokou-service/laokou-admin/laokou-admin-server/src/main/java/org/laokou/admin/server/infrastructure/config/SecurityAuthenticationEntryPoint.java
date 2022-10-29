@@ -18,6 +18,6 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().print(JacksonUtil.toJsonStr(new HttpResultUtil<>().error(ErrorCode.FORBIDDEN)));
+        response.getWriter().print(JacksonUtil.toJsonStr(new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED)));
     }
 }

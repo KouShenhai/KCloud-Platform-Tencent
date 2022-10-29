@@ -17,11 +17,9 @@ package org.laokou.auth.client.utils;
 
 import cn.hutool.core.util.IdUtil;
 import io.jsonwebtoken.*;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.constant.Constant;
 import lombok.Data;
 import org.joda.time.DateTime;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +43,10 @@ public class TokenUtil {
         return EXPIRE;
     }
 
+    public static String getSecret() {
+        return SECRET;
+    }
+
     public static Map<String,Object> getClaims(Long userId,String username) {
         Map<String,Object> claims = new HashMap<>(2);
         claims.put(Constant.USER_KEY_HEAD, userId);
@@ -54,11 +56,6 @@ public class TokenUtil {
 
     public static String getToken(Map<String,Object> claims) {
         Date expirationDate = DateTime.now().plusSeconds(EXPIRE.intValue()).toDate();
-        return getToken(claims,expirationDate);    }
-
-    public static String getToken(UserDetail userDetail) {
-        Date expirationDate = DateTime.now().plusSeconds(EXPIRE.intValue()).toDate();
-        Map<String, Object> claims = getClaims(userDetail.getId(), userDetail.getUsername());
         return getToken(claims,expirationDate);
     }
 
@@ -128,7 +125,4 @@ public class TokenUtil {
         return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
     }
 
-    public static void main(String[] args) {
-        System.out.println(isExpiration("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWSq0oULIyNDMzNzC2NLa01FEqLU4t8kwBihmbGJoZGVhYWhgYmBtZAJWY6ihlJpbAVJuaw1TnJeamKlkpJabkZuYp1QIAmds3v1MAAAA.r5pao_HTpps8rUVg4yP5qWdBTQMOYv4j4WEhncuPsPGn6yldkoXXeYfV-cC_7QZNEcZSKRGgMGuA-O8cmR5gWg"));
-    }
 }

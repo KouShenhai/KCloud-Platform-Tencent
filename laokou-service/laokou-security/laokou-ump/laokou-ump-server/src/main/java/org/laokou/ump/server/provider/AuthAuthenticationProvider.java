@@ -15,7 +15,7 @@
  */
 package org.laokou.ump.server.provider;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.ump.server.auth.handler.AuthHandler;
+import org.laokou.ump.server.oauth.handler.AuthHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

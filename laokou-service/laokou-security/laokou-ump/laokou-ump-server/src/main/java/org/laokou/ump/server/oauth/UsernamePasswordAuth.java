@@ -1,4 +1,4 @@
-package org.laokou.ump.server.auth;
+package org.laokou.ump.server.oauth;
 
 import org.laokou.auth.client.dto.LoginDTO;
 import org.laokou.auth.client.user.UserDetail;

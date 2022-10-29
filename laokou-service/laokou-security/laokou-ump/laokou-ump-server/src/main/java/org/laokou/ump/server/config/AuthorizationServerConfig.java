@@ -15,9 +15,7 @@
  */
 package org.laokou.ump.server.config;
 
-import org.laokou.ump.server.token.RenTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +26,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
-import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
@@ -56,7 +53,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.inMemory()
                 .withClient("client_auth")
                 //授权类型
-                .authorizedGrantTypes("password")
+                .authorizedGrantTypes("password","refresh_token")
                 .scopes("auth")
                 .secret("secret")
                 .autoApprove(true);
@@ -64,20 +61,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST, HttpMethod.DELETE);
+        endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
         //密码模式
         endpoints.authenticationManager(authenticationManager);
-        //令牌增强
-        endpoints.tokenEnhancer(tokenEnhancer());
         //存入redis
         endpoints.tokenStore(tokenStore);
         //登录或者鉴权失败时的返回信息
         endpoints.exceptionTranslator(webResponseExceptionTranslator);
-    }
-
-    @Bean
-    public TokenEnhancer tokenEnhancer() {
-        return new RenTokenEnhancer();
     }
 
     @Override

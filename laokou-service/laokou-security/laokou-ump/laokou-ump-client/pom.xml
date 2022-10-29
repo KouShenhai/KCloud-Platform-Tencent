@@ -14,8 +14,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.laokou</groupId>
-            <artifactId>laokou-common</artifactId>
+            <artifactId>laokou-auth-client</artifactId>
         </dependency>
     </dependencies>
 

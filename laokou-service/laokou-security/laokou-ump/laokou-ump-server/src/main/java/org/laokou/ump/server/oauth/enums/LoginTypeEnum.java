@@ -1,4 +1,4 @@
-package org.laokou.ump.server.auth.enums;
+package org.laokou.ump.server.oauth.enums;
 
 /**
  * @author Kou Shenhai
