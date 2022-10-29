@@ -35,7 +35,7 @@
         //提交的网址
         url: "http://192.168.62.1:5555/ump/oauth/token",
         //在请求之前调用的函数
-        data: {"type":"0","captcha":"123","uuid":"22","grant_type":"password","username":code,"password":state,"scope":"auth","client_id":"client_auth","client_secret":"secret"},
+        data: {"grant_type":"password","username":code,"password":state,"scope":"auth","client_id":"client_auth","client_secret":"secret"},
         beforeSend: function () {
 
         },
