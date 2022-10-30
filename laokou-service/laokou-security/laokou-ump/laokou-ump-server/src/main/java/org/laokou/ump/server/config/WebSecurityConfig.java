@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.ump.server.config;
+import org.laokou.ump.server.filter.ValidateCodeFilter;
 import org.laokou.ump.server.provider.AuthAuthenticationProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 /**
  * Spring Security配置
  * @author Kou Shenhai
@@ -38,6 +41,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private ValidateCodeFilter validateCodeFilter;
     @Autowired
     private AuthAuthenticationProvider authAuthenticationProvider;
 
@@ -59,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests().antMatchers("/oauth/captcha","/actuator/**").permitAll()
                 .and()
                 .authorizeRequests()
