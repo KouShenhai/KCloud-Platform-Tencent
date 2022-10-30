@@ -26,7 +26,6 @@ import org.laokou.admin.client.dto.AuditDTO;
 import org.laokou.admin.client.vo.StartProcessVO;
 import org.laokou.admin.server.interfaces.qo.TaskQO;
 import org.laokou.admin.client.vo.TaskVO;
-import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.exception.CustomException;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.engine.RepositoryService;
@@ -43,6 +42,7 @@ import org.laokou.kafka.client.dto.KafkaDTO;
 import org.laokou.kafka.client.dto.ResourceAuditLogDTO;
 import org.laokou.log.feign.kafka.KafkaApiFeignClient;
 import org.laokou.redis.utils.RedisUtil;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -100,8 +100,8 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         final Integer pageNum = qo.getPageNum();
         final Integer pageSize = qo.getPageSize();
         String processName = qo.getProcessName();
-        final Long userId = SecurityUser.getUserId(request);
-        final String username = SecurityUser.getUsername(request);
+        final Long userId = UserUtil.getUserId();
+        final String username = UserUtil.getUsername();
         TaskQuery taskQuery = taskService.createTaskQuery()
                 .active()
                 .includeProcessVariables()
@@ -140,9 +140,9 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     }
 
     @Override
-    public Boolean auditResourceTask(AuditDTO dto, HttpServletRequest request) {
+    public Boolean auditResourceTask(AuditDTO dto) {
         Map<String, Object> values = dto.getValues();
-        Boolean auditFlag = workflowTaskApplicationService.auditTask(dto, request);
+        Boolean auditFlag = workflowTaskApplicationService.auditTask(dto);
         String auditUser = workFlowUtil.getAuditUser(dto.getDefinitionId(), null, dto.getInstanceId());
         Integer auditStatus = Integer.valueOf(values.get("auditStatus").toString());
         Integer status;
@@ -150,7 +150,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         if (null != auditUser) {
             //审批中
             status = 1;
-            workFlowUtil.sendAuditMsg(auditUser, MessageTypeEnum.REMIND.ordinal(), ChannelTypeEnum.PLATFORM.ordinal(),Long.valueOf(dto.getBusinessKey()),dto.getInstanceName(),request);
+            workFlowUtil.sendAuditMsg(auditUser, MessageTypeEnum.REMIND.ordinal(), ChannelTypeEnum.PLATFORM.ordinal(),Long.valueOf(dto.getBusinessKey()),dto.getInstanceName());
         } else {
             //0拒绝 1同意
             if (0 == auditStatus) {
@@ -175,8 +175,8 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         auditLogDTO.setStatus(status);
         auditLogDTO.setAuditStatus(auditStatus);
         auditLogDTO.setAuditDate(new Date());
-        auditLogDTO.setAuditName(SecurityUser.getUsername(request));
-        auditLogDTO.setCreator(SecurityUser.getUserId(request));
+        auditLogDTO.setAuditName(UserUtil.getUsername());
+        auditLogDTO.setCreator(UserUtil.getUserId());
         auditLogDTO.setComment(dto.getComment());
         KafkaDTO kafkaDTO = new KafkaDTO();
         kafkaDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));

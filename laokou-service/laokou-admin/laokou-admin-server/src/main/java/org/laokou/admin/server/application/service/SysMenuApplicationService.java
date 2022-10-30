@@ -30,9 +30,9 @@ public interface SysMenuApplicationService {
 
     SysMenuVO getMenuById(Long id);
 
-    Boolean updateMenu(SysMenuDTO dto, HttpServletRequest request);
+    Boolean updateMenu(SysMenuDTO dto);
 
-    Boolean insertMenu(SysMenuDTO dto, HttpServletRequest request);
+    Boolean insertMenu(SysMenuDTO dto);
 
     Boolean deleteMenu(Long id);
 

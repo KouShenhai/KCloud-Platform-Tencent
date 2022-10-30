@@ -27,7 +27,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 /**
  * @author Kou Shenhai
  */
@@ -43,8 +42,8 @@ public class SysMessageApiController {
     @PostMapping("/insert")
     @ApiOperation("系统消息>新增")
     @OperateLog(module = "系统消息",name = "消息新增")
-    public HttpResultUtil<Boolean> insert(@RequestBody MessageDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysMessageApplicationService.sendMessage(dto,request));
+    public HttpResultUtil<Boolean> insert(@RequestBody MessageDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysMessageApplicationService.sendMessage(dto));
     }
 
     @PostMapping("/query")
@@ -68,14 +67,14 @@ public class SysMessageApiController {
 
     @PostMapping("/unread/list")
     @ApiOperation("系统消息>未读")
-    public HttpResultUtil<IPage<SysMessageVO>> unread(@RequestBody SysMessageQO qo, HttpServletRequest request) {
-        return new HttpResultUtil<IPage<SysMessageVO>>().ok(sysMessageApplicationService.getUnReadList(request,qo));
+    public HttpResultUtil<IPage<SysMessageVO>> unread(@RequestBody SysMessageQO qo) {
+        return new HttpResultUtil<IPage<SysMessageVO>>().ok(sysMessageApplicationService.getUnReadList(qo));
     }
 
     @GetMapping("/count")
     @ApiOperation("系统消息>统计")
-    public HttpResultUtil<Long> count(HttpServletRequest request) {
-        return new HttpResultUtil<Long>().ok(sysMessageApplicationService.unReadCount(request));
+    public HttpResultUtil<Long> count() {
+        return new HttpResultUtil<Long>().ok(sysMessageApplicationService.unReadCount());
     }
 
 }

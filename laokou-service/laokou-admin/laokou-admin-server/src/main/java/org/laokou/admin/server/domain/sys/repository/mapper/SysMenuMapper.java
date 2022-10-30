@@ -34,12 +34,6 @@ import java.util.List;
 public interface SysMenuMapper extends BaseMapper<SysMenuDO> {
 
     /**
-     * 查询所有权限列表
-     * @return
-     */
-    List<String> getPermissionsList();
-
-    /**
      * 查询用户权限列表
      * @param userId
      * @return

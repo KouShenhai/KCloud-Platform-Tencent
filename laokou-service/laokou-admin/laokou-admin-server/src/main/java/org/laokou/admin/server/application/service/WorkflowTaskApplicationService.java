@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 public interface WorkflowTaskApplicationService {
 
-    Boolean auditTask(AuditDTO dto, HttpServletRequest request);
+    Boolean auditTask(AuditDTO dto);
 
     Boolean claimTask(ClaimDTO dto, HttpServletRequest request);
 

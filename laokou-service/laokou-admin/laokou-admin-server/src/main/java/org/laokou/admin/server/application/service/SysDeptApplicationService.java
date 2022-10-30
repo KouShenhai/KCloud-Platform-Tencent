@@ -18,8 +18,6 @@ package org.laokou.admin.server.application.service;
 import org.laokou.admin.client.dto.SysDeptDTO;
 import org.laokou.admin.server.interfaces.qo.SysDeptQO;
 import org.laokou.admin.client.vo.SysDeptVO;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 /**
  * @author Kou Shenhai
@@ -32,9 +30,9 @@ public interface SysDeptApplicationService {
 
     List<SysDeptVO> queryDeptList(SysDeptQO qo);
 
-    Boolean insertDept(SysDeptDTO dto, HttpServletRequest request);
+    Boolean insertDept(SysDeptDTO dto);
 
-    Boolean updateDept(SysDeptDTO dto, HttpServletRequest request);
+    Boolean updateDept(SysDeptDTO dto);
 
     Boolean deleteDept(Long id);
 

@@ -34,9 +34,9 @@ public interface SysResourceApplicationService {
 
     SysResourceVO getResourceById(Long id);
 
-    Boolean insertResource(SysResourceDTO dto, HttpServletRequest request);
+    Boolean insertResource(SysResourceDTO dto);
 
-    Boolean updateResource(SysResourceDTO dto, HttpServletRequest request);
+    Boolean updateResource(SysResourceDTO dto);
 
     Boolean deleteResource(Long id);
 

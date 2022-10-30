@@ -15,11 +15,14 @@
  */
 package org.laokou.ump.server.feign.auth.fallback;
 
+import feign.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.client.dto.LoginDTO;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.client.vo.LoginVO;
+import org.laokou.common.exception.CustomException;
+import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.ump.server.feign.auth.AuthApiFeignClient;
 
@@ -42,13 +45,9 @@ public class AuthApiFeignClientFallback implements AuthApiFeignClient {
     }
 
     @Override
-    public void captcha(String uuid) {
+    public Response captcha(String uuid) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-    }
-
-    @Override
-    public void logout() {
-        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+        throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
     }
 
     @Override

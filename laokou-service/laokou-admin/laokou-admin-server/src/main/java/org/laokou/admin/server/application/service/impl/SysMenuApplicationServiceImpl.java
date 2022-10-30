@@ -18,17 +18,16 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.laokou.admin.server.application.service.SysMenuApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysMenuDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysMenuService;
-import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.server.interfaces.qo.SysMenuQO;
 import org.laokou.admin.client.vo.SysMenuVO;
 import org.laokou.admin.client.dto.SysMenuDTO;
-import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.TreeUtil;
 
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -39,14 +38,10 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     @Autowired
     private SysMenuService sysMenuService;
 
-    @Autowired
-    private SysUserService sysUserService;
-
     @Override
     public SysMenuVO getMenuList(HttpServletRequest request) {
-        Long userId = Long.valueOf(request.getHeader(Constant.USER_KEY_HEAD));
-        UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getToken(request));
-        List<SysMenuVO> menuList = sysMenuService.getMenuList(null,userDetail, true,0);
+        UserDetail userDetail = UserUtil.userDetail();
+        List<SysMenuVO> menuList = sysMenuService.getMenuList(userDetail,0);
         return buildMenu(menuList);
     }
 
@@ -61,24 +56,24 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     }
 
     @Override
-    public Boolean updateMenu(SysMenuDTO dto, HttpServletRequest request) {
+    public Boolean updateMenu(SysMenuDTO dto) {
         SysMenuDO menuDO = ConvertUtil.sourceToTarget(dto, SysMenuDO.class);
         long count = sysMenuService.count(Wrappers.lambdaQuery(SysMenuDO.class).eq(SysMenuDO::getName, menuDO.getName()).eq(SysMenuDO::getDelFlag, Constant.NO).ne(SysMenuDO::getId,menuDO.getId()));
         if (count > 0) {
             throw new CustomException("菜单已存在，请重新填写");
         }
-        menuDO.setEditor(SecurityUser.getUserId(request));
+        menuDO.setEditor(UserUtil.getUserId());
         return sysMenuService.updateById(menuDO);
     }
 
     @Override
-    public Boolean insertMenu(SysMenuDTO dto, HttpServletRequest request) {
+    public Boolean insertMenu(SysMenuDTO dto) {
         SysMenuDO menuDO = ConvertUtil.sourceToTarget(dto, SysMenuDO.class);
         long count = sysMenuService.count(Wrappers.lambdaQuery(SysMenuDO.class).eq(SysMenuDO::getName, menuDO.getName()).eq(SysMenuDO::getDelFlag, Constant.NO));
         if (count > 0) {
             throw new CustomException("菜单已存在，请重新填写");
         }
-        menuDO.setCreator(SecurityUser.getUserId(request));
+        menuDO.setCreator(UserUtil.getUserId());
         return sysMenuService.save(menuDO);
     }
 

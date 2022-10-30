@@ -53,7 +53,4 @@ public class UserInfoVO {
     @ApiModelProperty(name = "permissionList",value = "资源标识",required = true,example = "['sys:user:query']")
     private List<String> permissionList;
 
-    @ApiModelProperty(name = "depId",value = "部门编号",required = true,example = "1535887940687765505")
-    private Long depId;
-
 }

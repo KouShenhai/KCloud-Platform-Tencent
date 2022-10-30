@@ -25,14 +25,8 @@ import org.laokou.admin.server.domain.sys.repository.mapper.SysUserMapper;
 import org.laokou.auth.client.password.PasswordUtil;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
-import org.laokou.auth.client.utils.TokenUtil;
-import org.laokou.common.exception.CustomException;
-import org.laokou.common.exception.ErrorCode;
-import org.laokou.common.utils.RedisKeyUtil;
-import org.laokou.redis.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -44,9 +38,6 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> implements SysUserService {
 
-    @Autowired
-    private RedisUtil redisUtil;
-
     @Override
     public void updateUser(SysUserDTO dto) {
         String password = dto.getPassword();
@@ -54,40 +45,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
             dto.setPassword(PasswordUtil.encode(password));
         }
         this.baseMapper.updateUser(dto);
-    }
-
-    @Override
-    public UserDetail getUserDetail(String token) {
-        //region Description
-        String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
-        final Object obj = redisUtil.get(userInfoKey);
-        UserDetail userDetail;
-        if (null != obj) {
-            userDetail = (UserDetail) obj;
-        } else {
-            Long userId = getUserId(token);
-            userDetail = getUserDetailById(userId);
-        }
-        return userDetail;
-        //endregion
-    }
-
-    private UserDetail getUserDetailById(Long userId) {
-        return getUserDetail(userId,null);
-    }
-
-    @Override
-    public UserDetail getUserDetail(Long userId, String username) {
-        return this.baseMapper.getUserDetail(userId,username);
-    }
-
-    private Long getUserId(String token) {
-        //region Description
-        if (TokenUtil.isExpiration(token)) {
-            throw new CustomException(ErrorCode.AUTHORIZATION_INVALID);
-        }
-        return TokenUtil.getUserId(token);
-        //endregion
     }
 
     @Override

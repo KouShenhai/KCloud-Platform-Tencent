@@ -32,8 +32,6 @@ import org.laokou.redis.enums.LockScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,15 +90,15 @@ public class SysImageApiController {
     @PostMapping(value = "/insert")
     @ApiOperation("图片管理>新增")
     @OperateLog(module = "图片管理",name = "图片新增")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto,request));
+    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto));
     }
 
     @PutMapping(value = "/update")
     @ApiOperation("图片管理>修改")
     @OperateLog(module = "图片管理",name = "图片修改")
-    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto,request));
+    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto));
     }
 
     @DeleteMapping(value = "/delete")

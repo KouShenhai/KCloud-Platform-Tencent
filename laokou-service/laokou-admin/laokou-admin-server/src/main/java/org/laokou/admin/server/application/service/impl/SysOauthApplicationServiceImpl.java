@@ -27,9 +27,8 @@ import org.laokou.admin.server.interfaces.qo.SysOauthQO;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.exception.CustomException;
-import org.laokou.auth.client.user.SecurityUser;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -61,9 +60,8 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
         if (count > 0) {
             throw new CustomException("应用id已存在，请重新填写");
         }
-        sysOauthDO.setCreator(SecurityUser.getUserId(request));
-        final UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getToken(request));
-        sysOauthDO.setDeptId(userDetail.getDeptId());
+        sysOauthDO.setCreator(UserUtil.getUserId());
+        sysOauthDO.setDeptId(UserUtil.getDeptId());
         return sysOauthService.save(sysOauthDO);
     }
 
@@ -74,7 +72,7 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
         if (count > 0) {
             throw new CustomException("应用id已存在，请重新填写");
         }
-        sysOauthDO.setEditor(SecurityUser.getUserId(request));
+        sysOauthDO.setEditor(UserUtil.getUserId());
         return sysOauthService.updateById(sysOauthDO);
     }
 

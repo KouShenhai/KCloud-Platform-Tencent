@@ -35,7 +35,6 @@ import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.admin.client.vo.UploadVO;
 import org.laokou.common.exception.CustomException;
-import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.FileUtil;
 import org.laokou.common.utils.JacksonUtil;
@@ -43,6 +42,7 @@ import org.laokou.common.utils.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.elasticsearch.client.model.ElasticsearchModel;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -97,32 +97,32 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public Boolean insertResource(SysResourceDTO dto, HttpServletRequest request) {
+    public Boolean insertResource(SysResourceDTO dto) {
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
-        sysResourceDO.setCreator(SecurityUser.getUserId(request));
-        sysResourceDO.setAuthor(SecurityUser.getUsername(request));
+        sysResourceDO.setCreator(UserUtil.getUserId());
+        sysResourceDO.setAuthor(UserUtil.getUsername());
         sysResourceDO.setStatus(0);
         sysResourceService.save(sysResourceDO);
-        String instanceId = startWork(sysResourceDO.getId(), sysResourceDO.getTitle(),request);
+        String instanceId = startWork(sysResourceDO.getId(), sysResourceDO.getTitle());
         sysResourceDO.setProcessInstanceId(instanceId);
         return sysResourceService.updateById(sysResourceDO);
     }
 
-    private String startWork(Long id,String name,HttpServletRequest request) {
+    private String startWork(Long id,String name) {
         StartProcessVO startProcessVO = workflowProcessApplicationService.startResourceProcess(PROCESS_KEY,id.toString(),name);
         String definitionId = startProcessVO.getDefinitionId();
         String instanceId = startProcessVO.getInstanceId();
         String auditUser = workFlowUtil.getAuditUser(definitionId, null, instanceId);
-        workFlowUtil.sendAuditMsg(auditUser, MessageTypeEnum.REMIND.ordinal(), ChannelTypeEnum.PLATFORM.ordinal(),id,name,request);
+        workFlowUtil.sendAuditMsg(auditUser, MessageTypeEnum.REMIND.ordinal(), ChannelTypeEnum.PLATFORM.ordinal(),id,name);
         return instanceId;
     }
 
     @Override
-    public Boolean updateResource(SysResourceDTO dto, HttpServletRequest request) {
+    public Boolean updateResource(SysResourceDTO dto) {
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
-        sysResourceDO.setEditor(SecurityUser.getUserId(request));
+        sysResourceDO.setEditor(UserUtil.getUserId());
         sysResourceDO.setStatus(0);
-        String instanceId = startWork(sysResourceDO.getId(), dto.getTitle(),request);
+        String instanceId = startWork(sysResourceDO.getId(), dto.getTitle());
         sysResourceDO.setProcessInstanceId(instanceId);
         return sysResourceService.updateById(sysResourceDO);
     }

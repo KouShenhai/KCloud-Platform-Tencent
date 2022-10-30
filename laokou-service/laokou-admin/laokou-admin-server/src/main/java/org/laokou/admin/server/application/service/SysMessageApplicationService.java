@@ -20,15 +20,16 @@ import org.laokou.admin.client.dto.MessageDTO;
 import org.laokou.admin.server.interfaces.qo.SysMessageQO;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysMessageApplicationService {
 
     Boolean pushMessage(MessageDTO dto) throws IOException;
 
-    Boolean sendMessage(MessageDTO dto, HttpServletRequest request);
+    Boolean sendMessage(MessageDTO dto);
 
     void consumeMessage(MessageDTO dto);
 
@@ -40,8 +41,8 @@ public interface SysMessageApplicationService {
 
     MessageDetailVO getMessageById(Long id);
 
-    IPage<SysMessageVO> getUnReadList(HttpServletRequest request, SysMessageQO qo);
+    IPage<SysMessageVO> getUnReadList(SysMessageQO qo);
 
-    Long unReadCount(HttpServletRequest request);
+    Long unReadCount();
 
 }

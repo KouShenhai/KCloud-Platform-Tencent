@@ -24,7 +24,6 @@ import org.laokou.admin.server.domain.sys.entity.SysMessageDO;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDetailDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageDetailService;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageService;
-import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.infrastructure.component.event.SaveMessageEvent;
 import org.laokou.admin.server.infrastructure.component.handler.message.HandleHolder;
@@ -35,14 +34,12 @@ import org.laokou.admin.server.interfaces.qo.SysMessageQO;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
 import org.laokou.common.constant.Constant;
-import org.laokou.auth.client.user.SecurityUser;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.SpringContextUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -71,9 +68,6 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     private SysMessageService sysMessageService;
 
     @Autowired
-    private SysUserService sysUserService;
-
-    @Autowired
     private SysMessageDetailService sysMessageDetailService;
 
     @Autowired
@@ -89,11 +83,11 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     }
 
     @Override
-    public Boolean sendMessage(MessageDTO dto, HttpServletRequest request) {
+    public Boolean sendMessage(MessageDTO dto) {
         String username = dto.getUsername();
         Long userId = dto.getUserId();
-        dto.setUsername(null == username ? SecurityUser.getUsername(request) : username);
-        dto.setUserId(null == userId ? SecurityUser.getUserId(request) : userId);
+        dto.setUsername(null == username ? UserUtil.getUsername() : username);
+        dto.setUserId(null == userId ? UserUtil.getUserId() : userId);
         processController.process(dto);
         return true;
     }
@@ -115,8 +109,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
         SysMessageDO messageDO = ConvertUtil.sourceToTarget(dto, SysMessageDO.class);
         messageDO.setCreateDate(new Date());
         messageDO.setCreator(dto.getUserId());
-        final UserDetail userDetail = sysUserService.getUserDetail(messageDO.getCreator(),null);
-        messageDO.setDeptId(userDetail.getDeptId());
+        messageDO.setDeptId(UserUtil.getDeptId());
         sysMessageService.save(messageDO);
         Iterator<String> iterator = dto.getReceiver().iterator();
         List<SysMessageDetailDO> detailDOList = Lists.newArrayList();
@@ -154,15 +147,15 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     }
 
     @Override
-    public IPage<SysMessageVO> getUnReadList(HttpServletRequest request, SysMessageQO qo) {
+    public IPage<SysMessageVO> getUnReadList(SysMessageQO qo) {
         IPage<SysMessageVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
-        final Long userId = SecurityUser.getUserId(request);
+        final Long userId = UserUtil.getUserId();
         return sysMessageService.getUnReadList(page,userId);
     }
 
     @Override
-    public Long unReadCount(HttpServletRequest request) {
-        final Long userId = SecurityUser.getUserId(request);
+    public Long unReadCount() {
+        final Long userId = UserUtil.getUserId();
         return sysMessageDetailService.count(Wrappers.lambdaQuery(SysMessageDetailDO.class).eq(SysMessageDetailDO::getUserId,userId)
                 .eq(SysMessageDetailDO::getDelFlag,Constant.NO)
                 .eq(SysMessageDetailDO::getReadFlag, Constant.NO));

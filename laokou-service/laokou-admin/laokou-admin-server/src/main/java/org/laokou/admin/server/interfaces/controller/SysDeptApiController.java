@@ -55,15 +55,15 @@ public class SysDeptApiController {
     @PostMapping("/insert")
     @ApiOperation("系统部门>新增")
     @OperateLog(module = "系统部门",name = "部门新增")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysDeptDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysDeptApplicationService.insertDept(dto,request));
+    public HttpResultUtil<Boolean> insert(@RequestBody SysDeptDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysDeptApplicationService.insertDept(dto));
     }
 
     @PutMapping("/update")
     @ApiOperation("系统部门>修改")
     @OperateLog(module = "系统部门",name = "部门修改")
-    public HttpResultUtil<Boolean> update(@RequestBody SysDeptDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysDeptApplicationService.updateDept(dto,request));
+    public HttpResultUtil<Boolean> update(@RequestBody SysDeptDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysDeptApplicationService.updateDept(dto));
     }
 
     @GetMapping("/detail")

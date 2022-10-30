@@ -43,7 +43,7 @@ public class AuthAuthenticationProvider implements AuthenticationProvider {
     @SneakyThrows
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        UserDetail userDetail = authHandler.getUserDetail(authentication);
+        UserDetail userDetail = authHandler.userDetail(authentication);
         List<String> permissionsList = userDetail.getPermissionsList();
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.addAll(permissionsList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));

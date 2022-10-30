@@ -35,15 +35,6 @@ import java.util.List;
 @Mapper
 @Repository
 public interface SysUserMapper extends BaseMapper<SysUserDO> {
-
-    /**
-     * 获取用户信息
-     * @param userId
-     * @param username
-     * @return
-     */
-    UserDetail getUserDetail(@Param("userId")Long userId,@Param("username")String username);
-
     /**
      * 分页查询用户
      * @param page

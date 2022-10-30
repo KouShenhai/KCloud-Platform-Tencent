@@ -22,9 +22,6 @@ import org.laokou.admin.client.vo.SysMenuVO;
 import org.laokou.admin.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.common.utils.RedisKeyUtil;
-import org.laokou.redis.utils.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -35,9 +32,6 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> implements SysMenuService {
-
-    @Autowired
-    private RedisUtil redisUtil;
 
     @Override
     public List<SysMenuVO> getMenuList(Long userId, Integer type) {
@@ -51,40 +45,18 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> im
     }
 
     @Override
-    public List<String> getPermissionsList() {
-        return this.baseMapper.getPermissionsList();
-    }
-
-    @Override
-    public List<String> getPermissionsListByUserId(Long userId) {
-        return this.baseMapper.getPermissionsListByUserId(userId);
-    }
-
-    @Override
-    public List<SysMenuVO> getMenuList(String Authorization,UserDetail userDetail, boolean noCache, Integer type) {
+    public List<SysMenuVO> getMenuList(UserDetail userDetail, Integer type) {
         //region Description
-        if (noCache) {
-            return getMenuList(userDetail.getId(),userDetail.getSuperAdmin(),type);
-        }
-        String userResourceKey = RedisKeyUtil.getUserResourceKey(Authorization);
-        final Object obj = redisUtil.get(userResourceKey);
-        List<SysMenuVO> resourceList;
-        if (null != obj) {
-            resourceList = (List<SysMenuVO>) obj;
-        } else {
-            resourceList = getMenuList(userDetail.getId(),userDetail.getSuperAdmin(),type);
-            redisUtil.set(userResourceKey,resourceList,RedisUtil.HOUR_ONE_EXPIRE);
-        }
-        return resourceList;
+        return getMenuList(userDetail.getId(),userDetail.getSuperAdmin(),type);
         //endregion
     }
 
     private List<SysMenuVO> getMenuList(Long userId, Integer superAdmin, Integer type) {
         //region Description
         if (SuperAdminEnum.YES.ordinal() == superAdmin) {
-            return getMenuList(null,type);
+            return this.baseMapper.getMenuList(type);
         } else {
-            return getMenuList(userId,type);
+            return this.baseMapper.getMenuListByUserId(userId,type);
         }
         //endregion
     }

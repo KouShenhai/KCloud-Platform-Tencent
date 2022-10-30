@@ -2,7 +2,6 @@ package org.laokou.ump.client.utils;
 
 import org.laokou.auth.client.user.UserDetail;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 /**
  * @author 寇申海
  */
@@ -25,6 +24,10 @@ public class UserUtil {
      */
     public static String getUsername() {
         return userDetail().getUsername();
+    }
+
+    public static Long getDeptId() {
+        return userDetail().getDeptId();
     }
 
 }

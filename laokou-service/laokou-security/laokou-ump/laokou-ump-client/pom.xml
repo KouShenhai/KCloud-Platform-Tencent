@@ -13,9 +13,10 @@
     <artifactId>laokou-ump-client</artifactId>
 
     <dependencies>
+        <!--安全模块-->
         <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
+            <groupId>org.springframework.security.oauth.boot</groupId>
+            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
         </dependency>
         <dependency>
             <groupId>org.laokou</groupId>

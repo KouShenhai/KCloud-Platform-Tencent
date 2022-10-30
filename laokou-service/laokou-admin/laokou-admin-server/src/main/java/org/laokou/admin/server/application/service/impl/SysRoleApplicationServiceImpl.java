@@ -30,12 +30,11 @@ import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysRoleQO;
 import org.laokou.admin.client.dto.SysRoleDTO;
 import org.laokou.common.constant.Constant;
-import org.laokou.auth.client.user.SecurityUser;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.admin.client.vo.SysRoleVO;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.ConvertUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -82,9 +81,8 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
         if (count > 0) {
             throw new CustomException("角色已存在，请重新填写");
         }
-        final UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getUserId(request),null);
-        roleDO.setCreator(userDetail.getId());
-        roleDO.setDeptId(userDetail.getDeptId());
+        roleDO.setCreator(UserUtil.getUserId());
+        roleDO.setDeptId(UserUtil.getDeptId());
         sysRoleService.save(roleDO);
         List<Long> menuIds = dto.getMenuIds();
         saveOrUpdate(roleDO.getId(),menuIds,dto.getDeptIds());
@@ -122,7 +120,7 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
         if (count > 0) {
             throw new CustomException("角色已存在，请重新填写");
         }
-        Long userId = SecurityUser.getUserId(request);
+        Long userId = UserUtil.getUserId();
         roleDO.setEditor(userId);
         sysRoleService.updateById(roleDO);
         //删除中间表

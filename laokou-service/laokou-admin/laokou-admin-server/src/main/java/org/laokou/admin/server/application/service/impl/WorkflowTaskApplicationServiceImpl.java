@@ -18,7 +18,6 @@ import com.google.common.collect.Lists;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
 import org.laokou.admin.client.enums.FlowCommentEnum;
 import org.laokou.admin.server.infrastructure.config.CustomProcessDiagramGenerator;
-import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.admin.client.dto.AuditDTO;
 import org.laokou.admin.client.dto.ClaimDTO;
 import org.laokou.admin.client.dto.UnClaimDTO;
@@ -34,6 +33,7 @@ import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.image.ProcessDiagramGenerator;
 import org.flowable.task.api.DelegationState;
 import org.flowable.task.api.Task;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -68,7 +68,7 @@ public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicati
     private ProcessEngine processEngine;
 
     @Override
-    public Boolean auditTask(AuditDTO dto, HttpServletRequest request) {
+    public Boolean auditTask(AuditDTO dto) {
         Task task = taskService.createTaskQuery().taskId(dto.getTaskId()).singleResult();
         if (null == task) {
             throw new CustomException("任务不存在");
@@ -79,7 +79,6 @@ public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicati
             taskService.resolveTask(dto.getTaskId(),dto.getValues());
         } else {
             taskService.addComment(dto.getTaskId(),dto.getInstanceId(), FlowCommentEnum.NORMAL.getType(),dto.getComment());
-            taskService.setAssignee(dto.getTaskId(), SecurityUser.getUserId(request).toString());
             if (MapUtils.isNotEmpty(dto.getValues())) {
                 taskService.complete(dto.getTaskId(),dto.getValues());
             } else {
@@ -97,7 +96,7 @@ public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicati
         if (null == task) {
             throw new CustomException("任务不存在");
         }
-        taskService.claim(dto.getTaskId(),SecurityUser.getUserId(request).toString());
+        taskService.claim(dto.getTaskId(), UserUtil.getUserId().toString());
         return true;
     }
 

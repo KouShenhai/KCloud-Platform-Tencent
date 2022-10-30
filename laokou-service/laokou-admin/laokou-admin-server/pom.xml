@@ -12,10 +12,6 @@
 	<description>后台管理模块</description>
 	<dependencies>
 		<dependency>
-			<groupId>org.laokou</groupId>
-			<artifactId>laokou-admin-client</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
@@ -86,8 +82,12 @@
 			<artifactId>laokou-async</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.security.oauth</groupId>
-			<artifactId>spring-security-oauth2</artifactId>
+			<groupId>org.laokou</groupId>
+			<artifactId>laokou-ump-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.laokou</groupId>
+			<artifactId>laokou-admin-client</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

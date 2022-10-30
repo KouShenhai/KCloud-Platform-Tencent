@@ -34,26 +34,12 @@ public interface SysMenuService extends IService<SysMenuDO> {
     List<SysMenuVO> getMenuList(Long userId, Integer type);
 
     /**
-     * 查询所有权限列表
-     * @return
-     */
-    List<String> getPermissionsList();
-
-    /**
-     * 查询用户权限列表
-     * @param userId
-     * @return
-     */
-    List<String> getPermissionsListByUserId(Long userId);
-
-    /**
      * 获取菜单列表
      * @param userDetail
-     * @param noCache
      * @param type
      * @return
      */
-    List<SysMenuVO> getMenuList(String token,UserDetail userDetail, boolean noCache, Integer type);
+    List<SysMenuVO> getMenuList(UserDetail userDetail, Integer type);
 
     /**
      * 查询列表

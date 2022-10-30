@@ -16,6 +16,7 @@
 package org.laokou.ump.server.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +26,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
@@ -44,6 +48,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private PasswordEncoder passwordEncoder;
     @Autowired
     private TokenStore tokenStore;
+    @Autowired
+    private ClientDetailsService clientDetailsService;
     /**
      * 配置客户端信息
      */
@@ -60,14 +66,32 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
         //密码模式
         endpoints.authenticationManager(authenticationManager);
-        //存入redis
-        endpoints.tokenStore(tokenStore);
         //登录或者鉴权失败时的返回信息
         endpoints.exceptionTranslator(webResponseExceptionTranslator);
+        endpoints.tokenServices(tokenServices());
+    }
+
+    /**
+     * @return
+     */
+    @Bean
+    public AuthorizationServerTokenServices tokenServices() {
+        DefaultTokenServices services = new DefaultTokenServices();
+        //客户端详情服务
+        services.setClientDetailsService(clientDetailsService);
+        //支持令牌刷新
+        services.setSupportRefreshToken(true);
+        //存储令牌策略
+        services.setTokenStore(tokenStore);
+        //令牌时间1小时
+        services.setAccessTokenValiditySeconds(60 * 60);
+        //刷新令牌时间1天
+        services.setRefreshTokenValiditySeconds(60 * 60 * 24);
+        return services;
     }
 
     @Override

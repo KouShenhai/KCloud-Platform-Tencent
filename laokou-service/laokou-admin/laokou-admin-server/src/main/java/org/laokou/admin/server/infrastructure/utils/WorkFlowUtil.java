@@ -31,7 +31,6 @@ import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 /**
@@ -82,7 +81,7 @@ public class WorkFlowUtil {
      * @param sendChannel
      */
     @Async
-    public void sendAuditMsg(String assignee, Integer type, Integer sendChannel,Long id,String name,HttpServletRequest request) {
+    public void sendAuditMsg(String assignee, Integer type, Integer sendChannel,Long id,String name) {
         String title = "资源审批提醒";
         String content = String.format("编号为%s，名称为%s的资源需要审批，请及时查看并处理",id,name);
         Set set = Sets.newHashSet();
@@ -93,7 +92,7 @@ public class WorkFlowUtil {
         dto.setSendChannel(sendChannel);
         dto.setReceiver(set);
         dto.setType(type);
-        sysMessageApplicationService.sendMessage(dto,request);
+        sysMessageApplicationService.sendMessage(dto);
     }
 
 }

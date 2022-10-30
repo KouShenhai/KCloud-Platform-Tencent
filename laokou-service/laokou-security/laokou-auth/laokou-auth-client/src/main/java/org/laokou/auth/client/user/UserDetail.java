@@ -33,5 +33,5 @@ public class UserDetail implements Serializable {
     private String zfbOpenid;
     private Long deptId;
     private List<String> permissionsList;
-    private List<Long> depIds;
+    private List<Long> deptIds;
 }

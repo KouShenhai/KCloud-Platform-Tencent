@@ -91,15 +91,15 @@ public class SysVideoApiController {
     @PostMapping(value = "/insert")
     @ApiOperation("视频管理>新增")
     @OperateLog(module = "视频管理",name = "视频新增")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto,request));
+    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto));
     }
 
     @PutMapping(value = "/update")
     @ApiOperation("视频管理>修改")
     @OperateLog(module = "视频管理",name = "视频修改")
-    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto,request));
+    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto));
     }
 
     @DeleteMapping(value = "/delete")

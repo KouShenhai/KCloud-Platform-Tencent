@@ -22,10 +22,10 @@ import org.laokou.admin.client.dto.SysDeptDTO;
 import org.laokou.admin.server.interfaces.qo.SysDeptQO;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.exception.CustomException;
-import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.TreeUtil;
 import org.laokou.admin.client.vo.SysDeptVO;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -55,24 +55,24 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
     }
 
     @Override
-    public Boolean insertDept(SysDeptDTO dto, HttpServletRequest request) {
+    public Boolean insertDept(SysDeptDTO dto) {
         SysDeptDO sysDeptDO = ConvertUtil.sourceToTarget(dto, SysDeptDO.class);
         long count = sysDeptService.count(Wrappers.lambdaQuery(SysDeptDO.class).eq(SysDeptDO::getName, dto.getName()).eq(SysDeptDO::getDelFlag, Constant.NO));
         if (count > 0) {
             throw new CustomException("部门已存在，请重新填写");
         }
-        sysDeptDO.setCreator(SecurityUser.getUserId(request));
+        sysDeptDO.setCreator(UserUtil.getUserId());
         return sysDeptService.save(sysDeptDO);
     }
 
     @Override
-    public Boolean updateDept(SysDeptDTO dto,HttpServletRequest request) {
+    public Boolean updateDept(SysDeptDTO dto) {
         SysDeptDO sysDeptDO = ConvertUtil.sourceToTarget(dto, SysDeptDO.class);
         long count = sysDeptService.count(Wrappers.lambdaQuery(SysDeptDO.class).eq(SysDeptDO::getName, dto.getName()).eq(SysDeptDO::getDelFlag, Constant.NO).ne(SysDeptDO::getId,dto.getId()));
         if (count > 0) {
             throw new CustomException("部门已存在，请重新填写");
         }
-        sysDeptDO.setEditor(SecurityUser.getUserId(request));
+        sysDeptDO.setEditor(UserUtil.getUserId());
         return sysDeptService.updateById(sysDeptDO);
     }
 

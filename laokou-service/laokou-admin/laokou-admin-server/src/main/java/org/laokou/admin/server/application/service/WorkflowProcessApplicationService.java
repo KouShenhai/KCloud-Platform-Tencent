@@ -29,5 +29,5 @@ public interface WorkflowProcessApplicationService {
 
     IPage<TaskVO> queryResourceTaskPage(TaskQO qo, HttpServletRequest request);
 
-    Boolean auditResourceTask(AuditDTO dto,HttpServletRequest request);
+    Boolean auditResourceTask(AuditDTO dto);
 }

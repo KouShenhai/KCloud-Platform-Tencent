@@ -15,14 +15,11 @@
  */
 package org.laokou.admin.server.infrastructure.component.aspect;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
-import org.laokou.auth.client.user.SecurityUser;
-import org.laokou.common.utils.RedisKeyUtil;
 import org.laokou.mybatis.plus.entity.BasePage;
 import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.common.utils.HttpContextUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -30,11 +27,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.laokou.redis.utils.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.List;
 /**
@@ -44,9 +39,6 @@ import java.util.List;
 @Aspect
 public class DataFilterAspect {
 
-    @Autowired
-    private RedisUtil redisUtil;
-
     @Pointcut("@annotation(org.laokou.admin.server.infrastructure.component.annotation.DataFilter)")
     public void dataFilterPointCut() {}
 
@@ -54,13 +46,7 @@ public class DataFilterAspect {
     public void dataFilterPoint(JoinPoint point) {
         Object params = point.getArgs()[0];
         if (params != null && params instanceof BasePage) {
-            HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-            String userInfoKey = RedisKeyUtil.getUserInfoKey(SecurityUser.getToken(request));
-            final Object obj = redisUtil.get(userInfoKey);
-            if (obj == null) {
-                throw new CustomException(430,"系统繁忙，请刷新页面再试");
-            }
-            UserDetail userDetail = (UserDetail) obj;
+            UserDetail userDetail = UserUtil.userDetail();
             //如果是超级管理员，不进行数据过滤
             if (userDetail.getSuperAdmin() == SuperAdminEnum.YES.ordinal()) {
                 return;
@@ -93,7 +79,7 @@ public class DataFilterAspect {
         }
         StringBuilder sqlFilter = new StringBuilder();
         //用户列表
-        List<Long> deptIds = userDetail.getDepIds();
+        List<Long> deptIds = userDetail.getDeptIds();
         if (CollectionUtils.isNotEmpty(deptIds)) {
             sqlFilter.append(" find_in_set(").append(tableAlias).append(dataFilter.deptId()).append(" , ").append("'").append(StringUtils.join(deptIds,",")).append("'").append(") or ");
         }

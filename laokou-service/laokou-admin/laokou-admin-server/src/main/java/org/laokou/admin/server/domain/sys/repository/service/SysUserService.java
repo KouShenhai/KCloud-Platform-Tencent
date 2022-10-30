@@ -21,8 +21,6 @@ import org.laokou.admin.server.interfaces.qo.SysUserQO;
 import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.server.domain.sys.entity.SysUserDO;
-import org.laokou.auth.client.user.UserDetail;
-
 import java.util.List;
 
 /**
@@ -36,15 +34,6 @@ public interface SysUserService extends IService<SysUserDO> {
      * @param
      */
     void updateUser(SysUserDTO dto);
-
-    /**
-     * 获取用户信息
-     * @param token
-     * @return
-     */
-    UserDetail getUserDetail(String token);
-
-    UserDetail getUserDetail(Long userId,String username);
 
     /**
      * 分页查询用户

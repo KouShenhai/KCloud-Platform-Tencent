@@ -199,7 +199,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //资源列表放到redis中
         String userResourceKey = RedisKeyUtil.getUserResourceKey(token);
         userDetail.setPermissionsList(getPermissionList(userDetail));
-        userDetail.setDepIds(getDeptIds(userDetail));
+        userDetail.setDeptIds(getDeptIds(userDetail));
         redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
         redisUtil.set(userResourceKey,resourceList,RedisUtil.HOUR_ONE_EXPIRE);
         caffeineCache.put(userInfoKey,userDetail);
@@ -327,7 +327,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 return userDetail;
             },executorService);
             CompletableFuture<UserDetail> c2 = CompletableFuture.supplyAsync(() -> getDeptIds(userDetail), executorService).thenApplyAsync(deptIds -> {
-                userDetail.setDepIds(deptIds);
+                userDetail.setDeptIds(deptIds);
                 return userDetail;
             }, executorService);
             //等待所有任务都完成
@@ -348,7 +348,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                         .userId(userDetail.getId())
                         .mobile(userDetail.getMobile())
                         .email(userDetail.getEmail())
-                        .depId(userDetail.getDeptId())
                         .permissionList(userDetail.getPermissionsList()).build();
     }
 

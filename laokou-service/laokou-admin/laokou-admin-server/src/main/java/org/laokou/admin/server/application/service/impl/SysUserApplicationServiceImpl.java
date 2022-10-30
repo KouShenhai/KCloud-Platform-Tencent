@@ -31,12 +31,12 @@ import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.client.dto.SysUserDTO;
 import org.laokou.common.constant.Constant;
 import org.laokou.auth.client.password.PasswordUtil;
-import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -62,9 +62,8 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
         if (null == id) {
             throw new CustomException("主键不存在");
         }
-        String token = SecurityUser.getToken(request);
         SysUserDO sysUser = sysUserService.getById(id);
-        UserDetail userDetail = sysUserService.getUserDetail(token);
+        UserDetail userDetail = UserUtil.userDetail();
         if (SuperAdminEnum.YES.ordinal() == sysUser.getSuperAdmin() && SuperAdminEnum.YES.ordinal() != userDetail.getSuperAdmin()) {
             throw new CustomException("只有超级管理员才能修改");
         }
@@ -91,7 +90,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
         if (count > 0) {
             throw new CustomException("账号已存在，请重新填写");
         }
-        sysUserDO.setCreator(SecurityUser.getUserId(request));
+        sysUserDO.setCreator(UserUtil.getUserId());
         sysUserDO.setPassword(PasswordUtil.encode(dto.getPassword()));
         sysUserService.save(sysUserDO);
         List<Long> roleIds = dto.getRoleIds();
@@ -121,7 +120,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
 
     public Boolean deleteUser(Long id,HttpServletRequest request) {
         SysUserDO sysUser = sysUserService.getById(id);
-        UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getToken(request));
+        UserDetail userDetail = UserUtil.userDetail();
         if (SuperAdminEnum.YES.ordinal() == sysUser.getSuperAdmin() && SuperAdminEnum.YES.ordinal() != userDetail.getSuperAdmin()) {
             throw new CustomException("只有超级管理员才能删除");
         }

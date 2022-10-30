@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.ump.server.feign.auth;
+import feign.Response;
 import org.laokou.auth.client.dto.LoginDTO;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.client.vo.LoginVO;
@@ -45,16 +46,10 @@ public interface AuthApiFeignClient {
     /**
      * 验证码
      * @param uuid
-     */
-    @GetMapping("/sys/auth/api/captcha")
-    void captcha(@RequestParam(Constant.UUID)String uuid);
-
-    /**
-     * 退出
      * @return
      */
-    @GetMapping("/sys/auth/api/logout")
-    void logout();
+    @GetMapping("/sys/auth/api/captcha")
+    Response captcha(@RequestParam(Constant.UUID)String uuid);
 
     /**
      * 用户详情

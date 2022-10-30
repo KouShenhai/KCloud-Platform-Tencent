@@ -25,9 +25,8 @@ import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysDictQO;
 import org.laokou.admin.client.vo.SysDictVO;
 import org.laokou.admin.client.dto.SysDictDTO;
-import org.laokou.auth.client.user.SecurityUser;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,16 +56,15 @@ public class SysDictApplicationServiceImpl implements SysDictApplicationService 
     @Override
     public Boolean insertDict(SysDictDTO dto, HttpServletRequest request) {
         SysDictDO dictDO = ConvertUtil.sourceToTarget(dto, SysDictDO.class);
-        dictDO.setCreator(SecurityUser.getUserId(request));
-        final UserDetail userDetail = sysUserService.getUserDetail(SecurityUser.getToken(request));
-        dictDO.setDeptId(userDetail.getDeptId());
+        dictDO.setCreator(UserUtil.getUserId());
+        dictDO.setDeptId(UserUtil.getDeptId());
         return sysDictService.save(dictDO);
     }
 
     @Override
     public Boolean updateDict(SysDictDTO dto, HttpServletRequest request) {
         SysDictDO dictDO = ConvertUtil.sourceToTarget(dto, SysDictDO.class);
-        dictDO.setEditor(SecurityUser.getUserId(request));
+        dictDO.setEditor(UserUtil.getUserId());
         return sysDictService.updateById(dictDO);
     }
 

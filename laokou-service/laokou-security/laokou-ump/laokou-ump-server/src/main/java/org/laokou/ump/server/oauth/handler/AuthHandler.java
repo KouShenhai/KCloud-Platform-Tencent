@@ -20,7 +20,7 @@ public class AuthHandler {
     @Autowired
     private UsernamePasswordAuth usernamePasswordAuth;
 
-    public UserDetail getUserDetail(Authentication authentication) {
+    public UserDetail userDetail(Authentication authentication) {
         Map<String, String> details = (Map<String, String>) authentication.getDetails();
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
