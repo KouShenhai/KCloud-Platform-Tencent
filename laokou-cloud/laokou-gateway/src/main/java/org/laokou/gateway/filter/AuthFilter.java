@@ -32,7 +32,6 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 import java.util.List;
 /**
  * 认证Filter
@@ -51,23 +50,12 @@ public class AuthFilter implements GlobalFilter,Ordered {
     /**
      * 不拦截的urls
      */
-    private List<String> uris;
+    private List<String> ips;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info("加载 AuthFilter");
         return chain.filter(exchange);
-    }
-
-    private boolean pathMatcher(String requestUri) {
-        Iterator<String> iterator = uris.iterator();
-        while (iterator.hasNext()) {
-            String url = iterator.next();
-            if (antPathMatcher.match(url,requestUri)){
-                return true;
-            }
-        }
-        return false;
     }
 
     private Mono<Void> response(ServerWebExchange exchange,Object data){
