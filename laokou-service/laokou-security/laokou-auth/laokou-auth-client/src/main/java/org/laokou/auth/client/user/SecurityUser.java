@@ -40,21 +40,6 @@ public class SecurityUser {
         return Long.valueOf(userId);
     }
 
-    public static String getUsername(HttpServletRequest request) {
-        String username = request.getHeader(Constant.USERNAME_HEAD);
-        if (StringUtils.isBlank(username)) {
-            String authHeader = getToken(request);
-            if (StringUtils.isBlank(authHeader)) {
-                throw new CustomException(ErrorCode.UNAUTHORIZED);
-            }
-            if (TokenUtil.isExpiration(authHeader)) {
-                throw new CustomException(ErrorCode.AUTHORIZATION_INVALID);
-            }
-            return TokenUtil.getUsername(authHeader);
-        }
-        return username;
-    }
-
     /**
      * 获取请求的token
      */
