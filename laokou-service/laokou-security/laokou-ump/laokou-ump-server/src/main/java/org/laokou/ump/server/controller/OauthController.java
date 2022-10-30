@@ -9,8 +9,6 @@ import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.FileUtil;
 import org.laokou.common.utils.HttpResultUtil;
-import org.laokou.common.utils.MessageUtil;
-import org.laokou.ump.server.exception.RenOAuth2Exception;
 import org.laokou.ump.server.feign.auth.AuthApiFeignClient;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
@@ -56,7 +54,7 @@ public class OauthController {
             userInfoVO.setUserId(userDetail.getId());
             return new HttpResultUtil<UserInfoVO>().ok(userInfoVO);
         }
-        throw new RenOAuth2Exception(ErrorCode.AUTHORIZATION_INVALID, MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
+        return new HttpResultUtil<UserInfoVO>().error(ErrorCode.AUTHORIZATION_INVALID);
     }
 
     @GetMapping("/oauth/logout")
