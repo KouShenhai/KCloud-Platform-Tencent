@@ -24,6 +24,7 @@ import org.laokou.log.annotation.OperateLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 /**
@@ -40,6 +41,7 @@ public class SysRoleApiController {
 
     @PostMapping("/query")
     @ApiOperation("系统角色>查询")
+    @PreAuthorize("hasAuthority('sys:role:query')")
     public HttpResultUtil<IPage<SysRoleVO>> query(@RequestBody SysRoleQO qo) {
         return new HttpResultUtil<IPage<SysRoleVO>>().ok(sysRoleApplicationService.queryRolePage(qo));
     }
@@ -59,6 +61,7 @@ public class SysRoleApiController {
     @PostMapping("/insert")
     @ApiOperation("系统角色>新增")
     @OperateLog(module = "系统角色",name = "角色新增")
+    @PreAuthorize("hasAuthority('sys:role:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody SysRoleDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.insertRole(dto));
     }
@@ -66,6 +69,7 @@ public class SysRoleApiController {
     @PutMapping("/update")
     @ApiOperation("系统角色>修改")
     @OperateLog(module = "系统角色",name = "角色修改")
+    @PreAuthorize("hasAuthority('sys:role:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysRoleDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.updateRole(dto));
     }
@@ -73,6 +77,7 @@ public class SysRoleApiController {
     @DeleteMapping("/delete")
     @ApiOperation("系统角色>删除")
     @OperateLog(module = "系统角色",name = "角色删除")
+    @PreAuthorize("hasAuthority('sys:role:delete')")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.deleteRole(id));
     }

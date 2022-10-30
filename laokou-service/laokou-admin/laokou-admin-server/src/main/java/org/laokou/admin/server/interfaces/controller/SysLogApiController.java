@@ -25,6 +25,7 @@ import org.laokou.common.utils.HttpResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 /**
  * 系统日志控制器
@@ -40,12 +41,14 @@ public class SysLogApiController {
 
     @PostMapping(value = "/operate/query")
     @ApiOperation("系统日志>操作日志>查询")
+    @PreAuthorize("hasAuthority('sys:log:operate:query')")
     public HttpResultUtil<IPage<SysOperateLogVO>> queryOperateLog(@RequestBody SysOperateLogQO qo) {
         return new HttpResultUtil<IPage<SysOperateLogVO>>().ok(sysLogApplicationService.queryOperateLogPage(qo));
     }
 
     @PostMapping(value = "/login/query")
     @ApiOperation("系统日志>登录日志>查询")
+    @PreAuthorize("hasAuthority('sys:log:login:query')")
     public HttpResultUtil<IPage<SysLoginLogVO>> queryLoginLog(@RequestBody LoginLogQO qo) {
         return new HttpResultUtil<IPage<SysLoginLogVO>>().ok(sysLogApplicationService.queryLoginLogPage(qo));
     }

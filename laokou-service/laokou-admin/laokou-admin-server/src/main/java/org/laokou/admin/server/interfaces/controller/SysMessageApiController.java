@@ -26,6 +26,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 /**
  * @author Kou Shenhai
@@ -42,12 +43,14 @@ public class SysMessageApiController {
     @PostMapping("/insert")
     @ApiOperation("系统消息>新增")
     @OperateLog(module = "系统消息",name = "消息新增")
+    @PreAuthorize("hasAuthority('sys:message:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody MessageDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysMessageApplicationService.sendMessage(dto));
     }
 
     @PostMapping("/query")
     @ApiOperation("系统消息>查询")
+    @PreAuthorize("hasAuthority('sys:message:query')")
     public HttpResultUtil<IPage<SysMessageVO>> query(@RequestBody SysMessageQO qo) {
         return new HttpResultUtil<IPage<SysMessageVO>>().ok(sysMessageApplicationService.queryMessagePage(qo));
     }
@@ -61,6 +64,7 @@ public class SysMessageApiController {
 
     @GetMapping("/detail")
     @ApiOperation("系统消息>详情")
+    @PreAuthorize("hasAuthority('sys:message:detail')")
     public HttpResultUtil<MessageDetailVO> detail(@RequestParam("id")Long id) {
         return new HttpResultUtil<MessageDetailVO>().ok(sysMessageApplicationService.getMessageById(id));
     }

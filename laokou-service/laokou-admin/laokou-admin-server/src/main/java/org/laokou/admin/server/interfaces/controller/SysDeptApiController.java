@@ -23,8 +23,8 @@ import org.laokou.log.annotation.OperateLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 /**
  * 系统部门
@@ -48,6 +48,7 @@ public class SysDeptApiController {
 
     @PostMapping("/query")
     @ApiOperation("系统部门>查询")
+    @PreAuthorize("hasAuthority('sys:dept:query')")
     public HttpResultUtil<List<SysDeptVO>> query(@RequestBody SysDeptQO qo) {
         return new HttpResultUtil<List<SysDeptVO>>().ok(sysDeptApplicationService.queryDeptList(qo));
     }
@@ -55,6 +56,7 @@ public class SysDeptApiController {
     @PostMapping("/insert")
     @ApiOperation("系统部门>新增")
     @OperateLog(module = "系统部门",name = "部门新增")
+    @PreAuthorize("hasAuthority('sys:dept:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody SysDeptDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysDeptApplicationService.insertDept(dto));
     }
@@ -62,6 +64,7 @@ public class SysDeptApiController {
     @PutMapping("/update")
     @ApiOperation("系统部门>修改")
     @OperateLog(module = "系统部门",name = "部门修改")
+    @PreAuthorize("hasAuthority('sys:dept:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysDeptDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysDeptApplicationService.updateDept(dto));
     }
@@ -75,6 +78,7 @@ public class SysDeptApiController {
     @DeleteMapping("/delete")
     @ApiOperation("系统部门>删除")
     @OperateLog(module = "系统部门",name = "部门删除")
+    @PreAuthorize("hasAuthority('sys:dept:delete')")
     public HttpResultUtil<Boolean> delete(@RequestParam("id")Long id) {
         return new HttpResultUtil<Boolean>().ok(sysDeptApplicationService.deleteDept(id));
     }

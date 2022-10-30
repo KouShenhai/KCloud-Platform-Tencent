@@ -23,6 +23,7 @@ import org.laokou.log.annotation.OperateLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -46,6 +47,7 @@ public class SysMenuApiController {
 
     @PostMapping("/query")
     @ApiOperation("系统菜单>查询")
+    @PreAuthorize("hasAuthority('sys:menu:query')")
     public HttpResultUtil<List<SysMenuVO>> query(@RequestBody SysMenuQO qo) {
         return new HttpResultUtil<List<SysMenuVO>>().ok(sysMenuApplicationService.queryMenuList(qo));
     }
@@ -59,6 +61,7 @@ public class SysMenuApiController {
     @PutMapping("/update")
     @ApiOperation("系统菜单>修改")
     @OperateLog(module = "系统菜单",name = "菜单修改")
+    @PreAuthorize("hasAuthority('sys:menu:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysMenuDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysMenuApplicationService.updateMenu(dto));
     }
@@ -66,6 +69,7 @@ public class SysMenuApiController {
     @PostMapping("/insert")
     @ApiOperation("系统菜单>新增")
     @OperateLog(module = "系统菜单",name = "菜单新增")
+    @PreAuthorize("hasAuthority('sys:menu:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody SysMenuDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysMenuApplicationService.insertMenu(dto));
     }
@@ -73,6 +77,7 @@ public class SysMenuApiController {
     @DeleteMapping("/delete")
     @ApiOperation("系统菜单>删除")
     @OperateLog(module = "系统菜单",name = "菜单删除")
+    @PreAuthorize("hasAuthority('sys:menu:delete')")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResultUtil<Boolean>().ok(sysMenuApplicationService.deleteMenu(id));
     }

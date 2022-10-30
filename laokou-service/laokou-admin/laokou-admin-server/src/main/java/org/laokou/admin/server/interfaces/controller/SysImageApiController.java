@@ -30,6 +30,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.laokou.redis.enums.LockScope;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
@@ -71,18 +72,21 @@ public class SysImageApiController {
     @ApiOperation("图片管理>同步")
     @Lock4j(key = "image_sync_lock", scope = LockScope.DISTRIBUTED_LOCK)
     @OperateLog(module = "图片管理",name = "图片同步")
+    @PreAuthorize("hasAuthority('sys:resource:image:sync')")
     public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncAsyncBatchResource(code));
     }
 
     @PostMapping("/query")
     @ApiOperation("图片管理>查询")
+    @PreAuthorize("hasAuthority('sys:resource:image:query')")
     public HttpResultUtil<IPage<SysResourceVO>> query(@RequestBody SysResourceQO qo) {
         return new HttpResultUtil<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
     }
 
     @GetMapping(value = "/detail")
     @ApiOperation("图片管理>详情")
+    @PreAuthorize("hasAuthority('sys:resource:image:detail')")
     public HttpResultUtil<SysResourceVO> detail(@RequestParam("id") Long id) {
         return new HttpResultUtil<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
     }
@@ -90,6 +94,7 @@ public class SysImageApiController {
     @PostMapping(value = "/insert")
     @ApiOperation("图片管理>新增")
     @OperateLog(module = "图片管理",name = "图片新增")
+    @PreAuthorize("hasAuthority('sys:resource:image:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto));
     }
@@ -97,6 +102,7 @@ public class SysImageApiController {
     @PutMapping(value = "/update")
     @ApiOperation("图片管理>修改")
     @OperateLog(module = "图片管理",name = "图片修改")
+    @PreAuthorize("hasAuthority('sys:resource:image:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto));
     }
@@ -104,18 +110,21 @@ public class SysImageApiController {
     @DeleteMapping(value = "/delete")
     @ApiOperation("图片管理>删除")
     @OperateLog(module = "图片管理",name = "图片删除")
+    @PreAuthorize("hasAuthority('sys:resource:image:delete')")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.deleteResource(id));
     }
 
     @GetMapping(value = "/diagram")
     @ApiOperation(value = "图片管理>流程图")
+    @PreAuthorize("hasAuthority('sys:resource:image:diagram')")
     public void diagram(@RequestParam("processInstanceId")String processInstanceId, HttpServletResponse response) throws IOException {
         workflowTaskApplicationService.diagramProcess(processInstanceId, response);
     }
 
     @GetMapping("/auditLog")
     @ApiOperation("图片管理>审批日志")
+    @PreAuthorize("hasAuthority('sys:resource:image:auditLog')")
     public HttpResultUtil<List<SysResourceAuditLogVO>> auditLog(@RequestParam("resourceId") Long resourceId) {
         return new HttpResultUtil<List<SysResourceAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(resourceId));
     }
