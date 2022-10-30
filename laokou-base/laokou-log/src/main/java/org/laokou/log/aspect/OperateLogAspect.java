@@ -31,7 +31,9 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,6 +69,7 @@ public class OperateLogAspect {
         handleLog(joinPoint,e);
     }
 
+    @Async
     protected void handleLog(final JoinPoint joinPoint,final Exception e) throws IOException {
         //获取注解
         Signature signature = joinPoint.getSignature();
@@ -92,8 +95,8 @@ public class OperateLogAspect {
         dto.setRequestUri(request.getRequestURI());
         dto.setRequestIp(ip);
         dto.setRequestAddress(AddressUtil.getRealAddress(ip));
-        dto.setOperator(SecurityUser.getUsername(request));
-        dto.setCreator(SecurityUser.getUserId(request));
+        dto.setOperator(UserUtil.getUsername());
+        dto.setCreator(UserUtil.getUserId());
         if (null != e) {
             dto.setRequestStatus(ResultStatusEnum.FAIL.ordinal());
             dto.setErrorMsg(e.getMessage());

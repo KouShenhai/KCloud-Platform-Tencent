@@ -44,7 +44,7 @@ public class SysUserApiController {
     @PutMapping("/update")
     @ApiOperation("系统用户>修改")
     @OperateLog(module = "系统用户",name = "用户修改")
-    @PreAuthorize("hasAuthority('sys:user:update1')")
+    @PreAuthorize("hasAuthority('sys:user:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysUserDTO dto, HttpServletRequest request) {
         return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto,request));
     }

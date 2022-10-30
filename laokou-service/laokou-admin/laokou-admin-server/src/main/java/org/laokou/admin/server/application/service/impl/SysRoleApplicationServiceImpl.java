@@ -37,7 +37,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * @author Kou Shenhai
@@ -75,7 +74,7 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
     }
 
     @Override
-    public Boolean insertRole(SysRoleDTO dto, HttpServletRequest request) {
+    public Boolean insertRole(SysRoleDTO dto) {
         SysRoleDO roleDO = ConvertUtil.sourceToTarget(dto, SysRoleDO.class);
         long count = sysRoleService.count(Wrappers.lambdaQuery(SysRoleDO.class).eq(SysRoleDO::getName, roleDO.getName()).eq(SysRoleDO::getDelFlag, Constant.NO));
         if (count > 0) {
@@ -114,7 +113,7 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
     }
 
     @Override
-    public Boolean updateRole(SysRoleDTO dto, HttpServletRequest request) {
+    public Boolean updateRole(SysRoleDTO dto) {
         SysRoleDO roleDO = ConvertUtil.sourceToTarget(dto, SysRoleDO.class);
         long count = sysRoleService.count(Wrappers.lambdaQuery(SysRoleDO.class).eq(SysRoleDO::getName, roleDO.getName()).eq(SysRoleDO::getDelFlag, Constant.NO).ne(SysRoleDO::getId,roleDO.getId()));
         if (count > 0) {

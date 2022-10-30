@@ -25,7 +25,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * 系统角色控制器
@@ -60,21 +59,21 @@ public class SysRoleApiController {
     @PostMapping("/insert")
     @ApiOperation("系统角色>新增")
     @OperateLog(module = "系统角色",name = "角色新增")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysRoleDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.insertRole(dto, request));
+    public HttpResultUtil<Boolean> insert(@RequestBody SysRoleDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.insertRole(dto));
     }
 
     @PutMapping("/update")
     @ApiOperation("系统角色>修改")
     @OperateLog(module = "系统角色",name = "角色修改")
-    public HttpResultUtil<Boolean> update(@RequestBody SysRoleDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.updateRole(dto, request));
+    public HttpResultUtil<Boolean> update(@RequestBody SysRoleDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.updateRole(dto));
     }
 
     @DeleteMapping("/delete")
     @ApiOperation("系统角色>删除")
     @OperateLog(module = "系统角色",name = "角色删除")
-    public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id,HttpServletRequest request) {
+    public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.deleteRole(id));
     }
 

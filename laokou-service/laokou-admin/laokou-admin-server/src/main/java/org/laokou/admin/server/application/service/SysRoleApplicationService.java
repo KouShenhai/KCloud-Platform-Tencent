@@ -31,9 +31,9 @@ public interface SysRoleApplicationService {
 
     SysRoleVO getRoleById(Long id);
 
-    Boolean insertRole(SysRoleDTO dto, HttpServletRequest request);
+    Boolean insertRole(SysRoleDTO dto);
 
-    Boolean updateRole(SysRoleDTO dto, HttpServletRequest request);
+    Boolean updateRole(SysRoleDTO dto);
 
     Boolean deleteRole(Long id);
 }

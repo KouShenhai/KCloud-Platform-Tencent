@@ -83,10 +83,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.laokou</groupId>
-			<artifactId>laokou-ump-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.laokou</groupId>
 			<artifactId>laokou-admin-client</artifactId>
 		</dependency>
 	</dependencies>

@@ -29,6 +29,15 @@ auth:
   redirect_uri: http://192.168.62.1:5555/auth/sys/loading.html
   grant_type: authorization_code
 
+feign:
+  httpclient:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 15000
+
 #mybatis
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
