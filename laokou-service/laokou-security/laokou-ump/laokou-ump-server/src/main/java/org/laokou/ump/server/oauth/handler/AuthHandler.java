@@ -35,8 +35,7 @@ public class AuthHandler {
                 loginDTO.setPassword(password);
                 loginDTO.setUuid(uuid);
                 loginDTO.setUsername(username);
-                String token = usernamePasswordAuth.getToken(loginDTO);
-                return usernamePasswordAuth.getUserDetail(token);
+                return usernamePasswordAuth.getUserDetail(loginDTO);
             }
         }
         return null;

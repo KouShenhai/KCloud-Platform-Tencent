@@ -114,3 +114,5 @@ auth:
       url: /sys/zfb_loading.html
     - permission: anon
       url: /sys/auth/api/logout
+    - permission: anon
+      url: /sys/auth/api/userDetail

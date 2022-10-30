@@ -64,10 +64,10 @@ public interface SysAuthApplicationService {
 
     /***
      * 用户详细信息
-     * @param token
+     * @param loginDTO
      * @return
      */
-    UserDetail userDetail(String token);
+    UserDetail userDetail(LoginDTO loginDTO) throws Exception;
 
     /**
      * 获取用户信息

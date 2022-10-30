@@ -17,7 +17,6 @@ package org.laokou.ump.server.feign.auth;
 import feign.Response;
 import org.laokou.auth.client.dto.LoginDTO;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.auth.client.vo.LoginVO;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.constant.ServiceConstant;
 import org.laokou.common.utils.HttpResultUtil;
@@ -36,14 +35,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AuthApiFeignClient {
 
     /**
-     * 登录
-     * @param loginDTO
-     * @return
-     */
-    @PostMapping("/sys/auth/api/login")
-    HttpResultUtil<LoginVO> login(@RequestBody LoginDTO loginDTO);
-
-    /**
      * 验证码
      * @param uuid
      * @return
@@ -53,10 +44,10 @@ public interface AuthApiFeignClient {
 
     /**
      * 用户详情
-     * @param token
+     * @param loginDTO
      * @return
      */
-    @GetMapping(value = "/sys/auth/api/userDetail")
-    HttpResultUtil<UserDetail> userDetail(@RequestParam(Constant.AUTHORIZATION_HEAD)String token);
+    @PostMapping(value = "/sys/auth/api/userDetail")
+    HttpResultUtil<UserDetail> userDetail(@RequestBody LoginDTO loginDTO);
 
 }

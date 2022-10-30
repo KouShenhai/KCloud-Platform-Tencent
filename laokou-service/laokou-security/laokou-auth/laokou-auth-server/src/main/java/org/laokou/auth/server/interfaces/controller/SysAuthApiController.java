@@ -94,10 +94,10 @@ public class SysAuthApiController {
         return new HttpResultUtil<UserInfoVO>().ok(sysAuthApplicationService.userInfo(request));
     }
 
-    @GetMapping("/sys/auth/api/userDetail")
+    @PostMapping("/sys/auth/api/userDetail")
     @ApiOperation("系统认证>用户详情")
-    public HttpResultUtil<UserDetail> userDetail(@RequestParam(Constant.AUTHORIZATION_HEAD)String token) {
-        return new HttpResultUtil<UserDetail>().ok(sysAuthApplicationService.userDetail(token));
+    public HttpResultUtil<UserDetail> userDetail(@RequestBody LoginDTO loginDTO) throws Exception {
+        return new HttpResultUtil<UserDetail>().ok(sysAuthApplicationService.userDetail(loginDTO));
     }
 
     @PostMapping("/sys/auth/api/open/login")

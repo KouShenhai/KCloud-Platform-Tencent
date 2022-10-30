@@ -173,7 +173,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             PublishFactory.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
             throw new CustomException(ErrorCode.NOT_PERMISSIONS);
         }
-        //PublishFactory.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
+        PublishFactory.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
         //获取token
         return getToken(userDetail,resourceList);
     }
@@ -305,7 +305,12 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public UserDetail userDetail(String token) {
+    public UserDetail userDetail(LoginDTO loginDTO) throws Exception {
+        LoginVO vo = login(loginDTO);
+        return userDetail(vo.getToken());
+    }
+
+    private UserDetail userDetail(String token) {
         //region Description
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         UserDetail userInfo = caffeineCache.getIfPresent(userInfoKey);

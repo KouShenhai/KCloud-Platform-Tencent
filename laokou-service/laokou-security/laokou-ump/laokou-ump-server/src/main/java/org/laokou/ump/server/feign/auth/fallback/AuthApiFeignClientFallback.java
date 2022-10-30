@@ -39,19 +39,13 @@ public class AuthApiFeignClientFallback implements AuthApiFeignClient {
     private Throwable throwable;
 
     @Override
-    public HttpResultUtil<LoginVO> login(LoginDTO loginDTO) {
-        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<LoginVO>().error("服务调用失败，请联系管理员");
-    }
-
-    @Override
     public Response captcha(String uuid) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
         throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
     }
 
     @Override
-    public HttpResultUtil<UserDetail> userDetail(String token) {
+    public HttpResultUtil<UserDetail> userDetail(LoginDTO loginDTO) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
         return new HttpResultUtil<UserDetail>().error("服务调用失败，请联系管理员");
     }
