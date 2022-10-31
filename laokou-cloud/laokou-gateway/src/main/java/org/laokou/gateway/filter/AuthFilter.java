@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.gateway.filter;
+import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.common.utils.JacksonUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,6 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -42,19 +42,21 @@ import java.util.List;
 @Component
 @Slf4j
 @Data
-@ConfigurationProperties(prefix = "gateway")
+@ConfigurationProperties(prefix = "gateway.black")
 public class AuthFilter implements GlobalFilter,Ordered {
 
-    private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
-
     /**
-     * 不拦截的urls
+     * 黑名单ips
      */
     private List<String> ips;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info("加载 AuthFilter");
+        String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
+        log.info("获取到ip为{}的请求",ip);
+        if (ips.contains(ip)) {
+            return response(exchange,new HttpResultUtil<>().error(402,"不可访问，IP已被列入黑名单"));
+        }
         return chain.filter(exchange);
     }
 
@@ -69,7 +71,6 @@ public class AuthFilter implements GlobalFilter,Ordered {
     public KeyResolver ipKeyResolver() {
         return exchange -> {
             String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
-            log.info("获取到ip为{}的请求",ip);
             return Mono.just(ip);
         };
     }

@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * sso
  * @author Kou Shenhai
  * @version 1.0
  * @date 2020/9/13 0013 下午 2:34
@@ -34,7 +33,7 @@ import javax.annotation.Resource;
 @RefreshScope
 @Data
 @Slf4j
-public class CasHandler {
+public class UmpHandler {
 
     @Resource
     private org.springframework.cloud.context.scope.refresh.RefreshScope refreshScope;
