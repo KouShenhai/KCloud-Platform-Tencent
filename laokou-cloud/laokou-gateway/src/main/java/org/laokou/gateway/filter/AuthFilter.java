@@ -53,7 +53,6 @@ public class AuthFilter implements GlobalFilter,Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
-        log.info("获取到ip为{}的请求",ip);
         if (ips.contains(ip)) {
             return response(exchange,new HttpResultUtil<>().error(402,"不可访问，IP已被列入黑名单"));
         }
