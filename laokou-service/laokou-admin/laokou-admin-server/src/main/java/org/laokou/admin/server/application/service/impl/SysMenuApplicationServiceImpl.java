@@ -29,7 +29,6 @@ import org.laokou.common.utils.TreeUtil;
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * @author Kou Shenhai
@@ -41,7 +40,7 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     private SysMenuService sysMenuService;
 
     @Override
-    public SysMenuVO getMenuList(HttpServletRequest request) {
+    public SysMenuVO getMenuList() {
         UserDetail userDetail = UserUtil.userDetail();
         List<SysMenuVO> menuList = sysMenuService.getMenuList(userDetail,0);
         return buildMenu(menuList);

@@ -39,7 +39,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * @author Kou Shenhai
@@ -57,7 +56,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     private SysUserRoleService sysUserRoleService;
 
     @Override
-    public Boolean updateUser(SysUserDTO dto, HttpServletRequest request) {
+    public Boolean updateUser(SysUserDTO dto) {
         Long id = dto.getId();
         if (null == id) {
             throw new CustomException("主键不存在");
@@ -83,8 +82,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     }
 
     @Override
-
-    public Boolean insertUser(SysUserDTO dto, HttpServletRequest request) {
+    public Boolean insertUser(SysUserDTO dto) {
         SysUserDO sysUserDO = ConvertUtil.sourceToTarget(dto, SysUserDO.class);
         long count = sysUserService.count(Wrappers.lambdaQuery(SysUserDO.class).eq(SysUserDO::getUsername, sysUserDO.getUsername()).eq(SysUserDO::getDelFlag, Constant.NO));
         if (count > 0) {
@@ -117,8 +115,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     }
 
     @Override
-
-    public Boolean deleteUser(Long id,HttpServletRequest request) {
+    public Boolean deleteUser(Long id) {
         SysUserDO sysUser = sysUserService.getById(id);
         UserDetail userDetail = UserUtil.userDetail();
         if (SuperAdminEnum.YES.ordinal() == sysUser.getSuperAdmin() && SuperAdminEnum.YES.ordinal() != userDetail.getSuperAdmin()) {
@@ -129,7 +126,6 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     }
 
     @Override
-
     public List<OptionVO> getOptionList() {
         return sysUserService.getOptionList();
     }

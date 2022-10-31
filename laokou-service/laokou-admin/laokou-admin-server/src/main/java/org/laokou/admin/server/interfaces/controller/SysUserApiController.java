@@ -27,7 +27,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * 系统用户控制器
@@ -45,8 +44,8 @@ public class SysUserApiController {
     @ApiOperation("系统用户>修改")
     @OperateLog(module = "系统用户",name = "用户修改")
     @PreAuthorize("hasAuthority('sys:user:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysUserDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto,request));
+    public HttpResultUtil<Boolean> update(@RequestBody SysUserDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto));
     }
 
     @GetMapping("/option/list")
@@ -57,24 +56,24 @@ public class SysUserApiController {
 
     @PutMapping("/updateInfo")
     @ApiOperation("系统用户>修改个人信息")
-    public HttpResultUtil<Boolean> updateInfo(@RequestBody SysUserDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto,request));
+    public HttpResultUtil<Boolean> updateInfo(@RequestBody SysUserDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto));
     }
 
     @PutMapping("/password")
     @ApiOperation("系统用户>重置")
     @OperateLog(module = "系统用户",name = "重置密码")
     @PreAuthorize("hasAuthority('sys:user:password')")
-    public HttpResultUtil<Boolean> password(@RequestBody SysUserDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto,request));
+    public HttpResultUtil<Boolean> password(@RequestBody SysUserDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto));
     }
 
     @PostMapping("/insert")
     @ApiOperation("系统用户>新增")
     @OperateLog(module = "系统用户",name = "用户新增")
     @PreAuthorize("hasAuthority('sys:user:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysUserDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.insertUser(dto,request));
+    public HttpResultUtil<Boolean> insert(@RequestBody SysUserDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.insertUser(dto));
     }
 
     @GetMapping("/detail")
@@ -87,8 +86,8 @@ public class SysUserApiController {
     @ApiOperation("系统用户>删除")
     @OperateLog(module = "系统用户",name = "用户删除")
     @PreAuthorize("hasAuthority('sys:user:delete')")
-    public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id,HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.deleteUser(id,request));
+    public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
+        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.deleteUser(id));
     }
 
     @PostMapping("/query")

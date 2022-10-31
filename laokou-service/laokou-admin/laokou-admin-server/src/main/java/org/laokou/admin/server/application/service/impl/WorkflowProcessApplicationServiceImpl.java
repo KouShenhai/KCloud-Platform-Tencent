@@ -45,7 +45,6 @@ import org.laokou.redis.utils.RedisUtil;
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +95,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     }
 
     @Override
-    public IPage<TaskVO> queryResourceTaskPage(TaskQO qo, HttpServletRequest request) {
+    public IPage<TaskVO> queryResourceTaskPage(TaskQO qo) {
         final Integer pageNum = qo.getPageNum();
         final Integer pageSize = qo.getPageSize();
         String processName = qo.getProcessName();

@@ -27,7 +27,7 @@ public interface WorkflowProcessApplicationService {
 
     StartProcessVO startResourceProcess(String processKey,String businessKey,String instanceName);
 
-    IPage<TaskVO> queryResourceTaskPage(TaskQO qo, HttpServletRequest request);
+    IPage<TaskVO> queryResourceTaskPage(TaskQO qo);
 
     Boolean auditResourceTask(AuditDTO dto);
 }

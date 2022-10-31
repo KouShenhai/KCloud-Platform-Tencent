@@ -20,7 +20,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.laokou.admin.server.application.service.SysOauthApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysOauthService;
-import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.client.dto.SysOauthDTO;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysOauthQO;
@@ -31,7 +30,6 @@ import org.laokou.common.utils.ConvertUtil;
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -43,9 +41,6 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
     @Autowired
     private SysOauthService sysOauthService;
 
-    @Autowired
-    private SysUserService sysUserService;
-
     @Override
     @DataFilter(tableAlias = "boot_sys_oauth_client_details")
     public IPage<SysOauthVO> queryOauthPage(SysOauthQO qo) {
@@ -54,7 +49,7 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
     }
 
     @Override
-    public Boolean insertOauth(SysOauthDTO dto, HttpServletRequest request) {
+    public Boolean insertOauth(SysOauthDTO dto) {
         SysOauthDO sysOauthDO = ConvertUtil.sourceToTarget(dto, SysOauthDO.class);
         final long count = sysOauthService.count(Wrappers.lambdaQuery(SysOauthDO.class).eq(SysOauthDO::getDelFlag, Constant.NO).eq(SysOauthDO::getClientId, sysOauthDO.getClientId()));
         if (count > 0) {
@@ -66,7 +61,7 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
     }
 
     @Override
-    public Boolean updateOauth(SysOauthDTO dto, HttpServletRequest request) {
+    public Boolean updateOauth(SysOauthDTO dto) {
         final SysOauthDO sysOauthDO = ConvertUtil.sourceToTarget(dto, SysOauthDO.class);
         final long count = sysOauthService.count(Wrappers.lambdaQuery(SysOauthDO.class).eq(SysOauthDO::getDelFlag, Constant.NO).eq(SysOauthDO::getClientId, sysOauthDO.getClientId()).ne(SysOauthDO::getId,dto.getId()));
         if (count > 0) {

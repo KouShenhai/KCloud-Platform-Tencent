@@ -28,7 +28,6 @@ import org.laokou.redis.enums.LockScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 /**
  * @author Kou Shenhai
  */
@@ -43,8 +42,8 @@ public class WorkflowProcessApiController {
     @PostMapping("/resource/query")
     @ApiOperation("流程处理>资源查询")
     @PreAuthorize("hasAuthority('workflow:process:resource:query')")
-    public HttpResultUtil<IPage<TaskVO>> queryResource(@RequestBody TaskQO qo, HttpServletRequest request) {
-        return new HttpResultUtil<IPage<TaskVO>>().ok(workflowProcessApplicationService.queryResourceTaskPage(qo,request));
+    public HttpResultUtil<IPage<TaskVO>> queryResource(@RequestBody TaskQO qo) {
+        return new HttpResultUtil<IPage<TaskVO>>().ok(workflowProcessApplicationService.queryResourceTaskPage(qo));
     }
 
     @PostMapping(value = "/resource/audit")

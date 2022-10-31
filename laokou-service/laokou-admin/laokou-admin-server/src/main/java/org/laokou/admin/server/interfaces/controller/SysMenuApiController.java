@@ -25,7 +25,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * 系统菜单控制器
@@ -41,8 +40,8 @@ public class SysMenuApiController {
 
     @GetMapping("/list")
     @ApiOperation("系统菜单>列表")
-    public HttpResultUtil<SysMenuVO> list(HttpServletRequest request) {
-        return new HttpResultUtil<SysMenuVO>().ok(sysMenuApplicationService.getMenuList(request));
+    public HttpResultUtil<SysMenuVO> list() {
+        return new HttpResultUtil<SysMenuVO>().ok(sysMenuApplicationService.getMenuList());
     }
 
     @PostMapping("/query")

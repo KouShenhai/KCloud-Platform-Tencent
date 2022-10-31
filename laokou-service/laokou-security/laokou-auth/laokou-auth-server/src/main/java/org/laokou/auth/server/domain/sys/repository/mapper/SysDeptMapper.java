@@ -38,4 +38,11 @@ public interface SysDeptMapper {
      * @return
      */
     List<Long> getDeptIds();
+
+    /**
+     * 获取deptIds
+     * @param deptIds
+     * @return
+     */
+    List<Long> getDeptIdsByDeptIds(@Param("deptIds")List<Long> deptIds);
 }

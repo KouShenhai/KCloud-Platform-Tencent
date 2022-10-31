@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.application.service.impl;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.laokou.admin.server.application.service.SysDeptApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysDeptDO;
+import org.laokou.admin.server.domain.sys.entity.SysUserDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.admin.client.dto.SysDeptDTO;
+import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.server.interfaces.qo.SysDeptQO;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.exception.CustomException;
@@ -28,8 +31,9 @@ import org.laokou.admin.client.vo.SysDeptVO;
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -40,6 +44,9 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
 
     @Autowired
     private SysDeptService sysDeptService;
+
+    @Autowired
+    private SysUserService sysUserService;
 
     @Override
     public SysDeptVO getDeptList() {
@@ -62,7 +69,16 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
             throw new CustomException("部门已存在，请重新填写");
         }
         sysDeptDO.setCreator(UserUtil.getUserId());
-        return sysDeptService.save(sysDeptDO);
+        sysDeptService.save(sysDeptDO);
+        if (0 == dto.getPid()) {
+            sysDeptDO.setPath("0/" + sysDeptDO.getId());
+        } else {
+            SysDeptDO deptDO = sysDeptService.getById(dto.getPid());
+            if (deptDO != null) {
+                sysDeptDO.setPath(deptDO.getPath() + "/" + sysDeptDO.getId());
+            }
+        }
+        return sysDeptService.updateById(sysDeptDO);
     }
 
     @Override
@@ -72,13 +88,43 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
         if (count > 0) {
             throw new CustomException("部门已存在，请重新填写");
         }
-        //替换掉path
+        // 替换所有相关的子节点
+        List<SysDeptDO> list = sysDeptService.list(Wrappers.lambdaQuery(SysDeptDO.class)
+                .eq(SysDeptDO::getDelFlag, Constant.NO).and(r ->
+                r.eq(SysDeptDO::getId, dto.getPid()).or()
+                        .like(SysDeptDO::getPath, dto.getId()))
+                .select(SysDeptDO::getId,SysDeptDO::getPid,SysDeptDO::getPath));
+        String path;
+        // 非顶级节点
+        if (dto.getPid() != 0) {
+            //父节点
+            SysDeptDO parentDeptDO = list.stream().filter(i -> i.getId().equals(dto.getPid())).findFirst().get();
+            //path
+            path = parentDeptDO.getPath() + "/" + dto.getId();
+        } else {
+            path = "0/" + dto.getId();
+        }
+        // 顶级节点下的子节点 或 二级节点及以下的子节点
+        boolean flag = (CollectionUtils.isNotEmpty(list) && dto.getPid() == 0) || (list.size() > 1 && dto.getPid() != 0);
+        if (flag) {
+            List<SysDeptDO> deptDOList = list.stream().filter(i -> !i.getId().equals(dto.getId()) && i.getPath().contains(dto.getId().toString())).collect(Collectors.toList());
+            for (SysDeptDO dept : deptDOList) {
+                //替换掉子节点path
+                dept.setPath(path + dept.getPath().split(dto.getId().toString())[1]);
+            }
+            sysDeptService.updateBatchById(deptDOList);
+        }
+        sysDeptDO.setPath(path);
         sysDeptDO.setEditor(UserUtil.getUserId());
         return sysDeptService.updateById(sysDeptDO);
     }
 
     @Override
     public Boolean deleteDept(Long id) {
+        long count = sysUserService.count(Wrappers.lambdaQuery(SysUserDO.class).eq(SysUserDO::getDeptId, id).eq(SysUserDO::getDelFlag, Constant.NO));
+        if (count > 0) {
+            throw new CustomException("不可删除，该部门下存在用户");
+        }
         sysDeptService.deleteDept(id);
         return true;
     }

@@ -23,7 +23,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 /**
  * @author Kou Shenhai
  */
@@ -38,8 +37,8 @@ public class WorkflowTaskApiController {
     @PostMapping(value = "/claim")
     @ApiOperation(value = "流程任务>签收")
     @OperateLog(module = "流程任务",name = "任务签收")
-    public HttpResultUtil<Boolean> claim(@RequestBody ClaimDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(workflowTaskApplicationService.claimTask(dto, request));
+    public HttpResultUtil<Boolean> claim(@RequestBody ClaimDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(workflowTaskApplicationService.claimTask(dto));
     }
 
     @PostMapping(value = "/unClaim")

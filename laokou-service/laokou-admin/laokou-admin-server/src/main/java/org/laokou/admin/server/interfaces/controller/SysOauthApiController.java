@@ -26,7 +26,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 /**
  * @author Kou Shenhai
  */
@@ -55,16 +54,16 @@ public class SysOauthApiController {
     @ApiOperation("系统认证>新增")
     @OperateLog(module = "系统授权",name = "认证新增")
     @PreAuthorize("hasAuthority('sys:oauth:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysOauthDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysOauthApplicationService.insertOauth(dto,request));
+    public HttpResultUtil<Boolean> insert(@RequestBody SysOauthDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysOauthApplicationService.insertOauth(dto));
     }
 
     @PutMapping(value = "/update")
     @ApiOperation("系统认证>修改")
     @OperateLog(module = "系统授权",name = "认证修改")
     @PreAuthorize("hasAuthority('sys:oauth:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysOauthDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysOauthApplicationService.updateOauth(dto,request));
+    public HttpResultUtil<Boolean> update(@RequestBody SysOauthDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysOauthApplicationService.updateOauth(dto));
     }
 
     @DeleteMapping(value = "/delete")

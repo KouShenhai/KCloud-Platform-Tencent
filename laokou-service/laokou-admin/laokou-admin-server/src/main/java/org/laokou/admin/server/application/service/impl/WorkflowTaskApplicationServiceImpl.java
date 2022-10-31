@@ -39,7 +39,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -89,7 +88,7 @@ public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicati
     }
 
     @Override
-    public Boolean claimTask(ClaimDTO dto,HttpServletRequest request) {
+    public Boolean claimTask(ClaimDTO dto) {
         final Task task = taskService.createTaskQuery()
                 .taskId(dto.getTaskId())
                 .singleResult();

@@ -25,7 +25,7 @@ public interface WorkflowTaskApplicationService {
 
     Boolean auditTask(AuditDTO dto);
 
-    Boolean claimTask(ClaimDTO dto, HttpServletRequest request);
+    Boolean claimTask(ClaimDTO dto);
 
     Boolean unClaimTask(UnClaimDTO dto);
 

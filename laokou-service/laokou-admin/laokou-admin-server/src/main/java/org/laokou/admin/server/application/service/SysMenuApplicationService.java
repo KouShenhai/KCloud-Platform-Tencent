@@ -24,7 +24,7 @@ import java.util.List;
 
 public interface SysMenuApplicationService {
 
-    SysMenuVO getMenuList(HttpServletRequest request);
+    SysMenuVO getMenuList();
 
     List<SysMenuVO> queryMenuList(SysMenuQO dto);
 

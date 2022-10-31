@@ -26,7 +26,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 /**
  * 系统字典控制器
  * @author Kou Shenhai
@@ -56,16 +55,16 @@ public class SysDictApiController {
     @ApiOperation("系统字典>新增")
     @OperateLog(module = "系统字典",name = "字典新增")
     @PreAuthorize("hasAuthority('sys:dict:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysDictDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysDictApplicationService.insertDict(dto,request));
+    public HttpResultUtil<Boolean> insert(@RequestBody SysDictDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysDictApplicationService.insertDict(dto));
     }
 
     @PutMapping(value = "/update")
     @ApiOperation("系统字典>修改")
     @OperateLog(module = "系统字典",name = "字典修改")
     @PreAuthorize("hasAuthority('sys:dict:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysDictDTO dto, HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysDictApplicationService.updateDict(dto,request));
+    public HttpResultUtil<Boolean> update(@RequestBody SysDictDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysDictApplicationService.updateDict(dto));
     }
 
     @DeleteMapping(value = "/delete")

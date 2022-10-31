@@ -20,7 +20,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.laokou.admin.server.application.service.SysDictApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysDictDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysDictService;
-import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysDictQO;
 import org.laokou.admin.client.vo.SysDictVO;
@@ -29,17 +28,11 @@ import org.laokou.common.utils.ConvertUtil;
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
-
 @Service
 public class SysDictApplicationServiceImpl implements SysDictApplicationService {
 
     @Autowired
     private SysDictService sysDictService;
-
-    @Autowired
-    private SysUserService sysUserService;
 
     @Override
     @DataFilter(tableAlias = "boot_sys_dict")
@@ -54,7 +47,7 @@ public class SysDictApplicationServiceImpl implements SysDictApplicationService 
     }
 
     @Override
-    public Boolean insertDict(SysDictDTO dto, HttpServletRequest request) {
+    public Boolean insertDict(SysDictDTO dto) {
         SysDictDO dictDO = ConvertUtil.sourceToTarget(dto, SysDictDO.class);
         dictDO.setCreator(UserUtil.getUserId());
         dictDO.setDeptId(UserUtil.getDeptId());
@@ -62,7 +55,7 @@ public class SysDictApplicationServiceImpl implements SysDictApplicationService 
     }
 
     @Override
-    public Boolean updateDict(SysDictDTO dto, HttpServletRequest request) {
+    public Boolean updateDict(SysDictDTO dto) {
         SysDictDO dictDO = ConvertUtil.sourceToTarget(dto, SysDictDO.class);
         dictDO.setEditor(UserUtil.getUserId());
         return sysDictService.updateById(dictDO);

@@ -31,9 +31,9 @@ public interface SysOauthApplicationService {
 
     IPage<SysOauthVO> queryOauthPage(SysOauthQO qo);
 
-    Boolean insertOauth(SysOauthDTO dto, HttpServletRequest request);
+    Boolean insertOauth(SysOauthDTO dto);
 
-    Boolean updateOauth(SysOauthDTO dto, HttpServletRequest request);
+    Boolean updateOauth(SysOauthDTO dto);
 
     Boolean deleteOauth(Long id);
 

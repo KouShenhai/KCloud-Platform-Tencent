@@ -15,6 +15,8 @@
  */
 package org.laokou.auth.server.domain.sys.repository.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.google.common.collect.Lists;
 import org.laokou.auth.server.domain.sys.repository.mapper.SysDeptMapper;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,11 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @Override
     public List<Long> getDeptIdsByUserId(Long userId) {
-        return sysDeptMapper.getDeptIdsByUserId(userId);
+        List<Long> deptIds = sysDeptMapper.getDeptIdsByUserId(userId);
+        if (CollectionUtils.isEmpty(deptIds)) {
+            return Lists.newArrayList();
+        }
+        return sysDeptMapper.getDeptIdsByDeptIds(deptIds);
     }
 
     @Override

@@ -19,18 +19,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysDictDTO;
 import org.laokou.admin.server.interfaces.qo.SysDictQO;
 import org.laokou.admin.client.vo.SysDictVO;
-
-import javax.servlet.http.HttpServletRequest;
-
 public interface SysDictApplicationService {
 
     IPage<SysDictVO> queryDictPage(SysDictQO qo);
 
     SysDictVO getDictById(Long id);
 
-    Boolean insertDict(SysDictDTO dto, HttpServletRequest request);
+    Boolean insertDict(SysDictDTO dto);
 
-    Boolean updateDict(SysDictDTO dto, HttpServletRequest request);
+    Boolean updateDict(SysDictDTO dto);
 
     Boolean deleteDict(Long id);
 

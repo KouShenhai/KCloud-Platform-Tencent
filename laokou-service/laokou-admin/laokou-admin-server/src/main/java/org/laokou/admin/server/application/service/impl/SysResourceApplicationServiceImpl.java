@@ -49,7 +49,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;

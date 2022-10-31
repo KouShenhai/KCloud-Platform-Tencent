@@ -23,4 +23,12 @@
    and boot_sys_dept.del_flag = '0'
     </select>
 
+    <select id="getDeptIdsByDeptIds" resultType="long" flushCache="true">
+        select distinct id from  boot_sys_dept where del_flag = '0'
+        and
+        <foreach collection="deptIds" item="item" open="(" close=")" separator=" or ">
+           path like concat('%',#{item},'%')
+        </foreach>
+    </select>
+
 </mapper>

@@ -20,8 +20,6 @@ import org.laokou.admin.client.dto.SysUserDTO;
 import org.laokou.admin.server.interfaces.qo.SysUserQO;
 import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface SysUserApplicationService {
@@ -30,15 +28,15 @@ public interface SysUserApplicationService {
      * 修改用户信息
      * @param
      */
-    Boolean updateUser(SysUserDTO dto, HttpServletRequest request);
+    Boolean updateUser(SysUserDTO dto);
 
-    Boolean insertUser(SysUserDTO dto, HttpServletRequest request);
+    Boolean insertUser(SysUserDTO dto);
 
     IPage<SysUserVO> queryUserPage(SysUserQO qo);
 
     SysUserVO getUserById(Long id);
 
-    Boolean deleteUser(Long id,HttpServletRequest request);
+    Boolean deleteUser(Long id);
 
     List<OptionVO> getOptionList();
 
