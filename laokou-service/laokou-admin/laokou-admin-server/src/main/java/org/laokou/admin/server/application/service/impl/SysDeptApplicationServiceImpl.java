@@ -72,6 +72,7 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
         if (count > 0) {
             throw new CustomException("部门已存在，请重新填写");
         }
+        //替换掉path
         sysDeptDO.setEditor(UserUtil.getUserId());
         return sysDeptService.updateById(sysDeptDO);
     }

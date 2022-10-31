@@ -30,7 +30,7 @@ import java.util.StringJoiner;
  * @date 2022/5/20 0020 下午 8:20
  */
 @Data
-public class TreeUtil<T> {
+public class TreeUtil {
     public static <T extends TreeNo> TreeNo<T> rootRootNode(String name) {
         return new TreeNo(0L,name,null, Lists.newArrayList());
     }

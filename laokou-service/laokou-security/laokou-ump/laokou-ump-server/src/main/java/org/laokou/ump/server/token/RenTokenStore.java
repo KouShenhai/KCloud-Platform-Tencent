@@ -15,24 +15,22 @@
  */
 package org.laokou.ump.server.token;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-
-import javax.annotation.Resource;
-
 /**
  * TokenStore
  *
  * @author Kou Shenhai
  */
 @Configuration
+@RequiredArgsConstructor
 public class RenTokenStore {
 
-    @Resource
-    private RedisConnectionFactory redisConnectionFactory;
+    private final RedisConnectionFactory redisConnectionFactory;
 
     @Bean
     public TokenStore tokenStore() {

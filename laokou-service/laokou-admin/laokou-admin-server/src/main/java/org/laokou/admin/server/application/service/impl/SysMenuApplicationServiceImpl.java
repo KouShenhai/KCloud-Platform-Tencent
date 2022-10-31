@@ -26,12 +26,14 @@ import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.TreeUtil;
-
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+/**
+ * @author Kou Shenhai
+ */
 @Service
 public class SysMenuApplicationServiceImpl implements SysMenuApplicationService {
 

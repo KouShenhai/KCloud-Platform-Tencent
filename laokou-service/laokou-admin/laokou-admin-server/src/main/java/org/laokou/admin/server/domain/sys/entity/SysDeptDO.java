@@ -50,4 +50,12 @@ public class SysDeptDO extends BaseDO {
     @TableField("sort")
     @ApiModelProperty(value = "排序",name = "sort",example = "1")
     private Integer sort;
+
+    /**
+     * 路径
+     */
+    @TableField("path")
+    @ApiModelProperty(value = "路径",name = "path",example = "0")
+    private String path;
+
 }
