@@ -170,6 +170,12 @@ public class AuthApplication implements WebServerFactoryCustomizer<WebServerFact
 -Djava.library.path=./lib
 ```
 
+#### 高版本JDK兼容
+##### VM options配置
+```shell script
+--add-opens=java.base/java.lang=ALL-UNNAMED
+```
+
 ### 数据权限
 ##### 代码引入
 ```java
