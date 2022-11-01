@@ -12,7 +12,7 @@
     <properties>
         <laokou.version>1.0-SNAPSHOT</laokou.version>
         <!--boot版本-->
-        <spring-boot.version>2.7.4</spring-boot.version>
+        <spring-boot.version>2.7.5</spring-boot.version>
         <!--lombok版本-->
         <lombok.version>1.18.20</lombok.version>
         <!--mysql版本-->

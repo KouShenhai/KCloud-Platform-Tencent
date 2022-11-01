@@ -38,7 +38,7 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
 |:------------------|:---------|
 | Spring Boot       | 2.7.5    |
 | Spring Cloud      | 2021.0.4 |
-| Spring Boot Admin | 2.7.4    |
+| Spring Boot Admin | 2.7.5    |
 | Apollo            | 1.4.0    |
 | Mysql             | 5.7.9    |
 | Redis             | 6.0.6    |
