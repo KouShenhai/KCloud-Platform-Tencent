@@ -52,7 +52,7 @@ KCloud-Platform（老寇云平台）是一款企业级微服务架构的云服�
 - API 网关：Spring Cloud Gateway
 - 服务注册&发现：Eureka
 - 配置中心: Apollo
-- 认证授权：Spring-Security-OAuth2
+- 认证授权：Spring Security OAuth2
 - 服务消费：Spring Cloud OpenFeign & RestTemplate & OkHttps
 - 负载均衡：Spring Cloud Loadbalancer
 - 服务熔断&降级&限流：Resilience4j
