@@ -7,8 +7,8 @@
    <if test="qo.name != null and qo.name != ''">
        and `name` like concat('%',#{qo.name},'%')
    </if>
-        order by sort desc
    ) b on b.id = a.id
+   order by a.sort desc
     </select>
 
     <delete id="deleteDept">
@@ -33,158 +33,12 @@
         group by boot_sys_dept.id
     </select>
 
-    <update id="updateDeptPath1ById" >
-/*# 创建存储过程*/
-DROP PROCEDURE
-    IF EXISTS updatePath1;
-
-CREATE PROCEDURE updatePath1 ()
-BEGIN
-	/*# 定义变量*/
-DECLARE s INT DEFAULT 0;
-
-
-DECLARE nid BIGINT (20);
-
-
-DECLARE npath VARCHAR (2000);
-
-/*# 接收数据集*/
-DECLARE consume CURSOR FOR SELECT
-   id,
-   path
-FROM
-   boot_sys_dept
-WHERE
-   id = #{pid};
-
-/*# 打开游标*/
-OPEN consume;
-
-/*# 赋值*/
-FETCH consume INTO nid,
-    npath;
-
-
-IF #{pid} = '0' THEN
-UPDATE boot_sys_dept
-SET path = CONCAT(
-        '0/',
-        #{id})
-WHERE
-    id = #{id};
-ELSE
-UPDATE boot_sys_dept
-SET path = CONCAT(
-        npath,
-        '/',
-        #{id})
-WHERE
-    id = #{id};
-END
-IF;
-
-/*# 关闭游标*/
-CLOSE consume;
-
-
-END;
-
-CALL updatePath1 ();
+    <update id="updateDeptPath1ById" statementType="CALLABLE">
+        call updatePath1(#{id,mode=IN},#{pid,mode=IN});
     </update>
 
-    <update id="updateDeptPath2ById">
-/*# 删除存储过程*/
-DROP PROCEDURE
-IF EXISTS updatePath2;
-
-/*# 创建存储过程*/
-CREATE PROCEDURE updatePath2 (OUT res VARCHAR(2000))
-BEGIN
-/*# 定义变量*/
-DECLARE s INT DEFAULT 0;
-
-/*# 定义变量*/
-DECLARE parpath VARCHAR (2000);
-
-/*# 定义变量*/
-DECLARE nid BIGINT (20);
-
-/*# 定义变量*/
-DECLARE npath VARCHAR (2000);
-
-/*# 接收结果集*/
-DECLARE con1 CURSOR FOR SELECT
-
-IF (count(path) > 0, path, '0') AS path
-FROM
-boot_sys_dept
-WHERE
-id = #{pid};
-
-/*# 接收结果集*/
-DECLARE con2 CURSOR FOR SELECT
-id,
-path
-FROM
-boot_sys_dept
-WHERE
-path LIKE concat('%', #{id}, '%')
-AND del_flag = '0'
-AND id <![CDATA[ <> ]]> #{id};
-
-/*# 没有数据后返回，将s=1*/
-DECLARE CONTINUE HANDLER FOR NOT FOUND
-SET s = 1;
-
-/*# 开启游标*/
-OPEN con1;
-
-/*# 开启游标*/
-OPEN con2;
-
-/*# 赋值*/
-FETCH con1 INTO parpath;
-
-/*# 赋值*/
-FETCH con2 INTO nid,
-npath;
-
-/*# 赋值*/
-SET res = parpath;
-
-
-WHILE s <![CDATA[ <> ]]> 1 DO
-UPDATE boot_sys_dept
-SET path = concat(parpath, '/', nid)
-WHERE
-id = nid;
-
-/*# 赋值*/
-FETCH con2 INTO nid,
-npath;
-
-
-END
-WHILE;
-
-/*# 关闭游标*/
-CLOSE con1;
-
-/*# 关闭游标*/
-CLOSE con2;
-
-
-END;
-
-/*# 调用*/
-CALL updatePath2 (@res);
-
-/*# 修改*/
-UPDATE boot_sys_dept
-SET path = concat(@res, '/', #{id})
-WHERE
-id = #{id};
+    <update id="updateDeptPath2ById" statementType="CALLABLE">
+        call updatePath2(#{id,mode=IN},#{pid,mode=IN});
     </update>
 
-</mapper>
+        </mapper>
