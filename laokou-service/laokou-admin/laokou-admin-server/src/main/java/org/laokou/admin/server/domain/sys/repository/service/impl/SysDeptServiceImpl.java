@@ -52,4 +52,14 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDeptDO> im
         return this.baseMapper.getDeptIdsByRoleId(roleId);
     }
 
+    @Override
+    public void updateDeptPath1ById(Long id, Long pid) {
+        this.baseMapper.updateDeptPath1ById(id, pid);
+    }
+
+    @Override
+    public void updateDeptPath2ById(Long id, Long pid) {
+        this.baseMapper.updateDeptPath2ById(id, pid);
+    }
+
 }

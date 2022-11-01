@@ -40,4 +40,8 @@ public interface SysDeptMapper extends BaseMapper<SysDeptDO> {
 
     List<Long> getDeptIdsByRoleId(@Param("roleId") Long roleId);
 
+    void updateDeptPath1ById(@Param("id")Long id,@Param("pid")Long pid);
+
+    void updateDeptPath2ById(@Param("id")Long id,@Param("pid")Long pid);
+
 }
