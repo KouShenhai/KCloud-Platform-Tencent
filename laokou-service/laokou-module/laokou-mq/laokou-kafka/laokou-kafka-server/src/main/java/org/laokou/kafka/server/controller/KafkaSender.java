@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
  * @author Kou Shenhai
  */
 @RestController
-@RequestMapping("/kafka")
+@RequestMapping("/api")
 @Slf4j
 @RequiredArgsConstructor
 @Api(value = "Kafka消息API",protocols = "http",tags = "Kafka消息API")

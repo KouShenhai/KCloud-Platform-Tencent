@@ -32,7 +32,7 @@ import java.io.InputStream;
  */
 @RestController
 @Api(value = "对象存储API",protocols = "http",tags = "对象存储API")
-@RequestMapping("/oss/api")
+@RequestMapping("/api")
 @Slf4j
 public class OssApiController {
 
