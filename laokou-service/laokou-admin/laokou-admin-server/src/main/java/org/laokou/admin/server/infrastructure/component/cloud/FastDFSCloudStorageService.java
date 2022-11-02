@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 package org.laokou.admin.server.infrastructure.component.cloud;
 
 import com.github.tobato.fastdfs.domain.StorePath;
@@ -25,10 +26,12 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.InputStream;
 
+*/
 /**
  * FastDFS
  * @author  Kou Shenhai
- */
+ *//*
+
 @Slf4j
 public class FastDFSCloudStorageService extends AbstractCloudStorageService {
 
@@ -55,3 +58,4 @@ public class FastDFSCloudStorageService extends AbstractCloudStorageService {
     }
 
 }
+*/

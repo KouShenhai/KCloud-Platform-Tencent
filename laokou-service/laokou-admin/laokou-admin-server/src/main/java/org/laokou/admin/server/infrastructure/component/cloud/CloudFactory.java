@@ -43,9 +43,9 @@ public class CloudFactory {
        if (CloudTypeEnum.LOCAL.ordinal() == config.getType()){
            return new LocalCloudStorageService(config);
        }
-       if (CloudTypeEnum.FASTDFS.ordinal() == config.getType()){
-           return new FastDFSCloudStorageService(config);
-       }
+//       if (CloudTypeEnum.FASTDFS.ordinal() == config.getType()){
+//           return new FastDFSCloudStorageService(config);
+//       }
        throw new CustomException("请检查OSS相关配置");
    }
 
