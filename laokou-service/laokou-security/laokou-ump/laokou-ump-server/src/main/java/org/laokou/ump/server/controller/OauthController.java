@@ -1,6 +1,9 @@
 package org.laokou.ump.server.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.client.vo.UserInfoVO;
 import org.laokou.common.constant.Constant;
@@ -20,13 +23,19 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequiredArgsConstructor
+@Api(value = "认证授权API",protocols = "http",tags = "认证授权API")
 public class OauthController {
 
     private final TokenStore tokenStore;
 
     @GetMapping("/oauth/userInfo")
+    @ApiOperation("认证授权>用户信息")
     public HttpResultUtil<UserInfoVO> userInfo(HttpServletRequest request) {
-        UserDetail userDetail = getUserDetail(request,false);
+        String token = request.getHeader(Constant.AUTHORIZATION_HEAD);
+        if (StringUtils.isBlank(token)) {
+            return new HttpResultUtil<UserInfoVO>().error(ErrorCode.UNAUTHORIZED);
+        }
+        UserDetail userDetail = userDetail(token,false);
         if (userDetail != null) {
             UserInfoVO userInfoVO = ConvertUtil.sourceToTarget(userDetail, UserInfoVO.class);
             userInfoVO.setPermissionList(userDetail.getPermissionsList());
@@ -37,12 +46,17 @@ public class OauthController {
     }
 
     @GetMapping("/oauth/logout")
+    @ApiOperation("认证授权>退出登录")
     public void logout(HttpServletRequest request) {
-        getUserDetail(request,true);
+        String token = request.getHeader(Constant.AUTHORIZATION_HEAD);
+        if (StringUtils.isBlank(token)) {
+            return;
+        }
+        userDetail(token,true);
     }
 
-    private UserDetail getUserDetail(HttpServletRequest request,boolean isOut) {
-        String token = request.getHeader(Constant.AUTHORIZATION_HEAD).replace(Constant.BEARER,"");
+    private UserDetail userDetail(String token,boolean isOut) {
+        token = token.replace(Constant.BEARER,"");
         OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
         if (oAuth2AccessToken != null) {
             if (isOut) {

@@ -38,7 +38,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/ws/**").permitAll()
+                .antMatchers("/druid/**"
+                        ,"/webjars/**"
+                        ,"/swagger-resources/**"
+                        ,"/doc.html"
+                        ,"/v2/api-docs"
+                        ,"/swagger/api-docs"
+                        ,"/actuator/**"
+                        ,"/ws/**").permitAll()
                 .anyRequest().authenticated()
                 .and().headers().frameOptions().disable();
     }

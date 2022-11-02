@@ -85,3 +85,7 @@ gateway:
         location: /auth
       - name: laokou-elasticsearch
         location: /elasticsearch
+      - name: laokou-kafka
+        location: /kafka
+      - name: laokou-ump
+        location: /ump

@@ -15,7 +15,6 @@
  */
 package org.laokou.admin.client.vo;
 import org.laokou.common.utils.TreeUtil;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 /**
  * 系统菜单VO
@@ -24,7 +23,6 @@ import lombok.Data;
  * @date 2021/1/16 0016 下午 9:08
  */
 @Data
-@ApiModel("系统菜单VO")
 public class SysMenuVO extends TreeUtil.TreeNo<SysMenuVO> {
 
     /**

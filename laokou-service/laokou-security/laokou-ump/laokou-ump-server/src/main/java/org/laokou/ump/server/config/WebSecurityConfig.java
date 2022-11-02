@@ -27,7 +27,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 /**
  * Spring Security配置
  * @author Kou Shenhai
@@ -60,10 +59,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/oauth/captcha","/actuator/**").permitAll()
-                .and()
                 .authorizeRequests()
-                .antMatchers("/oauth/authorize").authenticated();
+                .antMatchers("/webjars/**"
+                        ,"/swagger-resources/**"
+                        ,"/doc.html"
+                        ,"/v2/api-docs"
+                        ,"/swagger/api-docs"
+                        ,"/oauth/userInfo"
+                        ,"/oauth/logout"
+                        ,"/actuator/**").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Override
