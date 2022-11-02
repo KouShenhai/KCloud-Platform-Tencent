@@ -45,7 +45,6 @@ public class JacksonUtil {
     public static ObjectMapper MAPPER;
 
     static {
-        //解决查询缓存转换异常的问题
         MAPPER = new ObjectMapper();
         //Long类型转String类型
         JavaTimeModule javaTimeModule = new JavaTimeModule();
