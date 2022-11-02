@@ -184,22 +184,20 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         final Long userId = userDetail.getId();
         final String username = userDetail.getUsername();
         //登录成功 > 生成token
-        Map<String, Object> claims = TokenUtil.getClaims(userId, username);
-        String token = TokenUtil.getToken(claims);
+        String token = TokenUtil.getToken(userId,username);
         log.info("Token is：{}", token);
-        setToken(userDetail,resourceList,token);
+        setToken(resourceList,token);
         return token;
         //endregion
     }
 
     @Async
-    public void setToken(UserDetail userDetail,List<SysMenuVO> resourceList,String token) {
+    public void setToken(List<SysMenuVO> resourceList,String token) {
         //用户信息
         String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         //资源列表放到redis中
         String userResourceKey = RedisKeyUtil.getUserResourceKey(token);
-        userDetail.setPermissionsList(getPermissionList(userDetail));
-        userDetail.setDeptIds(getDeptIds(userDetail));
+        UserDetail userDetail = userDetail(token);
         redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
         redisUtil.set(userResourceKey,resourceList,RedisUtil.HOUR_ONE_EXPIRE);
         caffeineCache.put(userInfoKey,userDetail);

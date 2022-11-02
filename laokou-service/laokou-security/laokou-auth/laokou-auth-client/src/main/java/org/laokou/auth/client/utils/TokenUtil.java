@@ -39,14 +39,6 @@ public class TokenUtil {
      */
     private static final Long EXPIRE = 3600L;
 
-    public static Long getExpire() {
-        return EXPIRE;
-    }
-
-    public static String getSecret() {
-        return SECRET;
-    }
-
     public static Map<String,Object> getClaims(Long userId,String username) {
         Map<String,Object> claims = new HashMap<>(2);
         claims.put(Constant.USER_KEY_HEAD, userId);
@@ -57,6 +49,10 @@ public class TokenUtil {
     public static String getToken(Map<String,Object> claims) {
         Date expirationDate = DateTime.now().plusSeconds(EXPIRE.intValue()).toDate();
         return getToken(claims,expirationDate);
+    }
+
+    public static String getToken(Long userId,String username) {
+        return getToken(getClaims(userId, username));
     }
 
     /**
