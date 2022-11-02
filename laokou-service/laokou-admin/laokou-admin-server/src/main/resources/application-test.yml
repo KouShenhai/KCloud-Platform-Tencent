@@ -1,21 +1,12 @@
 server:
   port: 9999
   address: 192.168.62.1
-  tomcat:
-    uri-encoding: UTF-8
-    max-threads: 1000
-    min-spare-threads: 30
-    session:
-      cookie:
-        http-only: true
-    connection-timeout: 18000000
 
 app:
   id: admin # 应用全局唯一的身份标识
 apollo:
   cacheDir: config # 自定义本地配置文件缓存路径
   bootstrap:
-    namespace: dynamic-tp-apollo-dtp.yml,application,applicaiton.yml
     enabled: true # 设置在应用启动阶段就加载 Apollo 配置
     eagerLoad:
       enabled: true
@@ -79,8 +70,3 @@ spring:
 logging:
   file:
     name: logs/${spring.application.name}/info.log
-
-fdfs:
-  connect-timeout: 6000
-  so-timeout: 600000
-  tracker-list: 124.222.196.51:22122

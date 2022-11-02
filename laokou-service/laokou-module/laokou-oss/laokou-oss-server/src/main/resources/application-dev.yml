@@ -1,29 +1,28 @@
 server:
-  port: 9999
-
-app:
-  id: admin # 应用全局唯一的身份标识
-apollo:
-  cacheDir: /opt/config # 自定义本地配置文件缓存路径
-  bootstrap:
-    enabled: true # 设置在应用启动阶段就加载 Apollo 配置
-    eagerLoad:
-      enabled: true
+  port: 9997
+  address: 127.0.0.1
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+    session:
+      cookie:
+        http-only: true
+    connection-timeout: 18000000
 
 spring:
   boot:
     admin:
       client:
-        url: http://192.168.62.137:5000/monitor
+        url: http://127.0.0.1:5000/monitor
         username: ENC(7j+MYBNM2fhq8WST3DE3WA==)
         password: ENC(nj35dMcOWEmR5EASEZR3yfaT4IdT9TPm)
         instance:
-          service-base-url: http://192.168.62.137:${server.port}
+          service-base-url: http://127.0.0.1:${server.port}
   redis:
     database: 0
-    host: 124.222.196.51
+    host: 127.0.0.1
     port: 6379
-    password: ENC(AHdloD6Rp4bu9SYZJbO7bcwErNCQm43R1b4zh6x4B10=)
     timeout: 6000ms #连接超时时长（毫秒）
     lettuce:
       pool:
@@ -35,9 +34,9 @@ spring:
     druid:
       db-type: mysql
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://124.222.196.51:3306/kcloud?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
+      url: jdbc:mysql://127.0.0.1:3306/kcloud?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
       username: ENC(7j+MYBNM2fhq8WST3DE3WA==)
-      password: ENC(AHdloD6Rp4bu9SYZJbO7bcwErNCQm43R1b4zh6x4B10=)
+      password: ENC(SX9kPzLDaZb9kGOl2QBziw==)
       initial-size: 10
       max-active: 100
       min-idle: 10
@@ -69,4 +68,9 @@ spring:
 
 logging:
   file:
-    name: /opt/logs/${spring.application.name}/error.log
+    name: logs/${spring.application.name}/info.log
+
+fdfs:
+  connect-timeout: 6000
+  so-timeout: 600000
+  tracker-list: 124.222.196.51:22122
