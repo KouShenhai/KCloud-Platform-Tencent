@@ -81,7 +81,7 @@ public class RedisSessionConfig {
                     .setTimeout(timeout);
         }
         //使用json序列化方式
-        Codec codec = new CustomJsonJacksonCodec();
+        Codec codec = CustomJsonJacksonCodec.INSTANCE;
         config.setCodec(codec);
         return Redisson.create(config);
     }

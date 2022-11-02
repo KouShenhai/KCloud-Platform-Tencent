@@ -15,8 +15,6 @@
  */
 package org.laokou.elasticsearch.server.utils;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -60,6 +58,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
+import org.laokou.common.utils.JacksonUtil;
 import org.laokou.elasticsearch.client.constant.EsConstant;
 import org.laokou.elasticsearch.client.dto.AggregationDTO;
 import org.laokou.elasticsearch.client.dto.SearchDTO;
@@ -329,17 +328,17 @@ public class ElasticsearchUtil {
     private BulkRequest packBulkUpdateRequest(String indexName,String jsonDataList) {
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-        JSONArray jsonArray = JSONUtil.parseArray(jsonDataList);
-        if (jsonArray.isEmpty()) {
+        List<Object> jsonList = JacksonUtil.toList(jsonDataList, Object.class);
+        if (jsonList.isEmpty()) {
             return bulkRequest;
         }
         //循环数据封装bulkRequest
-        jsonArray.forEach(obj ->{
+        jsonList.forEach(obj ->{
             final Map<String, Object> map = (Map<String, Object>) obj;
             UpdateRequest updateRequest = new UpdateRequest(indexName,map.get(PRIMARY_KEY_NAME).toString());
             // 修改索引中不存在就新增
             updateRequest.docAsUpsert(true);
-            updateRequest.doc(map,XContentType.JSON);
+            updateRequest.doc(JacksonUtil.toJsonStr(obj),XContentType.JSON);
             bulkRequest.add(updateRequest);
         });
         return bulkRequest;
@@ -404,9 +403,8 @@ public class ElasticsearchUtil {
      * @param indexName 索引名称
      * @param jsonDataList 数据列表
      * @return
-     * @throws IOException
      */
-    public boolean syncAsyncBatchIndex(String indexName,String jsonDataList) throws IOException {
+    public boolean syncAsyncBatchIndex(String indexName,String jsonDataList) {
         //判空
         if (StringUtils.isBlank(jsonDataList)) {
             return false;
@@ -417,20 +415,21 @@ public class ElasticsearchUtil {
             return false;
         }
         //异步执行
-        ActionListener<BulkResponse> listener = new ActionListener<BulkResponse>() {
+        ActionListener<BulkResponse> listener = new ActionListener<>() {
             @Override
             public void onResponse(BulkResponse bulkItemResponses) {
                 if (bulkItemResponses.hasFailures()) {
                     for (BulkItemResponse item : bulkItemResponses.getItems()) {
-                        log.error("索引【{}】,主键【{}】更新失败，状态【{}】，错误信息：{}",indexName,item.getId(),
-                                item.status(),item.getFailureMessage());
+                        log.error("索引【{}】,主键【{}】更新失败，状态【{}】，错误信息：{}", indexName, item.getId(),
+                                item.status(), item.getFailureMessage());
                     }
                 }
             }
+
             //失败操作
             @Override
             public void onFailure(Exception e) {
-                log.error("索引【{}】批量异步更新出现异常:{}",indexName,e);
+                log.error("索引【{}】批量异步更新出现异常:{}", indexName, e);
             }
         };
         restHighLevelClient.bulkAsync(bulkRequest,RequestOptions.DEFAULT,listener);
@@ -475,15 +474,15 @@ public class ElasticsearchUtil {
         //WAIT_UNTIL >  请求向es提交数据，等待数据完成刷新<实时性高，资源消耗低>
         //NONE > 默认策略<实时性低>
         bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-        JSONArray jsonArray = JSONUtil.parseArray(jsonDataList);
-        if (jsonArray.isEmpty()) {
+        List<Object> jsonList = JacksonUtil.toList(jsonDataList, Object.class);
+        if (jsonList.isEmpty()) {
             return bulkRequest;
         }
         //循环数据封装bulkRequest
-        jsonArray.forEach(obj ->{
+        jsonList.forEach(obj ->{
             final Map<String, Object> map = (Map<String, Object>) obj;
             IndexRequest indexRequest = new IndexRequest(indexName);
-            indexRequest.source(JSONUtil.toJsonStr(obj),XContentType.JSON);
+            indexRequest.source(JacksonUtil.toJsonStr(obj),XContentType.JSON);
             indexRequest.id(map.get(PRIMARY_KEY_NAME).toString());
             bulkRequest.add(indexRequest);
         });

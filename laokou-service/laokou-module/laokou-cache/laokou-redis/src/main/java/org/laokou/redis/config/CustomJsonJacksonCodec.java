@@ -5,9 +5,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.buffer.*;
+import org.laokou.common.utils.JacksonUtil;
 import org.redisson.client.codec.BaseCodec;
 import org.redisson.client.protocol.Decoder;
 import org.redisson.client.protocol.Encoder;
@@ -58,12 +57,7 @@ public class CustomJsonJacksonCodec extends BaseCodec {
 
     public static ObjectMapper getObjectMapper() {
         //解决查询缓存转换异常的问题
-        ObjectMapper objectMapper = new ObjectMapper();
-        //Long类型转String类型
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(Long.class, ToStringSerializer.instance);
-        javaTimeModule.addSerializer(Long.TYPE,ToStringSerializer.instance);
-        objectMapper.registerModule(javaTimeModule);
+        ObjectMapper objectMapper = JacksonUtil.MAPPER;
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance , ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
         return objectMapper;

@@ -71,7 +71,7 @@ public final class RedisUtil {
     }
 
     public Boolean tryLock(RLock lock, long expire, long timeout) throws InterruptedException {
-        return lock.tryLock(timeout, expire, TimeUnit.SECONDS);
+        return lock.tryLock(timeout, expire, TimeUnit.MILLISECONDS);
     }
 
     public Boolean tryLock(String key, long expire, long timeout) throws InterruptedException {

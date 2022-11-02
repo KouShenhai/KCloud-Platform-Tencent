@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 package org.laokou.common.utils;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +30,9 @@ import java.io.InputStream;
 import java.util.*;
 
 
+/**
+ * @author Kou Shenhai
+ */
 @Slf4j
 @UtilityClass
 public class JacksonUtil {
@@ -39,7 +42,17 @@ public class JacksonUtil {
      */
     public static final String JSON_EMPTY = "{}";
 
-    private static final ObjectMapper MAPPER = JsonMapper.builder().build();
+    public static ObjectMapper MAPPER;
+
+    static {
+        //解决查询缓存转换异常的问题
+        MAPPER = new ObjectMapper();
+        //Long类型转String类型
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        javaTimeModule.addSerializer(Long.class, ToStringSerializer.instance);
+        javaTimeModule.addSerializer(Long.TYPE,ToStringSerializer.instance);
+        MAPPER.registerModule(javaTimeModule);
+    }
 
     /**
      * json字符转Bean

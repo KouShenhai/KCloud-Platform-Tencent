@@ -38,7 +38,6 @@ import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.FileUtil;
 import org.laokou.common.utils.JacksonUtil;
-
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.elasticsearch.client.model.ElasticsearchModel;
@@ -191,7 +190,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                             final ElasticsearchModel model = new ElasticsearchModel();
                             model.setIndexName(indexName);
                             model.setData(jsonDataList);
-                            model.setIndexAlias(resourceIndexAlias);
                             //同步数据
                             elasticsearchApiFeignClient.syncAsyncBatch(model);
                         });

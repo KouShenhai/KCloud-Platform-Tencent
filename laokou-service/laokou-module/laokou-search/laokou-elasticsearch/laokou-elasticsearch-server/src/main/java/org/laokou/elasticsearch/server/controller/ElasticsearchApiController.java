@@ -66,7 +66,7 @@ public class ElasticsearchApiController {
 
     @PostMapping("/syncAsyncBatch")
     @ApiOperation("索引管理>批量异步同步")
-    public void syncAsyncBatch(@RequestBody final ElasticsearchModel model) throws IOException {
+    public void syncAsyncBatch(@RequestBody final ElasticsearchModel model) {
         String indexName = model.getIndexName();
         String jsonDataList = model.getData();
         elasticsearchUtil.syncAsyncBatchIndex(indexName,jsonDataList);
