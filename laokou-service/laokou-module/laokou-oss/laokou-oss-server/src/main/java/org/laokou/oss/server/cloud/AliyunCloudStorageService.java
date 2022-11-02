@@ -16,7 +16,8 @@
 package org.laokou.oss.server.cloud;
 
 import cn.hutool.core.util.IdUtil;
-import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,6 @@ import java.io.InputStream;
 
 /**
  * 阿里云存储
- *
  * @author Kou Shenhai
  */
 @Slf4j
@@ -37,13 +37,12 @@ public class AliyunCloudStorageService extends AbstractCloudStorageService {
     }
 
     @Override
-    public String upload(InputStream inputStream, String fileName, Long fileSize) throws Exception {
+    public String upload(InputStream inputStream, String fileName, Long fileSize) {
         final String filePath = cloudStorageVO.getAliyunPrefix() + SEPARATOR + IdUtil.simpleUUID() + FileUtil.getFileSuffix(fileName);
-        OSSClient client = new OSSClient(cloudStorageVO.getAliyunEndPoint(), cloudStorageVO.getAliyunAccessKeyId(),
-                cloudStorageVO.getAliyunAccessKeySecret());
+        OSS ossClient = new OSSClientBuilder().build(cloudStorageVO.getAliyunEndPoint(), cloudStorageVO.getAliyunAccessKeyId(), cloudStorageVO.getAliyunAccessKeySecret());
         try {
-            client.putObject(cloudStorageVO.getAliyunBucketName(), filePath , inputStream);
-            client.shutdown();
+            ossClient.putObject(cloudStorageVO.getAliyunBucketName(), filePath , inputStream);
+            ossClient.shutdown();
         } catch (Exception e){
             log.error("错误信息:{}", e.getMessage());
             throw new CustomException(e.getMessage());
