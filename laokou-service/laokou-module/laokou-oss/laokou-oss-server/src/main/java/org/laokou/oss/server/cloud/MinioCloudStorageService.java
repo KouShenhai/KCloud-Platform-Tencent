@@ -3,6 +3,7 @@ package org.laokou.oss.server.cloud;
 import cn.hutool.core.util.IdUtil;
 import io.minio.*;
 import org.laokou.common.utils.FileUtil;
+import org.laokou.common.utils.HashUtil;
 import org.laokou.oss.client.vo.CloudStorageVO;
 import java.io.InputStream;
 
@@ -12,6 +13,8 @@ import java.io.InputStream;
 public class MinioCloudStorageService extends AbstractCloudStorageService{
 
     private MinioClient minioClient;
+
+    private static final String[] NODES = {"node1","node2","node3","node4","node5"};
 
     private void init() {
         minioClient = MinioClient.builder()
@@ -35,11 +38,12 @@ public class MinioCloudStorageService extends AbstractCloudStorageService{
             minioClient.makeBucket(makeBucketArgs);
         }
         fileName = IdUtil.simpleUUID() + FileUtil.getFileSuffix(fileName);
+        String directoryPath = SEPARATOR + NODES[HashUtil.getHash(fileName) & (NODES.length - 1)];
         PutObjectArgs putObjectArgs = PutObjectArgs.builder().stream(inputStream, fileSize, -1)
                 .bucket(cloudStorageVO.getMinioBucketName())
-                .object(fileName)
+                .object(directoryPath + SEPARATOR + fileName)
                 .build();
         minioClient.putObject(putObjectArgs);
-        return cloudStorageVO.getMinioEndPoint() + "/" + cloudStorageVO.getMinioBucketName() + "/" + fileName;
+        return cloudStorageVO.getMinioEndPoint() + SEPARATOR + cloudStorageVO.getMinioBucketName() + directoryPath + SEPARATOR + fileName;
     }
 }
