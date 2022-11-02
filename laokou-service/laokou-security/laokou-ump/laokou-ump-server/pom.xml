@@ -45,11 +45,6 @@
             <groupId>io.github.mweirauch</groupId>
             <artifactId>micrometer-jvm-extras</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.laokou</groupId>
-            <artifactId>laokou-mybatis-plus</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.laokou</groupId>
             <artifactId>laokou-redis</artifactId>

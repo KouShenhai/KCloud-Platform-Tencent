@@ -13,24 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.ump.server.service;
-
-
-import org.laokou.auth.client.user.UserDetail;
+package org.laokou.oss.server.enums;
 
 /**
- * 用户类
  * @author Kou Shenhai
  */
-public interface SysUserService {
-
+public enum CloudTypeEnum {
     /**
-     * 获取用户信息
-     * @param id
-     * @param username
-     * @return
+     * 本地
      */
-    UserDetail getUserDetail(Long id, String username);
-
+    LOCAL,
+    /**
+     * FastDFS
+     */
+    FASTDFS,
+    /**
+     * 阿里云
+     */
+    ALIYUN;
 
 }

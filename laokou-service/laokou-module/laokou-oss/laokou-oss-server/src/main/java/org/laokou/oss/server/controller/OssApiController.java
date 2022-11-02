@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.interfaces.controller;
-import org.laokou.admin.server.application.service.OssApplicationService;
-import org.laokou.admin.client.vo.UploadVO;
+package org.laokou.oss.server.controller;
+import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.exception.CustomException;
-import org.laokou.common.utils.HttpResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.laokou.common.utils.HttpResultUtil;
+import org.laokou.oss.client.vo.UploadVO;
+import org.laokou.oss.server.cloud.CloudFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +33,11 @@ import java.io.InputStream;
 @RestController
 @Api(value = "对象存储API",protocols = "http",tags = "对象存储API")
 @RequestMapping("/oss/api")
+@Slf4j
 public class OssApiController {
 
     @Autowired
-    private OssApplicationService ossApplicationService;
+    private CloudFactory cloudFactory;
 
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiOperation("对象存储>上传")
@@ -50,7 +52,11 @@ public class OssApiController {
         //文件大小
         final Long fileSize = file.getSize();
         //上传文件
-        return new HttpResultUtil<UploadVO>().ok(ossApplicationService.upload(inputStream,fileName,fileSize));
+        UploadVO vo = new UploadVO();
+        String url = cloudFactory.build().upload(inputStream, fileName, fileSize);
+        log.info("上传文件地址：{}",url);
+        vo.setUrl(url);
+        return new HttpResultUtil<UploadVO>().ok(vo);
     }
 
 }

@@ -13,26 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.ump.server.mapper;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.laokou.auth.client.user.UserDetail;
-import org.springframework.stereotype.Repository;
+
+package org.laokou.oss.server.cloud;
+import com.github.tobato.fastdfs.FdfsClientConfig;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableMBeanExport;
+import org.springframework.context.annotation.Import;
+import org.springframework.jmx.support.RegistrationPolicy;
 
 /**
- * 用户类
+ * 组件类
  * @author  Kou Shenhai
  */
-@Mapper
-@Repository
-public interface SysUserMapper {
 
-    /**
-     * 获取用户信息
-     * @param userId
-     * @param username
-     * @return
-     */
-    UserDetail getUserDetail(@Param("userId")Long userId, @Param("username")String username);
-
+@Configuration
+@Import(FdfsClientConfig.class)
+@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
+public class FastdfsImport {
 }

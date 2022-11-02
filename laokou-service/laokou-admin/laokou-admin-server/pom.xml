@@ -21,6 +21,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.laokou</groupId>
+			<artifactId>laokou-oss-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.laokou</groupId>
+			<artifactId>laokou-swagger</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.laokou</groupId>
 			<artifactId>laokou-log</artifactId>
 		</dependency>
 		<dependency>

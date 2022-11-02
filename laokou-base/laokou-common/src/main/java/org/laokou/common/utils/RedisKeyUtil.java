@@ -54,4 +54,11 @@ public final class RedisKeyUtil {
     public static String getBloomFilterKey() {
         return "sys:bloom:filter";
     }
+
+    /**
+     * OSS配置Key
+     */
+    public static String getOssConfigKey() {
+        return "sys:oss:config";
+    }
 }

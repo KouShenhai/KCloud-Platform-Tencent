@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.cloud;
+package org.laokou.oss.server.cloud;
 
-import org.laokou.admin.server.infrastructure.config.CloudStorageConfig;
+import org.laokou.oss.client.vo.CloudStorageVO;
 
 import java.io.InputStream;
 
@@ -27,7 +27,7 @@ public abstract class AbstractCloudStorageService {
     /**
      * 配置文件
      */
-    protected CloudStorageConfig cloudStorageConfig;
+    protected CloudStorageVO cloudStorageVO;
 
     /**
      * 按10M分片

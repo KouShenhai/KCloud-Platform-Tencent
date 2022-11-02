@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.elasticsearch.client.form;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import org.laokou.elasticsearch.client.dto.AggregationDTO;
 import org.laokou.elasticsearch.client.dto.SearchDTO;
@@ -28,7 +27,6 @@ import java.util.List;
  * @date 2020/8/9 0009 下午 5:16
  */
 @Data
-@ApiModel(description = "搜索实体类")
 public class SearchForm implements Serializable {
 
     /**

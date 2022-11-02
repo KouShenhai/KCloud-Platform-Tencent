@@ -12,28 +12,27 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *//*
+ */
 
-package org.laokou.admin.server.infrastructure.component.cloud;
+package org.laokou.oss.server.cloud;
 
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.DefaultGenerateStorageClient;
-import org.laokou.admin.server.infrastructure.config.CloudStorageConfig;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.laokou.oss.client.vo.CloudStorageVO;
 
 import java.io.InputStream;
 
-*/
 /**
  * FastDFS
  * @author  Kou Shenhai
- *//*
+ */
 
 @Slf4j
-public class FastDFSCloudStorageService extends AbstractCloudStorageService {
+public class FastdfsCloudStorageService extends AbstractCloudStorageService {
 
     private static DefaultGenerateStorageClient defaultGenerateStorageClient;
 
@@ -41,21 +40,20 @@ public class FastDFSCloudStorageService extends AbstractCloudStorageService {
         defaultGenerateStorageClient = SpringContextUtil.getBean(DefaultGenerateStorageClient.class);
     }
 
-    public FastDFSCloudStorageService (CloudStorageConfig config){
-        super.cloudStorageConfig = config;
+    public FastdfsCloudStorageService(CloudStorageVO config){
+        super.cloudStorageVO = config;
     }
 
     @Override
     public String upload(InputStream inputStream, String fileName,Long size) throws Exception {
         StorePath storePath;
         try {
-            storePath = defaultGenerateStorageClient.uploadFile(cloudStorageConfig.getFastdfsGroup(), inputStream, inputStream.available(), FilenameUtils.getExtension(fileName));
+            storePath = defaultGenerateStorageClient.uploadFile(cloudStorageVO.getFastdfsGroup(), inputStream, inputStream.available(), FilenameUtils.getExtension(fileName));
         } catch (Exception ex) {
             log.error("错误信息:{}", ex.getMessage());
             throw new CustomException(ex.getMessage());
         }
-        return cloudStorageConfig.getFastdfsDomain() + SEPARATOR + cloudStorageConfig.getFastdfsGroup() + SEPARATOR + storePath.getPath();
+        return cloudStorageVO.getFastdfsDomain() + SEPARATOR + cloudStorageVO.getFastdfsGroup() + SEPARATOR + storePath.getPath();
     }
 
 }
-*/

@@ -19,8 +19,8 @@ import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQO;
 import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
-import org.laokou.admin.client.vo.UploadVO;
-import javax.servlet.http.HttpServletRequest;
+import org.laokou.oss.client.vo.UploadVO;
+
 import java.io.InputStream;
 import java.util.*;
 /**

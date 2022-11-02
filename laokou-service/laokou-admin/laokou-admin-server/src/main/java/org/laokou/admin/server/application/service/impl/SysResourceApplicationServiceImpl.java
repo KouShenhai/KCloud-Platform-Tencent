@@ -33,7 +33,7 @@ import org.laokou.admin.server.interfaces.qo.SysResourceQO;
 import org.laokou.admin.client.vo.StartProcessVO;
 import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
-import org.laokou.admin.client.vo.UploadVO;
+import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.FileUtil;

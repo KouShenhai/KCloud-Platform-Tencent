@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.cloud;
+package org.laokou.oss.server.cloud;
 
 import cn.hutool.core.util.IdUtil;
 import com.aliyun.oss.OSSClient;
-import org.laokou.admin.server.infrastructure.config.CloudStorageConfig;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.oss.client.vo.CloudStorageVO;
 
 import java.io.InputStream;
 
@@ -32,22 +32,22 @@ import java.io.InputStream;
 @Slf4j
 public class AliyunCloudStorageService extends AbstractCloudStorageService {
 
-    public AliyunCloudStorageService (CloudStorageConfig config){
-        super.cloudStorageConfig = config;
+    public AliyunCloudStorageService (CloudStorageVO config){
+        super.cloudStorageVO = config;
     }
 
     @Override
     public String upload(InputStream inputStream, String fileName, Long fileSize) throws Exception {
-        final String filePath = cloudStorageConfig.getAliyunPrefix() + SEPARATOR + IdUtil.simpleUUID() + FileUtil.getFileSuffix(fileName);
-        OSSClient client = new OSSClient(cloudStorageConfig.getAliyunEndPoint(), cloudStorageConfig.getAliyunAccessKeyId(),
-                cloudStorageConfig.getAliyunAccessKeySecret());
+        final String filePath = cloudStorageVO.getAliyunPrefix() + SEPARATOR + IdUtil.simpleUUID() + FileUtil.getFileSuffix(fileName);
+        OSSClient client = new OSSClient(cloudStorageVO.getAliyunEndPoint(), cloudStorageVO.getAliyunAccessKeyId(),
+                cloudStorageVO.getAliyunAccessKeySecret());
         try {
-            client.putObject(cloudStorageConfig.getAliyunBucketName(), filePath , inputStream);
+            client.putObject(cloudStorageVO.getAliyunBucketName(), filePath , inputStream);
             client.shutdown();
         } catch (Exception e){
             log.error("错误信息:{}", e.getMessage());
             throw new CustomException(e.getMessage());
         }
-        return cloudStorageConfig.getAliyunDomain() + SEPARATOR + filePath;
+        return cloudStorageVO.getAliyunDomain() + SEPARATOR + filePath;
     }
 }

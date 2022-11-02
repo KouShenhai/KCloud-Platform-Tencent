@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.cloud;
+package org.laokou.oss.server.cloud;
 import cn.hutool.core.util.IdUtil;
-import org.laokou.admin.server.infrastructure.config.CloudStorageConfig;
 import org.laokou.common.utils.FileUtil;
 import org.laokou.common.utils.HashUtil;
+import org.laokou.oss.client.vo.CloudStorageVO;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,21 +31,21 @@ public class LocalCloudStorageService extends AbstractCloudStorageService{
 
     private static final String[] NODES = {"node1","node2","node3","node4","node5"};
 
-    public LocalCloudStorageService(CloudStorageConfig config){
-        this.cloudStorageConfig = config;
+    public LocalCloudStorageService(CloudStorageVO config){
+        this.cloudStorageVO = config;
     }
 
     @Override
     public String upload(InputStream inputStream,String fileName,Long fileSize) throws IOException {
        fileName = IdUtil.simpleUUID() + FileUtil.getFileSuffix(fileName);
-       String directoryPath = SEPARATOR + cloudStorageConfig.getLocalPrefix() + SEPARATOR + NODES[HashUtil.getHash(fileName) & (NODES.length - 1)];
+       String directoryPath = SEPARATOR + cloudStorageVO.getLocalPrefix() + SEPARATOR + NODES[HashUtil.getHash(fileName) & (NODES.length - 1)];
        //上传文件
        if (inputStream instanceof ByteArrayInputStream) {
-           FileUtil.fileUpload(cloudStorageConfig.getLocalPath(), directoryPath, fileName, inputStream);
+           FileUtil.fileUpload(cloudStorageVO.getLocalPath(), directoryPath, fileName, inputStream);
        } else {
-           FileUtil.nioRandomFileChannelUpload(cloudStorageConfig.getLocalPath(), directoryPath, fileName, inputStream, fileSize, chunkSize);
+           FileUtil.nioRandomFileChannelUpload(cloudStorageVO.getLocalPath(), directoryPath, fileName, inputStream, fileSize, chunkSize);
        }
-       return cloudStorageConfig.getLocalDomain() + directoryPath + SEPARATOR + fileName ;
+       return cloudStorageVO.getLocalDomain() + directoryPath + SEPARATOR + fileName ;
     }
 
 }

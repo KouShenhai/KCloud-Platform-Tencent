@@ -21,7 +21,7 @@ import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQO;
 import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
-import org.laokou.admin.client.vo.UploadVO;
+import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.log.annotation.OperateLog;
@@ -33,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;

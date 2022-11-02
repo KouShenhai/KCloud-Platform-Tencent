@@ -13,30 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.ump.server.mapper;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
-import java.util.List;
+package org.laokou.oss.client.vo;
+import lombok.Data;
 /**
- * 菜单类
+ * 云存储配置信息
  * @author  Kou Shenhai
  */
-@Mapper
-@Repository
-public interface SysMenuMapper {
+@Data
+public class CloudStorageVO {
 
     /**
-     * 查询所有权限列表
-     * @return
+     * 0：本地上传
+     * 1：FastDFS
+     * 2：阿里云
      */
-    List<String> getPermissionsList();
+    private int type;
 
     /**
-     * 查询用户权限列表
-     * @param userId
-     * @return
+     * 本地上传
      */
-    List<String> getPermissionsListByUserId(@Param("userId") Long userId);
+    private String localDomain;
+    private String localPath;
+    private String localPrefix;
+    /**
+     * FastDFS
+     */
+    private String fastdfsDomain;
+    private String fastdfsGroup;
+    /**
+     * 阿里云
+     */
+    private String aliyunDomain;
+    private String aliyunPrefix;
+    private String aliyunEndPoint;
+    private String aliyunAccessKeyId;
+    private String aliyunAccessKeySecret;
+    private String aliyunBucketName;
 
 }
