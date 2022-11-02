@@ -44,7 +44,7 @@ public class CloudFactory {
            if (StringUtil.isBlank(ossConfig)) {
                throw new CustomException("请配置OSS");
            }
-           redisUtil.set(ossConfigKey,ossConfig);
+           redisUtil.set(ossConfigKey,ossConfig,RedisUtil.HOUR_ONE_EXPIRE);
        } else {
            ossConfig = object.toString();
        }
