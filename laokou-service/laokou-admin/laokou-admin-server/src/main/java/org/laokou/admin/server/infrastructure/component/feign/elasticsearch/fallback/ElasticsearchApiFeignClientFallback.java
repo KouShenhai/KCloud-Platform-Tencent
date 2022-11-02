@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.client.feign.elasticsearch.fallback;
-import org.laokou.admin.client.feign.elasticsearch.ElasticsearchApiFeignClient;
+package org.laokou.admin.server.infrastructure.component.feign.elasticsearch.fallback;
+import org.laokou.admin.server.infrastructure.component.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.common.utils.HttpResultUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

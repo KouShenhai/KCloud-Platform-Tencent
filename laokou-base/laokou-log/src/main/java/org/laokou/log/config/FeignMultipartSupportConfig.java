@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 package org.laokou.log.config;
-import feign.RequestInterceptor;
-import org.laokou.common.constant.Constant;
-import org.laokou.common.utils.HttpContextUtil;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * @author  Kou Shenhai
  */
-@Configuration
 public class FeignMultipartSupportConfig {
 
     @Bean
@@ -33,11 +25,4 @@ public class FeignMultipartSupportConfig {
         return feign.Logger.Level.FULL;
     }
 
-    @Bean
-    public RequestInterceptor getRequestInterceptor() {
-        return requestTemplate -> {
-            HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-            requestTemplate.header(Constant.AUTHORIZATION_HEAD,request.getHeader(Constant.AUTHORIZATION_HEAD));
-        };
-    }
 }

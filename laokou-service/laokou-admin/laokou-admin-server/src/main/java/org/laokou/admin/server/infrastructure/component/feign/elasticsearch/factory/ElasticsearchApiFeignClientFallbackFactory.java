@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.client.feign.elasticsearch.factory;
-import org.laokou.admin.client.feign.elasticsearch.fallback.ElasticsearchApiFeignClientFallback;
+package org.laokou.admin.server.infrastructure.component.feign.elasticsearch.factory;
+import org.laokou.admin.server.infrastructure.component.feign.elasticsearch.fallback.ElasticsearchApiFeignClientFallback;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 

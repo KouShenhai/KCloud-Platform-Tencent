@@ -17,7 +17,7 @@ package org.laokou.admin.server.application.service.impl;
 
 import feign.FeignException;
 import org.laokou.admin.server.application.service.SysSearchApplicationService;
-import org.laokou.admin.client.feign.elasticsearch.ElasticsearchApiFeignClient;
+import org.laokou.admin.server.infrastructure.component.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.HttpResultUtil;

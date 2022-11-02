@@ -1,4 +1,4 @@
-package org.laokou.admin.server.infrastructure.config;
+package org.laokou.ump.client.exception;
 
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.HttpResultUtil;
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * @author 寇申海
+ * @author Kou Shenhai
  */
 @RestControllerAdvice
 @ResponseBody
 @Component
-public class AdminExceptionHandler {
+public class AuthExceptionHandler {
 
     /**
      * 处理自定义异常

@@ -3,7 +3,7 @@ package org.laokou.ump.client.utils;
 import org.laokou.auth.client.user.UserDetail;
 import org.springframework.security.core.context.SecurityContextHolder;
 /**
- * @author 寇申海
+ * @author Kou Shenhai
  */
 public class UserUtil {
 

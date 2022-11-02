@@ -1,4 +1,4 @@
-package org.laokou.admin.server.infrastructure.config;
+package org.laokou.ump.client.exception;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.common.utils.JacksonUtil;

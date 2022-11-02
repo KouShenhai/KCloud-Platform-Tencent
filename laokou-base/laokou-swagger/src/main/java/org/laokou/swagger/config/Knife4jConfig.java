@@ -70,7 +70,7 @@ public class Knife4jConfig {
                 .version("3.0.0")
                 .description("API文档")
                 //作者信息
-                .contact(new Contact("寇申海", "https://blog.csdn.net/qq_39893313", "2413176044@qq.com"))
+                .contact(new Contact("Kou Shenhai", "https://blog.csdn.net/qq_39893313", "2413176044@qq.com"))
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .build();
     }
