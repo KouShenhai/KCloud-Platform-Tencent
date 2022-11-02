@@ -47,8 +47,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
@@ -178,8 +176,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                 //同步数据 - 异步
                 final int chunkSize = 500;
                 int pageIndex = 0;
-                //请求头对象
-                RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
                 while (pageIndex < resourceTotal) {
                     final List<ResourceIndex> resourceIndexList = sysResourceService.getResourceIndexList(chunkSize, pageIndex,code);
                     final Map<String, List<ResourceIndex>> resourceDataMap = resourceIndexList.stream().collect(Collectors.groupingBy(ResourceIndex::getYm));
@@ -190,9 +186,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         final List<ResourceIndex> resourceDataList = entry.getValue();
                         //同步数据
                         asyncTaskExecutor.execute(() -> {
-                            //解决请求头丢失问题
-                            //每一个线程都共享之前的请求头
-                            RequestContextHolder.setRequestAttributes(requestAttributes);
                             final String indexName = resourceIndex + "_" + ym;
                             final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
                             final ElasticsearchModel model = new ElasticsearchModel();

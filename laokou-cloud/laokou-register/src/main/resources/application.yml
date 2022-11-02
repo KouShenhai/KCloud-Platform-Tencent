@@ -6,6 +6,6 @@ spring:
   security:
     user:
       name: root
-      password:  koushenhai
+      password: koushenhai
   profiles:
     active: @profile.active@
