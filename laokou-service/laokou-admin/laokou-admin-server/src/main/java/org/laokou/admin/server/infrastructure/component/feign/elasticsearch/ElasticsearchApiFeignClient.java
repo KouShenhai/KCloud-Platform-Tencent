@@ -21,7 +21,6 @@ import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.elasticsearch.client.model.ElasticsearchModel;
 import org.laokou.elasticsearch.client.vo.SearchVO;
-import org.laokou.log.config.FeignMultipartSupportConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -29,26 +28,26 @@ import java.util.Map;
 /**
  * @author Kou Shenhai
  */
-@FeignClient(name = ServiceConstant.LAOKOU_ELASTICSEARCH,configuration = FeignMultipartSupportConfig.class, fallbackFactory = ElasticsearchApiFeignClientFallbackFactory.class)
+@FeignClient(name = ServiceConstant.LAOKOU_ELASTICSEARCH, fallbackFactory = ElasticsearchApiFeignClientFallbackFactory.class)
 @Service
 public interface ElasticsearchApiFeignClient {
 
     /**
-     *
+     * 创建索引
      * @param model
      */
     @PostMapping("/api/create")
     void create(@RequestBody final CreateIndexModel model);
 
     /**
-     *
+     * 异步批量同步索引
      * @param model
      */
     @PostMapping("/api/syncAsyncBatch")
     void syncAsyncBatch(@RequestBody final ElasticsearchModel model);
 
     /**
-     *
+     * 高亮搜索
      * @param searchForm
      * @return
      */

@@ -16,7 +16,6 @@
 package org.laokou.log.feign.kafka;
 import org.laokou.common.constant.ServiceConstant;
 import org.laokou.kafka.client.dto.KafkaDTO;
-import org.laokou.log.config.FeignMultipartSupportConfig;
 import org.laokou.log.feign.kafka.factory.KafkaApiFeignClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author Kou Shenhai
  */
-@FeignClient(name = ServiceConstant.LAOKOU_KAFKA,path = "/api",configuration = FeignMultipartSupportConfig.class, fallback = KafkaApiFeignClientFallbackFactory.class)
+@FeignClient(name = ServiceConstant.LAOKOU_KAFKA,path = "/api", fallback = KafkaApiFeignClientFallbackFactory.class)
 @Service
 public interface KafkaApiFeignClient {
 
