@@ -31,8 +31,8 @@ public class LocalCloudStorageService extends AbstractCloudStorageService{
 
     private static final String[] NODES = {"node1","node2","node3","node4","node5"};
 
-    public LocalCloudStorageService(CloudStorageVO config){
-        this.cloudStorageVO = config;
+    public LocalCloudStorageService(CloudStorageVO vo){
+        this.cloudStorageVO = vo;
     }
 
     @Override

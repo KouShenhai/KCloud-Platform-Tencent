@@ -58,6 +58,9 @@ public class CloudFactory {
        if (CloudTypeEnum.FASTDFS.ordinal() == vo.getType()){
            return new FastdfsCloudStorageService(vo);
        }
+       if (CloudTypeEnum.MINIO.ordinal() == vo.getType()) {
+           return new MinioCloudStorageService(vo);
+       }
        throw new CustomException("请检查OSS相关配置");
    }
 

@@ -87,46 +87,23 @@
         <oshi.version>5.8.0</oshi.version>
         <!-- elasticsearch版本 -->
         <elasticsearch.version>7.6.2</elasticsearch.version>
-        <!--feign-reactor版本 -->
-        <feign-reactor.version>3.2.6</feign-reactor.version>
-        <!--jcommander版本 -->
-        <jcommander.version>1.72</jcommander.version>
         <!--jaxb版本 -->
         <jaxb.version>2.3.0</jaxb.version>
         <!--activation版本 -->
         <activation.version>1.1.1</activation.version>
         <!--springfox版本 -->
         <springfox.version>3.0.0</springfox.version>
+        <!--minio版本 -->
+        <minio.version>8.4.3</minio.version>
     </properties>
 
     <!-- 定义全局jar版本,模块使用需要再次引入但不用写版本号 -->
     <dependencyManagement>
         <dependencies>
-            <!-- 命令行参数解析器 -->
             <dependency>
-                <groupId>com.beust</groupId>
-                <artifactId>jcommander</artifactId>
-                <version>${jcommander.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.playtika.reactivefeign</groupId>
-                <artifactId>feign-reactor-spring-configuration</artifactId>
-                <version>${feign-reactor.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.playtika.reactivefeign</groupId>
-                <artifactId>feign-reactor-cloud</artifactId>
-                <version>${feign-reactor.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.playtika.reactivefeign</groupId>
-                <artifactId>feign-reactor-webclient</artifactId>
-                <version>${feign-reactor.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.playtika.reactivefeign</groupId>
-                <artifactId>feign-reactor-core</artifactId>
-                <version>${feign-reactor.version}</version>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
             </dependency>
             <!-- 定义 lombok 版本 -->
             <dependency>

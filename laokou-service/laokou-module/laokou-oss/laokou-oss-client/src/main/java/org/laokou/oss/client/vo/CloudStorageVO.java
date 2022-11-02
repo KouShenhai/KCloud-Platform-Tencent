@@ -26,6 +26,7 @@ public class CloudStorageVO {
      * 0：本地上传
      * 1：FastDFS
      * 2：阿里云
+     * 3：minio
      */
     private int type;
 
@@ -49,5 +50,13 @@ public class CloudStorageVO {
     private String aliyunAccessKeyId;
     private String aliyunAccessKeySecret;
     private String aliyunBucketName;
+    /**
+     * minio
+     */
+    private String minioEndPoint;
+    private String minioAccessKey;
+    private String minioSecretKey;
+    private String minioBucketName;
+    private String minioPrefix;
 
 }

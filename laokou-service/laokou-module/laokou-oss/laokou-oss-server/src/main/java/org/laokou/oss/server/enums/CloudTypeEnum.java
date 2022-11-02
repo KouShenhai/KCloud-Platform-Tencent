@@ -30,6 +30,10 @@ public enum CloudTypeEnum {
     /**
      * 阿里云
      */
-    ALIYUN;
+    ALIYUN,
+    /**
+     * Minio
+     */
+    MINIO;
 
 }

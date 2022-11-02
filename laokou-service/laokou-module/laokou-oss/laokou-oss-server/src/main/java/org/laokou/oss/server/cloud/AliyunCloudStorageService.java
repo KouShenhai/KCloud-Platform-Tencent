@@ -32,8 +32,8 @@ import java.io.InputStream;
 @Slf4j
 public class AliyunCloudStorageService extends AbstractCloudStorageService {
 
-    public AliyunCloudStorageService (CloudStorageVO config){
-        super.cloudStorageVO = config;
+    public AliyunCloudStorageService (CloudStorageVO vo){
+        super.cloudStorageVO = vo;
     }
 
     @Override
