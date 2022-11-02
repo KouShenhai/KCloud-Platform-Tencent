@@ -37,7 +37,7 @@ public class FastdfsCloudStorageService extends AbstractCloudStorageService {
     private static DefaultGenerateStorageClient defaultGenerateStorageClient;
 
     static {
-        defaultGenerateStorageClient = SpringContextUtil.getBean(DefaultGenerateStorageClient.class);
+        defaultGenerateStorageClient =  (DefaultGenerateStorageClient) SpringContextUtil.getBean("defaultGenerateStorageClient");
     }
 
     public FastdfsCloudStorageService(CloudStorageVO vo){
