@@ -2,7 +2,7 @@ jasypt:
   encryptor:
     password: koushenhai5201314wumeihua
 server:
-  port: 9001
+  port: 10002
   tomcat:
     uri-encoding: UTF-8
 spring:

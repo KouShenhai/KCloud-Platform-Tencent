@@ -3,7 +3,7 @@ jasypt:
     password: koushenhai5201314wumeihua
 
 server:
-  port: 9994
+  port: 10006
 
 spring:
   profiles:

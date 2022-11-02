@@ -1,5 +1,5 @@
 server:
-  port: 9002
+  port: 10000
   address: 127.0.0.1
 
 spring:

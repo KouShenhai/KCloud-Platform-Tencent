@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 10001
   address: 127.0.0.1
   tomcat:
     uri-encoding: UTF-8

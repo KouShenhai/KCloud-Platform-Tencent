@@ -1,5 +1,5 @@
 server:
-  port: 9998
+  port: 10003
 
 elasticsearch:
   host: 101.33.251.11:9200

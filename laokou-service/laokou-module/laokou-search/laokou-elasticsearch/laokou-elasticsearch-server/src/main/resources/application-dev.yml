@@ -1,5 +1,5 @@
 server:
-  port: 9998
+  port: 10003
   address: 127.0.0.1
 
 elasticsearch:
