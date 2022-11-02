@@ -57,6 +57,5 @@ public class CloudStorageVO {
     private String minioAccessKey;
     private String minioSecretKey;
     private String minioBucketName;
-    private String minioPrefix;
 
 }
