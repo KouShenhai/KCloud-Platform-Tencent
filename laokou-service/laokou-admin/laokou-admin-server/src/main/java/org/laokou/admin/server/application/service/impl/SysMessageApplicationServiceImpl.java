@@ -18,7 +18,6 @@ import cn.hutool.core.thread.ThreadUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Lists;
 import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDO;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDetailDO;
@@ -45,6 +44,9 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+/**
+ * @author Kou Shenhai
+ */
 @Service
 public class SysMessageApplicationServiceImpl implements SysMessageApplicationService {
 
@@ -111,8 +113,9 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
         messageDO.setCreator(dto.getUserId());
         messageDO.setDeptId(UserUtil.getDeptId());
         sysMessageService.save(messageDO);
-        Iterator<String> iterator = dto.getReceiver().iterator();
-        List<SysMessageDetailDO> detailDOList = Lists.newArrayList();
+        Set<String> receiver = dto.getReceiver();
+        Iterator<String> iterator = receiver.iterator();
+        List<SysMessageDetailDO> detailDOList = new ArrayList<>(receiver.size());
         while (iterator.hasNext()) {
             String next = iterator.next();
             SysMessageDetailDO detailDO = new SysMessageDetailDO();

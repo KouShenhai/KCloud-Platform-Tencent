@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.application.service.impl;
-import com.google.common.collect.Lists;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
 import org.laokou.admin.client.enums.FlowCommentEnum;
 import org.laokou.admin.server.infrastructure.config.CustomProcessDiagramGenerator;
@@ -43,6 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * @author Kou Shenhai
@@ -145,8 +145,8 @@ public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicati
         //获取活动节点
         final List<HistoricActivityInstance> highLightedFlowList = historyService.createHistoricActivityInstanceQuery()
                 .processInstanceId(processInstanceId).orderByHistoricActivityInstanceStartTime().asc().list();
-        List<String> highLightedFlows = Lists.newArrayList();
-        List<String> highLightedNodes = Lists.newArrayList();
+        List<String> highLightedFlows = new ArrayList<>(5);
+        List<String> highLightedNodes = new ArrayList<>(5);
         //高亮线
         for (HistoricActivityInstance temActivityInstance : highLightedFlowList) {
             if ("sequenceFlow".equals(temActivityInstance.getActivityType())) {

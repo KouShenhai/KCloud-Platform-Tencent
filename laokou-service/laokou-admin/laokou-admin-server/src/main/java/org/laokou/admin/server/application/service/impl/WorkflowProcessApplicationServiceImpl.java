@@ -16,7 +16,6 @@
 package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Lists;
 import org.laokou.admin.server.application.service.WorkflowProcessApplicationService;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
 import org.laokou.admin.client.enums.ChannelTypeEnum;
@@ -45,6 +44,8 @@ import org.laokou.redis.utils.RedisUtil;
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +115,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         IPage<TaskVO> page = new Page<>(pageNum,pageSize,pageTotal);
         int  pageIndex = pageSize * (pageNum - 1);
         final List<Task> taskList = taskQuery.listPage(pageIndex, pageSize);
-        List<TaskVO> voList = Lists.newArrayList();
+        List<TaskVO> voList = new ArrayList<>(taskList.size());
         for (Task task : taskList) {
             TaskVO vo = new TaskVO();
             vo.setTaskId(task.getId());
@@ -142,7 +143,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     public Boolean auditResourceTask(AuditDTO dto) {
         Map<String, Object> values = dto.getValues();
         Boolean auditFlag = workflowTaskApplicationService.auditTask(dto);
-        String auditUser = workFlowUtil.getAuditUser(dto.getDefinitionId(), null, dto.getInstanceId());
+        String auditUser = workFlowUtil.getAuditUser(dto.getDefinitionId(), dto.getInstanceId());
         Integer auditStatus = Integer.valueOf(values.get("auditStatus").toString());
         Integer status;
         //1 审核中 2 审批拒绝 3审核通过

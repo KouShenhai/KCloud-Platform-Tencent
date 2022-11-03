@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.log.aspect;
-import com.google.common.collect.Lists;
-import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.kafka.client.dto.OperateLogDTO;
 import org.laokou.common.enums.DataTypeEnum;
 import org.laokou.common.enums.ResultStatusEnum;
@@ -39,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,7 +86,7 @@ public class OperateLogAspect {
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
-        List<?> params = Lists.newArrayList(Arrays.asList(args)).stream().filter(arg -> (!(arg instanceof HttpServletRequest)
+        List<?> params = new ArrayList<>(Arrays.asList(args)).stream().filter(arg -> (!(arg instanceof HttpServletRequest)
                 && !(arg instanceof HttpServletResponse))).collect(Collectors.toList());
         OperateLogDTO dto = new OperateLogDTO();
         dto.setModule(operateLog.module());

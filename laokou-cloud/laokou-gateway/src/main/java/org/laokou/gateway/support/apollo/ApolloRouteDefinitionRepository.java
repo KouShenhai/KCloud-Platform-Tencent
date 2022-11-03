@@ -20,7 +20,6 @@ import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfigChangeListener;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.google.common.collect.Lists;
 import org.laokou.common.utils.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +31,8 @@ import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
@@ -74,7 +75,7 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
         if (routeDefinitions == null) {
             final String property = config.getProperty(ROUTES, null);
             if (StringUtils.isBlank(property)) {
-                return Flux.fromIterable(Lists.newArrayList());
+                return Flux.fromIterable(new ArrayList<>(0));
             }
             routeDefinitions = JacksonUtil.toList(property, RouteDefinition.class);
             caffeineCache.put(ROUTES,routeDefinitions);

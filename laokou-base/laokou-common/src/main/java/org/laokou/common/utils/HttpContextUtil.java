@@ -41,7 +41,7 @@ public class HttpContextUtil {
 
     public static Map<String,String> getParameterMap(HttpServletRequest request){
         Enumeration<String> parameterNames = request.getParameterNames();
-        Map<String,String> params = new HashMap<>();
+        Map<String,String> params = new HashMap<>(5);
         while(parameterNames.hasMoreElements()){
             String parameter = parameterNames.nextElement();
             String value = request.getParameter(parameter);

@@ -10,7 +10,6 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -26,9 +25,9 @@ public class KafkaSender {
     private final KafkaTemplate kafkaTemplate;
 
     @PostMapping("/send/{topic}")
-    @ApiOperation("Kafka消息>发送")
+    @ApiOperation("Kafka消息>同步发送")
     public void sendMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto) throws InterruptedException, ExecutionException, TimeoutException {
-        kafkaTemplate.send(topic,dto.getData()).get(10, TimeUnit.SECONDS);
+        kafkaTemplate.send(topic,dto.getData()).get();
     }
 
     @PostMapping("/sendAsync/{topic}")

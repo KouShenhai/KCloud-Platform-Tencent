@@ -17,7 +17,6 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Lists;
 import org.laokou.admin.server.application.service.SysUserApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysUserDO;
 import org.laokou.admin.server.domain.sys.entity.SysUserRoleDO;
@@ -39,6 +38,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 /**
  * @author Kou Shenhai
@@ -131,7 +132,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     }
 
     private Boolean saveOrUpdate(Long userId,List<Long> roleIds) {
-        List<SysUserRoleDO> doList = Lists.newArrayList();
+        List<SysUserRoleDO> doList = new ArrayList<>(roleIds.size());
         if (CollectionUtils.isNotEmpty(roleIds)) {
             for (Long roleId : roleIds) {
                 SysUserRoleDO sysUserRoleDO = new SysUserRoleDO();

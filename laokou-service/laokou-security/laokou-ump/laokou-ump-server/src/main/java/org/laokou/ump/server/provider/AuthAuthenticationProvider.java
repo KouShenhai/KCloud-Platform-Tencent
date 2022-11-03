@@ -45,7 +45,7 @@ public class AuthAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         UserDetail userDetail = authHandler.userDetail(authentication);
         List<String> permissionsList = userDetail.getPermissionsList();
-        Set<GrantedAuthority> authorities = new HashSet<>();
+        Set<GrantedAuthority> authorities = new HashSet<>(permissionsList.size());
         authorities.addAll(permissionsList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetail,authentication.getName(),authorities);
         return authenticationToken;

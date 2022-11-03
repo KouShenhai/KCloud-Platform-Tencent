@@ -16,7 +16,6 @@
 package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Lists;
 import org.laokou.admin.server.application.service.WorkflowDefinitionApplicationService;
 import org.laokou.admin.server.interfaces.qo.DefinitionQO;
 import org.laokou.admin.client.vo.DefinitionVO;
@@ -38,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 /**
@@ -78,7 +78,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
         IPage<DefinitionVO> page = new Page<>(pageNum,pageSize,pageTotal);
         int pageIndex = pageSize * (pageNum - 1);
         List<ProcessDefinition> definitionList = processDefinitionQuery.listPage(pageIndex, pageSize);
-        List<DefinitionVO> definitions = Lists.newArrayList();
+        List<DefinitionVO> definitions = new ArrayList<>(definitionList.size());
         for (ProcessDefinition processDefinition : definitionList) {
             DefinitionVO vo = new DefinitionVO();
             vo.setDefinitionId(processDefinition.getId());

@@ -108,7 +108,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         StartProcessVO startProcessVO = workflowProcessApplicationService.startResourceProcess(PROCESS_KEY,id.toString(),name);
         String definitionId = startProcessVO.getDefinitionId();
         String instanceId = startProcessVO.getInstanceId();
-        String auditUser = workFlowUtil.getAuditUser(definitionId, null, instanceId);
+        String auditUser = workFlowUtil.getAuditUser(definitionId, instanceId);
         workFlowUtil.sendAuditMsg(auditUser, MessageTypeEnum.REMIND.ordinal(), ChannelTypeEnum.PLATFORM.ordinal(),id,name);
         return instanceId;
     }

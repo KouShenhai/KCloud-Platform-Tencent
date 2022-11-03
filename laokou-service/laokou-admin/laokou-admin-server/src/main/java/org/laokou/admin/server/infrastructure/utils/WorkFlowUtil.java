@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.utils;
-import com.google.common.collect.Sets;
 import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.client.dto.MessageDTO;
 import org.laokou.common.utils.JacksonUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.FlowElement;
 import org.flowable.bpmn.model.FlowNode;
@@ -31,6 +29,8 @@ import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 /**
@@ -53,14 +53,12 @@ public class WorkFlowUtil {
     @Autowired
     private SysMessageApplicationService sysMessageApplicationService;
 
-    public String getAuditUser(String definitionId,String executionId,String processInstanceId) {
-        if (StringUtils.isBlank(executionId)) {
-            final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).active().singleResult();
-            if (null == task) {
-                return null;
-            }
-            executionId = task.getExecutionId();
+    public String getAuditUser(String definitionId,String processInstanceId) {
+        final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).active().singleResult();
+        if (null == task) {
+            return null;
         }
+        String executionId = task.getExecutionId();
         Execution execution = runtimeService.createExecutionQuery().executionId(executionId).singleResult();
         String activityId = execution.getActivityId();
         BpmnModel bpmnModel = repositoryService.getBpmnModel(definitionId);
@@ -84,7 +82,7 @@ public class WorkFlowUtil {
     public void sendAuditMsg(String assignee, Integer type, Integer sendChannel,Long id,String name) {
         String title = "资源审批提醒";
         String content = String.format("编号为%s，名称为%s的资源需要审批，请及时查看并处理",id,name);
-        Set set = Sets.newHashSet();
+        Set set = new HashSet<>(1);
         set.add(assignee);
         MessageDTO dto = new MessageDTO();
         dto.setContent(content);

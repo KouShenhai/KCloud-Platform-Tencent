@@ -37,7 +37,7 @@ public class FileUtil extends FileUtils {
     public static final String RW = "rw";
 
     // 定义允许上传的文件扩展名
-    private static final Map<String, String> extMap = new HashMap<>();
+    private static final Map<String, String> extMap = new HashMap<>(3);
 
     public static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
             8,

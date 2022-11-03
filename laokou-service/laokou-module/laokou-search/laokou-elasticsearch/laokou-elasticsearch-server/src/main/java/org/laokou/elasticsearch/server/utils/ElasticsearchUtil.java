@@ -15,7 +15,6 @@
  */
 package org.laokou.elasticsearch.server.utils;
 import cn.hutool.core.collection.CollectionUtil;
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -830,7 +829,7 @@ public class ElasticsearchUtil {
      */
     public SearchVO<Map<String,Long>> aggregationSearchIndex(SearchForm searchForm) throws IOException {
         SearchVO vo = new SearchVO();
-        List<Map<String,Long>> list = Lists.newArrayList();
+        List<Map<String,Long>> list = new ArrayList<>(5);
         String[] indexNames = searchForm.getIndexNames();
         AggregationDTO aggregationKey = searchForm.getAggregationKey();
         String field = aggregationKey.getField();

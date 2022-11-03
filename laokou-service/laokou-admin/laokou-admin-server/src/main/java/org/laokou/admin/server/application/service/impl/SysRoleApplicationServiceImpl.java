@@ -17,7 +17,6 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Lists;
 import org.laokou.admin.server.application.service.SysRoleApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysRoleDO;
 import org.laokou.admin.server.domain.sys.entity.SysRoleDeptDO;
@@ -37,6 +36,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.laokou.ump.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 /**
  * @author Kou Shenhai
@@ -90,7 +91,7 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
 
     private Boolean saveOrUpdate(Long roleId,List<Long> menuIds,List<Long> deptIds) {
         if (CollectionUtils.isNotEmpty(menuIds)) {
-            List<SysRoleMenuDO> roleMenuList = Lists.newArrayList();
+            List<SysRoleMenuDO> roleMenuList = new ArrayList<>(menuIds.size());
             for (Long menuId : menuIds) {
                 SysRoleMenuDO roleMenuDO = new SysRoleMenuDO();
                 roleMenuDO.setMenuId(menuId);
@@ -100,7 +101,7 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
             sysRoleMenuService.saveBatch(roleMenuList);
         }
         if (CollectionUtils.isNotEmpty(deptIds)) {
-            List<SysRoleDeptDO> roleDeptList = Lists.newArrayList();
+            List<SysRoleDeptDO> roleDeptList = new ArrayList<>(deptIds.size());
             for (Long deptId : deptIds) {
                 SysRoleDeptDO roleDeptDO = new SysRoleDeptDO();
                 roleDeptDO.setDeptId(deptId);
