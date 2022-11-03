@@ -318,4 +318,4 @@ KCloud-Platform-Netflix 开源软件遵循 [Apache 2.0 协议](https://www.apach
 博客：[https://kcloud.blog.csdn.net](https://kcloud.blog.csdn.net)  
 邮箱：[2413176044@qq.com](https://mail.qq.com)  
 QQ：[2413176044](https://tool.gljlw.com/qqq/?qq=2413176044)  
-后端技术交流群 [![加入QQ群](https://img.shields.io/badge/Q群-465450496-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=dvy7ZHVodv0L7teZSzQMs-rS1HeIJdZX&jump_from=webapi&authKey=hfi
+后端技术交流群 [![加入QQ群](https://img.shields.io/badge/Q群-465450496-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=dvy7ZHVodv0L7teZSzQMs-rS1HeIJdZX&jump_from=webapi&authKey=hfiWSkeD7W8Gl4lf8SFDxrl5tuvbOPEIAbS6V6TCklrGYTC+u7gvHAH+kskUbjx3)  
