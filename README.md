@@ -303,7 +303,7 @@ laok5/test123
 欢迎各路英雄好汉参与KCloud-Platform-Netflix代码贡献，期待您的加入！Fork本仓库 新建Feat_xxx分支提交代码，新建Pull Request
 
 ### 开源协议
-KCloud-Platform 开源软件遵循 [Apache 2.0 协议](https://www.apache.org/licenses/LICENSE-2.0.html) 请务必保留作者、Copyright信息  
+KCloud-Platform-Netflix 开源软件遵循 [Apache 2.0 协议](https://www.apache.org/licenses/LICENSE-2.0.html) 请务必保留作者、Copyright信息  
 ![](https://minio.pigx.vip/oss/1655474288.jpg)
 
 ### 项目地址
