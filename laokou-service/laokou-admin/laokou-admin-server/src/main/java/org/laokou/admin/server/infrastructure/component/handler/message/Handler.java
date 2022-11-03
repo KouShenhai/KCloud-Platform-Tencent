@@ -19,9 +19,14 @@ import org.laokou.admin.client.dto.MessageDTO;
 
 /**
  * 消息处理器
+ * @author Kou Shenhai
  */
 public interface Handler {
 
+    /**
+     * 消息处理
+     * @param dto
+     */
     void doHandler(MessageDTO dto);
 
 }

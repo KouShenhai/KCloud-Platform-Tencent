@@ -15,6 +15,10 @@
  */
 package org.laokou.common.enums;
 
+/**
+ * @author Kou Shenhai
+ */
+
 public enum ResultStatusEnum {
 
     SUCCESS,

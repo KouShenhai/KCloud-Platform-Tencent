@@ -28,7 +28,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
  */
 @Configuration
 @RequiredArgsConstructor
-public class RenTokenStore {
+public class CustomTokenStore {
 
     private final RedisConnectionFactory redisConnectionFactory;
 
