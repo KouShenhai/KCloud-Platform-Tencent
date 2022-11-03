@@ -24,7 +24,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.List;
 /**
- * sso
  * @author Kou Shenhai
  * @version 1.0
  * @date 2020/9/13 0013 下午 2:34
