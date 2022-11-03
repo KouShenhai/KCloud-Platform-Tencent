@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.ump.server.exception;
+package org.laokou.oauth2.server.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +35,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
  * @author Kou Shenhai
  */
 @Service
-public class RenWebResponseExceptionTranslator implements WebResponseExceptionTranslator<OAuth2Exception> {
+public class CustomWebResponseExceptionTranslator implements WebResponseExceptionTranslator<OAuth2Exception> {
     private ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
 
     @Override
@@ -43,25 +43,25 @@ public class RenWebResponseExceptionTranslator implements WebResponseExceptionTr
         Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
         Exception exception = (AuthenticationException) throwableAnalyzer.getFirstThrowableOfType(AuthenticationException.class, causeChain);
         if (exception != null) {
-            return handleOAuth2Exception(new RenOAuth2Exception(e.getMessage(), e));
+            return handleOAuth2Exception(new CustomOAuth2Exception(e.getMessage(), e));
         }
         exception = (AccessDeniedException) throwableAnalyzer.getFirstThrowableOfType(AccessDeniedException.class, causeChain);
         if (exception != null) {
-            return handleOAuth2Exception(new RenOAuth2Exception(exception.getMessage(), exception));
+            return handleOAuth2Exception(new CustomOAuth2Exception(exception.getMessage(), exception));
         }
         exception = (InvalidGrantException) throwableAnalyzer.getFirstThrowableOfType(InvalidGrantException.class, causeChain);
         if (exception != null) {
-            return handleOAuth2Exception(new RenOAuth2Exception(exception.getMessage(), exception));
+            return handleOAuth2Exception(new CustomOAuth2Exception(exception.getMessage(), exception));
         }
         exception = (HttpRequestMethodNotSupportedException) throwableAnalyzer.getFirstThrowableOfType(HttpRequestMethodNotSupportedException.class, causeChain);
         if (exception != null) {
-            return handleOAuth2Exception(new RenOAuth2Exception(exception.getMessage(), exception));
+            return handleOAuth2Exception(new CustomOAuth2Exception(exception.getMessage(), exception));
         }
         exception = (OAuth2Exception) throwableAnalyzer.getFirstThrowableOfType(OAuth2Exception.class, causeChain);
         if (exception != null) {
             return handleOAuth2Exception((OAuth2Exception) exception);
         }
-        return handleOAuth2Exception(new RenOAuth2Exception(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e));
+        return handleOAuth2Exception(new CustomOAuth2Exception(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e));
     }
 
     private ResponseEntity<OAuth2Exception> handleOAuth2Exception(OAuth2Exception e) {
@@ -75,6 +75,6 @@ public class RenWebResponseExceptionTranslator implements WebResponseExceptionTr
         if (e instanceof ClientAuthenticationException) {
             return new ResponseEntity<>(e, headers, HttpStatus.valueOf(status));
         }
-        return new ResponseEntity(new RenHttpResult(e.getOAuth2ErrorCode(),e.getMessage()), headers, HttpStatus.OK);
+        return new ResponseEntity(new CustomHttpResult(e.getOAuth2ErrorCode(),e.getMessage()), headers, HttpStatus.OK);
     }
 }

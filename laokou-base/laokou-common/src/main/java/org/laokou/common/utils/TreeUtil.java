@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 package org.laokou.common.utils;
-import com.google.common.collect.Lists;
 import org.laokou.common.exception.CustomException;
 import lombok.Data;
 import org.apache.commons.collections.CollectionUtils;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.util.*;
+
 /**
  * 构造树
  * @author Kou Shenhai
@@ -32,7 +29,7 @@ import java.util.StringJoiner;
 @Data
 public class TreeUtil {
     public static <T extends TreeNo> TreeNo<T> rootRootNode(String name) {
-        return new TreeNo(0L,name,null, Lists.newArrayList());
+        return new TreeNo(0L,name,null, new ArrayList<>(5));
     }
     public static <T extends TreeNo> TreeNo<T> rootRootNode() {
         return rootRootNode("根节点");
@@ -70,7 +67,7 @@ public class TreeUtil {
         private Long id;
         private String name;
         private Long pid;
-        private List<T> children = Lists.newArrayList();
+        private List<T> children = new ArrayList<>(5);
         public TreeNo() {}
         public TreeNo(Long id, String name, Long pid, List<T> children) {
             this.id = id;

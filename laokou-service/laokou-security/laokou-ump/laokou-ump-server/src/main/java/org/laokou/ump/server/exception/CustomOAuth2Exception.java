@@ -13,34 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.oauth2.server.exception;
+package org.laokou.ump.server.exception;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 /**
  * 自定义异常
  *
  * @author Kou Shenhai
  */
-public class RenOAuth2Exception extends OAuth2Exception {
+public class CustomOAuth2Exception extends OAuth2Exception {
 	private String msg;
 	private String code;
 
-	public RenOAuth2Exception(String msg) {
+	public CustomOAuth2Exception(String msg) {
 		super(msg);
 		this.msg = msg;
 	}
 
-	public RenOAuth2Exception(String msg, Throwable e) {
+	public CustomOAuth2Exception(String msg, Throwable e) {
 		super(msg, e);
 		this.msg = msg;
 	}
 
-	public RenOAuth2Exception(int code, String msg) {
+	public CustomOAuth2Exception(int code, String msg) {
 		super(msg);
 		this.msg = msg;
 		this.code = "" + code;
 	}
 
-	public RenOAuth2Exception(String code, String msg) {
+	public CustomOAuth2Exception(String code, String msg) {
 		super(msg);
 		this.msg = msg;
 		this.code = code;

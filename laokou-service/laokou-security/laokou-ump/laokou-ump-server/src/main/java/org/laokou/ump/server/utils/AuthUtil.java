@@ -17,7 +17,7 @@ package org.laokou.ump.server.utils;
 import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.laokou.auth.client.user.BaseUserVO;
-import org.laokou.ump.server.exception.RenOAuth2Exception;
+import org.laokou.ump.server.exception.CustomOAuth2Exception;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.laokou.common.constant.Constant;
@@ -66,7 +66,7 @@ public class AuthUtil {
         String resultJson = HttpUtil.doPost(POST_AUTHORIZE_URL,tokenMap,new HashMap<>(0));
         String accessToken = JSONUtil.parseObj(resultJson).getStr(Constant.ACCESS_TOKEN);
         if (StringUtils.isEmpty(accessToken)){
-            throw new RenOAuth2Exception(ErrorCode.UNAUTHORIZED,"授权码已过期，请重新获取");
+            throw new CustomOAuth2Exception(ErrorCode.UNAUTHORIZED,"授权码已过期，请重新获取");
         }
         return accessToken;
     }

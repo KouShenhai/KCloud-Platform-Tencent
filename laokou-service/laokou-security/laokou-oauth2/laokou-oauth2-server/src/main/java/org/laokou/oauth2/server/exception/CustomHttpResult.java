@@ -23,7 +23,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class RenHttpResult {
+public class CustomHttpResult {
 
     private String code;
 
