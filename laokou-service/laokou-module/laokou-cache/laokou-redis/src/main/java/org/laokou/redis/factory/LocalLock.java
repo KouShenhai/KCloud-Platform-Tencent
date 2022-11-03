@@ -42,7 +42,7 @@ public class LocalLock extends AbstractLock<Lock> {
 
     @Override
     public Boolean tryLock(Lock lock, long expire, long timeout) throws InterruptedException {
-        return lock.tryLock(timeout, TimeUnit.SECONDS);
+        return lock.tryLock(timeout, TimeUnit.MILLISECONDS);
     }
 
     @Override
