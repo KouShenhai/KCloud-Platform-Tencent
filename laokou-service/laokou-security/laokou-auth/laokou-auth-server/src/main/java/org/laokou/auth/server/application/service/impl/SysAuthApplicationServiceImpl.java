@@ -23,7 +23,6 @@ import com.alipay.api.response.AlipaySystemOauthTokenResponse;
 import com.alipay.api.response.AlipayUserInfoShareResponse;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.auth.client.utils.TokenUtil;
 import org.laokou.auth.server.domain.sys.repository.service.*;
@@ -67,7 +66,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.*;
 
@@ -92,8 +90,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     /**
      * 高性能缓存
      */
-    private static final Cache<String,UserDetail> caffeineCache = Caffeine.newBuilder().initialCapacity(128).expireAfterAccess(10,TimeUnit.MINUTES).maximumSize(1024).build();;
-
+    @Autowired
+    private Cache<String,UserDetail> caffeineCache;
     private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     private static final String CALLBACK_LOGIN_URL = "http://192.168.62.1:5555/auth/sys/login.html?redirect_url=%s&error_info=%s";
@@ -239,7 +237,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //endregion
     }
 
-    private void removeInfo(String token) {
+    @Async
+    public void removeInfo(String token) {
         //region Description
         //删除缓存
         String userResourceKey = RedisKeyUtil.getUserResourceKey(token);

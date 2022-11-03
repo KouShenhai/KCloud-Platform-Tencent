@@ -19,10 +19,10 @@ import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfigChangeListener;
 import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
 import org.laokou.common.utils.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
@@ -31,11 +31,8 @@ import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -52,14 +49,11 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     /**
      * 高性能缓存
      */
-    private final Cache<String,Collection<RouteDefinition>> caffeineCache;
+    @Autowired
+    private Cache<String,Collection<RouteDefinition>> caffeineCache;
 
     @ApolloConfig
     private Config config;
-
-    public ApolloRouteDefinitionRepository() {
-        caffeineCache = Caffeine.newBuilder().initialCapacity(128).expireAfterAccess(10, TimeUnit.MINUTES).maximumSize(1024).build();
-    }
 
     @ApolloConfigChangeListener(value = "application")
     private void changeHandler(ConfigChangeEvent event) {

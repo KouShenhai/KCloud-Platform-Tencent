@@ -47,7 +47,7 @@ public class SecurityUser {
         //从header中获取token
         String token = request.getHeader(Constant.AUTHORIZATION_HEAD);
         //如果header中不存在Authorization，则从参数中获取Authorization
-        if(org.apache.commons.lang3.StringUtils.isBlank(token)){
+        if(StringUtils.isBlank(token)){
             token = request.getParameter(Constant.AUTHORIZATION_HEAD);
         }
         return token;
