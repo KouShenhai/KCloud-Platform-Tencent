@@ -1,12 +1,12 @@
 ### 项目备注
-项目：KCloud-Platform-Netflix  
+项目：KCloud-Platform-Official  
 作者：老寇  
 语言：Java  
 职位：Java工程师  
 时间：2020.06.08 ~ 至今  
 
 ### 项目介绍
-KCloud-Platform-Netflix（老寇云平台）是一款企业级微服务架构的云服务平台。基于Spring Boot 2.7.5、Spring Cloud 2021.0.4等最新版本开发，
+KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构的云服务平台。基于Spring Boot 2.7.5、Spring Cloud 2021.0.4等最新版本开发，
 遵循SpringBoot编程思想，高度模块化和可配置化。具备服务注册&发现、配置中心、限流、熔断、降级、监控、多数据源、工作流、高亮搜索、定时任务、分布式缓存、分布式事务、分布式存储等功能，用于快速构建微服务项目。目前支持Shell、Docker等多种部署方式，实现RBAC权限、其中包含系统管理、系统监控、工作流程、数据分析等几大模块。
 遵循阿里代码规范，代码简洁、架构清晰，非常适合作为基础框架使用。   
 
@@ -300,15 +300,15 @@ laok5/test123
 - 采用Apache2.0开源协议,并且承诺永不参与商业用途,仅供大家无偿使用
 
 ### 参与贡献
-欢迎各路英雄好汉参与KCloud-Platform-Netflix代码贡献，期待您的加入！Fork本仓库 新建Feat_xxx分支提交代码，新建Pull Request
+欢迎各路英雄好汉参与KCloud-Platform-Official代码贡献，期待您的加入！Fork本仓库 新建Feat_xxx分支提交代码，新建Pull Request
 
 ### 开源协议
-KCloud-Platform-Netflix 开源软件遵循 [Apache 2.0 协议](https://www.apache.org/licenses/LICENSE-2.0.html) 请务必保留作者、Copyright信息  
+KCloud-Platform-Official 开源软件遵循 [Apache 2.0 协议](https://www.apache.org/licenses/LICENSE-2.0.html) 请务必保留作者、Copyright信息  
 ![](https://minio.pigx.vip/oss/1655474288.jpg)
 
 ### 项目地址
-后端地址：[KCloud-Platform-Netflix](https://gitee.com/tttt_wmh_cn/KCloud-Platform-Netflix)  
-前端地址：[KCloud-Antdv-Netflix](https://gitee.com/tttt_wmh_cn/KCloud-Antdv-Netflix)
+后端地址：[KCloud-Platform-Official](https://gitee.com/tttt_wmh_cn/KCloud-Platform-Official)  
+前端地址：[KCloud-Antdv-Netflix](https://gitee.com/tttt_wmh_cn/KCloud-Antdv-Official)
 
 ### 致谢
 [人人社区](https://www.renren.io)  
