@@ -77,7 +77,7 @@ public class OauthController {
     @GetMapping("/oauth/logout")
     @ApiOperation("认证授权>退出登录")
     public void logout(HttpServletRequest request) {
-        String token = request.getHeader(Constant.AUTHORIZATION_HEAD);
+        String token = SecurityUser.getToken(request);
         OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
         if (oAuth2AccessToken != null) {
             tokenStore.removeAccessToken(oAuth2AccessToken);

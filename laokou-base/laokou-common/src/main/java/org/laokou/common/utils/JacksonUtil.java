@@ -15,6 +15,7 @@
  */
 package org.laokou.common.utils;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,11 +47,13 @@ public class JacksonUtil {
 
     static {
         MAPPER = new ObjectMapper();
-        //Long类型转String类型
+        // Long类型转String类型
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(Long.class, ToStringSerializer.instance);
         javaTimeModule.addSerializer(Long.TYPE,ToStringSerializer.instance);
         MAPPER.registerModule(javaTimeModule);
+        // 忽略未知字段
+        MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     /**
