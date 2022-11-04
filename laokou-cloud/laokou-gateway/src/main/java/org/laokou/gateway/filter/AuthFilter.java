@@ -79,7 +79,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
             return response(exchange, new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED));
         }
         ServerHttpRequest build = exchange.getRequest().mutate()
-                .header(Constant.AUTHORIZATION_HEAD,Constant.BEARER + token).build();
+                .header(Constant.AUTHORIZATION_HEAD, token).build();
         return chain.filter(exchange.mutate().request(build).build());
     }
 
@@ -137,14 +137,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         if(StringUtil.isEmpty(token)){
             token = request.getQueryParams().getFirst(Constant.AUTHORIZATION_HEAD);
         }
-        if (StringUtil.isEmpty(token)) {
-            return token;
-        }
-        int index = token.indexOf(Constant.BEARER);
-        if (index == -1) {
-            return token.trim();
-        }
-        return token.substring(index + 7).trim();
+        return token.trim();
     }
 
 }
