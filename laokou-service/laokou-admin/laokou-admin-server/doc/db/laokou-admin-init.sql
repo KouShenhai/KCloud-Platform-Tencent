@@ -112,10 +112,11 @@ INSERT INTO `boot_sys_menu` (`id`, `pid`, `permissions`, `type`, `name`, `url`, 
 
 ------------------------------------角色菜单------------------------------------
 CREATE TABLE `boot_sys_role_menu` (
-  `role_id` bigint(20) NOT NULL COMMENT '角色id',
-  `menu_id` bigint(20) NOT NULL COMMENT '菜单id',
-  KEY `role_id` (`role_id`) USING BTREE,
-  KEY `menu_id` (`menu_id`) USING BTREE
+`role_id` bigint(20) NOT NULL COMMENT '角色id',
+`menu_id` bigint(20) NOT NULL COMMENT '菜单id',
+PRIMARY KEY (`role_id`,`menu_id`),
+KEY `role_id` (`role_id`) USING BTREE,
+KEY `menu_id` (`menu_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色-菜单';
 ------------------------------------角色菜单------------------------------------
 
@@ -141,6 +142,7 @@ INSERT INTO `boot_sys_role` (`id`, `name`, `creator`, `editor`, `create_date`, `
 CREATE TABLE `boot_sys_user_role` (
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
   `role_id` bigint(20) NOT NULL COMMENT '角色id',
+  PRIMARY KEY (`user_id`,`role_id`),
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `role_id` (`role_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户-角色';
@@ -169,11 +171,12 @@ UNIQUE KEY `idx_email` (`email`) USING BTREE,
 UNIQUE KEY `idx_mobile` (`mobile`) USING BTREE,
 UNIQUE KEY `idx_zfb` (`zfb_openid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户';
-INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1341620898007281665', 'admin', '$2a$10$n94v8BWjCb5zcvUwxxi9COKDS7Fn2n3WXbVs0Qeg5B1AkkagK1qO6', '1', '1341620898007281665', '1341620898007281665', '2021-11-29 20:13:11', '2022-07-27 22:10:26', '0', '2413176044@qq.com', '0', 'http://175.178.69.253/upload/node3/7904fff1c08a4883b40f1ee0336017dc.webp', '18974432576', '2088722720196501', '1535887940687765505');
-INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1341623527018004481', 'test', '$2a$10$cdEXE9uaSqkqoKa.73.XBuhHFPiOLomStfzUlmkuVqfA2wldqEfIG', '0', '1341620898007281665', '1341620898007281665', '2020-12-23 13:55:50', '2022-07-27 22:20:39', '0', '2314176044@qq.com', '0', 'http://175.178.69.253/upload/node2/b4e5bb3944a046a6bb54f8bfd2c830c1.webp', '18888888888', NULL, '1535881356595175426');
-INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1421312053736804354', 'koush5', '$2a$10$ysAmruc249SiAUpIqQzrpeM8wcdpgIJ6nEdtsXQnDrBgvLZkt7tJ6', '0', '1341620898007281665', '1341620898007281665', '2021-07-31 11:29:35', '2022-07-27 22:20:12', '0', 'YY@qq.com', '0', 'https://ruoyi.setworld.net/img/profile.473f5971.jpg', 'xxxxx', NULL, '1535881356595175426');
-INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1537111101311844353', 'wumh5', '$2a$10$KZHkKBF2jUGaOJDp4YcgeuVt1gBhteJC990OQWuOoRmyYQILBzQlG', '0', '1341620898007281665', '1341620898007281665', '2022-06-16 00:33:39', '2022-07-27 22:20:30', '0', NULL, '0', 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F1a3626475345x3078425090b26.jpg&amp;refer=http%3A%2F%2Fi.qqkou.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1657902941&amp;t=73f98a243f12f3eabe1dce87d2b6401b', NULL, NULL, '1535858679453085698');
-INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1537114827246292994', 'laok5', '$2a$10$b.40TGb7W19z5Jryo3FBuOEDaX2c0OAqZHnRnCkXCPI67ru5G7Nha', '0', '1341620898007281665', '1341620898007281665', '2022-06-16 00:48:28', '2022-07-27 22:20:23', '0', NULL, '0', 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F1a3626475345x3078425090b26.jpg&amp;refer=http%3A%2F%2Fi.qqkou.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1657902941&amp;t=73f98a243f12f3eabe1dce87d2b6401b', NULL, NULL, '1535881356595175426');
+INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1341620898007281665', 'admin', '$2a$10$n94v8BWjCb5zcvUwxxi9COKDS7Fn2n3WXbVs0Qeg5B1AkkagK1qO6', '1', '1341620898007281665', '1341620898007281665', '2021-11-29 20:13:11', '2022-10-26 19:24:55', '0', '2413176044@qq.com', '0', 'http://175.178.69.253:81/upload/node3/7904fff1c08a4883b40f1ee0336017dc.webp', '18974432576', '2088722720196501', '1535887940687765505');
+INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1341623527018004481', 'test', '$2a$10$cdEXE9uaSqkqoKa.73.XBuhHFPiOLomStfzUlmkuVqfA2wldqEfIG', '0', '1341620898007281665', '1341620898007281665', '2020-12-23 13:55:50', '2022-11-01 13:09:55', '0', '2314176044@qq.com', '0', 'http://175.178.69.253:81/upload/node2/b4e5bb3944a046a6bb54f8bfd2c830c1.webp', '18888888888', NULL, '1535881356595175426');
+INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1421312053736804354', 'koush5', '$2a$10$ysAmruc249SiAUpIqQzrpeM8wcdpgIJ6nEdtsXQnDrBgvLZkt7tJ6', '0', '1341620898007281665', '1341620898007281665', '2021-07-31 11:29:35', '2022-11-04 00:13:05', '0', 'YY@qq.com', '0', 'https://ruoyi.setworld.net/img/profile.473f5971.jpg', 'xxxxx', NULL, '1535881356595175426');
+INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1537111101311844353', 'wumh5', '$2a$10$KZHkKBF2jUGaOJDp4YcgeuVt1gBhteJC990OQWuOoRmyYQILBzQlG', '0', '1341620898007281665', '1341620898007281665', '2022-06-16 00:33:39', '2022-10-24 18:40:20', '0', NULL, '1', 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F1a3626475345x3078425090b26.jpg&amp;refer=http%3A%2F%2Fi.qqkou.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1657902941&amp;t=73f98a243f12f3eabe1dce87d2b6401b', NULL, NULL, '1535858679453085698');
+INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1537114827246292994', 'laok5', '$2a$10$b.40TGb7W19z5Jryo3FBuOEDaX2c0OAqZHnRnCkXCPI67ru5G7Nha', '0', '1341620898007281665', '1341620898007281665', '2022-06-16 00:48:28', '2022-10-26 19:40:13', '0', NULL, '0', 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F1a3626475345x3078425090b26.jpg&amp;refer=http%3A%2F%2Fi.qqkou.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1657902941&amp;t=73f98a243f12f3eabe1dce87d2b6401b', NULL, '', '1535881356595175426');
+INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `email`, `status`, `img_url`, `mobile`, `zfb_openid`, `dept_id`) VALUES ('1578676243819335681', '刘德华', '$2a$10$MFWN50CnE0Kn5LiMP/j80.ZS9Bp7kymjhPW.Eq1GbWNFtaz4..DGe', '0', '1341623527018004481', '1341620898007281665', '2022-10-08 17:18:42', '2022-10-26 15:32:43', '0', NULL, '0', 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F1a3626475345x3078425090b26.jpg&amp;refer=http%3A%2F%2Fi.qqkou.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1657902941&amp;t=73f98a243f12f3eabe1dce87d2b6401b', NULL, NULL, '1535887129341599746');
 ------------------------------------用户------------------------------------
 
 ------------------------------------日志------------------------------------
@@ -316,29 +319,34 @@ CREATE TABLE `boot_sys_message_detail` (
 
 ------------------------------------部门------------------------------------
 CREATE TABLE `boot_sys_dept` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
-  `pid` bigint(20) NOT NULL COMMENT '父节点',
-  `name` varchar(100) DEFAULT NULL COMMENT '名称',
-  `sort` int(11) DEFAULT '1' COMMENT '排序',
-  `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
-  `editor` bigint(20) DEFAULT NULL COMMENT '编辑人',
-  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  `del_flag` tinyint(1) DEFAULT '0' COMMENT '1已删除 0未删除',
-  PRIMARY KEY (`id`)
+ `id` bigint(20) NOT NULL COMMENT 'id',
+ `pid` bigint(20) NOT NULL COMMENT '父节点',
+ `name` varchar(100) DEFAULT NULL COMMENT '名称',
+ `sort` int(11) DEFAULT '1' COMMENT '排序',
+ `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
+ `editor` bigint(20) DEFAULT NULL COMMENT '编辑人',
+ `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+ `update_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+ `del_flag` tinyint(1) DEFAULT '0' COMMENT '1已删除 0未删除',
+ `path` varchar(2000) DEFAULT NULL COMMENT '路径',
+ PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='部门';
-INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`) VALUES ('1535858679453085698', '1535887940687765505', '广州分公司', '666', '1341620898007281665', '1341620898007281665', '2022-07-27 20:50:20', '2022-07-27 20:50:18', '0');
-INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`) VALUES ('1535881356595175426', '1535887940687765505', '长沙分公司', '111', '1341620898007281665', '1341620898007281665', '2022-07-27 20:50:26', '2022-07-27 20:50:25', '0');
-INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`) VALUES ('1535887129341599746', '1535887940687765505', '深圳分公司', '888', '1341620898007281665', '1341620898007281665', '2022-07-27 20:50:12', '2022-07-27 20:50:10', '0');
-INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`) VALUES ('1535887940687765505', '0', '老寇云集团', '1000', '1341620898007281665', '1341620898007281665', '2022-07-27 20:48:56', '2022-07-27 20:48:55', '0');
+INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `path`) VALUES ('1535858679453085698', '1535887940687765505', '广州分公司', '666', '1341620898007281665', '1341620898007281665', '2022-11-02 22:35:30', '2022-11-02 22:35:30', '0', '0/1535858679453085698');
+INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `path`) VALUES ('1535881356595175426', '1535887940687765505', '长沙分公司', '111', '1341620898007281665', '1341620898007281665', '2022-11-02 22:35:30', '2022-11-02 22:35:30', '0', '0/1535881356595175426');
+INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `path`) VALUES ('1535887129341599746', '1535887940687765505', '深圳分公司', '888', '1341620898007281665', '1341620898007281665', '2022-11-02 22:35:30', '2022-11-02 22:35:30', '0', '0/1535887129341599746');
+INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `path`) VALUES ('1535887940687765505', '0', '老寇云集团', '1000', '1341620898007281665', '1341620898007281665', '2022-11-04 20:49:08', '2022-11-04 20:49:10', '0', '0/1535887940687765505');
+INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `path`) VALUES ('1584488175088373761', '1535881356595175426', '研发部', '20', '1341620898007281665', '1341620898007281665', '2022-11-02 22:35:30', '2022-11-02 22:35:30', '0', '0/1584488175088373761');
+INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `path`) VALUES ('1584488411756171265', '1535881356595175426', '市场部', '10', '1341620898007281665', '1341620898007281665', '2022-11-02 22:35:30', '2022-11-02 22:35:30', '0', '0/1584488411756171265');
+INSERT INTO `boot_sys_dept` (`id`, `pid`, `name`, `sort`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `path`) VALUES ('1584488411756171266', '1584488175088373761', '开发组', '5', '1341620898007281665', '1341620898007281665', '2022-11-02 22:35:30', '2022-11-02 22:35:30', '0', '0/1584488411756171266');
 ------------------------------------部门------------------------------------
 
 ------------------------------------角色部门------------------------------------
 CREATE TABLE `boot_sys_role_dept` (
-  `role_id` bigint(20) NOT NULL COMMENT '角色id',
-  `dept_id` bigint(20) NOT NULL COMMENT '部门id',
-  KEY `role_id` (`role_id`) USING BTREE,
-  KEY `menu_id` (`dept_id`) USING BTREE
+`role_id` bigint(20) NOT NULL COMMENT '角色id',
+`dept_id` bigint(20) NOT NULL COMMENT '部门id',
+PRIMARY KEY (`role_id`,`dept_id`),
+KEY `role_id` (`role_id`) USING BTREE,
+KEY `menu_id` (`dept_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色-部门';
 ------------------------------------角色部门------------------------------------
 
@@ -369,7 +377,7 @@ CREATE TABLE `oauth_code` (
   `code` varchar(128) DEFAULT NULL,
   `authentication` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='oauth授权码';
-INSERT INTO `boot_sys_oauth_client_details` (`id`, `client_id`, `resource_ids`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `dept_id`, `sort`) VALUES (''1421312053736804354'', ''client_auth'', NULL, ''secret'', ''all'', ''authorization_code,refresh_token,client_credentials,implicit,password'', ''http://175.178.69.253/oauth2/loading.html'', NULL, ''3600'', ''86400'', NULL, ''false'', ''1341620898007281665'', ''1341620898007281665'', ''2022-08-17 14:05:48'', ''2022-08-17 14:05:48'', ''0'', ''1535887940687765505'', ''999'');
+INSERT INTO `boot_sys_oauth_client_details` (`id`, `client_id`, `resource_ids`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`, `creator`, `editor`, `create_date`, `update_date`, `del_flag`, `dept_id`, `sort`) VALUES ('1421312053736804354', 'client_auth', NULL, 'secret', 'all', 'authorization_code,refresh_token,client_credentials,implicit,password', 'http://192.168.62.1:5555/auth/sys/loading.html', NULL, '3600', '86400', NULL, 'false', '1341620898007281665', '1341620898007281665', '2022-11-04 20:35:26', '2022-11-04 20:35:28', '0', '1535887940687765505', '999');
 ------------------------------------认证------------------------------------
 
 ------------------------------------资源------------------------------------
