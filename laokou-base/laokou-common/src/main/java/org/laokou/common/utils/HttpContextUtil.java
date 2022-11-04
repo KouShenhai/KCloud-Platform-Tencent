@@ -15,7 +15,6 @@
  */
 package org.laokou.common.utils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestAttributes;
@@ -45,7 +44,7 @@ public class HttpContextUtil {
         while(parameterNames.hasMoreElements()){
             String parameter = parameterNames.nextElement();
             String value = request.getParameter(parameter);
-            if (StringUtils.isNotBlank(value)){
+            if (StringUtil.isNotEmpty(value)){
                 params.put(parameter,value);
             }
         }

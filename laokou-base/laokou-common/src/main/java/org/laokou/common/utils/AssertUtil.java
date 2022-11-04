@@ -18,7 +18,6 @@ package org.laokou.common.utils;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
 
@@ -42,7 +41,7 @@ public class AssertUtil {
         if (code == null) {
             throw new CustomException(ErrorCode.NOT_NULL, "code");
         }
-        if (StringUtils.isBlank(str)) {
+        if (StringUtil.isEmpty(str)) {
             throw new CustomException(code, params);
         }
     }

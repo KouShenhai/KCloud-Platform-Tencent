@@ -15,13 +15,13 @@
  */
 package org.laokou.admin.server.infrastructure.component.aspect;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
+import org.laokou.common.utils.StringUtil;
 import org.laokou.mybatis.plus.entity.BasePage;
 import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.auth.client.user.UserDetail;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -74,14 +74,14 @@ public class DataFilterAspect {
         }
         //获取表的别名
         String tableAlias = dataFilter.tableAlias();
-        if(StringUtils.isNotBlank(tableAlias)){
+        if(StringUtil.isNotEmpty(tableAlias)){
             tableAlias +=  ".";
         }
         StringBuilder sqlFilter = new StringBuilder();
         //用户列表
         List<Long> deptIds = userDetail.getDeptIds();
         if (CollectionUtils.isNotEmpty(deptIds)) {
-            sqlFilter.append(" find_in_set(").append(tableAlias).append(dataFilter.deptId()).append(" , ").append("'").append(StringUtils.join(deptIds,",")).append("'").append(") or ");
+            sqlFilter.append(" find_in_set(").append(tableAlias).append(dataFilter.deptId()).append(" , ").append("'").append(StringUtil.join(deptIds,",")).append("'").append(") or ");
         }
         sqlFilter.append(tableAlias).append(dataFilter.userId()).append(" = ").append("'").append(userDetail.getId()).append("' ");
         return sqlFilter.toString();

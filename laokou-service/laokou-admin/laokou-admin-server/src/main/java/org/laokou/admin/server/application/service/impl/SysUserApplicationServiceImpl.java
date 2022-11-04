@@ -71,7 +71,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
         if (count > 0) {
             throw new CustomException("账号已存在，请重新填写");
         }
-        dto.setEditor(userDetail.getId());
+        dto.setEditor(userDetail.getUserId());
         sysUserService.updateUser(dto);
         List<Long> roleIds = dto.getRoleIds();
         //删除中间表

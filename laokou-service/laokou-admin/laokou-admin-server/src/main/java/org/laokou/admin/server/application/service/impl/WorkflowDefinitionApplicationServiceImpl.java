@@ -22,13 +22,13 @@ import org.laokou.admin.client.vo.DefinitionVO;
 import org.laokou.common.exception.CustomException;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.repository.DeploymentBuilder;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.repository.ProcessDefinitionQuery;
 import org.flowable.image.impl.DefaultProcessDiagramGenerator;
+import org.laokou.common.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
@@ -69,7 +69,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
         ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
                 .latestVersion()
                 .orderByProcessDefinitionKey().asc();
-        if (StringUtils.isNotBlank(qo.getProcessName())) {
+        if (StringUtil.isNotEmpty(qo.getProcessName())) {
             processDefinitionQuery = processDefinitionQuery.processDefinitionNameLike("%" + qo.getProcessName() + "%");
         }
         long pageTotal = processDefinitionQuery.count();

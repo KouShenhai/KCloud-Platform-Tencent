@@ -15,7 +15,6 @@
  */
 package org.laokou.common.utils;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -201,7 +200,7 @@ public class DateUtil {
      * @param pattern 日期的格式，如：DateUtil.DATE_PATTERN
      */
     public static Date stringToDDate(String strDate,String pattern){
-        if (StringUtils.isBlank(strDate)){
+        if (StringUtil.isEmpty(strDate)){
             return null;
         }
         DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);

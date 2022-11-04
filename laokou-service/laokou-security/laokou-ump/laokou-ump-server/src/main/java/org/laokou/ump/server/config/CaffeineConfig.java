@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package org.laokou.gateway.config;
+package org.laokou.ump.server.config;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.laokou.auth.client.vo.UserInfoVO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class CaffeineConfig {
 
     @Bean
-    public Cache<String,?> caffeineCache() {
+    public Cache<String, UserInfoVO> caffeineCache() {
         return Caffeine.newBuilder().initialCapacity(128)
                 .expireAfterAccess(10, TimeUnit.MINUTES)
                 .maximumSize(1024)

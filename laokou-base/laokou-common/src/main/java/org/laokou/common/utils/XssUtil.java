@@ -15,7 +15,6 @@
  */
 package org.laokou.common.utils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -47,7 +46,7 @@ public class XssUtil extends Whitelist {
     }
 
     public static String clean(String value) {
-        if (StringUtils.isNotBlank(value)) {
+        if (StringUtil.isNotEmpty(value)) {
             value = value.replaceAll("\0|\n|\r","");
             for (Pattern pattern : scriptPatterns) {
                 value = pattern.matcher(value).replaceAll("");

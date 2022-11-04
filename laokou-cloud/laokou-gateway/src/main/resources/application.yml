@@ -74,6 +74,16 @@ management:
       show-details: always
 
 gateway:
+  uris:
+    - /oauth/token
+    - /actuator/**
+    - /swagger/api-docs
+    - /swagger-resources/**
+    - /doc.html
+    - /v2/api-docs
+    - /webjars/**
+    - /druid/**
+    - /ws/**
   black:
     ips:
       - 192.168.62.1

@@ -15,6 +15,7 @@
  */
 package org.laokou.ump.server.config;
 
+import org.laokou.ump.server.token.CustomTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
@@ -73,7 +75,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.authenticationManager(authenticationManager);
         //登录或者鉴权失败时的返回信息
         endpoints.exceptionTranslator(webResponseExceptionTranslator);
+        // 令牌增强
+        endpoints.tokenEnhancer(tokenEnhancer());
+        // 令牌配置
         endpoints.tokenServices(tokenServices());
+    }
+
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new CustomTokenEnhancer();
     }
 
     /**
@@ -82,15 +92,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public AuthorizationServerTokenServices tokenServices() {
         DefaultTokenServices services = new DefaultTokenServices();
-        //客户端详情服务
+        // 客户端详情服务
         services.setClientDetailsService(clientDetailsService);
-        //支持令牌刷新
+        // 支持令牌刷新
         services.setSupportRefreshToken(true);
-        //存储令牌策略
+        // 存储令牌策略
         services.setTokenStore(tokenStore);
-        //令牌时间1小时
+        // 令牌时间1小时
         services.setAccessTokenValiditySeconds(60 * 60);
-        //刷新令牌时间1天
+        // 刷新令牌时间1天
         services.setRefreshTokenValiditySeconds(60 * 60 * 24);
         return services;
     }

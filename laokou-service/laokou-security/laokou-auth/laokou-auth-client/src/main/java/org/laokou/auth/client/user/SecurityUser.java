@@ -18,18 +18,24 @@ import org.laokou.auth.client.utils.TokenUtil;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.exception.ErrorCode;
-import org.apache.commons.lang.StringUtils;
+import org.laokou.common.utils.StringUtil;
+
 import javax.servlet.http.HttpServletRequest;
 /**
  * @author Kou Shenhai
  */
 public class SecurityUser {
 
+    /**
+     * 获取用户信息
+     * @param request
+     * @return
+     */
     public static Long getUserId(HttpServletRequest request) {
         String userId = request.getHeader(Constant.USER_KEY_HEAD);
-        if (StringUtils.isBlank(userId)) {
+        if (StringUtil.isBlank(userId)) {
             String authHeader = getToken(request);
-            if (StringUtils.isBlank(authHeader)) {
+            if (StringUtil.isEmpty(authHeader)) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED);
             }
             if (TokenUtil.isExpiration(authHeader)) {
@@ -40,6 +46,15 @@ public class SecurityUser {
         return Long.valueOf(userId);
     }
 
+    public static Long getUserId(String token) {
+        //region Description
+        if (TokenUtil.isExpiration(token)) {
+            throw new CustomException(ErrorCode.AUTHORIZATION_INVALID);
+        }
+        return TokenUtil.getUserId(token);
+        //endregion
+    }
+
     /**
      * 获取请求的token
      */
@@ -47,10 +62,17 @@ public class SecurityUser {
         //从header中获取token
         String token = request.getHeader(Constant.AUTHORIZATION_HEAD);
         //如果header中不存在Authorization，则从参数中获取Authorization
-        if(StringUtils.isBlank(token)){
+        if(StringUtil.isEmpty(token)){
             token = request.getParameter(Constant.AUTHORIZATION_HEAD);
         }
-        return token;
+        if (StringUtil.isEmpty(token)) {
+            return token;
+        }
+        int index = token.indexOf(Constant.BEARER);
+        if (index == -1) {
+            return token.trim();
+        }
+        return token.substring(index + 7).trim();
     }
 
 }

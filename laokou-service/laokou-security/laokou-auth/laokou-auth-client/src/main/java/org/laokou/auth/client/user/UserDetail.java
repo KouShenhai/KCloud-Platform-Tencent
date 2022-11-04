@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Data
 public class UserDetail implements Serializable {
-    private Long id;
+    private Long userId;
     private String username;
     private String imgUrl;
     private Integer superAdmin;

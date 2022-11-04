@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.common.filter;
-
 import org.laokou.auth.client.user.SecurityUser;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.HttpResultUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.laokou.common.utils.JacksonUtil;
+import org.laokou.common.utils.StringUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +33,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 /**
  * auth过滤器
  * @author Kou Shenhai
@@ -46,7 +44,7 @@ public class AuthFilter extends AuthenticatingFilter {
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response){
         //获取请求token
         String token = SecurityUser.getToken((HttpServletRequest) request);
-        if(StringUtils.isBlank(token)){
+        if(StringUtil.isEmpty(token)){
             return null;
         }
         return new AuthToken(token);
@@ -67,7 +65,7 @@ public class AuthFilter extends AuthenticatingFilter {
         //获取请求token，如果token为空，直接返回401
         String token = SecurityUser.getToken((HttpServletRequest) request);
         log.info("token:{}",token);
-        if(StringUtils.isBlank(token)){
+        if(StringUtil.isEmpty(token)){
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
             String json = JacksonUtil.toJsonStr(new HttpResultUtil<Boolean>().error(ErrorCode.UNAUTHORIZED));

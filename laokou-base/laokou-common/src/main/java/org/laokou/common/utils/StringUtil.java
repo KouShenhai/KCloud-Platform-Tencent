@@ -23,6 +23,7 @@ import java.util.Map;
 
 /**
  * 字符串工具类
+ * @author Kou Shenhai
  */
 public class StringUtil extends StringUtils
 {

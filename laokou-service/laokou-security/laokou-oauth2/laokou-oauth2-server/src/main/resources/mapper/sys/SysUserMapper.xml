@@ -3,7 +3,7 @@
 <mapper namespace="org.laokou.oauth2.server.mapper.SysUserMapper">
 
     <select id="getUserDetail" resultType="org.laokou.auth.client.user.UserDetail" flushCache="true">
-        SELECT a.id as id
+        SELECT a.id as userId
         ,a.username as username
         ,a.img_url as imgUrl
         ,a.super_admin as superAdmin

@@ -43,7 +43,7 @@ public class SysUserServiceImpl implements SysUserService {
         UserDetail userDetail = sysUserMapper.getUserDetail(null,username);
         return BaseUserVO.builder()
                 .username(userDetail.getUsername())
-                .userId(userDetail.getId())
+                .userId(userDetail.getUserId())
                 .build();
     }
 

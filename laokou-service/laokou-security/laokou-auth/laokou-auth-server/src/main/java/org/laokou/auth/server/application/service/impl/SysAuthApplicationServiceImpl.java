@@ -48,7 +48,6 @@ import org.laokou.common.utils.*;
 import org.laokou.log.publish.PublishFactory;
 import org.laokou.redis.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -179,7 +178,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private String getToken(UserDetail userDetail,List<SysMenuVO> resourceList) {
         //region Description
         //编号
-        final Long userId = userDetail.getId();
+        final Long userId = userDetail.getUserId();
         final String username = userDetail.getUsername();
         //登录成功 > 生成token
         String token = TokenUtil.getToken(userId,username);
@@ -208,14 +207,14 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()){
             return sysMenuService.getPermissionsList();
         }else{
-            return sysMenuService.getPermissionsListByUserId(userDetail.getId());
+            return sysMenuService.getPermissionsListByUserId(userDetail.getUserId());
         }
         //endregion
     }
 
     private List<Long> getDeptIds(UserDetail userDetail) {
         Integer superAdmin = userDetail.getSuperAdmin();
-        Long userId = userDetail.getId();
+        Long userId = userDetail.getUserId();
         if (SuperAdminEnum.YES.ordinal() == superAdmin) {
             return sysDeptService.getDeptIds();
         } else {
@@ -227,7 +226,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     public void logout(HttpServletRequest request) {
         //region Description
         String token = SecurityUser.getToken(request);
-        if (StringUtils.isBlank(token)) {
+        if (StringUtil.isEmpty(token)) {
             return;
         }
         //删除相关信息
@@ -253,7 +252,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     public void captcha(String uuid, HttpServletResponse response) throws IOException {
         //region Description
         //生成图片验证码
-        if (StringUtils.isBlank(uuid)) {
+        if (StringUtil.isEmpty(uuid)) {
             throw new CustomException(ErrorCode.IDENTIFIER_NOT_NULL);
         }
         BufferedImage image = sysCaptchaService.createImage(uuid);
@@ -270,7 +269,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //region Description
         //1.获取用户信息
         UserDetail userDetail = userDetail(token);
-        BaseUserVO userVO = BaseUserVO.builder().userId(userDetail.getId()).username(userDetail.getUsername()).build();
+        BaseUserVO userVO = BaseUserVO.builder().userId(userDetail.getUserId()).username(userDetail.getUsername()).build();
         //2.获取所有按钮资源列表
         List<SysMenuVO> resourceList = sysMenuService.getMenuList(1);
         //3.判断资源是否在资源列表列表里
@@ -319,7 +318,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         if (obj != null) {
             userDetail = (UserDetail) obj;
         } else {
-            final Long userId = getUserId(token);
+            final Long userId = SecurityUser.getUserId(token);
             userDetail = getUserDetail(userId,null);
             if (Objects.isNull(userDetail)) {
                 throw new CustomException(ErrorCode.ACCOUNT_NOT_EXIST);
@@ -347,7 +346,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         UserDetail userDetail = userDetail(token);
         return UserInfoVO.builder().imgUrl(userDetail.getImgUrl())
                         .username(userDetail.getUsername())
-                        .userId(userDetail.getId())
+                        .userId(userDetail.getUserId())
                         .mobile(userDetail.getMobile())
                         .email(userDetail.getEmail())
                         .permissionList(userDetail.getPermissionsList()).build();
@@ -359,29 +358,20 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         UserDetail userDetail = userDetail(token);
         return BaseUserVO.builder()
                 .username(userDetail.getUsername())
-                .userId(userDetail.getId())
+                .userId(userDetail.getUserId())
                 .build();
     }
 
     private SysMenuVO pathMatcher(String url, String method, List<SysMenuVO> resourceList) {
         //region Description
         for (SysMenuVO resource : resourceList) {
-            if (StringUtils.isNotEmpty(url) && antPathMatcher.match(resource.getUrl(), url)
+            if (StringUtil.isNotEmpty(url) && antPathMatcher.match(resource.getUrl(), url)
                     && method.equalsIgnoreCase(resource.getMethod())) {
                 log.info("匹配成功");
                 return resource;
             }
         }
         return null;
-        //endregion
-    }
-
-    private Long getUserId(String token) {
-        //region Description
-        if (TokenUtil.isExpiration(token)) {
-            throw new CustomException(ErrorCode.AUTHORIZATION_INVALID);
-        }
-        return TokenUtil.getUserId(token);
         //endregion
     }
 
@@ -396,7 +386,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         final Long userId = SecurityUser.getUserId(request);
         final String zfbOpenid = request.getParameter("zfb_openid");
         final UserDetail userDetail = getUserDetailById(userId);
-        if (StringUtils.isBlank(userDetail.getZfbOpenid())) {
+        if (StringUtil.isEmpty(userDetail.getZfbOpenid())) {
             sysUserService.updateZfbOpenid(userId,zfbOpenid);
             response.sendRedirect(String.format(INDEX_URL,token));
         } else {
@@ -471,7 +461,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             AlipaySystemOauthTokenResponse oauthTokenResponse = alipayClient.execute(oauthTokenRequest);
             String accessToken = oauthTokenResponse.getAccessToken();
             log.info("accessToken:{}",accessToken);
-            if (StringUtils.isNotBlank(accessToken)) {
+            if (StringUtil.isNotEmpty(accessToken)) {
                 //根据accessToken获取用户信息
                 final AlipayUserInfoShareResponse userInfoResponse = alipayClient.execute(new AlipayUserInfoShareRequest(), accessToken);
                 log.info("userInfo:{}", JacksonUtil.toJsonStr(userInfoResponse));
@@ -496,9 +486,9 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         private void sendRedirectPage(String openid,HttpServletResponse response,String redirectUrl,String loadingUrl) throws Exception {
             String username = sysUserService.getUsernameByOpenid(openid);
             String params = "";
-            if (StringUtils.isNotBlank(username)) {
+            if (StringUtil.isNotEmpty(username)) {
                 final String token = getToken(username, null, false);
-                if (StringUtils.isNotBlank(token)) {
+                if (StringUtil.isNotEmpty(token)) {
                     params += "&" + Constant.ACCESS_TOKEN + "=" + token;
                 }
                 response.sendRedirect(redirectUrl + params);

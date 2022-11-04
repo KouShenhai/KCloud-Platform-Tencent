@@ -21,7 +21,7 @@ import com.ctrip.framework.apollo.spring.annotation.ApolloConfigChangeListener;
 import com.github.benmanes.caffeine.cache.Cache;
 import org.laokou.common.utils.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.laokou.common.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -68,7 +68,7 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
         Collection<RouteDefinition> routeDefinitions = caffeineCache.getIfPresent(ROUTES);
         if (routeDefinitions == null) {
             final String property = config.getProperty(ROUTES, null);
-            if (StringUtils.isBlank(property)) {
+            if (StringUtil.isEmpty(property)) {
                 return Flux.fromIterable(new ArrayList<>(0));
             }
             routeDefinitions = JacksonUtil.toList(property, RouteDefinition.class);

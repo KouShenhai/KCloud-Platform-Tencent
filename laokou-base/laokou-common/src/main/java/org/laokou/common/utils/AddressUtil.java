@@ -17,7 +17,6 @@ package org.laokou.common.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,7 +40,7 @@ public class AddressUtil {
         params.put("ip", ip);
         params.put("accessKey", ACCESS_KEY);
         String ipJsonData = HttpUtil.transformerUnderHumpData(HttpUtil.doGet(IP_URI, params, new HashMap<>(0)));
-        if (StringUtils.isNotBlank(ipJsonData)) {
+        if (StringUtil.isNotEmpty(ipJsonData)) {
             JsonNode data = JacksonUtil.readTree(ipJsonData).get("data");
             return data.get("country").toString() + " " + data.get("city").toString();
         }
