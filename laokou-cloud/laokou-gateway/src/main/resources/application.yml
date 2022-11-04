@@ -74,19 +74,6 @@ management:
       show-details: always
 
 gateway:
-  uris:
-    - /oauth/token
-    - /actuator/**
-    - /swagger/api-docs
-    - /swagger-resources/**
-    - /doc.html
-    - /v2/api-docs
-    - /webjars/**
-    - /druid/**
-    - /ws/**
-  black:
-    ips:
-      - 192.168.62.1
   swagger:
     routes:
       - name: laokou-admin
@@ -97,5 +84,16 @@ gateway:
         location: /elasticsearch
       - name: laokou-kafka
         location: /kafka
-      - name: laokou-ump
-        location: /ump
+      - name: laokou-security
+        location: /security
+  uris:
+    - /oauth/captcha
+    - /oauth/token
+    - /actuator/**
+    - /swagger/api-docs
+    - /swagger-resources/**
+    - /doc.html
+    - /v2/api-docs
+    - /webjars/**
+    - /druid/**
+    - /ws/**

@@ -35,12 +35,13 @@ import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
 import org.laokou.common.utils.JacksonUtil;
 import org.laokou.common.utils.RedisKeyUtil;
+import org.laokou.common.utils.StringUtil;
 import org.laokou.kafka.client.constant.KafkaConstant;
 import org.laokou.kafka.client.dto.KafkaDTO;
 import org.laokou.kafka.client.dto.ResourceAuditLogDTO;
 import org.laokou.log.feign.kafka.KafkaApiFeignClient;
 import org.laokou.redis.utils.RedisUtil;
-import org.laokou.ump.client.utils.UserUtil;
+import org.laokou.security.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -107,7 +108,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
                 .processDefinitionKey(PROCESS_KEY)
                 .taskCandidateOrAssigned(userId.toString())
                 .orderByTaskCreateTime().desc();
-        if (StringUtils.isNotBlank(processName)) {
+        if (StringUtil.isNotEmpty(processName)) {
             taskQuery = taskQuery.processDefinitionNameLike("%" + processName + "%");
         }
         final long pageTotal = taskQuery.count();

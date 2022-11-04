@@ -16,7 +16,6 @@
 package org.laokou.elasticsearch.server.utils;
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.DocWriteResponse;
@@ -58,6 +57,7 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
 import org.laokou.common.utils.JacksonUtil;
+import org.laokou.common.utils.StringUtil;
 import org.laokou.elasticsearch.client.constant.EsConstant;
 import org.laokou.elasticsearch.client.dto.AggregationDTO;
 import org.laokou.elasticsearch.client.dto.SearchDTO;
@@ -96,7 +96,7 @@ public class ElasticsearchUtil {
      */
     public boolean syncBatchIndex(String indexName,String jsonDataList) throws IOException {
         //判空
-        if (StringUtils.isBlank(jsonDataList)) {
+        if (StringUtil.isEmpty(jsonDataList)) {
             return false;
         }
         //批量操作Request
@@ -283,7 +283,7 @@ public class ElasticsearchUtil {
      */
     public boolean updateDataBatch(String indexName, String jsonDataList) {
         //判空
-        if (StringUtils.isBlank(jsonDataList)) {
+        if (StringUtil.isEmpty(jsonDataList)) {
             return false;
         }
         BulkRequest bulkRequest = packBulkUpdateRequest(indexName, jsonDataList);
@@ -405,7 +405,7 @@ public class ElasticsearchUtil {
      */
     public boolean syncAsyncBatchIndex(String indexName,String jsonDataList) {
         //判空
-        if (StringUtils.isBlank(jsonDataList)) {
+        if (StringUtil.isEmpty(jsonDataList)) {
             return false;
         }
         //批量操作Request
@@ -836,7 +836,7 @@ public class ElasticsearchUtil {
         String groupKey = aggregationKey.getGroupKey();
         String script = aggregationKey.getScript();
         TermsAggregationBuilder aggregationBuilder;
-        if (StringUtils.isNotBlank(field)) {
+        if (StringUtil.isNotEmpty(field)) {
             aggregationBuilder = AggregationBuilders.terms(groupKey).field(field).size(100000);
         } else {
             aggregationBuilder = AggregationBuilders.terms(groupKey).script(new Script(script)).size(100000);

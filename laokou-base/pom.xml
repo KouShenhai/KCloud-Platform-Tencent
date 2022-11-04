@@ -20,6 +20,7 @@
         <module>laokou-swagger</module>
         <module>laokou-mybatis-plus</module>
         <module>laokou-async</module>
+        <module>laokou-captcha</module>
     </modules>
 
 </project>

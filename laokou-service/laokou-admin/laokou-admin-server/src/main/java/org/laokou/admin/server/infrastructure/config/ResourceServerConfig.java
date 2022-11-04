@@ -16,7 +16,7 @@
 package org.laokou.admin.server.infrastructure.config;
 
 import lombok.AllArgsConstructor;
-import org.laokou.ump.client.exception.SecurityAuthenticationEntryPoint;
+import org.laokou.security.client.exception.SecurityAuthenticationEntryPoint;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

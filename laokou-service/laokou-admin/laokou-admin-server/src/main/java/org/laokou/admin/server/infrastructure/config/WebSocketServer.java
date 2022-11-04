@@ -17,7 +17,7 @@ package org.laokou.admin.server.infrastructure.config;
 import org.laokou.common.utils.JacksonUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.laokou.common.utils.StringUtil;
 import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 import javax.websocket.*;
@@ -86,7 +86,7 @@ public class WebSocketServer {
     @OnMessage
     public void onMessage(String message,Session session) throws IOException {
         log.info("收到来自：{}",this.userId,"的消息:{}",message);
-        if(StringUtils.isNotBlank(message)) {
+        if(StringUtil.isNotEmpty(message)) {
             Map<String, Object> map = JacksonUtil.toMap(message, String.class, Object.class);
             log.info("接到数据：{}",message);
             final Long userId = Long.valueOf(map.get("userId").toString());

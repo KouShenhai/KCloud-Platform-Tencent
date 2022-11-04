@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 package org.laokou.gateway.filter;
-import com.github.benmanes.caffeine.cache.Cache;
-import org.laokou.auth.client.user.BaseUserVO;
-import org.laokou.auth.client.utils.TokenUtil;
+import lombok.Data;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.exception.ErrorCode;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.common.utils.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.utils.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
@@ -50,34 +47,23 @@ import java.util.List;
  */
 @Component
 @Slf4j
+@Data
+@ConfigurationProperties(prefix = "gateway")
 public class AuthFilter implements GlobalFilter,Ordered {
 
     private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     /**
-     * 黑名单ips
+     * 不拦截的urls
      */
-    @Value("${gateway.black.ips}")
-    private List<String> ips;
-
-    /**
-     * 放行uris
-     */
-    @Value("${gateway.uris}")
     private List<String> uris;
-
-    @Autowired
-    private Cache<String, BaseUserVO> caffeineCache;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
-        // 1.记录日志
-        // 2.判断黑名单
-        if (ips.contains(ip)) {
-            return response(exchange,new HttpResultUtil<>().error(402,"不可访问，IP已被列入黑名单"));
-        }
-        // 3.放行uris
+        // 记录日志
+
+        // 放行uris
         // 获取request对象
         ServerHttpRequest request = exchange.getRequest();
         // 获取uri
@@ -87,35 +73,13 @@ public class AuthFilter implements GlobalFilter,Ordered {
         if (pathMatcher(requestUri)){
             return chain.filter(exchange);
         }
-        // 4.获取token
+        // 获取token
         String token = getToken(request);
         if (StringUtil.isEmpty(token)) {
             return response(exchange, new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED));
         }
-        // 5.判断token是否过期
-        if (TokenUtil.isExpiration(token)) {
-            return response(exchange,new HttpResultUtil<>().error(ErrorCode.AUTHORIZATION_INVALID));
-        }
-        // 6.获取相关信息
-        Long userId;
-        String username;
-        BaseUserVO vo = caffeineCache.getIfPresent(token);
-        if (StringUtil.isNull(vo)) {
-            userId = TokenUtil.getUserId(token);
-            username = TokenUtil.getUsername(token);
-            vo = new BaseUserVO();
-            vo.setUserId(userId);
-            vo.setUsername(username);
-            caffeineCache.put(token,vo);
-        } else {
-            userId = vo.getUserId();
-            username = vo.getUsername();
-        }
-        // 7.将相关信息放到请求头
         ServerHttpRequest build = exchange.getRequest().mutate()
-                .header(Constant.USER_KEY_HEAD,userId.toString())
-                .header(Constant.USERNAME_HEAD,username)
-                .header(Constant.AUTHORIZATION_HEAD,token).build();
+                .header(Constant.AUTHORIZATION_HEAD,Constant.BEARER + token).build();
         return chain.filter(exchange.mutate().request(build).build());
     }
 

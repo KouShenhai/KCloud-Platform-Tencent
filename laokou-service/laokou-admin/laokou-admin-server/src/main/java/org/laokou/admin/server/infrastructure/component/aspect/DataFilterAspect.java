@@ -27,7 +27,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.laokou.ump.client.utils.UserUtil;
+import org.laokou.security.client.utils.UserUtil;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
@@ -83,7 +83,7 @@ public class DataFilterAspect {
         if (CollectionUtils.isNotEmpty(deptIds)) {
             sqlFilter.append(" find_in_set(").append(tableAlias).append(dataFilter.deptId()).append(" , ").append("'").append(StringUtil.join(deptIds,",")).append("'").append(") or ");
         }
-        sqlFilter.append(tableAlias).append(dataFilter.userId()).append(" = ").append("'").append(userDetail.getId()).append("' ");
+        sqlFilter.append(tableAlias).append(dataFilter.userId()).append(" = ").append("'").append(userDetail.getUserId()).append("' ");
         return sqlFilter.toString();
     }
 

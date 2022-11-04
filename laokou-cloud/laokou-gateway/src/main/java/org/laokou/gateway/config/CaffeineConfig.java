@@ -30,9 +30,9 @@ public class CaffeineConfig {
 
     @Bean
     public Cache<String,?> caffeineCache() {
-        return Caffeine.newBuilder().initialCapacity(128)
+        return Caffeine.newBuilder().initialCapacity(10)
                 .expireAfterAccess(10, TimeUnit.MINUTES)
-                .maximumSize(1024)
+                .maximumSize(100)
                 .build();
     }
 }

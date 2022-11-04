@@ -15,7 +15,6 @@
  */
 package org.laokou.elasticsearch.server.config;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -24,6 +23,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.laokou.common.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -90,7 +90,7 @@ public class ElasticsearchConfig {
      * @return
      */
     private HttpHost makeHttpHost(String address) {
-        assert StringUtils.isNotEmpty(address);
+        assert StringUtil.isNotEmpty(address);
         String[] hostAddress = address.split(":");
         if (hostAddress.length == 2) {
             String ip = hostAddress[0];

@@ -74,13 +74,13 @@
     "order": 0
   },
   {
-    "id": "laokou-ump",
-    "uri": "lb://laokou-ump",
+    "id": "laokou-security",
+    "uri": "lb://laokou-security",
     "predicates": [
       {
         "name": "Path",
         "args": {
-          "pattern": "/ump/**"
+          "pattern": "/security/**"
         }
       }
     ],

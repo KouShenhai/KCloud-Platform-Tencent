@@ -389,12 +389,12 @@
             </dependency>
             <dependency>
                 <groupId>org.laokou</groupId>
-                <artifactId>laokou-ump-server</artifactId>
+                <artifactId>laokou-security-server</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.laokou</groupId>
-                <artifactId>laokou-ump-client</artifactId>
+                <artifactId>laokou-security-client</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
             <dependency>
@@ -525,6 +525,11 @@
             <dependency>
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-xxl-job-client</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-captcha</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
         </dependencies>

@@ -17,8 +17,8 @@ package org.laokou.kafka.consumer.component.resource;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.laokou.common.utils.JacksonUtil;
+import org.laokou.common.utils.StringUtil;
 import org.laokou.kafka.client.constant.KafkaConstant;
 import org.laokou.kafka.client.dto.ResourceAuditLogDTO;
 import org.laokou.kafka.consumer.entity.SysResourceAuditLogDO;
@@ -51,7 +51,7 @@ public class ResourceConsumer {
     @KafkaListener(topics = {KafkaConstant.LAOKOU_RESOURCE_AUDIT_TOPIC})
     public void loginLog(String message, Acknowledgment acknowledgment) {
         try {
-            if (StringUtils.isNotBlank(message)) {
+            if (StringUtil.isNotEmpty(message)) {
                 final ResourceAuditLogDTO auditLogDTO = JacksonUtil.toBean(message, ResourceAuditLogDTO.class);
                 SysResourceDO sysResourceDO = sysResourceService.getById(auditLogDTO.getResourceId());
                 sysResourceDO.setStatus(auditLogDTO.getStatus());

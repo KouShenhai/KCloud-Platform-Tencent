@@ -20,8 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.function.FieldFunction;
-import org.springframework.util.StringUtils;
-
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -51,7 +49,7 @@ public final class FieldUtil extends ReflectUtil {
             } else {
                 throw new CustomException("缺少get|is方法");
             }
-            if (StringUtils.hasText(getter)) {
+            if (StringUtil.isNotEmpty(getter)) {
                 final char[] cs = getter.toCharArray();
                 //首字母转小写
                 cs[0] += 32;

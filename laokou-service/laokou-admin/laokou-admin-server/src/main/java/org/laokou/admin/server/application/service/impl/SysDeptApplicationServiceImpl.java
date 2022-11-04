@@ -27,7 +27,7 @@ import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.ConvertUtil;
 import org.laokou.common.utils.TreeUtil;
 import org.laokou.admin.client.vo.SysDeptVO;
-import org.laokou.ump.client.utils.UserUtil;
+import org.laokou.security.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;

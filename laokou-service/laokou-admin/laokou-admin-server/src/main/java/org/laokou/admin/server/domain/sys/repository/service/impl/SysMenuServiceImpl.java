@@ -47,7 +47,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> im
     @Override
     public List<SysMenuVO> getMenuList(UserDetail userDetail, Integer type) {
         //region Description
-        return getMenuList(userDetail.getId(),userDetail.getSuperAdmin(),type);
+        return getMenuList(userDetail.getUserId(),userDetail.getSuperAdmin(),type);
         //endregion
     }
 

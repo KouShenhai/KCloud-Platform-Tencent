@@ -38,10 +38,10 @@ spring:
                 name: default
                 # 降级接口地址
                 fallbackUri: 'forward:/fallback'
-        - id: laokou-ump
-          uri: lb://laokou-ump
+        - id: laokou-security
+          uri: lb://laokou-security
           predicates:
-            - Path=/ump/**
+            - Path=/security/**
           filters:
             - StripPrefix=1
             # 限流
