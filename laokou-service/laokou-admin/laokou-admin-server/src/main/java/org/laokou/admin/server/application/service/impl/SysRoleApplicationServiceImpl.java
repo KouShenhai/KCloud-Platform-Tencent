@@ -24,7 +24,6 @@ import org.laokou.admin.server.domain.sys.entity.SysRoleMenuDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysRoleDeptService;
 import org.laokou.admin.server.domain.sys.repository.service.SysRoleMenuService;
 import org.laokou.admin.server.domain.sys.repository.service.SysRoleService;
-import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysRoleQO;
 import org.laokou.admin.client.dto.SysRoleDTO;
@@ -53,9 +52,6 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
 
     @Autowired
     private SysRoleDeptService sysRoleDeptService;
-
-    @Autowired
-    private SysUserService sysUserService;
 
     @Override
     @DataFilter(tableAlias = "boot_sys_role")

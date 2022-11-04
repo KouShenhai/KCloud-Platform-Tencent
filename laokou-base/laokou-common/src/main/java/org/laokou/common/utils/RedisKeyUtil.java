@@ -34,6 +34,10 @@ public final class RedisKeyUtil {
         return "sys:user:resource:" + token;
     }
 
+    public static String getResourceTreeKey(Long userId) {
+        return "sys:resource:tree:" + userId;
+    }
+
     /**
      * 用户信息Key
      */
@@ -61,4 +65,12 @@ public final class RedisKeyUtil {
     public static String getOssConfigKey() {
         return "sys:oss:config";
     }
+
+    /**
+     * 部门key
+     */
+    public static String getDeptAllKey() {
+        return "sys:dept:all";
+    }
+
 }

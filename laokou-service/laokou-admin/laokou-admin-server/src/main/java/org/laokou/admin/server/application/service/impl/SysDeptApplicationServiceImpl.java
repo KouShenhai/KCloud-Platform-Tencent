@@ -25,8 +25,10 @@ import org.laokou.admin.server.interfaces.qo.SysDeptQO;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.exception.CustomException;
 import org.laokou.common.utils.ConvertUtil;
+import org.laokou.common.utils.RedisKeyUtil;
 import org.laokou.common.utils.TreeUtil;
 import org.laokou.admin.client.vo.SysDeptVO;
+import org.laokou.redis.utils.RedisUtil;
 import org.laokou.security.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,12 +47,22 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Override
     public SysDeptVO getDeptList() {
         SysDeptQO qo = new SysDeptQO();
         qo.setStatus(Constant.NO);
+        String deptAllKey = RedisKeyUtil.getDeptAllKey();
+        Object obj = redisUtil.get(deptAllKey);
+        if (obj != null) {
+            return (SysDeptVO) obj;
+        }
         List<SysDeptVO> deptList = sysDeptService.getDeptList(qo);
-        return buildDept(deptList);
+        SysDeptVO sysDeptVO = buildDept(deptList);
+        redisUtil.set(deptAllKey,sysDeptVO);
+        return sysDeptVO;
     }
 
     @Override
@@ -93,6 +105,8 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
             throw new CustomException("不可删除，该部门下存在用户");
         }
         sysDeptService.deleteDept(id);
+        String deptAllKey = RedisKeyUtil.getDeptAllKey();
+        redisUtil.delete(deptAllKey);
         return true;
     }
 

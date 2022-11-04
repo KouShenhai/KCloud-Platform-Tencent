@@ -171,7 +171,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             PublishFactory.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
             throw new CustomException(ErrorCode.NOT_PERMISSIONS);
         }
-        //PublishFactory.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
+        PublishFactory.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
         //获取token
         return getToken(userDetail,resourceList);
     }

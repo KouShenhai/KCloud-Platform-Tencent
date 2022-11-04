@@ -25,7 +25,9 @@ import org.laokou.common.constant.Constant;
 import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.utils.ConvertUtil;
+import org.laokou.common.utils.RedisKeyUtil;
 import org.laokou.common.utils.TreeUtil;
+import org.laokou.redis.utils.RedisUtil;
 import org.laokou.security.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,11 +41,22 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     @Autowired
     private SysMenuService sysMenuService;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Override
     public SysMenuVO getMenuList() {
         UserDetail userDetail = UserUtil.userDetail();
+        Long userId = userDetail.getUserId();
+        String resourceTreeKey = RedisKeyUtil.getResourceTreeKey(userId);
+        Object obj = redisUtil.get(resourceTreeKey);
+        if (obj != null) {
+            return (SysMenuVO) obj;
+        }
         List<SysMenuVO> menuList = sysMenuService.getMenuList(userDetail,0);
-        return buildMenu(menuList);
+        SysMenuVO sysMenuVO = buildMenu(menuList);
+        redisUtil.set(resourceTreeKey,sysMenuVO);
+        return sysMenuVO;
     }
 
     @Override
@@ -81,6 +94,10 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     @Override
     public Boolean deleteMenu(Long id) {
         sysMenuService.deleteMenu(id);
+        UserDetail userDetail = UserUtil.userDetail();
+        Long userId = userDetail.getUserId();
+        String resourceTreeKey = RedisKeyUtil.getResourceTreeKey(userId);
+        redisUtil.delete(resourceTreeKey);
         return true;
     }
 
