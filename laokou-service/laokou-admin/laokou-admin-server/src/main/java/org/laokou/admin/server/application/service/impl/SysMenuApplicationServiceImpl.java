@@ -55,7 +55,7 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
         }
         List<SysMenuVO> menuList = sysMenuService.getMenuList(userDetail,0);
         SysMenuVO sysMenuVO = buildMenu(menuList);
-        redisUtil.set(resourceTreeKey,sysMenuVO);
+        redisUtil.set(resourceTreeKey,sysMenuVO,RedisUtil.HOUR_ONE_EXPIRE);
         return sysMenuVO;
     }
 

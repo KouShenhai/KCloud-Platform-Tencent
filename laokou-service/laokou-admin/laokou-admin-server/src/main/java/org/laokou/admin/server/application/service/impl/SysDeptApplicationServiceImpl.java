@@ -61,7 +61,7 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
         }
         List<SysDeptVO> deptList = sysDeptService.getDeptList(qo);
         SysDeptVO sysDeptVO = buildDept(deptList);
-        redisUtil.set(deptAllKey,sysDeptVO);
+        redisUtil.set(deptAllKey,sysDeptVO,RedisUtil.HOUR_ONE_EXPIRE);
         return sysDeptVO;
     }
 
