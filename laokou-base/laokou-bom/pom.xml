@@ -328,16 +328,6 @@
                 <version>${kaptcha.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.laokou</groupId>
-                <artifactId>laokou-auth-server</artifactId>
-                <version>${laokou.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.laokou</groupId>
-                <artifactId>laokou-auth-client</artifactId>
-                <version>${laokou.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.alipay.sdk</groupId>
                 <artifactId>alipay-sdk-java</artifactId>
                 <version>${alipay-sdk-java.version}</version>
@@ -390,11 +380,6 @@
             <dependency>
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-security-server</artifactId>
-                <version>${laokou.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.laokou</groupId>
-                <artifactId>laokou-security-client</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
             <dependency>
@@ -530,6 +515,16 @@
             <dependency>
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-captcha</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-auth-client</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-auth-client</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
         </dependencies>

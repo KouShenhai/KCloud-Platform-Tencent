@@ -16,8 +16,8 @@
         <module>laokou-sms</module>
         <module>laokou-email</module>
         <module>laokou-job</module>
-        <module>laokou-mq</module>
-        <module>laokou-search</module>
-        <module>laokou-cache</module>
+        <module>laokou-kafka</module>
+        <module>laokou-elasticsearch</module>
+        <module>laokou-redis</module>
     </modules>
 </project>

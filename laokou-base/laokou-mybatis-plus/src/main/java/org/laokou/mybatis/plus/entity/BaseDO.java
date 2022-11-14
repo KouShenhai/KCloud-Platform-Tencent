@@ -15,6 +15,7 @@
  */
 package org.laokou.mybatis.plus.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
@@ -29,7 +30,7 @@ public abstract class BaseDO {
     /**
      * id
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
