@@ -23,4 +23,6 @@ public interface Constant {
     String BEARER = "Bearer ";
 
     String AUTHORIZATION_HEAD = "Authorization";
+
+    Integer NO = 0;
 }

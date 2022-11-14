@@ -88,7 +88,7 @@ gateway:
         location: /security
   uris:
     - /oauth/captcha
-    - /oauth/token
+    - /oauth/logout
     - /actuator/**
     - /swagger/api-docs
     - /swagger-resources/**

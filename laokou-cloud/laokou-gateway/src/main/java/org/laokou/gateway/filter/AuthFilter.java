@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 package org.laokou.gateway.filter;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.http.HttpUtil;
 import lombok.Data;
 import org.laokou.common.constant.Constant;
 import org.laokou.common.exception.ErrorCode;
+import org.laokou.common.password.RsaCoder;
 import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.common.utils.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -24,21 +27,33 @@ import org.laokou.common.utils.StringUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.filter.factory.rewrite.CachedBodyOutputMessage;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.cloud.gateway.support.BodyInserterContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.server.HandlerStrategies;
+import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
 /**
  * 认证Filter
  * @author Kou Shenhai
@@ -53,6 +68,12 @@ public class AuthFilter implements GlobalFilter,Ordered {
 
     private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+    private static final String OAUTH_URI = "/oauth/token";
+
+    private static final String USERNAME = "username";
+
+    private static final String PASSWORD = "password";
+
     /**
      * 不拦截的urls
      */
@@ -62,7 +83,6 @@ public class AuthFilter implements GlobalFilter,Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
         // 记录日志
-
         // 放行uris
         // 获取request对象
         ServerHttpRequest request = exchange.getRequest();
@@ -73,10 +93,15 @@ public class AuthFilter implements GlobalFilter,Ordered {
         if (pathMatcher(requestUri)){
             return chain.filter(exchange);
         }
+        // 表单提交
+        MediaType mediaType = request.getHeaders().getContentType();
+        if (antPathMatcher.match(OAUTH_URI,requestUri) && MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
+            return buildRequest(exchange,chain);
+        }
         // 获取token
         String token = getToken(request);
         if (StringUtil.isEmpty(token)) {
-            return response(exchange, new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED));
+            return response(exchange, new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED,"未授权"));
         }
         ServerHttpRequest build = exchange.getRequest().mutate()
                 .header(Constant.AUTHORIZATION_HEAD, token).build();
@@ -96,6 +121,41 @@ public class AuthFilter implements GlobalFilter,Ordered {
         return Ordered.LOWEST_PRECEDENCE;
     }
 
+    private Mono<Void> buildRequest(ServerWebExchange exchange,GatewayFilterChain chain) {
+        ServerRequest serverRequest = ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders());
+        Mono<String> modifiedBody = serverRequest.bodyToMono(String.class).flatMap(decrypt());
+        BodyInserter bodyInserter = BodyInserters.fromPublisher(modifiedBody, String.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.putAll(exchange.getRequest().getHeaders());
+        headers.remove(HttpHeaders.CONTENT_LENGTH);
+        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        CachedBodyOutputMessage outputMessage = new CachedBodyOutputMessage(exchange, headers);
+        return bodyInserter.insert(outputMessage, new BodyInserterContext()).then(Mono.defer(() -> {
+            ServerHttpRequest decorator = decorate(exchange, headers, outputMessage);
+            return chain.filter(exchange.mutate().request(decorator).build());
+        }));
+    }
+
+    private Function decrypt() {
+        return s -> {
+            // 获取请求密码并解密
+            Map<String, String> inParamsMap = HttpUtil.decodeParamMap((String) s, CharsetUtil.CHARSET_UTF_8);
+            if (inParamsMap.containsKey(PASSWORD) && inParamsMap.containsKey(USERNAME)) {
+                try {
+                    // 返回修改后报文字符
+                    inParamsMap.put(PASSWORD, RsaCoder.decryptByPrivateKey(inParamsMap.get(PASSWORD)));
+                    inParamsMap.put(USERNAME, RsaCoder.decryptByPrivateKey(inParamsMap.get(USERNAME)));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else {
+                log.error("非法请求数据:{}", s);
+            }
+            return Mono.just(HttpUtil.toParams(inParamsMap, Charset.defaultCharset(), true));
+        };
+    }
+
     /**
      * 前端响应
      * @param exchange
@@ -107,6 +167,32 @@ public class AuthFilter implements GlobalFilter,Ordered {
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
         exchange.getResponse().setStatusCode(HttpStatus.OK);
         return exchange.getResponse().writeWith(Flux.just(buffer));
+    }
+
+    private ServerHttpRequestDecorator decorate(
+            ServerWebExchange exchange,
+            HttpHeaders headers,
+            CachedBodyOutputMessage outputMessage
+    ) {
+        return new ServerHttpRequestDecorator(exchange.getRequest()) {
+            @Override
+            public HttpHeaders getHeaders() {
+                long contentLength = headers.getContentLength();
+                HttpHeaders httpHeaders = new HttpHeaders();
+                httpHeaders.putAll(super.getHeaders());
+                if (contentLength > 0) {
+                    httpHeaders.setContentLength(contentLength);
+                } else {
+                    httpHeaders.set(HttpHeaders.TRANSFER_ENCODING, "chunked");
+                }
+                return httpHeaders;
+            }
+
+            @Override
+            public Flux<DataBuffer> getBody() {
+                return outputMessage.getBody();
+            }
+        };
     }
 
     /**

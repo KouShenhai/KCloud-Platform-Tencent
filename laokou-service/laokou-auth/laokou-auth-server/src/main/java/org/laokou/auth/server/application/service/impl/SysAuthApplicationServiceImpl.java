@@ -17,8 +17,7 @@ package org.laokou.auth.server.application.service.impl;
 import cn.hutool.core.thread.ThreadUtil;
 import lombok.SneakyThrows;
 import org.laokou.auth.client.enums.UserStatusEnum;
-import org.laokou.auth.client.password.PasswordUtil;
-import org.laokou.auth.client.password.RsaCoder;
+import org.laokou.common.password.PasswordUtil;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,6 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
-import javax.crypto.BadPaddingException;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -81,13 +79,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @SneakyThrows
     @Override
     public UserDetail login(String username, String password) {
-        //SRA私钥解密
-        try {
-            username = RsaCoder.decryptByPrivateKey(username);
-            password = RsaCoder.decryptByPrivateKey(password);
-        } catch (BadPaddingException e) {
-            throw new CustomOAuth2Exception(ErrorCode.DECRYPT_FAIL);
-        }
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
             throw new CustomOAuth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR);

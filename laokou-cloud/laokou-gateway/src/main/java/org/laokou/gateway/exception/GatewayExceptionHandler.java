@@ -26,14 +26,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.codec.HttpMessageReader;
 import org.springframework.http.codec.HttpMessageWriter;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.reactive.function.server.*;
 import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-import java.util.Collections;
 import java.util.List;
 /**
  * 异常处理器
@@ -45,9 +41,9 @@ import java.util.List;
 @Slf4j
 public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 
-	private List<HttpMessageReader<?>> messageReaders = Collections.emptyList();
-	private List<HttpMessageWriter<?>> messageWriters = Collections.emptyList();
-	private List<ViewResolver> viewResolvers = Collections.emptyList();
+	private List<HttpMessageReader<?>> messageReaders = HandlerStrategies.withDefaults().messageReaders();
+	private List<HttpMessageWriter<?>> messageWriters = HandlerStrategies.withDefaults().messageWriters();
+	private List<ViewResolver> viewResolvers = HandlerStrategies.withDefaults().viewResolvers();
 	private static final TransmittableThreadLocal<HttpResultUtil<?>> threadLocal = new TransmittableThreadLocal<>();
 
 	@Override

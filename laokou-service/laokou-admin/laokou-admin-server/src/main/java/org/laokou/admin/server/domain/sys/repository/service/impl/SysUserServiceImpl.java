@@ -22,7 +22,7 @@ import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.server.domain.sys.entity.SysUserDO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysUserMapper;
-import org.laokou.auth.client.password.PasswordUtil;
+import org.laokou.common.password.PasswordUtil;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.utils.StringUtil;

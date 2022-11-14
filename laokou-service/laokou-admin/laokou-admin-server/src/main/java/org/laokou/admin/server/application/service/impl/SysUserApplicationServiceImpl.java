@@ -29,7 +29,7 @@ import org.laokou.admin.server.interfaces.qo.SysUserQO;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.client.dto.SysUserDTO;
 import org.laokou.common.constant.Constant;
-import org.laokou.auth.client.password.PasswordUtil;
+import org.laokou.common.password.PasswordUtil;
 import org.laokou.common.enums.SuperAdminEnum;
 import org.laokou.common.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
