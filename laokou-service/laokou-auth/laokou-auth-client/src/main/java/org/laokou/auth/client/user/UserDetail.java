@@ -17,19 +17,16 @@ package org.laokou.auth.client.user;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
+import java.io.Serializable;
+import java.util.List;
 /**
  * @author Kou Shenhai
  */
 @Getter
 @Setter
 @ToString
-public class UserDetail implements UserDetails {
+public class UserDetail implements Serializable {
     private Long userId;
     private String username;
     private String imgUrl;
@@ -39,35 +36,5 @@ public class UserDetail implements UserDetails {
     private String mobile;
     private String password;
     private List<Long> deptIds;
-    /**
-     * 权限集合
-     */
-    private Set<GrantedAuthority> authorities;
     private List<String> permissionList;
-    private boolean enabled = true;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
 }

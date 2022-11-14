@@ -15,8 +15,17 @@
  */
 package org.laokou.auth.server.interfaces.controller;
 import io.swagger.annotations.Api;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import org.laokou.auth.server.application.service.SysAuthApplicationService;
+import org.laokou.auth.server.infrastructure.constant.OauthConstant;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * 系统认证控制器
  * @author Kou Shenhai
@@ -25,32 +34,21 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "系统认证API",protocols = "http",tags = "系统认证API")
 public class SysAuthApiController {
 
-    @GetMapping("index")
-    public String index() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String encodePW = bCryptPasswordEncoder.encode("123");
-        System.out.println(encodePW);
-        boolean matches = bCryptPasswordEncoder.matches("123", encodePW);
-        System.out.println("比较结果：" + matches);
-        return "success";
+    @Autowired
+    private SysAuthApplicationService sysAuthApplicationService;
+
+    @GetMapping("/sys/auth/api/captcha")
+    @ApiOperation("系统认证>验证码")
+    @ApiImplicitParam(name = "uuid",value = "唯一标识",required = true,paramType = "query",dataType = "String")
+    public void captcha(@RequestParam(OauthConstant.UUID)String uuid, HttpServletResponse response) throws IOException {
+        sysAuthApplicationService.captcha(uuid,response);
     }
 
-
-//    @Autowired
-//    private SysAuthApplicationService sysAuthApplicationService;
-//
-//    @GetMapping("/sys/auth/api/captcha")
-//    @ApiOperation("系统认证>验证码")
-//    @ApiImplicitParam(name = "uuid",value = "唯一标识",required = true,paramType = "query",dataType = "String")
-//    public void captcha(@RequestParam(Constant.UUID)String uuid, HttpServletResponse response) throws IOException {
-//        sysAuthApplicationService.captcha(uuid,response);
-//    }
-//
-//    @GetMapping("/sys/auth/api/logout")
-//    @ApiOperation("系统认证>退出登录")
-//    public Mono<Void> logout(HttpServletRequest request) {
-//        sysAuthApplicationService.logout(request);
-//        return Mono.empty();
-//    }
+    @GetMapping("/sys/auth/api/logout")
+    @ApiOperation("系统认证>退出登录")
+    public Mono<Void> logout(HttpServletRequest request) {
+        sysAuthApplicationService.logout(request);
+        return Mono.empty();
+    }
 
 }

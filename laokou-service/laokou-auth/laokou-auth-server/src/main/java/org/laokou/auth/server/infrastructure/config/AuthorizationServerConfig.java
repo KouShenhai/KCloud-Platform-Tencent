@@ -15,12 +15,10 @@
  */
 package org.laokou.auth.server.infrastructure.config;
 import lombok.AllArgsConstructor;
-import org.laokou.auth.server.infrastructure.constant.OauthConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -28,14 +26,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-
-import javax.sql.DataSource;
-
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -49,18 +43,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private final WebResponseExceptionTranslator<OAuth2Exception> webResponseExceptionTranslator;
     private final TokenStore tokenStore;
     private final ClientDetailsService clientDetailsService;
-    private final DataSource dataSource;
-    private final UserDetailsService userDetailsService;
 
     /**
      * 配置客户端信息
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
-        clientDetailsService.setSelectClientDetailsSql(OauthConstant.SELECT_STATEMENT);
-        clientDetailsService.setFindClientDetailsSql(OauthConstant.FIND_STATEMENT);
-        clients.withClientDetails(clientDetailsService);
+        //in-memory存储
+        clients.inMemory()
+                .withClient("client_auth")
+                //授权类型
+                .authorizedGrantTypes("password","refresh_token")
+                .scopes("auth")
+                .secret("secret")
+                .autoApprove(true);
     }
 
     @Override
@@ -73,8 +69,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.exceptionTranslator(webResponseExceptionTranslator);
         // 令牌配置
         endpoints.tokenServices(tokenServices());
-        // 刷新令牌
-        endpoints.userDetailsService(userDetailsService);
     }
     /**
      * @return

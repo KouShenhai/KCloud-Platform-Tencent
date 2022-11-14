@@ -21,8 +21,6 @@ package org.laokou.auth.server.infrastructure.constant;
  */
 public interface OauthConstant {
 
-   String SELECT_STATEMENT = "select client_id,client_secret,resource_ids, scope,authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity,refresh_token_validity, additional_information, autoapprove from boot_sys_oauth_client_details where client_id = ?";
-
-   String FIND_STATEMENT = "select client_id,client_secret,resource_ids, scope,authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity,refresh_token_validity, additional_information, autoapprove from boot_sys_oauth_client_details order by client_id";
+   String UUID = "uuid";
 
 }
