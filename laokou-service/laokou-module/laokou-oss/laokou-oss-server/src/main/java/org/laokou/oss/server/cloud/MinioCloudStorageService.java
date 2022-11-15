@@ -17,8 +17,8 @@ package org.laokou.oss.server.cloud;
 
 import cn.hutool.core.util.IdUtil;
 import io.minio.*;
-import org.laokou.common.utils.FileUtil;
-import org.laokou.common.utils.HashUtil;
+import org.laokou.common.core.utils.FileUtil;
+import org.laokou.common.core.utils.HashUtil;
 import org.laokou.oss.client.vo.CloudStorageVO;
 import java.io.InputStream;
 

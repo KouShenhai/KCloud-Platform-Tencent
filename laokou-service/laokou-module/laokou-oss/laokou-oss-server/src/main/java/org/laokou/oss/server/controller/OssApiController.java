@@ -15,10 +15,10 @@
  */
 package org.laokou.oss.server.controller;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.exception.CustomException;
+import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.core.utils.HttpResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.laokou.common.utils.HttpResultUtil;
 import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.oss.server.cloud.CloudFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -15,10 +15,10 @@
  */
 package org.laokou.oss.server.cloud;
 import lombok.RequiredArgsConstructor;
-import org.laokou.common.exception.CustomException;
-import org.laokou.common.utils.JacksonUtil;
-import org.laokou.common.utils.RedisKeyUtil;
-import org.laokou.common.utils.StringUtil;
+import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.core.utils.RedisKeyUtil;
+import org.laokou.common.core.utils.StringUtil;
 import org.laokou.oss.client.vo.CloudStorageVO;
 import org.laokou.oss.server.enums.CloudTypeEnum;
 import org.laokou.oss.server.service.SysOssService;

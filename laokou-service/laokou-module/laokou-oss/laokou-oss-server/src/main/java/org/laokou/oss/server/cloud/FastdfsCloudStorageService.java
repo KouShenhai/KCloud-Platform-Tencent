@@ -17,8 +17,8 @@ package org.laokou.oss.server.cloud;
 
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.DefaultGenerateStorageClient;
-import org.laokou.common.exception.CustomException;
-import org.laokou.common.utils.SpringContextUtil;
+import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.core.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.laokou.oss.client.vo.CloudStorageVO;
