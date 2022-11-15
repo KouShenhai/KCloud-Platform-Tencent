@@ -32,24 +32,11 @@ import java.util.List;
 public interface SysRoleMapper extends BaseMapper<SysRoleDO> {
 
     /**
-     * 查询角色Ids
-     * @return
-     */
-    List<Long> getRoleIds();
-
-    /**
-     * 通过userId查询角色Ids
+     * 通过用户id查询角色Ids
      * @param userId
      * @return
      */
     List<Long> getRoleIdsByUserId(@Param("userId") Long userId);
-
-    /**
-     * 根据userId获取角色名称
-     * @param userId
-     * @return
-     */
-    List<SysRoleVO> getRoleListByUserId(@Param("userId")Long userId);
 
     /**
      * 分页查询角色
@@ -59,10 +46,24 @@ public interface SysRoleMapper extends BaseMapper<SysRoleDO> {
      */
     IPage<SysRoleVO> getRoleList(IPage<SysRoleVO> page, @Param("qo") SysRoleQo qo);
 
+    /**
+     * 根据id查询角色
+     * @param id
+     * @return
+     */
     SysRoleVO getRoleById(@Param("id") Long id);
 
+    /**
+     * 根据id删除角色
+     * @param id
+     */
     void deleteRole(@Param("id") Long id);
 
+    /**
+     * 查询角色列表
+     * @param qo
+     * @return
+     */
     List<SysRoleVO> getRoleList(@Param("qo") SysRoleQo qo);
 
 }

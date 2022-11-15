@@ -18,7 +18,13 @@ package org.laokou.admin.client.enums;
  * @author Kou Shenhai
  */
 public enum  FlowCommentEnum {
+    /**
+     * 正常
+     */
     NORMAL("1"),
+    /**
+     * 委派
+     */
     DELEGATE("4");
     private final String type;
     FlowCommentEnum(String type) {

@@ -30,8 +30,9 @@ import java.util.List;
 public interface SysUserService extends IService<SysUserDO> {
 
     /**
-     * 修改用户信息
-     * @param
+     * 修改用户
+     * @param dto
+     * @return
      */
     void updateUser(SysUserDTO dto);
 

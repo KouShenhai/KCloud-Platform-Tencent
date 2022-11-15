@@ -26,9 +26,26 @@ import org.laokou.admin.client.vo.TaskVO;
  */
 public interface WorkflowProcessApplicationService {
 
+    /**
+     * 开启任务
+     * @param processKey
+     * @param businessKey
+     * @param instanceName
+     * @return
+     */
     StartProcessVO startResourceProcess(String processKey,String businessKey,String instanceName);
 
+    /**
+     * 分页查询待我审批任务
+     * @param qo
+     * @return
+     */
     IPage<TaskVO> queryResourceTaskPage(TaskQo qo);
 
+    /**
+     * 审批任务
+     * @param dto
+     * @return
+     */
     Boolean auditResourceTask(AuditDTO dto);
 }

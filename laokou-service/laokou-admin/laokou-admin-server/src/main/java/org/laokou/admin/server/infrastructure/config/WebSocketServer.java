@@ -108,7 +108,7 @@ public class WebSocketServer {
      * @param message
      * @throws IOException
      */
-   private void SendMessage(String message) throws IOException {
+   private void sendMessage(String message) throws IOException {
         this.session.getBasicRemote().sendText(message);
    }
     /**
@@ -121,10 +121,10 @@ public class WebSocketServer {
         for (WebSocketServer webSocketServer : webSocketServerCopyOnWriteArraySet){
                 if (userId == null) {
                     log.info("推送消息给:{}" , webSocketServer.userId + ",推送内容：{}" , message);
-                    webSocketServer.SendMessage(message);
+                    webSocketServer.sendMessage(message);
                 } else if (userId.equals(webSocketServer.userId)) {
                     log.info("推送消息给:{}" , webSocketServer.userId + ",推送内容：{}" , message);
-                    webSocketServer.SendMessage(message);
+                    webSocketServer.sendMessage(message);
                 }
         }
     }

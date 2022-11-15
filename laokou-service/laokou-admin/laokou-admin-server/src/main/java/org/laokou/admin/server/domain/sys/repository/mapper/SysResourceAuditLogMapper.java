@@ -32,6 +32,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SysResourceAuditLogMapper extends BaseMapper<SysResourceAuditLogDO> {
 
+    /**
+     * 查询资源审核日志
+     * @param resourceId
+     * @return
+     */
     List<SysResourceAuditLogVO> getAuditLogList(@Param("resourceId") Long resourceId);
 
 }

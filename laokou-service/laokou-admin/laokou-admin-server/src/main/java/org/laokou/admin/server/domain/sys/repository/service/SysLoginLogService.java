@@ -25,5 +25,11 @@ import org.laokou.admin.client.vo.SysLoginLogVO;
  * @author Kou Shenhai
  */
 public interface SysLoginLogService extends IService<SysLoginLogDO> {
+    /**
+     * 分页查询登录日志
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysLoginLogVO> getLoginLogList(IPage<SysLoginLogVO> page, LoginLogQo qo);
 }

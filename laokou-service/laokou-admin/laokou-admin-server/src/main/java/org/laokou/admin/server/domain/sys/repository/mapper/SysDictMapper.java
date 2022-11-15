@@ -35,12 +35,32 @@ import java.util.List;
 @Mapper
 public interface SysDictMapper extends BaseMapper<SysDictDO> {
 
+    /**
+     * 获取字典列表
+     * @param qo
+     * @return
+     */
     List<SysDictVO> getDictList(@Param("qo") SysDictQo qo);
 
+    /**
+     * 分页查询字典
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysDictVO> getDictList(IPage<SysDictVO> page, @Param("qo") SysDictQo qo);
 
+    /**
+     * 根据id查询字典
+     * @param id
+     * @return
+     */
     SysDictVO getDictById(@Param("id") Long id);
 
+    /**
+     * 根据id删除字典
+     * @param id
+     */
     void deleteDict(@Param("id") Long id);
 
 }

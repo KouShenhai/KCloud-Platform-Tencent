@@ -24,6 +24,11 @@ import org.laokou.elasticsearch.client.vo.SearchVO;
  */
 public interface SysSearchApplicationService {
 
+    /**
+     * 资源高亮搜索
+     * @param form
+     * @return
+     */
     SearchVO searchResource(SearchForm form);
 
 }

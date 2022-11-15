@@ -29,15 +29,46 @@ public interface WorkflowDefinitionApplicationService {
 
     String BPMN_FILE_SUFFIX = ".bpmn";
 
+    /**
+     * 导入流程文件
+     * @param name
+     * @param in
+     * @return
+     */
     Boolean importFile(String name, InputStream in);
 
+    /**
+     * 分页查询流程
+     * @param qo
+     * @return
+     */
     IPage<DefinitionVO> queryDefinitionPage(DefinitionQo qo);
 
+    /**
+     * 查询流程图
+     * @param definitionId
+     * @param response
+     */
     void imageProcess(String definitionId, HttpServletResponse response);
 
+    /**
+     * 删除流程
+     * @param deploymentId
+     * @return
+     */
     Boolean deleteDefinition(String deploymentId);
 
+    /**
+     * 挂起流程
+     * @param definitionId
+     * @return
+     */
     Boolean suspendDefinition(String definitionId);
 
+    /**
+     * 激活流程
+     * @param definitionId
+     * @return
+     */
     Boolean activateDefinition(String definitionId);
 }

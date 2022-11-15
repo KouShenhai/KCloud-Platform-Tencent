@@ -28,8 +28,25 @@ import org.laokou.admin.client.vo.SysOauthVO;
  */
 public interface SysOauthService extends IService<SysOauthDO> {
 
+    /**
+     * 根据id删除认证配置
+     * @param id
+     */
     void deleteOauth(Long id);
+
+    /**
+     * 根据id查询认证配置
+     * @param id
+     * @return
+     */
     SysOauthVO getOauthById(Long id);
+
+    /**
+     * 分页查询认证配置
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysOauthVO> getOauthList(IPage<SysOauthVO> page, SysOauthQo qo);
 
 }

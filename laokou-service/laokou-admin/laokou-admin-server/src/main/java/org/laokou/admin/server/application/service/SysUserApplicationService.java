@@ -29,21 +29,50 @@ import java.util.List;
 public interface SysUserApplicationService {
 
     /**
-     * 修改用户信息
-     * @param
+     * 修改用户
+     * @param dto
+     * @return
      */
     Boolean updateUser(SysUserDTO dto);
 
+    /**
+     * 新增用户
+     * @param dto
+     * @return
+     */
     Boolean insertUser(SysUserDTO dto);
 
+    /**
+     * 分页查询用户
+     * @param qo
+     * @return
+     */
     IPage<SysUserVO> queryUserPage(SysUserQo qo);
 
+    /**
+     * 根据id查询用户
+     * @param id
+     * @return
+     */
     SysUserVO getUserById(Long id);
 
+    /**
+     * 根据id删除用户
+     * @param id
+     * @return
+     */
     Boolean deleteUser(Long id);
 
+    /**
+     * 用户下拉选择列表
+     * @return
+     */
     List<OptionVO> getOptionList();
 
+    /**
+     * 获取用户信息
+     * @return
+     */
     UserInfoVO getUserInfo();
 
 }

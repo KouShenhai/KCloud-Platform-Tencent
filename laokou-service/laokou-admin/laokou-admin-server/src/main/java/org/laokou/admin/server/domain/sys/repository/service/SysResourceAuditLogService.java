@@ -26,5 +26,10 @@ import org.laokou.admin.client.vo.SysResourceAuditLogVO;
  * @date 2022/8/26 0026 下午 5:35
  */
 public interface SysResourceAuditLogService extends IService<SysResourceAuditLogDO> {
+    /**
+     * 分页查询资源审核日志
+     * @param resourceId
+     * @return
+     */
     List<SysResourceAuditLogVO> getAuditLogList(Long resourceId);
 }

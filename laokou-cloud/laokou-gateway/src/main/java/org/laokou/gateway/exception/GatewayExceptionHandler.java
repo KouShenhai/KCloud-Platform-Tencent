@@ -44,7 +44,7 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 	private List<HttpMessageReader<?>> messageReaders = HandlerStrategies.withDefaults().messageReaders();
 	private List<HttpMessageWriter<?>> messageWriters = HandlerStrategies.withDefaults().messageWriters();
 	private List<ViewResolver> viewResolvers = HandlerStrategies.withDefaults().viewResolvers();
-	private static final TransmittableThreadLocal<HttpResultUtil<?>> threadLocal = new TransmittableThreadLocal<>();
+	private static final TransmittableThreadLocal<HttpResultUtil<?>> TL = new TransmittableThreadLocal<>();
 
 	@Override
 	public Mono<Void> handle(ServerWebExchange exchange, Throwable e) {
@@ -54,7 +54,7 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 			log.error("服务未启动或服务运行异常");
 			result = result.error("服务正在维护，请联系管理员");
 		}
-		threadLocal.set(result);
+		TL.set(result);
 		ServerRequest serverRequest = ServerRequest.create(exchange, this.messageReaders);
 		return RouterFunctions.route(RequestPredicates.all(),this::renderErrorResponse)
 				.route(serverRequest)
@@ -64,9 +64,9 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 	}
 
 	protected Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
-		return ServerResponse.status(threadLocal.get().getCode())
+		return ServerResponse.status(TL.get().getCode())
 				.contentType(MediaType.APPLICATION_JSON)
-				.body(BodyInserters.fromObject(threadLocal.get()));
+				.body(BodyInserters.fromObject(TL.get()));
 	}
 
 	private Mono<? extends Void> write(ServerWebExchange exchange,ServerResponse response) {
@@ -75,7 +75,7 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 		log.info("exchangeHeaders:{}",exchangeHeaders);
 		log.info("responseContentType:{}",responseContentType);
 		exchangeHeaders.setContentType(responseContentType);
-		threadLocal.remove();
+		TL.remove();
 		return response.writeTo(exchange,new ResponseContext());
 	}
 

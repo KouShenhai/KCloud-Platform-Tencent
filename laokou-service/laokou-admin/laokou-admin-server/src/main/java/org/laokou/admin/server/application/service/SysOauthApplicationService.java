@@ -27,13 +27,38 @@ import org.laokou.admin.client.vo.SysOauthVO;
  */
 public interface SysOauthApplicationService {
 
+    /**
+     * 分页查询认证配置
+     * @param qo
+     * @return
+     */
     IPage<SysOauthVO> queryOauthPage(SysOauthQo qo);
 
+    /**
+     * 新增认证配置
+     * @param dto
+     * @return
+     */
     Boolean insertOauth(SysOauthDTO dto);
 
+    /**
+     * 修改认证配置
+     * @param dto
+     * @return
+     */
     Boolean updateOauth(SysOauthDTO dto);
 
+    /**
+     * 根据id删除认证配置
+     * @param id
+     * @return
+     */
     Boolean deleteOauth(Long id);
 
+    /**
+     * 根据id查询认证配置
+     * @param id
+     * @return
+     */
     SysOauthVO getOauthById(Long id);
 }

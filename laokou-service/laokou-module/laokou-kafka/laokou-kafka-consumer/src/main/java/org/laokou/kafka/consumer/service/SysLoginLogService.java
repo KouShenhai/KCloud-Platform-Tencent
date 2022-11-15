@@ -24,5 +24,9 @@ import org.laokou.kafka.consumer.entity.SysLoginLogDO;
  * @author Kou Shenhai
  */
 public interface SysLoginLogService extends IService<SysLoginLogDO> {
+    /**
+     * 新增登录日志
+     * @param dto
+     */
     void insertLoginLog(LoginLogDTO dto);
 }

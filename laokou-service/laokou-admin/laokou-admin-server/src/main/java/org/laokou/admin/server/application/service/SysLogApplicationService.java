@@ -26,7 +26,17 @@ import org.laokou.admin.client.vo.SysOperateLogVO;
  */
 public interface SysLogApplicationService {
 
+    /**
+     * 分页查询操作日志
+     * @param qo
+     * @return
+     */
     IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQo qo);
 
+    /**
+     * 分页查询登录日志
+     * @param qo
+     * @return
+     */
     IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQo qo);
 }

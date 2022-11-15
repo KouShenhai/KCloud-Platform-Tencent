@@ -33,18 +33,8 @@ import java.util.List;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleDO> implements SysRoleService {
 
     @Override
-    public List<Long> getRoleIds() {
-        return this.baseMapper.getRoleIds();
-    }
-
-    @Override
     public List<Long> getRoleIdsByUserId(Long userId) {
         return this.baseMapper.getRoleIdsByUserId(userId);
-    }
-
-    @Override
-    public List<SysRoleVO> getRoleListByUserId(Long userId) {
-        return this.baseMapper.getRoleListByUserId(userId);
     }
 
     @Override

@@ -36,16 +36,48 @@ import java.util.List;
 @Repository
 public interface SysResourceMapper extends BaseMapper<SysResourceDO> {
 
+    /**
+     * 分页查询资源
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysResourceVO> getResourceList(IPage<SysResourceVO> page, @Param("qo") SysResourceQo qo);
 
+    /**
+     * 根据id查询资源
+     * @param id
+     * @return
+     */
     SysResourceVO getResourceById(@Param("id") Long id);
 
+    /**
+     * 根据id删除资源
+     * @param id
+     */
     void deleteResource(@Param("id") Long id);
 
+    /**
+     * 根据编码查询资源总数
+     * @param code
+     * @return
+     */
     Long getResourceTotal(@Param("code")String code);
 
+    /**
+     * 根据编码查询资源的年分区列表
+     * @param code
+     * @return
+     */
     List<String> getResourceYmPartitionList(@Param("code")String code);
 
+    /**
+     * 根据偏移量查询资源列表
+     * @param pageSize
+     * @param pageIndex
+     * @param code
+     * @return
+     */
     List<ResourceIndex> getResourceIndexList(@Param("pageSize")Integer pageSize, @Param("pageIndex")Integer pageIndex, @Param("code")String code);
 
 }

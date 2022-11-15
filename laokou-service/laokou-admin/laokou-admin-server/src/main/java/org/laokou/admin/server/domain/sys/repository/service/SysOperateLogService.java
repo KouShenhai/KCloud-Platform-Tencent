@@ -26,6 +26,12 @@ import org.laokou.admin.client.vo.SysOperateLogVO;
  */
 public interface SysOperateLogService extends IService<SysOperateLogDO> {
 
+    /**
+     * 分页查询操作日志
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysOperateLogVO> getOperateLogList(IPage<SysOperateLogVO> page, SysOperateLogQo qo);
 
 }

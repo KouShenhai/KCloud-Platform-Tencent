@@ -24,5 +24,9 @@ import org.laokou.kafka.consumer.entity.SysOperateLogDO;
  * @author Kou Shenhai
  */
 public interface SysOperateLogService extends IService<SysOperateLogDO> {
+    /**
+     * 新增登录日志
+     * @param dto
+     */
     void insertOperateLog(OperateLogDTO dto);
 }

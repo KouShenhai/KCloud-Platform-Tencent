@@ -35,7 +35,9 @@ public class FileUtil extends FileUtils {
 
     public static final String RW = "rw";
 
-    // 定义允许上传的文件扩展名
+    /**
+     * 定义允许上传的文件扩展名
+     */
     private static final Map<String, String> EXT_MAP = new HashMap<>(3);
 
     public static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
@@ -273,7 +275,8 @@ public class FileUtil extends FileUtils {
     private static boolean deleteDir(File dir) {
         dir = normalizeFile(dir);
         try {
-            return deleteFromDir(dir) && dir.delete(); // 先删除完里面所有内容再删除空文件夹
+            // 先删除完里面所有内容再删除空文件夹
+            return deleteFromDir(dir) && dir.delete();
         } catch (Exception e) {
             return false;
         }
@@ -335,11 +338,13 @@ public class FileUtil extends FileUtils {
         String thumbsDb = "Thumbs.db";
         oldFile = normalizeFile(oldFile);
         newPath = normalizePath(newPath);
-        if (!oldFile.exists()) { // 文件存在时
+        // 文件存在时
+        if (!oldFile.exists()) {
             log.info("文件不存在：" + oldFile);
             return false;
         }
-        if (!oldFile.isFile()) { // 文件存在时
+        // 文件存在时
+        if (!oldFile.isFile()) {
             log.info(oldFile + "不是文件");
             return false;
         }
@@ -352,7 +357,8 @@ public class FileUtil extends FileUtils {
         FileOutputStream fs =null;
         try {
             int byteread = 0;
-            inStream = new FileInputStream(oldFile); // 读入原文件
+            // 读入原文件
+            inStream = new FileInputStream(oldFile);
             File newFile = new File(newPath);
             //如果新文件是一个目录，则创建新的File对象
             if(newFile.isDirectory()){
@@ -393,16 +399,19 @@ public class FileUtil extends FileUtils {
     private static boolean copyDir(File oldDir, String newPath) {
         oldDir = normalizeFile(oldDir);
         newPath = normalizePath(newPath);
-        if (!oldDir.exists()) { // 文件存在时
+        // 文件存在时
+        if (!oldDir.exists()) {
             log.info("文件夹不存在：" + oldDir);
             return false;
         }
-        if (!oldDir.isDirectory()) { // 文件存在时
+        // 文件存在时
+        if (!oldDir.isDirectory()) {
             log.info(oldDir + "不是文件夹");
             return false;
         }
         try {
-            (new File(newPath)).mkdirs(); // 如果文件夹不存在 则建立新文件夹
+            // 如果文件夹不存在 则建立新文件夹
+            (new File(newPath)).mkdirs();
             File[] files = oldDir.listFiles();
             File temp = null;
             for (int i = 0; i < files.length; i++) {
@@ -411,7 +420,9 @@ public class FileUtil extends FileUtils {
                     if (!FileUtil.copyFile(temp, newPath + "/" + temp.getName())) {
                         return false;
                     }
-                } else if (temp.isDirectory()) {// 如果是子文件夹
+                }
+                // 如果是子文件夹
+                else if (temp.isDirectory()) {
                     if (!FileUtil.copyDir(temp, newPath + "/" + temp.getName())) {
                         return false;
                     }

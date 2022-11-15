@@ -33,10 +33,25 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SysOauthMapper extends BaseMapper<SysOauthDO> {
 
+    /**
+     * 根据id删除认证配置
+     * @param id
+     */
     void deleteOauth(@Param("id") Long id);
 
+    /**
+     * 根据id查询认证配置
+     * @param id
+     * @return
+     */
     SysOauthVO getOauthById(@Param("id") Long id);
 
+    /**
+     * 分页查询认证配置
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysOauthVO> getOauthList(IPage<SysOauthVO> page, @Param("qo") SysOauthQo qo);
 
 }

@@ -31,6 +31,12 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface SysLoginLogMapper extends BaseMapper<SysLoginLogDO> {
 
+    /**
+     * 分页查询登录日志
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysLoginLogVO> getLoginLogList(IPage<SysLoginLogVO> page, @Param("qo") LoginLogQo qo);
 
 }

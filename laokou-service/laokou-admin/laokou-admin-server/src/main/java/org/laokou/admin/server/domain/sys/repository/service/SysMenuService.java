@@ -29,6 +29,7 @@ public interface SysMenuService extends IService<SysMenuDO> {
     /**
      * 获取所有资源列表
      * @param userId
+     * @param type
      * @return
      */
     List<SysMenuVO> getMenuList(Long userId, Integer type);
@@ -49,24 +50,30 @@ public interface SysMenuService extends IService<SysMenuDO> {
     List<SysMenuVO> queryMenuList(SysMenuQo qo);
 
     /**
-     * 根据id查询
+     * 根据id查询菜单
      * @param id
      * @return
      */
     SysMenuVO getMenuById(Long id);
 
     /**
-     * 逻辑删除
+     * 根据id删除菜单
+     * @param id
      */
     void deleteMenu(Long id);
 
     /**
-     * 通过roleId获取菜单
+     * 根据roleId获取菜单
      * @param roleId
      * @return
      */
     List<SysMenuVO> getMenuListByRoleId(Long roleId);
 
+    /**
+     * 根据角色id查询菜单ids
+     * @param roleId
+     * @return
+     */
     List<Long> getMenuIdsByRoleId(Long roleId);
 
 }

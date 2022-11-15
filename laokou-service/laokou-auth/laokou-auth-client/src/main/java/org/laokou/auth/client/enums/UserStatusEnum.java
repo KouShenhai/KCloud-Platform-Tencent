@@ -19,6 +19,12 @@ package org.laokou.auth.client.enums;
  * @author Kou Shenhai
  */
 public enum UserStatusEnum {
+    /**
+     * 正常
+     */
     ENABLED,
+    /**
+     * 禁用
+     */
     DISABLE;
 }

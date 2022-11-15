@@ -30,12 +30,32 @@ import java.util.List;
  */
 public interface SysDictService extends IService<SysDictDO> {
 
+    /**
+     * 查询字典列表
+     * @param qo
+     * @return
+     */
     List<SysDictVO> getDictList(SysDictQo qo);
 
+    /**
+     * 分页查询字典
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysDictVO> getDictList(IPage<SysDictVO> page, SysDictQo qo);
 
+    /**
+     * 根据id查询字典
+     * @param id
+     * @return
+     */
     SysDictVO getDictById(Long id);
 
+    /**
+     * 根据id删除字典
+     * @param id
+     */
     void deleteDict(Long id);
 
 }

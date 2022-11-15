@@ -28,19 +28,11 @@ import java.util.List;
 public interface SysRoleService extends IService<SysRoleDO> {
 
     /**
-     * 查询角色Ids
-     * @return
-     */
-    List<Long> getRoleIds();
-
-    /**
-     * 通过userId查询角色Ids
+     * 通过用户Id查询角色Ids
      * @param userId
      * @return
      */
     List<Long> getRoleIdsByUserId(Long userId);
-
-    List<SysRoleVO> getRoleListByUserId(Long userId);
 
     /**
      * 分页查询角色
@@ -50,10 +42,24 @@ public interface SysRoleService extends IService<SysRoleDO> {
      */
     IPage<SysRoleVO> getRolePage(IPage<SysRoleVO> page, SysRoleQo qo);
 
+    /**
+     * 查询角色列表
+     * @param qo
+     * @return
+     */
     List<SysRoleVO> getRoleList(SysRoleQo qo);
 
+    /**
+     * 根据id查询角色
+     * @param id
+     * @return
+     */
     SysRoleVO getRoleById(Long id);
 
+    /**
+     * 根据id删除角色
+     * @param id
+     */
     void deleteRole(Long id);
 
 }

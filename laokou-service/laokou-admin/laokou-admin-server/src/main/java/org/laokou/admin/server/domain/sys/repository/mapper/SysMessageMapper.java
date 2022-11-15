@@ -32,13 +32,39 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface SysMessageMapper extends BaseMapper<SysMessageDO> {
 
+    /**
+     * 分页查询消息
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysMessageVO> getMessageList(IPage<SysMessageVO> page, @Param("qo") SysMessageQo qo);
 
+    /**
+     * 根据detail查询消息
+     * @param id
+     * @return
+     */
     MessageDetailVO getMessageByDetailId(@Param("id") Long id);
 
+    /**
+     * 分页查询未读消息
+     * @param page
+     * @param userId
+     * @return
+     */
     IPage<SysMessageVO> getUnReadList(IPage<SysMessageVO> page, @Param("userId") Long userId);
 
+    /**
+     * 消息读取
+     * @param id
+     */
     void readMessage(Long id);
 
+    /**
+     * 根据id查询消息
+     * @param id
+     * @return
+     */
     MessageDetailVO getMessageById(@Param("id")Long id);
 }

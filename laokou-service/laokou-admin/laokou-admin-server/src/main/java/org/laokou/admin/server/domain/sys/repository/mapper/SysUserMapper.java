@@ -43,12 +43,20 @@ public interface SysUserMapper extends BaseMapper<SysUserDO> {
     IPage<SysUserVO> getUserPage(IPage<SysUserVO> page, @Param("qo") SysUserQo qo);
 
     /**
-     * 更新用户信息
+     * 更新用户
      * @param dto
      */
     void updateUser(@Param("dto") SysUserDTO dto);
 
+    /**
+     * 根据id删除用户
+     * @param id
+     */
     void deleteUser(@Param("id") Long id);
 
+    /**
+     * 获取下拉用户选择列表
+     * @return
+     */
     List<OptionVO> getOptionList();
 }

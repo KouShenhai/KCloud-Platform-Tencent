@@ -27,14 +27,41 @@ import org.laokou.admin.client.vo.SysMessageVO;
  */
 public interface SysMessageService extends IService<SysMessageDO> {
 
+    /**
+     * 分页查询消息
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysMessageVO> getMessageList(IPage<SysMessageVO> page, SysMessageQo qo);
 
+    /**
+     * 根据详情id查询消息
+     * @param id
+     * @return
+     */
     MessageDetailVO getMessageByDetailId(Long id);
 
+    /**
+     * 分页查询未读消息
+     * @param page
+     * @param userId
+     * @return
+     */
     IPage<SysMessageVO> getUnReadList(IPage<SysMessageVO> page, Long userId);
 
+    /**
+     * 消息读取
+     * @param id
+     * @return
+     */
     Boolean readMessage(Long id);
 
+    /**
+     * 根据id查询消息
+     * @param id
+     * @return
+     */
     MessageDetailVO getMessageById(Long id);
 
 }

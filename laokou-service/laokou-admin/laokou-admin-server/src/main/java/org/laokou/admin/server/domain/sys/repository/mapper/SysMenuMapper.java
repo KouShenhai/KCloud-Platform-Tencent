@@ -42,6 +42,7 @@ public interface SysMenuMapper extends BaseMapper<SysMenuDO> {
 
     /**
      * 获取所有的资源列表
+     * @param type
      * @return
      */
     List<SysMenuVO> getMenuList(@Param("type")Integer type);
@@ -49,6 +50,7 @@ public interface SysMenuMapper extends BaseMapper<SysMenuDO> {
     /**
      * 通过userId查询资源权限
      * @param userId
+     * @param type
      * @return
      */
     List<SysMenuVO> getMenuListByUserId(@Param("userId") Long userId, @Param("type")Integer type);
@@ -80,6 +82,11 @@ public interface SysMenuMapper extends BaseMapper<SysMenuDO> {
      */
     List<SysMenuVO> getMenuListByRoleId(@Param("roleId") Long roleId);
 
+    /**
+     * 根据角色id查询菜单ids
+     * @param roleId
+     * @return
+     */
     List<Long> getMenuIdsByRoleId(@Param("roleId") Long roleId);
 
 }

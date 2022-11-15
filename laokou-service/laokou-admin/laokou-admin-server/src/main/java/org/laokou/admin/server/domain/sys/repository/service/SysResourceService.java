@@ -30,15 +30,47 @@ import java.util.List;
  * @date 2022/8/19 0019 下午 4:11
  */
 public interface SysResourceService extends IService<SysResourceDO> {
+    /**
+     * 分页查询资源
+     * @param page
+     * @param qo
+     * @return
+     */
     IPage<SysResourceVO> getResourceList(IPage<SysResourceVO> page, SysResourceQo qo);
 
+    /**
+     * 根据id查询资源
+     * @param id
+     * @return
+     */
     SysResourceVO getResourceById(Long id);
 
+    /**
+     * 根据id删除资源
+     * @param id
+     */
     void deleteResource(Long id);
 
+    /**
+     * 根据编码获取资源总数
+     * @param code
+     * @return
+     */
     Long getResourceTotal(String code);
 
+    /**
+     * 根据编码查询资源的年分区列表
+     * @param code
+     * @return
+     */
     List<String> getResourceYmPartitionList(String code);
 
+    /**
+     * 根据偏移量查询资源列表
+     * @param pageSize
+     * @param pageIndex
+     * @param code
+     * @return
+     */
     List<ResourceIndex> getResourceIndexList(Integer pageSize, Integer pageIndex, String code);
 }
