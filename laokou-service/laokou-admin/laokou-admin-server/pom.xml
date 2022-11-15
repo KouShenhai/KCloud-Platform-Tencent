@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.laokou</groupId>
 		<artifactId>laokou-admin</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.laokou</groupId>
 	<artifactId>laokou-admin-server</artifactId>
 	<description>后台管理模块</description>
@@ -25,15 +25,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.laokou</groupId>
-			<artifactId>laokou-swagger</artifactId>
+			<artifactId>laokou-common-swagger</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.laokou</groupId>
-			<artifactId>laokou-log</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.laokou</groupId>
-			<artifactId>laokou-mybatis-plus</artifactId>
+			<artifactId>laokou-common-mybatis-plus</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
@@ -75,11 +71,27 @@
 		</dependency>
 		<dependency>
 			<groupId>org.laokou</groupId>
-			<artifactId>laokou-async</artifactId>
+			<artifactId>laokou-admin-client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.laokou</groupId>
-			<artifactId>laokou-admin-client</artifactId>
+			<artifactId>laokou-auth-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.laokou</groupId>
+			<artifactId>laokou-auth-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.laokou</groupId>
+			<artifactId>laokou-kafka-client</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

@@ -17,13 +17,13 @@ package org.laokou.gateway.filter;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.http.HttpUtil;
 import lombok.Data;
-import org.laokou.common.constant.Constant;
-import org.laokou.common.exception.ErrorCode;
-import org.laokou.common.password.RsaCoder;
-import org.laokou.common.utils.HttpResultUtil;
-import org.laokou.common.utils.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.utils.StringUtil;
+import org.laokou.common.core.constant.Constant;
+import org.laokou.common.core.exception.ErrorCode;
+import org.laokou.common.core.password.PasswordUtil;
+import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.core.utils.StringUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -81,8 +81,6 @@ public class AuthFilter implements GlobalFilter,Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
-        // 记录日志
         // 放行uris
         // 获取request对象
         ServerHttpRequest request = exchange.getRequest();
@@ -96,7 +94,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         // 表单提交
         MediaType mediaType = request.getHeaders().getContentType();
         if (antPathMatcher.match(OAUTH_URI,requestUri) && MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
-            return buildRequest(exchange,chain);
+            return authDecode(exchange,chain);
         }
         // 获取token
         String token = getToken(request);
@@ -121,7 +119,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         return Ordered.LOWEST_PRECEDENCE;
     }
 
-    private Mono<Void> buildRequest(ServerWebExchange exchange,GatewayFilterChain chain) {
+    private Mono<Void> authDecode(ServerWebExchange exchange,GatewayFilterChain chain) {
         ServerRequest serverRequest = ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders());
         Mono<String> modifiedBody = serverRequest.bodyToMono(String.class).flatMap(decrypt());
         BodyInserter bodyInserter = BodyInserters.fromPublisher(modifiedBody, String.class);
@@ -142,11 +140,17 @@ public class AuthFilter implements GlobalFilter,Ordered {
             Map<String, String> inParamsMap = HttpUtil.decodeParamMap((String) s, CharsetUtil.CHARSET_UTF_8);
             if (inParamsMap.containsKey(PASSWORD) && inParamsMap.containsKey(USERNAME)) {
                 try {
+                    String password = inParamsMap.get(PASSWORD);
+                    String username = inParamsMap.get(USERNAME);
                     // 返回修改后报文字符
-                    inParamsMap.put(PASSWORD, RsaCoder.decryptByPrivateKey(inParamsMap.get(PASSWORD)));
-                    inParamsMap.put(USERNAME, RsaCoder.decryptByPrivateKey(inParamsMap.get(USERNAME)));
+                    if (StringUtil.isNotEmpty(password)) {
+                        inParamsMap.put(PASSWORD, PasswordUtil.decode(password));
+                    }
+                    if (StringUtil.isNotEmpty(username)) {
+                        inParamsMap.put(USERNAME, PasswordUtil.decode(username));
+                    }
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    log.error("错误信息：{}",e.getMessage());
                 }
             }
             else {

@@ -15,8 +15,8 @@
  */
 package org.laokou.admin.client.vo;
 
-import org.laokou.common.utils.TreeUtil;
 import lombok.Data;
+import org.laokou.common.core.utils.TreeUtil;
 
 import java.io.Serializable;
 

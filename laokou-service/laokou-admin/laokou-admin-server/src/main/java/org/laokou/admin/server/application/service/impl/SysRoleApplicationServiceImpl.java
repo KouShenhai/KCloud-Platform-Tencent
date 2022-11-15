@@ -27,11 +27,12 @@ import org.laokou.admin.server.domain.sys.repository.service.SysRoleService;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysRoleQO;
 import org.laokou.admin.client.dto.SysRoleDTO;
-import org.laokou.common.constant.Constant;
 import org.laokou.admin.client.vo.SysRoleVO;
-import org.laokou.common.exception.CustomException;
-import org.laokou.common.utils.ConvertUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.laokou.auth.client.utils.UserUtil;
+import org.laokou.common.core.constant.Constant;
+import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.core.utils.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

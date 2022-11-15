@@ -16,12 +16,13 @@
 package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysUserDTO;
+import org.laokou.admin.client.vo.UserInfoVO;
 import org.laokou.admin.server.interfaces.qo.SysUserQO;
 import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.server.application.service.SysUserApplicationService;
-import org.laokou.common.utils.HttpResultUtil;
-import org.laokou.log.annotation.OperateLog;
+import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,11 @@ public class SysUserApiController {
     @PreAuthorize("hasAuthority('sys:user:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysUserDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto));
+    }
+
+    @GetMapping("/userInfo")
+    public HttpResultUtil<UserInfoVO> userInfo() {
+        return new HttpResultUtil<UserInfoVO>().ok(sysUserApplicationService.getUserInfo());
     }
 
     @GetMapping("/option/list")

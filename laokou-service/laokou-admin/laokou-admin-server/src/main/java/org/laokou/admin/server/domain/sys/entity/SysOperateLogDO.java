@@ -15,9 +15,10 @@
  */
 package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
-import org.laokou.mybatis.plus.entity.BaseDO;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import org.laokou.common.mybatisplus.entity.BaseDO;
+
 @Data
 @TableName("boot_sys_operate_log")
 @ApiModel("系统日志>操作日志DO")

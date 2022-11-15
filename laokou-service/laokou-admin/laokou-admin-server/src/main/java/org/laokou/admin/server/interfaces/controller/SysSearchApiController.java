@@ -15,7 +15,7 @@
  */
 package org.laokou.admin.server.interfaces.controller;
 import org.laokou.admin.server.application.service.SysSearchApplicationService;
-import org.laokou.common.utils.HttpResultUtil;
+import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import io.swagger.annotations.Api;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.interfaces.qo;
-import org.laokou.mybatis.plus.entity.BasePage;
+import org.laokou.common.mybatisplus.entity.BasePage;
 import lombok.Data;
 @Data
 public class SysDictQO extends BasePage {

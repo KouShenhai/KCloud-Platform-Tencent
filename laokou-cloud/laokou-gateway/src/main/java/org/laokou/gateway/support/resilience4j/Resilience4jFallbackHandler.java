@@ -15,7 +15,7 @@
  */
 package org.laokou.gateway.support.resilience4j;
 import cn.hutool.http.HttpStatus;
-import org.laokou.common.utils.HttpResultUtil;
+import org.laokou.common.core.utils.HttpResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

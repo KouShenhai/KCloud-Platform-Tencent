@@ -17,6 +17,7 @@ package org.laokou.admin.server.application.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysUserDTO;
+import org.laokou.admin.client.vo.UserInfoVO;
 import org.laokou.admin.server.interfaces.qo.SysUserQO;
 import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
@@ -39,5 +40,7 @@ public interface SysUserApplicationService {
     Boolean deleteUser(Long id);
 
     List<OptionVO> getOptionList();
+
+    UserInfoVO getUserInfo();
 
 }

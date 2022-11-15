@@ -15,8 +15,8 @@
  */
 package org.laokou.admin.server.infrastructure.component.feign.elasticsearch;
 import org.laokou.admin.server.infrastructure.component.feign.elasticsearch.factory.ElasticsearchApiFeignClientFallbackFactory;
-import org.laokou.common.constant.ServiceConstant;
-import org.laokou.common.utils.HttpResultUtil;
+import org.laokou.common.core.constant.ServiceConstant;
+import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.elasticsearch.client.model.ElasticsearchModel;

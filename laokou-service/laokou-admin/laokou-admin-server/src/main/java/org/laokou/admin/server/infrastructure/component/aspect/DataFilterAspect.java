@@ -15,11 +15,12 @@
  */
 package org.laokou.admin.server.infrastructure.component.aspect;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
-import org.laokou.common.utils.StringUtil;
-import org.laokou.mybatis.plus.entity.BasePage;
-import org.laokou.common.enums.SuperAdminEnum;
-import org.laokou.common.exception.CustomException;
-import org.laokou.common.exception.ErrorCode;
+import org.laokou.auth.client.utils.UserUtil;
+import org.laokou.common.core.enums.SuperAdminEnum;
+import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.core.exception.ErrorCode;
+import org.laokou.common.core.utils.StringUtil;
+import org.laokou.common.mybatisplus.entity.BasePage;
 import org.laokou.auth.client.user.UserDetail;
 import org.apache.commons.collections.CollectionUtils;
 import org.aspectj.lang.JoinPoint;
@@ -27,7 +28,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.laokou.security.client.utils.UserUtil;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;

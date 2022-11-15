@@ -22,5 +22,6 @@ package org.laokou.auth.server.infrastructure.constant;
 public interface OauthConstant {
 
    String UUID = "uuid";
+   String CAPTCHA = "captcha";
 
 }

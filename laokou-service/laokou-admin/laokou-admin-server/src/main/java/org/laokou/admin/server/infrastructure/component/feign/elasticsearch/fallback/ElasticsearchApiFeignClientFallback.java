@@ -15,7 +15,7 @@
  */
 package org.laokou.admin.server.infrastructure.component.feign.elasticsearch.fallback;
 import org.laokou.admin.server.infrastructure.component.feign.elasticsearch.ElasticsearchApiFeignClient;
-import org.laokou.common.utils.HttpResultUtil;
+import org.laokou.common.core.utils.HttpResultUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.form.SearchForm;

@@ -20,8 +20,9 @@ import org.laokou.admin.server.infrastructure.config.CustomProcessDiagramGenerat
 import org.laokou.admin.client.dto.AuditDTO;
 import org.laokou.admin.client.dto.ClaimDTO;
 import org.laokou.admin.client.dto.UnClaimDTO;
-import org.laokou.common.exception.CustomException;
-import org.laokou.common.utils.FileUtil;
+import org.laokou.auth.client.utils.UserUtil;
+import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.core.utils.FileUtil;
 
 import org.apache.commons.collections.MapUtils;
 import org.flowable.bpmn.model.BpmnModel;
@@ -32,7 +33,6 @@ import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.image.ProcessDiagramGenerator;
 import org.flowable.task.api.DelegationState;
 import org.flowable.task.api.Task;
-import org.laokou.security.client.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

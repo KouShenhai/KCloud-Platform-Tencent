@@ -35,6 +35,7 @@ public class UserDetail implements Serializable {
     private String email;
     private String mobile;
     private String password;
+    private Long deptId;
     private List<Long> deptIds;
     private List<String> permissionList;
 }

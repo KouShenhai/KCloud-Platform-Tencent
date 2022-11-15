@@ -24,8 +24,8 @@ import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysDictQO;
 import org.laokou.admin.client.vo.SysDictVO;
 import org.laokou.admin.client.dto.SysDictDTO;
-import org.laokou.common.utils.ConvertUtil;
-import org.laokou.ump.client.utils.UserUtil;
+import org.laokou.auth.client.utils.UserUtil;
+import org.laokou.common.core.utils.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service

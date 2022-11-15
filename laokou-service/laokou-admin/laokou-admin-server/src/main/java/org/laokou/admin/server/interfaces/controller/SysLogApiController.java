@@ -21,7 +21,7 @@ import org.laokou.admin.server.interfaces.qo.LoginLogQO;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
-import org.laokou.common.utils.HttpResultUtil;
+import org.laokou.common.core.utils.HttpResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

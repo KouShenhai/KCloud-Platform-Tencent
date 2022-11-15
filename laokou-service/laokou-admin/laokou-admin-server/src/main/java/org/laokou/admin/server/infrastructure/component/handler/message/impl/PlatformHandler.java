@@ -19,7 +19,7 @@ import org.laokou.admin.client.enums.ChannelTypeEnum;
 import org.laokou.admin.server.infrastructure.component.event.PushMessageEvent;
 import org.laokou.admin.server.infrastructure.component.handler.message.BaseHandler;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.common.utils.SpringContextUtil;
+import org.laokou.common.core.utils.SpringContextUtil;
 import org.springframework.stereotype.Service;
 
 /**

@@ -37,14 +37,14 @@ public class SysAuthApiController {
     @Autowired
     private SysAuthApplicationService sysAuthApplicationService;
 
-    @GetMapping("/sys/auth/api/captcha")
+    @GetMapping("/oauth/captcha")
     @ApiOperation("系统认证>验证码")
     @ApiImplicitParam(name = "uuid",value = "唯一标识",required = true,paramType = "query",dataType = "String")
     public void captcha(@RequestParam(OauthConstant.UUID)String uuid, HttpServletResponse response) throws IOException {
         sysAuthApplicationService.captcha(uuid,response);
     }
 
-    @GetMapping("/sys/auth/api/logout")
+    @GetMapping("/oauth/logout")
     @ApiOperation("系统认证>退出登录")
     public Mono<Void> logout(HttpServletRequest request) {
         sysAuthApplicationService.logout(request);

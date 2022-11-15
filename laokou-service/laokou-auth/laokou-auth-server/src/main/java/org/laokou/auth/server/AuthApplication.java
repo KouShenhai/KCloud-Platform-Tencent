@@ -17,7 +17,7 @@ package org.laokou.auth.server;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.laokou.swagger.config.CorsConfig;
+import org.laokou.common.swagger.config.CorsConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -37,14 +37,14 @@ import org.springframework.context.annotation.Import;
  * DDD分层架构(分布式微服务架构) > 表现层 应用层 领域层 基础层
  * @author Kou Shenhai
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.auth","org.laokou.redis","org.laokou.log","org.laokou.mybatis"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.common.core","org.laokou.auth","org.laokou.redis","org.laokou.common.mybatisplus"})
 @EnableDiscoveryClient
 @EnableConfigurationProperties
 @EnableApolloConfig
 @EnableAspectJAutoProxy
 @Import({CorsConfig.class})
 @EnableEncryptableProperties
-@EnableFeignClients(basePackages = {"org.laokou.log"})
+@EnableFeignClients
 public class AuthApplication{
 
     public static void main(String[] args) {

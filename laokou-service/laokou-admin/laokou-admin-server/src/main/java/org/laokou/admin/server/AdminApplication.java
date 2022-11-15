@@ -17,8 +17,7 @@ package org.laokou.admin.server;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.laokou.async.config.AsyncConfig;
-import org.laokou.swagger.config.CorsConfig;
+import org.laokou.common.swagger.config.CorsConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -40,15 +39,15 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * DDD分层架构(分布式微服务架构) > 表现层 应用层 领域层 基础层
  * @author Kou Shenhai
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common","org.laokou.admin","org.laokou.redis","org.laokou.log","org.laokou.mybatis","org.laokou.security"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.common.core","org.laokou.admin","org.laokou.redis","org.laokou.common.mybatisplus","org.laokou.auth"})
 @EnableDiscoveryClient
 @EnableConfigurationProperties
 @EnableApolloConfig
 @EnableAspectJAutoProxy
 @EnableAsync
-@Import({CorsConfig.class, AsyncConfig.class})
+@Import({CorsConfig.class})
 @EnableEncryptableProperties
-@EnableFeignClients(basePackages = {"org.laokou.log","org.laokou.admin"})
+@EnableFeignClients
 public class AdminApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AdminApplication.class, args);

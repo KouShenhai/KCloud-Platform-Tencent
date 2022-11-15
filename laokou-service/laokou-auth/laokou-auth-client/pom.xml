@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>org.laokou</groupId>
-            <artifactId>laokou-swagger</artifactId>
+            <artifactId>laokou-common-swagger</artifactId>
         </dependency>
         <!--安全模块-->
         <dependency>

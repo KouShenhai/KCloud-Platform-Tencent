@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.interfaces.qo;
-import org.laokou.mybatis.plus.entity.BasePage;
 import lombok.Data;
+import org.laokou.common.mybatisplus.entity.BasePage;
+
 /**
  * @author Kou Shenhai
  * @version 1.0

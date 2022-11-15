@@ -18,7 +18,7 @@ package org.laokou.auth.server.domain.sys.repository.service.impl;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.mapper.SysDeptMapper;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
-import org.laokou.common.enums.SuperAdminEnum;
+import org.laokou.common.core.enums.SuperAdminEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

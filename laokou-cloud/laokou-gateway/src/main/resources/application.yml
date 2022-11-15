@@ -4,9 +4,6 @@ jasypt:
 spring:
   application:
     name: laokou-gateway
-  messages:
-    encoding: UTF-8
-    basename: i18n/messages
   profiles:
     active: @profile.active@
   main:
@@ -55,7 +52,7 @@ resilience4j.circuitbreaker:
         - java.lang.Exception
       #不会被计为失败的异常集合，优先级高于recordExceptions。
       ignoreExceptions:
-        - org.laokou.common.exception.CustomException
+        - org.laokou.common.core.exception.CustomException
 
 resilience4j.timelimiter:
   instances:

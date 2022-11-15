@@ -19,8 +19,8 @@ import org.laokou.admin.server.application.service.WorkflowProcessApplicationSer
 import org.laokou.admin.client.dto.AuditDTO;
 import org.laokou.admin.server.interfaces.qo.TaskQO;
 import org.laokou.admin.client.vo.TaskVO;
-import org.laokou.common.utils.HttpResultUtil;
-import org.laokou.log.annotation.OperateLog;
+import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
 import org.laokou.redis.annotation.Lock4j;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

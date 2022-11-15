@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 package org.laokou.admin.client.vo;
-import org.laokou.common.utils.TreeUtil;
 import lombok.Data;
+import org.laokou.common.core.utils.TreeUtil;
+
 /**
  * 系统菜单VO
  * @author Kou Shenhai

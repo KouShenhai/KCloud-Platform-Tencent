@@ -16,7 +16,7 @@
 package org.laokou.admin.server.infrastructure.utils;
 import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.common.utils.JacksonUtil;
+import org.laokou.common.core.utils.JacksonUtil;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.FlowElement;
 import org.flowable.bpmn.model.FlowNode;

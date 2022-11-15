@@ -25,11 +25,11 @@
         </dependency>
         <dependency>
             <groupId>org.laokou</groupId>
-            <artifactId>laokou-mybatis-plus</artifactId>
+            <artifactId>laokou-common-mybatis-plus</artifactId>
         </dependency>
         <dependency>
             <groupId>org.laokou</groupId>
-            <artifactId>laokou-swagger</artifactId>
+            <artifactId>laokou-common-swagger</artifactId>
         </dependency>
     </dependencies>
     <build>

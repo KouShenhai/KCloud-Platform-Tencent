@@ -9,7 +9,7 @@
     <description>parent配置</description>
     <packaging>pom</packaging>
     <modules>
-        <module>laokou-base</module>
+        <module>laokou-common</module>
         <module>laokou-cloud</module>
         <module>laokou-service</module>
     </modules>
@@ -33,7 +33,7 @@
             <!-- 定义公共版本-->
             <dependency>
                 <groupId>org.laokou</groupId>
-                <artifactId>laokou-bom</artifactId>
+                <artifactId>laokou-common-bom</artifactId>
                 <version>${laokou.version}</version>
                 <type>pom</type>
                 <scope>import</scope>

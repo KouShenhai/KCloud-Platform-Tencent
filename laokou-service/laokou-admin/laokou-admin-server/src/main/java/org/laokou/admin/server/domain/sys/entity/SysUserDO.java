@@ -17,7 +17,7 @@ package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.laokou.mybatis.plus.entity.BaseDO;
+import org.laokou.common.mybatisplus.entity.BaseDO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

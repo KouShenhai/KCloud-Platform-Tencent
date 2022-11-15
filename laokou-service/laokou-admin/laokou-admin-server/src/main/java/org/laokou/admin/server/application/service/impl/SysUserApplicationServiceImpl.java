@@ -17,6 +17,7 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.laokou.admin.client.vo.UserInfoVO;
 import org.laokou.admin.server.application.service.SysUserApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysUserDO;
 import org.laokou.admin.server.domain.sys.entity.SysUserRoleDO;
@@ -28,14 +29,14 @@ import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysUserQO;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.client.dto.SysUserDTO;
-import org.laokou.common.constant.Constant;
-import org.laokou.common.password.PasswordUtil;
-import org.laokou.common.enums.SuperAdminEnum;
-import org.laokou.common.exception.CustomException;
+import org.laokou.auth.client.utils.UserUtil;
+import org.laokou.common.core.constant.Constant;
+import org.laokou.common.core.enums.SuperAdminEnum;
+import org.laokou.common.core.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.common.utils.ConvertUtil;
 import org.apache.commons.collections.CollectionUtils;
-import org.laokou.security.client.utils.UserUtil;
+import org.laokou.common.core.password.PasswordUtil;
+import org.laokou.common.core.utils.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -129,6 +130,12 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     @Override
     public List<OptionVO> getOptionList() {
         return sysUserService.getOptionList();
+    }
+
+    @Override
+    public UserInfoVO getUserInfo() {
+        UserDetail userDetail = UserUtil.userDetail();
+        return ConvertUtil.sourceToTarget(userDetail, UserInfoVO.class);
     }
 
     private Boolean saveOrUpdate(Long userId,List<Long> roleIds) {

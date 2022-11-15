@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>org.laokou</groupId>
-            <artifactId>laokou-common</artifactId>
+            <artifactId>laokou-common-core</artifactId>
         </dependency>
     </dependencies>
 </project>

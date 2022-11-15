@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.config;
-import org.laokou.common.utils.JacksonUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.utils.StringUtil;
+import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.core.utils.StringUtil;
 import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 import javax.websocket.*;

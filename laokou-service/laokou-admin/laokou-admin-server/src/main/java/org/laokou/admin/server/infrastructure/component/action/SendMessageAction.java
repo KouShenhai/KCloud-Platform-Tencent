@@ -17,7 +17,7 @@ package org.laokou.admin.server.infrastructure.component.action;
 import org.laokou.admin.server.infrastructure.component.event.SendMessageEvent;
 import org.laokou.admin.server.infrastructure.component.pipeline.BusinessProcess;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.common.utils.SpringContextUtil;
+import org.laokou.common.core.utils.SpringContextUtil;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.redis.utils;
-import org.laokou.common.utils.StringUtil;
+import org.laokou.common.core.utils.StringUtil;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
 import org.redisson.api.RMap;

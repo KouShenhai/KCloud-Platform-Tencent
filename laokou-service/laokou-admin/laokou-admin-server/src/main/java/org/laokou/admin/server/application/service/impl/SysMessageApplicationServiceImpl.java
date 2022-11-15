@@ -32,11 +32,11 @@ import org.laokou.admin.client.dto.MessageDTO;
 import org.laokou.admin.server.interfaces.qo.SysMessageQO;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
-import org.laokou.common.constant.Constant;
-import org.laokou.common.utils.ConvertUtil;
-import org.laokou.common.utils.SpringContextUtil;
 import org.apache.commons.collections.CollectionUtils;
-import org.laokou.security.client.utils.UserUtil;
+import org.laokou.auth.client.utils.UserUtil;
+import org.laokou.common.core.constant.Constant;
+import org.laokou.common.core.utils.ConvertUtil;
+import org.laokou.common.core.utils.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
@@ -160,7 +160,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     public Long unReadCount() {
         final Long userId = UserUtil.getUserId();
         return sysMessageDetailService.count(Wrappers.lambdaQuery(SysMessageDetailDO.class).eq(SysMessageDetailDO::getUserId,userId)
-                .eq(SysMessageDetailDO::getDelFlag,Constant.NO)
+                .eq(SysMessageDetailDO::getDelFlag, Constant.NO)
                 .eq(SysMessageDetailDO::getReadFlag, Constant.NO));
     }
 

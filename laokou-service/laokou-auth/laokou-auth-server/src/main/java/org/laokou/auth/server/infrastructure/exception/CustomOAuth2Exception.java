@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.exception;
-import org.laokou.common.utils.MessageUtil;
+import org.laokou.common.core.utils.MessageUtil;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 /**
  * 自定义异常

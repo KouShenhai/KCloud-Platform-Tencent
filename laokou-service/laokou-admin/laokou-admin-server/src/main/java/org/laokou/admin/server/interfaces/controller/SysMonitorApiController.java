@@ -17,7 +17,7 @@ package org.laokou.admin.server.interfaces.controller;
 import org.laokou.admin.server.application.service.SysMonitorApplicationService;
 import org.laokou.admin.client.vo.CacheVO;
 import org.laokou.admin.server.infrastructure.component.server.Server;
-import org.laokou.common.utils.HttpResultUtil;
+import org.laokou.common.core.utils.HttpResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

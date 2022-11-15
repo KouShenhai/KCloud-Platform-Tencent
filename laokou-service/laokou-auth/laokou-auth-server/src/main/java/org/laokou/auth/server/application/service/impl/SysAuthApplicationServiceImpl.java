@@ -17,7 +17,9 @@ package org.laokou.auth.server.application.service.impl;
 import cn.hutool.core.thread.ThreadUtil;
 import lombok.SneakyThrows;
 import org.laokou.auth.client.enums.UserStatusEnum;
-import org.laokou.common.password.PasswordUtil;
+import org.laokou.common.core.constant.Constant;
+import org.laokou.common.core.exception.ErrorCode;
+import org.laokou.common.core.password.PasswordUtil;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +28,7 @@ import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.exception.CustomOAuth2Exception;
-import org.laokou.common.constant.Constant;
-import org.laokou.common.exception.ErrorCode;
-import org.laokou.common.utils.StringUtil;
+import org.laokou.common.core.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
@@ -79,6 +79,12 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @SneakyThrows
     @Override
     public UserDetail login(String username, String password) {
+        if (StringUtil.isEmpty(username)) {
+            throw new CustomOAuth2Exception("用户名不能为空");
+        }
+        if (StringUtil.isEmpty(password)) {
+            throw new CustomOAuth2Exception("密码不能为空");
+        }
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
             throw new CustomOAuth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR);

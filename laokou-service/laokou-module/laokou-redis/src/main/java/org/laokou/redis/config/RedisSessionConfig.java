@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.redis.config;
-import org.laokou.common.utils.RedisKeyUtil;
+import org.laokou.common.core.utils.RedisKeyUtil;
 import org.redisson.Redisson;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;

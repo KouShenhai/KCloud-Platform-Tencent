@@ -16,10 +16,13 @@
 package org.laokou.admin.server.infrastructure.component.action;
 import org.laokou.admin.server.infrastructure.component.pipeline.BusinessProcess;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.common.exception.CustomException;
-import org.laokou.common.utils.ValidatorUtil;
+import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.core.utils.ValidatorUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
+/**
+ * @author Kou Shenhai
+ */
 @Service
 public class PreParamCheckAction implements BusinessProcess<MessageDTO> {
 
