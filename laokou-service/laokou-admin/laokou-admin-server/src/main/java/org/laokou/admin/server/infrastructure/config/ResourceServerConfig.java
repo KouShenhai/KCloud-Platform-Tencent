@@ -27,7 +27,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
- *
+ * 官方不再维护，过期类无法替换
  * @author Kou Shenhai
  * @version 1.0
  * @date 2021/5/30 0030 下午 2:48

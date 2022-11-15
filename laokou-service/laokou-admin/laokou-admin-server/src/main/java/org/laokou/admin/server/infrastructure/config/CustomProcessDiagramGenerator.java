@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.config;
+import lombok.Getter;
+import lombok.Setter;
 import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.*;
 import org.flowable.image.impl.DefaultProcessDiagramCanvas;
 import org.flowable.image.impl.DefaultProcessDiagramGenerator;
+
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 /**
@@ -110,8 +114,10 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             maxX = nrOfLanes.getX() + nrOfLanes.getWidth();
             minY = nrOfLanes.getY();
         }
+        return initProcessDiagramCanvas(minX,maxX,minY,maxY,bpmnModel,imageType,activityFontName,labelFontName,annotationFontName,customClassLoader);
+    }
 
-        List var23 = gatherAllFlowNodes(bpmnModel);
+    private static ProcessNum getProcessNum1(double minX,double maxX,double minY,double maxY,BpmnModel bpmnModel,List var23) {
         Iterator var24 = var23.iterator();
         label155:
         while (var24.hasNext()) {
@@ -157,6 +163,15 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
                 }
             }
         }
+        ProcessNum processNum = new ProcessNum();
+        processNum.setMinX(minX);
+        processNum.setMinY(minY);
+        processNum.setMaxX(maxX);
+        processNum.setMaxY(maxY);
+        return processNum;
+    }
+
+    private static ProcessNum getProcessNum2(double minX,double maxX,double minY,double maxY,BpmnModel bpmnModel,List var23) {
         List var25 = gatherAllArtifacts(bpmnModel);
         Iterator var27 = var25.iterator();
         GraphicInfo var37;
@@ -225,6 +240,31 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             minX = 0.0D;
             minY = 0.0D;
         }
+        ProcessNum processNum = new ProcessNum();
+        processNum.setMinX(minX);
+        processNum.setMinY(minY);
+        processNum.setMaxX(maxX);
+        processNum.setMaxY(maxY);
+        return processNum;
+    }
+
+    private static CustomProcessDiagramCanvas initProcessDiagramCanvas(double minX,double maxX,double minY,double maxY,BpmnModel bpmnModel,String imageType, String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader) {
+        List var23 = gatherAllFlowNodes(bpmnModel);
+
+        ProcessNum processNum1 = getProcessNum1(minX, maxX, minY, maxY, bpmnModel, var23);
+
+        minX = processNum1.getMinX();
+        minY = processNum1.getMinY();
+        maxX = processNum1.getMaxX();
+        maxY = processNum1.getMaxY();
+
+        ProcessNum processNum2 = getProcessNum2(minX, maxX, minY, maxY, bpmnModel, var23);
+
+        minX = processNum2.getMinX();
+        minY = processNum2.getMinY();
+        maxX = processNum2.getMaxX();
+        maxY = processNum2.getMaxY();
+
         return new CustomProcessDiagramCanvas((int) maxX + 10, (int) maxY + 10, (int) minX, (int) minY, imageType, activityFontName, labelFontName, annotationFontName, customClassLoader);
     }
 
@@ -247,49 +287,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
     @Override
     protected void drawActivity(DefaultProcessDiagramCanvas processDiagramCanvas, BpmnModel bpmnModel,
                                 FlowNode flowNode, List<String> highLightedActivities, List<String> highLightedFlows, double scaleFactor, Boolean drawSequenceFlowNameWithNoLabelDi) {
-        ActivityDrawInstruction drawInstruction = activityDrawInstructions.get(flowNode.getClass());
-        if (drawInstruction != null) {
-            drawInstruction.draw(processDiagramCanvas, bpmnModel, flowNode);
-            // Gather info on the multi instance marker
-            boolean multiInstanceSequential = false;
-            boolean multiInstanceParallel = false;
-            boolean collapsed = false;
-            if (flowNode instanceof Activity) {
-                Activity activity = (Activity) flowNode;
-                MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = activity.getLoopCharacteristics();
-                if (multiInstanceLoopCharacteristics != null) {
-                    multiInstanceSequential = multiInstanceLoopCharacteristics.isSequential();
-                    multiInstanceParallel = !multiInstanceSequential;
-                }
-            }
-            // Gather info on the collapsed marker
-            GraphicInfo graphicInfo = bpmnModel.getGraphicInfo(flowNode.getId());
-            if (flowNode instanceof SubProcess) {
-                collapsed = graphicInfo.getExpanded() != null && !graphicInfo.getExpanded();
-            } else if (flowNode instanceof CallActivity) {
-                collapsed = true;
-            }
-            if (scaleFactor == 1.0) {
-                // Actually draw the markers
-                processDiagramCanvas.drawActivityMarkers((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(), (int) graphicInfo.getHeight(),
-                        multiInstanceSequential, multiInstanceParallel, collapsed);
-            }
-            // Draw highlighted activities
-            if (highLightedActivities.contains(flowNode.getId())) {
-
-                if (highLightedActivities.get(highLightedActivities.size() - 1).equals(flowNode.getId())
-                        && !"endenv".equals(flowNode.getId())) {
-                    String eventPrefix = "Event_";
-                    if ((flowNode.getId().contains(eventPrefix))) {
-                        drawHighLightEnd((CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
-                    } else {
-                        drawHighLightNow((CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
-                    }
-                } else {
-                    drawHighLight(processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
-                }
-            }
-        }
+        drawActivity(processDiagramCanvas,bpmnModel,flowNode,highLightedActivities,scaleFactor);
         // Outgoing transitions of activity
         for (SequenceFlow sequenceFlow : flowNode.getOutgoingFlows()) {
             boolean highLighted = (highLightedFlows.contains(sequenceFlow.getId()));
@@ -349,4 +347,62 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             }
         }
     }
+
+    private void drawActivity(DefaultProcessDiagramCanvas processDiagramCanvas,BpmnModel bpmnModel,FlowNode flowNode,List<String> highLightedActivities,double scaleFactor) {
+        ActivityDrawInstruction drawInstruction = activityDrawInstructions.get(flowNode.getClass());
+        if (drawInstruction != null) {
+            drawInstruction.draw(processDiagramCanvas, bpmnModel, flowNode);
+            // Gather info on the multi instance marker
+            boolean multiInstanceSequential = false;
+            boolean multiInstanceParallel = false;
+            boolean collapsed = false;
+            if (flowNode instanceof Activity) {
+                Activity activity = (Activity) flowNode;
+                MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = activity.getLoopCharacteristics();
+                if (multiInstanceLoopCharacteristics != null) {
+                    multiInstanceSequential = multiInstanceLoopCharacteristics.isSequential();
+                    multiInstanceParallel = !multiInstanceSequential;
+                }
+            }
+            // Gather info on the collapsed marker
+            GraphicInfo graphicInfo = bpmnModel.getGraphicInfo(flowNode.getId());
+            if (flowNode instanceof SubProcess) {
+                collapsed = graphicInfo.getExpanded() != null && !graphicInfo.getExpanded();
+            } else if (flowNode instanceof CallActivity) {
+                collapsed = true;
+            }
+            BigDecimal bigDecimal1 = new BigDecimal("1.0");
+            BigDecimal bigDecimal2 = new BigDecimal(scaleFactor);
+            if ( bigDecimal1.compareTo(bigDecimal2) == 0) {
+                // Actually draw the markers
+                processDiagramCanvas.drawActivityMarkers((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(), (int) graphicInfo.getHeight(),
+                        multiInstanceSequential, multiInstanceParallel, collapsed);
+            }
+            // Draw highlighted activities
+            if (highLightedActivities.contains(flowNode.getId())) {
+
+                if (highLightedActivities.get(highLightedActivities.size() - 1).equals(flowNode.getId())
+                        && !"endenv".equals(flowNode.getId())) {
+                    String eventPrefix = "Event_";
+                    if ((flowNode.getId().contains(eventPrefix))) {
+                        drawHighLightEnd((CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
+                    } else {
+                        drawHighLightNow((CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
+                    }
+                } else {
+                    drawHighLight(processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
+                }
+            }
+        }
+    }
+
+    @Getter
+    @Setter
+    static class ProcessNum {
+        double minX;
+        double maxX;
+        double minY;
+        double maxY;
+    }
+
 }

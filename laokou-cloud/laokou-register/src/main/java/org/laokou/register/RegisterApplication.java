@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 /**
  * @author Kou Shenhai
+ * 官方不再维护，过期类无法替换
  */
 @SpringBootApplication
 @EnableEurekaServer

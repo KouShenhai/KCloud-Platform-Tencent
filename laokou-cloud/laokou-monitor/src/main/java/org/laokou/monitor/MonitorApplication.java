@@ -25,6 +25,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 /**
  * @author Kou Shenhai
+ * 官方不再维护，过期类无法替换
  */
 @SpringBootApplication
 @EnableAdminServer

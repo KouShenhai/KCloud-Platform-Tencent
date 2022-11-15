@@ -19,6 +19,8 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.laokou.common.core.constant.Constant;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -911,13 +913,13 @@ public class FileUtil extends FileUtils {
      * @return
      */
     public static String path(String path){
-        String p = StringUtil.replace(path, "\\", "/");
-        p = StringUtil.join(StringUtil.split(p, "/"), "/");
-        if (!StringUtil.startsWithAny(p, "/") && StringUtil.startsWithAny(path, "\\", "/")){
-            p += "/";
+        String p = StringUtil.replace(path, Constant.BACK_SLASH, Constant.FORWARD_SLASH);
+        p = StringUtil.join(StringUtil.split(p, Constant.FORWARD_SLASH), Constant.FORWARD_SLASH);
+        if (!StringUtil.startsWithAny(p, Constant.FORWARD_SLASH) && StringUtil.startsWithAny(path, Constant.BACK_SLASH, Constant.FORWARD_SLASH)){
+            p += Constant.FORWARD_SLASH;
         }
-        if (!StringUtil.endsWithAny(p, "/") && StringUtil.endsWithAny(path, "\\", "/")){
-            p = p + "/";
+        if (!StringUtil.endsWithAny(p, Constant.FORWARD_SLASH) && StringUtil.endsWithAny(path, Constant.BACK_SLASH, Constant.FORWARD_SLASH)){
+            p = p + Constant.FORWARD_SLASH;
         }
         return p;
     }

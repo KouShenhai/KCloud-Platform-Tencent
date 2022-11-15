@@ -20,6 +20,10 @@ package org.laokou.common.core.constant;
  */
 public interface Constant {
 
+    String FORWARD_SLASH = "/";
+
+    String BACK_SLASH = "\\";
+
     String BEARER = "Bearer ";
 
     String AUTHORIZATION_HEAD = "Authorization";
