@@ -83,6 +83,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         services.setSupportRefreshToken(true);
         // 存储令牌策略
         services.setTokenStore(tokenStore);
+        // 令牌时间1小时
+        services.setAccessTokenValiditySeconds(60 * 60);
+        // 刷新令牌时间1天
+        services.setRefreshTokenValiditySeconds(60 * 60 * 24);
         return services;
     }
 

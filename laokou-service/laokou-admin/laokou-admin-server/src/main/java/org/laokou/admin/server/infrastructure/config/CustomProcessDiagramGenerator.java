@@ -399,10 +399,10 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
     @Getter
     @Setter
     static class ProcessNum {
-        double minX;
-        double maxX;
-        double minY;
-        double maxY;
+      private double minX;
+      private double maxX;
+      private double minY;
+      private double maxY;
     }
 
 }

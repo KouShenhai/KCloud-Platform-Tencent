@@ -67,7 +67,7 @@ public class WorkFlowUtil {
         for (SequenceFlow sequenceFlow : outFlows) {
             FlowElement sourceFlowElement = sequenceFlow.getSourceFlowElement();
             final String json = JacksonUtil.toJsonStr(sourceFlowElement);
-            return JacksonUtil.toMap(json,String.class,Object.class).get("assignee").toString();
+            return JacksonUtil.readTree(json).get("assignee").toString();
         }
         return null;
     }

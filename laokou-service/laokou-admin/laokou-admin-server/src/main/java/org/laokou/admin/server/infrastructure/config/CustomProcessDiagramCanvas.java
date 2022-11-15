@@ -267,7 +267,6 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
      * @param thickBorder
      * @param scaleFactor
      */
-    @SuppressWarnings("AlibabaAvoidDoubleOrFloatEqualCompare")
     @Override
     protected void drawTask(String name, GraphicInfo graphicInfo, boolean thickBorder, double scaleFactor) {
         Paint originalPaint = g.getPaint();
