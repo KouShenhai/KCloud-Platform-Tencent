@@ -47,6 +47,7 @@ public interface WorkflowProcessApplicationService {
     /**
      * 审批任务
      * @param dto
+     * @throws IOException
      * @return
      */
     Boolean auditResourceTask(AuditDTO dto) throws IOException;

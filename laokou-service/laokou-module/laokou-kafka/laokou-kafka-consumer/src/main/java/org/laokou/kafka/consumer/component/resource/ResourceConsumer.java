@@ -56,7 +56,7 @@ public class ResourceConsumer {
                 sysResourceService.updateById(sysResourceDO);
                 //插入审批日志
                 SysResourceAuditLogDO logDO = new SysResourceAuditLogDO();
-                logDO.setAuditDate(DateUtil.parse(auditLogDTO.getAuditDate(),DateUtil.DATE_TIME_PATTERN));
+                logDO.setAuditDate(auditLogDTO.getAuditDate());
                 logDO.setAuditName(auditLogDTO.getAuditName());
                 logDO.setCreator(auditLogDTO.getCreator());
                 logDO.setComment(auditLogDTO.getComment());

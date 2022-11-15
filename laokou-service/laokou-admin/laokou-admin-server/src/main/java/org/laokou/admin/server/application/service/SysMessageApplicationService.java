@@ -38,6 +38,7 @@ public interface SysMessageApplicationService {
     /**
      * 发送消息
      * @param dto
+     * @throws IOException
      * @return
      */
     Boolean sendMessage(MessageDTO dto) throws IOException;

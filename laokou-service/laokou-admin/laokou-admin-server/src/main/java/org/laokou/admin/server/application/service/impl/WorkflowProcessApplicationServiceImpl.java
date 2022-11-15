@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.application.service.impl;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.laokou.admin.server.application.service.WorkflowProcessApplicationService;
@@ -35,8 +36,6 @@ import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.utils.DateUtil;
-import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.RedisKeyUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.kafka.client.constant.KafkaConstant;
@@ -176,12 +175,12 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         auditLogDTO.setResourceId(resourceId);
         auditLogDTO.setStatus(status);
         auditLogDTO.setAuditStatus(auditStatus);
-        auditLogDTO.setAuditDate(DateUtil.format(new Date(),DateUtil.DATE_TIME_PATTERN));
+        auditLogDTO.setAuditDate(new Date());
         auditLogDTO.setAuditName(UserUtil.getUsername());
         auditLogDTO.setCreator(UserUtil.getUserId());
         auditLogDTO.setComment(dto.getComment());
         KafkaDTO kafkaDTO = new KafkaDTO();
-        kafkaDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
+        kafkaDTO.setData(JSONUtil.toJsonStr(auditLogDTO));
         kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_RESOURCE_AUDIT_TOPIC,kafkaDTO);
         return auditFlag;
     }

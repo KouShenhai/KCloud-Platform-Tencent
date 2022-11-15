@@ -48,6 +48,7 @@ public interface SysResourceApplicationService {
     /**
      * 新增资源
      * @param dto
+     * @throws IOException
      * @return
      */
     Boolean insertResource(SysResourceDTO dto) throws IOException;
@@ -55,6 +56,7 @@ public interface SysResourceApplicationService {
     /**
      * 修改资源
      * @param dto
+     * @throws IOException
      * @return
      */
     Boolean updateResource(SysResourceDTO dto) throws IOException;
