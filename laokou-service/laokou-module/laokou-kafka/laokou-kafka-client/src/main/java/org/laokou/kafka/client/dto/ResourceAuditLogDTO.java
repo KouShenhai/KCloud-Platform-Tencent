@@ -17,7 +17,6 @@ package org.laokou.kafka.client.dto;
 
 import lombok.Data;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author Kou Shenhai
@@ -28,7 +27,7 @@ public class ResourceAuditLogDTO implements Serializable {
 
     private String auditName;
 
-    private Date auditDate;
+    private String auditDate;
 
     private Integer auditStatus;
 
@@ -37,4 +36,5 @@ public class ResourceAuditLogDTO implements Serializable {
     private Integer status;
 
     private Long creator;
+
 }

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.application.service.impl;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -188,7 +189,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         //同步数据
                         asyncTaskExecutor.execute(() -> {
                             final String indexName = resourceIndex + "_" + ym;
-                            final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
+                            final String jsonDataList = JSONUtil.toJsonStr(resourceDataList);
                             final ElasticsearchModel model = new ElasticsearchModel();
                             model.setIndexName(indexName);
                             model.setData(jsonDataList);

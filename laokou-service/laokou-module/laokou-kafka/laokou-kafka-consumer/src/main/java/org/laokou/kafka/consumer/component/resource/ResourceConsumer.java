@@ -17,6 +17,7 @@ package org.laokou.kafka.consumer.component.resource;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.common.core.utils.DateUtil;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.kafka.client.constant.KafkaConstant;
@@ -28,9 +29,6 @@ import org.laokou.kafka.consumer.service.SysResourceService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
-
 /**
  * @author Kou Shenhai
  */
@@ -58,7 +56,7 @@ public class ResourceConsumer {
                 sysResourceService.updateById(sysResourceDO);
                 //插入审批日志
                 SysResourceAuditLogDO logDO = new SysResourceAuditLogDO();
-                logDO.setAuditDate(new Date());
+                logDO.setAuditDate(DateUtil.parse(auditLogDTO.getAuditDate(),DateUtil.DATE_TIME_PATTERN));
                 logDO.setAuditName(auditLogDTO.getAuditName());
                 logDO.setCreator(auditLogDTO.getCreator());
                 logDO.setComment(auditLogDTO.getComment());
