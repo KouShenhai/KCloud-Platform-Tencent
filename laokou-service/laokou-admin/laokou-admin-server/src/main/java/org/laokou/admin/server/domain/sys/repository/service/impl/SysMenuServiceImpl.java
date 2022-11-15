@@ -17,7 +17,7 @@ package org.laokou.admin.server.domain.sys.repository.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.laokou.admin.server.domain.sys.entity.SysMenuDO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysMenuMapper;
-import org.laokou.admin.server.interfaces.qo.SysMenuQO;
+import org.laokou.admin.server.interfaces.qo.SysMenuQo;
 import org.laokou.admin.client.vo.SysMenuVO;
 import org.laokou.admin.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.client.user.UserDetail;
@@ -62,7 +62,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> im
     }
 
     @Override
-    public List<SysMenuVO> queryMenuList(SysMenuQO qo) {
+    public List<SysMenuVO> queryMenuList(SysMenuQo qo) {
         return this.baseMapper.queryMenuList(qo);
     }
 

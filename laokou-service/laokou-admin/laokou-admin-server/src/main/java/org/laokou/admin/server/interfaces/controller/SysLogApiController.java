@@ -17,8 +17,8 @@ package org.laokou.admin.server.interfaces.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.application.service.SysLogApplicationService;
-import org.laokou.admin.server.interfaces.qo.LoginLogQO;
-import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
+import org.laokou.admin.server.interfaces.qo.LoginLogQo;
+import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 import org.laokou.common.core.utils.HttpResultUtil;
@@ -42,14 +42,14 @@ public class SysLogApiController {
     @PostMapping(value = "/operate/query")
     @ApiOperation("系统日志>操作日志>查询")
     @PreAuthorize("hasAuthority('sys:log:operate:query')")
-    public HttpResultUtil<IPage<SysOperateLogVO>> queryOperateLog(@RequestBody SysOperateLogQO qo) {
+    public HttpResultUtil<IPage<SysOperateLogVO>> queryOperateLog(@RequestBody SysOperateLogQo qo) {
         return new HttpResultUtil<IPage<SysOperateLogVO>>().ok(sysLogApplicationService.queryOperateLogPage(qo));
     }
 
     @PostMapping(value = "/login/query")
     @ApiOperation("系统日志>登录日志>查询")
     @PreAuthorize("hasAuthority('sys:log:login:query')")
-    public HttpResultUtil<IPage<SysLoginLogVO>> queryLoginLog(@RequestBody LoginLogQO qo) {
+    public HttpResultUtil<IPage<SysLoginLogVO>> queryLoginLog(@RequestBody LoginLogQo qo) {
         return new HttpResultUtil<IPage<SysLoginLogVO>>().ok(sysLogApplicationService.queryLoginLogPage(qo));
     }
 

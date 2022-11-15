@@ -21,7 +21,13 @@ package org.laokou.common.core.enums;
 
 public enum DataTypeEnum {
 
+    /**
+     * 文本
+     */
     TEXT,
+    /**
+     * 文件
+     */
     FILE;
 
 }

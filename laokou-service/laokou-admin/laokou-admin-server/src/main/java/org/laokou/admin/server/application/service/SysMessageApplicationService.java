@@ -17,7 +17,7 @@ package org.laokou.admin.server.application.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.admin.server.interfaces.qo.SysMessageQO;
+import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
 import java.io.IOException;
@@ -35,13 +35,13 @@ public interface SysMessageApplicationService {
 
     Boolean insertMessage(MessageDTO dto);
 
-    IPage<SysMessageVO> queryMessagePage(SysMessageQO qo);
+    IPage<SysMessageVO> queryMessagePage(SysMessageQo qo);
 
     MessageDetailVO getMessageByDetailId(Long id);
 
     MessageDetailVO getMessageById(Long id);
 
-    IPage<SysMessageVO> getUnReadList(SysMessageQO qo);
+    IPage<SysMessageVO> getUnReadList(SysMessageQo qo);
 
     Long unReadCount();
 

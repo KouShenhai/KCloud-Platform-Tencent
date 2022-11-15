@@ -16,7 +16,7 @@
 package org.laokou.admin.server.interfaces.controller;
 import org.laokou.admin.server.application.service.SysMenuApplicationService;
 import org.laokou.admin.client.dto.SysMenuDTO;
-import org.laokou.admin.server.interfaces.qo.SysMenuQO;
+import org.laokou.admin.server.interfaces.qo.SysMenuQo;
 import org.laokou.admin.client.vo.SysMenuVO;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
@@ -47,7 +47,7 @@ public class SysMenuApiController {
     @PostMapping("/query")
     @ApiOperation("系统菜单>查询")
     @PreAuthorize("hasAuthority('sys:menu:query')")
-    public HttpResultUtil<List<SysMenuVO>> query(@RequestBody SysMenuQO qo) {
+    public HttpResultUtil<List<SysMenuVO>> query(@RequestBody SysMenuQo qo) {
         return new HttpResultUtil<List<SysMenuVO>>().ok(sysMenuApplicationService.queryMenuList(qo));
     }
 

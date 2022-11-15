@@ -16,7 +16,7 @@
 package org.laokou.admin.server.application.service;
 
 import org.laokou.admin.client.dto.SysDeptDTO;
-import org.laokou.admin.server.interfaces.qo.SysDeptQO;
+import org.laokou.admin.server.interfaces.qo.SysDeptQo;
 import org.laokou.admin.client.vo.SysDeptVO;
 import java.util.*;
 /**
@@ -26,9 +26,13 @@ import java.util.*;
  */
 public interface SysDeptApplicationService {
 
+    /**
+     * 获取部门列表
+     * @return
+     */
     SysDeptVO getDeptList();
 
-    List<SysDeptVO> queryDeptList(SysDeptQO qo);
+    List<SysDeptVO> queryDeptList(SysDeptQo qo);
 
     Boolean insertDept(SysDeptDTO dto);
 

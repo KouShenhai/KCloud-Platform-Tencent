@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
 import org.laokou.admin.client.index.ResourceIndex;
-import org.laokou.admin.server.interfaces.qo.SysResourceQO;
+import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysResourceVO;
 
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.List;
  * @date 2022/8/19 0019 下午 4:11
  */
 public interface SysResourceService extends IService<SysResourceDO> {
-    IPage<SysResourceVO> getResourceList(IPage<SysResourceVO> page, SysResourceQO qo);
+    IPage<SysResourceVO> getResourceList(IPage<SysResourceVO> page, SysResourceQo qo);
 
     SysResourceVO getResourceById(Long id);
 
@@ -38,7 +38,7 @@ public interface SysResourceService extends IService<SysResourceDO> {
 
     Long getResourceTotal(String code);
 
-    List<String> getResourceYMPartitionList(String code);
+    List<String> getResourceYmPartitionList(String code);
 
     List<ResourceIndex> getResourceIndexList(Integer pageSize, Integer pageIndex, String code);
 }

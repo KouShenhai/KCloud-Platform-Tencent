@@ -18,7 +18,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
 import org.laokou.admin.client.dto.SysResourceDTO;
-import org.laokou.admin.server.interfaces.qo.SysResourceQO;
+import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.common.core.exception.CustomException;
@@ -87,7 +87,7 @@ public class SysAudioApiController {
     @PostMapping("/query")
     @ApiOperation("音频管理>查询")
     @PreAuthorize("hasAuthority('sys:resource:audio:query')")
-    public HttpResultUtil<IPage<SysResourceVO>> query(@RequestBody SysResourceQO qo) {
+    public HttpResultUtil<IPage<SysResourceVO>> query(@RequestBody SysResourceQo qo) {
         return new HttpResultUtil<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
     }
 

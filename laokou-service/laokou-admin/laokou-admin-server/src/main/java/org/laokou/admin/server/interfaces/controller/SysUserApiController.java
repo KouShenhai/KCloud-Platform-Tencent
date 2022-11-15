@@ -17,7 +17,7 @@ package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysUserDTO;
 import org.laokou.admin.client.vo.UserInfoVO;
-import org.laokou.admin.server.interfaces.qo.SysUserQO;
+import org.laokou.admin.server.interfaces.qo.SysUserQo;
 import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.server.application.service.SysUserApplicationService;
@@ -99,7 +99,7 @@ public class SysUserApiController {
     @PostMapping("/query")
     @ApiOperation("系统用户>查询")
     @PreAuthorize("hasAuthority('sys:user:query')")
-    public HttpResultUtil<IPage<SysUserVO>> query(@RequestBody SysUserQO qo) {
+    public HttpResultUtil<IPage<SysUserVO>> query(@RequestBody SysUserQo qo) {
         return new HttpResultUtil<IPage<SysUserVO>>().ok(sysUserApplicationService.queryUserPage(qo));
     }
 

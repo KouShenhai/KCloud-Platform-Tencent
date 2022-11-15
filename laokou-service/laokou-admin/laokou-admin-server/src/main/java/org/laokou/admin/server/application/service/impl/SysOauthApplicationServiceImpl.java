@@ -22,7 +22,7 @@ import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysOauthService;
 import org.laokou.admin.client.dto.SysOauthDTO;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
-import org.laokou.admin.server.interfaces.qo.SysOauthQO;
+import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
@@ -43,7 +43,7 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
 
     @Override
     @DataFilter(tableAlias = "boot_sys_oauth_client_details")
-    public IPage<SysOauthVO> queryOauthPage(SysOauthQO qo) {
+    public IPage<SysOauthVO> queryOauthPage(SysOauthQo qo) {
         IPage<SysOauthVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysOauthService.getOauthList(page,qo);
     }

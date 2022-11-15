@@ -17,14 +17,14 @@ package org.laokou.admin.server.application.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysDictDTO;
-import org.laokou.admin.server.interfaces.qo.SysDictQO;
+import org.laokou.admin.server.interfaces.qo.SysDictQo;
 import org.laokou.admin.client.vo.SysDictVO;
 /**
  * @author Kou Shenhai
  */
 public interface SysDictApplicationService {
 
-    IPage<SysDictVO> queryDictPage(SysDictQO qo);
+    IPage<SysDictVO> queryDictPage(SysDictQo qo);
 
     SysDictVO getDictById(Long id);
 

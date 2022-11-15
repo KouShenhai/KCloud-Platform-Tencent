@@ -20,7 +20,7 @@ import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysResourceMapper;
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceService;
 import org.laokou.admin.client.index.ResourceIndex;
-import org.laokou.admin.server.interfaces.qo.SysResourceQO;
+import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +35,7 @@ import java.util.List;
 public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysResourceDO> implements SysResourceService {
 
     @Override
-    public IPage<SysResourceVO> getResourceList(IPage<SysResourceVO> page, SysResourceQO qo) {
+    public IPage<SysResourceVO> getResourceList(IPage<SysResourceVO> page, SysResourceQo qo) {
         return this.baseMapper.getResourceList(page, qo);
     }
 
@@ -55,8 +55,8 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
     }
 
     @Override
-    public List<String> getResourceYMPartitionList(String code) {
-        return this.baseMapper.getResourceYMPartitionList(code);
+    public List<String> getResourceYmPartitionList(String code) {
+        return this.baseMapper.getResourceYmPartitionList(code);
     }
 
     @Override

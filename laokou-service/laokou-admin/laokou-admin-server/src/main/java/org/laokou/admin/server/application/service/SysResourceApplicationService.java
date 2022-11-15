@@ -16,7 +16,7 @@
 package org.laokou.admin.server.application.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysResourceDTO;
-import org.laokou.admin.server.interfaces.qo.SysResourceQO;
+import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.oss.client.vo.UploadVO;
@@ -30,7 +30,7 @@ import java.util.*;
  */
 public interface SysResourceApplicationService {
 
-    IPage<SysResourceVO> queryResourcePage(SysResourceQO qo);
+    IPage<SysResourceVO> queryResourcePage(SysResourceQo qo);
 
     SysResourceVO getResourceById(Long id);
 

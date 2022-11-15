@@ -32,6 +32,7 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 /**
  * @author Kou Shenhai
+ * 官方不再维护，过期类无法替换
  * @version 1.0
  * @date 2021/5/28 0028 下午 4:53
  */

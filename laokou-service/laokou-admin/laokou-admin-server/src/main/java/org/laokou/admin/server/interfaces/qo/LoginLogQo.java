@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.interfaces.qo;
-
 import lombok.Data;
 import org.laokou.common.mybatisplus.entity.BasePage;
 
 /**
  * @author Kou Shenhai
- * @version 1.0
- * @date 2022/8/11 0011 上午 9:39
  */
 @Data
-public class SysOauthQO extends BasePage {
+public class LoginLogQo extends BasePage {
 
-    private String clientId;
-    private String clientSecret;
+    private String loginName;
+
+    private Integer requestStatus;
 
 }

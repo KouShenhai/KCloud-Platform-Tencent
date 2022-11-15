@@ -16,8 +16,8 @@
 package org.laokou.admin.server.application.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.laokou.admin.server.interfaces.qo.LoginLogQO;
-import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
+import org.laokou.admin.server.interfaces.qo.LoginLogQo;
+import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 
@@ -26,7 +26,7 @@ import org.laokou.admin.client.vo.SysOperateLogVO;
  */
 public interface SysLogApplicationService {
 
-    IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQO qo);
+    IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQo qo);
 
-    IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQO qo);
+    IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQo qo);
 }

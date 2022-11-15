@@ -18,7 +18,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.laokou.admin.server.application.service.SysMenuApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysMenuDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysMenuService;
-import org.laokou.admin.server.interfaces.qo.SysMenuQO;
+import org.laokou.admin.server.interfaces.qo.SysMenuQo;
 import org.laokou.admin.client.vo.SysMenuVO;
 import org.laokou.admin.client.dto.SysMenuDTO;
 import org.laokou.auth.client.user.UserDetail;
@@ -60,7 +60,7 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     }
 
     @Override
-    public List<SysMenuVO> queryMenuList(SysMenuQO qo) {
+    public List<SysMenuVO> queryMenuList(SysMenuQo qo) {
         return sysMenuService.queryMenuList(qo);
     }
 
@@ -105,7 +105,7 @@ public class SysMenuApplicationServiceImpl implements SysMenuApplicationService 
     public SysMenuVO treeMenu(Long roleId) {
         List<SysMenuVO> menuList;
         if (null == roleId) {
-            menuList = queryMenuList(new SysMenuQO());
+            menuList = queryMenuList(new SysMenuQo());
         } else {
             menuList = sysMenuService.getMenuListByRoleId(roleId);
         }

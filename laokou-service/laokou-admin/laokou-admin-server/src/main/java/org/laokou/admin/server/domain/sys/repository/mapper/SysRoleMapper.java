@@ -17,7 +17,7 @@ package org.laokou.admin.server.domain.sys.repository.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.domain.sys.entity.SysRoleDO;
-import org.laokou.admin.server.interfaces.qo.SysRoleQO;
+import org.laokou.admin.server.interfaces.qo.SysRoleQo;
 import org.laokou.admin.client.vo.SysRoleVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -57,12 +57,12 @@ public interface SysRoleMapper extends BaseMapper<SysRoleDO> {
      * @param qo
      * @return
      */
-    IPage<SysRoleVO> getRoleList(IPage<SysRoleVO> page, @Param("qo") SysRoleQO qo);
+    IPage<SysRoleVO> getRoleList(IPage<SysRoleVO> page, @Param("qo") SysRoleQo qo);
 
     SysRoleVO getRoleById(@Param("id") Long id);
 
     void deleteRole(@Param("id") Long id);
 
-    List<SysRoleVO> getRoleList(@Param("qo") SysRoleQO qo);
+    List<SysRoleVO> getRoleList(@Param("qo") SysRoleQo qo);
 
 }

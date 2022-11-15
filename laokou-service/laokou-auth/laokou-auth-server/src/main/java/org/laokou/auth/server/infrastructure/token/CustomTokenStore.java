@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 /**
  * TokenStore
- *
+ * 官方不再维护，过期类无法替换
  * @author Kou Shenhai
  */
 @Configuration

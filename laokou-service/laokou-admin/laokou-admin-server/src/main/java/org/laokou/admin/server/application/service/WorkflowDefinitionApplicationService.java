@@ -15,7 +15,7 @@
  */
 package org.laokou.admin.server.application.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.laokou.admin.server.interfaces.qo.DefinitionQO;
+import org.laokou.admin.server.interfaces.qo.DefinitionQo;
 import org.laokou.admin.client.vo.DefinitionVO;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +31,7 @@ public interface WorkflowDefinitionApplicationService {
 
     Boolean importFile(String name, InputStream in);
 
-    IPage<DefinitionVO> queryDefinitionPage(DefinitionQO qo);
+    IPage<DefinitionVO> queryDefinitionPage(DefinitionQo qo);
 
     void imageProcess(String definitionId, HttpServletResponse response);
 

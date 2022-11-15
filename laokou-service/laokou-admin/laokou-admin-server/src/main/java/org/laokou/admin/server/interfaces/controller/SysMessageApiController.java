@@ -17,7 +17,7 @@ package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.admin.server.interfaces.qo.SysMessageQO;
+import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
 import org.laokou.common.core.utils.HttpResultUtil;
@@ -51,7 +51,7 @@ public class SysMessageApiController {
     @PostMapping("/query")
     @ApiOperation("系统消息>查询")
     @PreAuthorize("hasAuthority('sys:message:query')")
-    public HttpResultUtil<IPage<SysMessageVO>> query(@RequestBody SysMessageQO qo) {
+    public HttpResultUtil<IPage<SysMessageVO>> query(@RequestBody SysMessageQo qo) {
         return new HttpResultUtil<IPage<SysMessageVO>>().ok(sysMessageApplicationService.queryMessagePage(qo));
     }
 
@@ -71,7 +71,7 @@ public class SysMessageApiController {
 
     @PostMapping("/unread/list")
     @ApiOperation("系统消息>未读")
-    public HttpResultUtil<IPage<SysMessageVO>> unread(@RequestBody SysMessageQO qo) {
+    public HttpResultUtil<IPage<SysMessageVO>> unread(@RequestBody SysMessageQo qo) {
         return new HttpResultUtil<IPage<SysMessageVO>>().ok(sysMessageApplicationService.getUnReadList(qo));
     }
 

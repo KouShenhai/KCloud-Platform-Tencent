@@ -18,7 +18,7 @@ package org.laokou.admin.server.domain.sys.repository.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
-import org.laokou.admin.server.interfaces.qo.SysOauthQO;
+import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -37,6 +37,6 @@ public interface SysOauthMapper extends BaseMapper<SysOauthDO> {
 
     SysOauthVO getOauthById(@Param("id") Long id);
 
-    IPage<SysOauthVO> getOauthList(IPage<SysOauthVO> page, @Param("qo") SysOauthQO qo);
+    IPage<SysOauthVO> getOauthList(IPage<SysOauthVO> page, @Param("qo") SysOauthQo qo);
 
 }

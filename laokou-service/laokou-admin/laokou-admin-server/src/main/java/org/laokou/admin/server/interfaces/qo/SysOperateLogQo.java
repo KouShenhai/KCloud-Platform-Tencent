@@ -20,14 +20,12 @@ import org.laokou.common.mybatisplus.entity.BasePage;
 
 /**
  * @author Kou Shenhai
- * @version 1.0
- * @date 2022/8/19 0019 下午 3:46
  */
 @Data
-public class SysResourceQO extends BasePage {
+public class SysOperateLogQo extends BasePage {
 
-    private String title;
-    private String code;
-    private Long id;
+    private String module;
+
+    private Integer requestStatus;
 
 }

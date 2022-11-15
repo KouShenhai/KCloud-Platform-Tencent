@@ -22,7 +22,7 @@ import lombok.Data;
  * @date 2022/7/7 0007 上午 9:00
  */
 @Data
-public class DefinitionQO extends BasePage {
+public class DefinitionQo extends BasePage {
 
     private String processName;
 

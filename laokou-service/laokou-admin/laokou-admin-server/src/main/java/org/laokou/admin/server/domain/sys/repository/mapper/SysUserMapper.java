@@ -17,10 +17,9 @@ package org.laokou.admin.server.domain.sys.repository.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysUserDTO;
-import org.laokou.admin.server.interfaces.qo.SysUserQO;
+import org.laokou.admin.server.interfaces.qo.SysUserQo;
 import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.admin.server.domain.sys.entity.SysUserDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -41,7 +40,7 @@ public interface SysUserMapper extends BaseMapper<SysUserDO> {
      * @param qo
      * @return
      */
-    IPage<SysUserVO> getUserPage(IPage<SysUserVO> page, @Param("qo") SysUserQO qo);
+    IPage<SysUserVO> getUserPage(IPage<SysUserVO> page, @Param("qo") SysUserQo qo);
 
     /**
      * 更新用户信息

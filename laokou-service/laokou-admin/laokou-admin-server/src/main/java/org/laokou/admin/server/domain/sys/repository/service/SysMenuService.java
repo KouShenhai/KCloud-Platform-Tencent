@@ -16,7 +16,7 @@
 package org.laokou.admin.server.domain.sys.repository.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.laokou.admin.server.domain.sys.entity.SysMenuDO;
-import org.laokou.admin.server.interfaces.qo.SysMenuQO;
+import org.laokou.admin.server.interfaces.qo.SysMenuQo;
 import org.laokou.admin.client.vo.SysMenuVO;
 import org.laokou.auth.client.user.UserDetail;
 import java.util.List;
@@ -46,7 +46,7 @@ public interface SysMenuService extends IService<SysMenuDO> {
      * @param qo
      * @return
      */
-    List<SysMenuVO> queryMenuList(SysMenuQO qo);
+    List<SysMenuVO> queryMenuList(SysMenuQo qo);
 
     /**
      * 根据id查询

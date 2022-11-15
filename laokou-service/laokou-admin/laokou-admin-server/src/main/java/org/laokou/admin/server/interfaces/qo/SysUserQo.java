@@ -20,7 +20,10 @@ import lombok.Data;
  * @author Kou Shenhai
  */
 @Data
-public class SysRoleQO extends BasePage {
+public class SysUserQo extends BasePage {
 
-    private String name;
+    private String username;
+
+    private Integer status;
+
 }

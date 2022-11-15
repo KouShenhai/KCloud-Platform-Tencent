@@ -16,7 +16,7 @@
 package org.laokou.admin.server.interfaces.controller;
 import org.laokou.admin.server.application.service.SysDeptApplicationService;
 import org.laokou.admin.client.dto.SysDeptDTO;
-import org.laokou.admin.server.interfaces.qo.SysDeptQO;
+import org.laokou.admin.server.interfaces.qo.SysDeptQo;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.admin.client.vo.SysDeptVO;
 import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
@@ -49,7 +49,7 @@ public class SysDeptApiController {
     @PostMapping("/query")
     @ApiOperation("系统部门>查询")
     @PreAuthorize("hasAuthority('sys:dept:query')")
-    public HttpResultUtil<List<SysDeptVO>> query(@RequestBody SysDeptQO qo) {
+    public HttpResultUtil<List<SysDeptVO>> query(@RequestBody SysDeptQo qo) {
         return new HttpResultUtil<List<SysDeptVO>>().ok(sysDeptApplicationService.queryDeptList(qo));
     }
 

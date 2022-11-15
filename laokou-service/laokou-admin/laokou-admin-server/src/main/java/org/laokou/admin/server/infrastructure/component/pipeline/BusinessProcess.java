@@ -19,6 +19,10 @@ package org.laokou.admin.server.infrastructure.component.pipeline;
  */
 public interface BusinessProcess<T> {
 
+    /**
+     * 消息流程处理
+     * @param dto
+     */
     void process(T dto);
 
 }

@@ -17,7 +17,7 @@ package org.laokou.admin.server.domain.sys.repository.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.laokou.admin.server.domain.sys.entity.SysDeptDO;
-import org.laokou.admin.server.interfaces.qo.SysDeptQO;
+import org.laokou.admin.server.interfaces.qo.SysDeptQo;
 import org.laokou.admin.client.vo.SysDeptVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -37,7 +37,7 @@ public interface SysDeptMapper extends BaseMapper<SysDeptDO> {
      * @param qo
      * @return
      */
-    List<SysDeptVO> getDeptList(@Param("qo") SysDeptQO qo);
+    List<SysDeptVO> getDeptList(@Param("qo") SysDeptQo qo);
 
     /**
      * 根据id删除部门

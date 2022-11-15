@@ -17,7 +17,7 @@ package org.laokou.admin.server.domain.sys.repository.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.laokou.admin.client.dto.SysUserDTO;
-import org.laokou.admin.server.interfaces.qo.SysUserQO;
+import org.laokou.admin.server.interfaces.qo.SysUserQo;
 import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.server.domain.sys.entity.SysUserDO;
@@ -41,7 +41,7 @@ public interface SysUserService extends IService<SysUserDO> {
      * @param qo
      * @return
      */
-    IPage<SysUserVO> getUserPage(IPage<SysUserVO> page, SysUserQO qo);
+    IPage<SysUserVO> getUserPage(IPage<SysUserVO> page, SysUserQo qo);
 
     /**
      * 根据id删除用户

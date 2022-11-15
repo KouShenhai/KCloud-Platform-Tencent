@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.interfaces.qo;
+
 import lombok.Data;
+
 /**
  * @author Kou Shenhai
  */
 @Data
-public class SysMenuQO {
+public class SysDeptQo {
 
     private String name;
+
+    private Integer status;
 
 }

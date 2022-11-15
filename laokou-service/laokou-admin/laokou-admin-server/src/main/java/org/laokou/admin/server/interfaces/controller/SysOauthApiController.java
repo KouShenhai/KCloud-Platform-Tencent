@@ -17,7 +17,7 @@ package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.application.service.SysOauthApplicationService;
 import org.laokou.admin.client.dto.SysOauthDTO;
-import org.laokou.admin.server.interfaces.qo.SysOauthQO;
+import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
@@ -40,7 +40,7 @@ public class SysOauthApiController {
     @PostMapping("/query")
     @ApiOperation("系统认证>查询")
     @PreAuthorize("hasAuthority('sys:oauth:query')")
-    public HttpResultUtil<IPage<SysOauthVO>> query(@RequestBody SysOauthQO qo) {
+    public HttpResultUtil<IPage<SysOauthVO>> query(@RequestBody SysOauthQo qo) {
         return new HttpResultUtil<IPage<SysOauthVO>>().ok(sysOauthApplicationService.queryOauthPage(qo));
     }
 

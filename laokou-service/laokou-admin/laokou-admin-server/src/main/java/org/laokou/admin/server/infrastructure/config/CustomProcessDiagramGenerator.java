@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerator {
     @Override
-    protected DefaultProcessDiagramCanvas generateProcessDiagram(BpmnModel bpmnModel, String imageType, List<String> highLightedActivities, List<String> highLightedFlows, String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader, double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDI) {
+    protected DefaultProcessDiagramCanvas generateProcessDiagram(BpmnModel bpmnModel, String imageType, List<String> highLightedActivities, List<String> highLightedFlows, String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader, double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDi) {
         this.prepareBpmnModel(bpmnModel);
         DefaultProcessDiagramCanvas processDiagramCanvas = initProcessDiagramCanvas(bpmnModel, imageType, activityFontName, labelFontName, annotationFontName, customClassLoader);
         Iterator var13 = bpmnModel.getPools().iterator();
@@ -56,7 +56,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             while (subProcesses1.hasNext()) {
                 FlowNode artifact1 = (FlowNode) subProcesses1.next();
                 if (!this.isPartOfCollapsedSubProcess(artifact1, bpmnModel)) {
-                    this.drawActivity(processDiagramCanvas, bpmnModel, artifact1, highLightedActivities, highLightedFlows, scaleFactor, Boolean.valueOf(drawSequenceFlowNameWithNoLabelDI));
+                    this.drawActivity(processDiagramCanvas, bpmnModel, artifact1, highLightedActivities, highLightedFlows, scaleFactor, Boolean.valueOf(drawSequenceFlowNameWithNoLabelDi));
                 }
             }
         }
@@ -246,7 +246,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
 
     @Override
     protected void drawActivity(DefaultProcessDiagramCanvas processDiagramCanvas, BpmnModel bpmnModel,
-                                FlowNode flowNode, List<String> highLightedActivities, List<String> highLightedFlows, double scaleFactor, Boolean drawSequenceFlowNameWithNoLabelDI) {
+                                FlowNode flowNode, List<String> highLightedActivities, List<String> highLightedFlows, double scaleFactor, Boolean drawSequenceFlowNameWithNoLabelDi) {
         ActivityDrawInstruction drawInstruction = activityDrawInstructions.get(flowNode.getClass());
         if (drawInstruction != null) {
             drawInstruction.draw(processDiagramCanvas, bpmnModel, flowNode);
@@ -332,7 +332,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
                 if (labelGraphicInfo != null) {
                     processDiagramCanvas.drawLabel(sequenceFlow.getName(), labelGraphicInfo, false);
                 } else {
-                    if (drawSequenceFlowNameWithNoLabelDI) {
+                    if (drawSequenceFlowNameWithNoLabelDi) {
                         GraphicInfo lineCenter = getLineCenter(graphicInfoList);
                         processDiagramCanvas.drawLabel(sequenceFlow.getName(), lineCenter, false);
                     }
@@ -344,7 +344,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             for (FlowElement nestedFlowElement : ((FlowElementsContainer) flowNode).getFlowElements()) {
                 if (nestedFlowElement instanceof FlowNode && !isPartOfCollapsedSubProcess(nestedFlowElement, bpmnModel)) {
                     drawActivity(processDiagramCanvas, bpmnModel, (FlowNode) nestedFlowElement,
-                            highLightedActivities, highLightedFlows, scaleFactor, drawSequenceFlowNameWithNoLabelDI);
+                            highLightedActivities, highLightedFlows, scaleFactor, drawSequenceFlowNameWithNoLabelDi);
                 }
             }
         }

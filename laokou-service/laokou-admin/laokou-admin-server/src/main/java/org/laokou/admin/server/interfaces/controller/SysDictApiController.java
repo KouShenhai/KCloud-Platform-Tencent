@@ -17,7 +17,7 @@ package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.application.service.SysDictApplicationService;
 import org.laokou.admin.client.dto.SysDictDTO;
-import org.laokou.admin.server.interfaces.qo.SysDictQO;
+import org.laokou.admin.server.interfaces.qo.SysDictQo;
 import org.laokou.admin.client.vo.SysDictVO;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
@@ -41,7 +41,7 @@ public class SysDictApiController {
     @PostMapping(value = "/query")
     @ApiOperation("系统字典>查询")
     @PreAuthorize("hasAuthority('sys:dict:query')")
-    public HttpResultUtil<IPage<SysDictVO>> query(@RequestBody SysDictQO qo) {
+    public HttpResultUtil<IPage<SysDictVO>> query(@RequestBody SysDictQo qo) {
         return new HttpResultUtil<IPage<SysDictVO>>().ok(sysDictApplicationService.queryDictPage(qo));
     }
 

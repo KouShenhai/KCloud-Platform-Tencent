@@ -29,7 +29,7 @@ import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
-import org.laokou.auth.server.infrastructure.exception.CustomOAuth2Exception;
+import org.laokou.auth.server.infrastructure.exception.CustomOauth2Exception;
 import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +48,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 /**
+ * 官方不再维护，过期类无法替换
  * @author Kou Shenhai
  */
 @Service
@@ -88,11 +89,11 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
-            throw new CustomOAuth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR);
+            throw new CustomOauth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR);
         }
         if(!PasswordUtil.matches(password, userDetail.getPassword())) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
-            throw new CustomOAuth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR);
+            throw new CustomOauth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR);
         }
         CompletableFuture<UserDetail> c1 = CompletableFuture.supplyAsync(() -> sysDeptService.getDeptIds(userDetail))
                 .thenApplyAsync(deptIds -> {
@@ -108,7 +109,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         CompletableFuture.allOf(c1,c2).join();
         if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
-            throw new CustomOAuth2Exception(ErrorCode.ACCOUNT_DISABLE);
+            throw new CustomOauth2Exception(ErrorCode.ACCOUNT_DISABLE);
         }
         authLogUtil.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
         return userDetail;
@@ -129,7 +130,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @Override
     public void captcha(String uuid, HttpServletResponse response) throws IOException {
         if (StringUtil.isEmpty(uuid)) {
-            throw new CustomOAuth2Exception(ErrorCode.IDENTIFIER_NOT_NULL);
+            throw new CustomOauth2Exception(ErrorCode.IDENTIFIER_NOT_NULL);
         }
         BufferedImage image = sysCaptchaService.createImage(uuid);
         response.setHeader("Cache-Control", "no-store, no-cache");

@@ -18,12 +18,12 @@ package org.laokou.admin.server.domain.sys.repository.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.laokou.admin.server.domain.sys.entity.SysLoginLogDO;
-import org.laokou.admin.server.interfaces.qo.LoginLogQO;
+import org.laokou.admin.server.interfaces.qo.LoginLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 
 /**
  * @author Kou Shenhai
  */
 public interface SysLoginLogService extends IService<SysLoginLogDO> {
-    IPage<SysLoginLogVO> getLoginLogList(IPage<SysLoginLogVO> page, LoginLogQO qo);
+    IPage<SysLoginLogVO> getLoginLogList(IPage<SysLoginLogVO> page, LoginLogQo qo);
 }

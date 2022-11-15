@@ -32,6 +32,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * Spring Security配置
+ * 官方不再维护，过期类无法替换
  * @author Kou Shenhai
  * @version 1.0
  * @date 2021/5/28 0028 上午 10:33

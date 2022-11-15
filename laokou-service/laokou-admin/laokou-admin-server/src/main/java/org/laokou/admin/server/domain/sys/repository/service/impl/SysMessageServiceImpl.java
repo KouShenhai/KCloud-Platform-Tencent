@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysMessageMapper;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageService;
-import org.laokou.admin.server.interfaces.qo.SysMessageQO;
+import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = Exception.class)
 public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMessageDO> implements SysMessageService {
     @Override
-    public IPage<SysMessageVO> getMessageList(IPage<SysMessageVO> page, SysMessageQO qo) {
+    public IPage<SysMessageVO> getMessageList(IPage<SysMessageVO> page, SysMessageQo qo) {
         return this.baseMapper.getMessageList(page,qo);
     }
 

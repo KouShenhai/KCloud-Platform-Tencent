@@ -16,7 +16,7 @@
 package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.application.service.WorkflowDefinitionApplicationService;
-import org.laokou.admin.server.interfaces.qo.DefinitionQO;
+import org.laokou.admin.server.interfaces.qo.DefinitionQo;
 import org.laokou.admin.client.vo.DefinitionVO;
 import org.laokou.common.core.enums.DataTypeEnum;
 import org.laokou.common.core.utils.HttpResultUtil;
@@ -53,7 +53,7 @@ public class WorkflowDefinitionApiController {
     @PostMapping("/query")
     @ApiOperation("流程定义>查询")
     @PreAuthorize("hasAuthority('workflow:definition:query')")
-    public HttpResultUtil<IPage<DefinitionVO>> query(@RequestBody DefinitionQO qo) {
+    public HttpResultUtil<IPage<DefinitionVO>> query(@RequestBody DefinitionQo qo) {
         return new HttpResultUtil<IPage<DefinitionVO>>().ok(workflowDefinitionApplicationService.queryDefinitionPage(qo));
     }
 

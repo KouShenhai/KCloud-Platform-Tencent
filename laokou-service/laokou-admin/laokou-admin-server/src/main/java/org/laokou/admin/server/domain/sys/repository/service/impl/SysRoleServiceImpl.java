@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.laokou.admin.server.domain.sys.entity.SysRoleDO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysRoleMapper;
 import org.laokou.admin.server.domain.sys.repository.service.SysRoleService;
-import org.laokou.admin.server.interfaces.qo.SysRoleQO;
+import org.laokou.admin.server.interfaces.qo.SysRoleQo;
 import org.laokou.admin.client.vo.SysRoleVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,12 +48,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleDO> im
     }
 
     @Override
-    public IPage<SysRoleVO> getRolePage(IPage<SysRoleVO> page, SysRoleQO qo) {
+    public IPage<SysRoleVO> getRolePage(IPage<SysRoleVO> page, SysRoleQo qo) {
         return this.baseMapper.getRoleList(page, qo);
     }
 
     @Override
-    public List<SysRoleVO> getRoleList(SysRoleQO qo) {
+    public List<SysRoleVO> getRoleList(SysRoleQo qo) {
         return this.baseMapper.getRoleList(qo);
     }
 

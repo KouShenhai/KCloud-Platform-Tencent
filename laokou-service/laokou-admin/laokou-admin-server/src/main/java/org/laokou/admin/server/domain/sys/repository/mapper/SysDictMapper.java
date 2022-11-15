@@ -18,7 +18,7 @@ package org.laokou.admin.server.domain.sys.repository.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.domain.sys.entity.SysDictDO;
-import org.laokou.admin.server.interfaces.qo.SysDictQO;
+import org.laokou.admin.server.interfaces.qo.SysDictQo;
 import org.laokou.admin.client.vo.SysDictVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,9 +35,9 @@ import java.util.List;
 @Mapper
 public interface SysDictMapper extends BaseMapper<SysDictDO> {
 
-    List<SysDictVO> getDictList(@Param("qo") SysDictQO qo);
+    List<SysDictVO> getDictList(@Param("qo") SysDictQo qo);
 
-    IPage<SysDictVO> getDictList(IPage<SysDictVO> page, @Param("qo") SysDictQO qo);
+    IPage<SysDictVO> getDictList(IPage<SysDictVO> page, @Param("qo") SysDictQo qo);
 
     SysDictVO getDictById(@Param("id") Long id);
 

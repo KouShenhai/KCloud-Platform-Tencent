@@ -29,7 +29,7 @@ import org.laokou.admin.server.infrastructure.component.handler.message.HandleHo
 import org.laokou.admin.server.infrastructure.component.pipeline.ProcessController;
 import org.laokou.admin.server.infrastructure.config.WebSocketServer;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.admin.server.interfaces.qo.SysMessageQO;
+import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
 import org.apache.commons.collections.CollectionUtils;
@@ -133,7 +133,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
 
     @Override
     @DataFilter(tableAlias = "boot_sys_message")
-    public IPage<SysMessageVO> queryMessagePage(SysMessageQO qo) {
+    public IPage<SysMessageVO> queryMessagePage(SysMessageQo qo) {
         IPage<SysMessageVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysMessageService.getMessageList(page,qo);
     }
@@ -150,7 +150,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     }
 
     @Override
-    public IPage<SysMessageVO> getUnReadList(SysMessageQO qo) {
+    public IPage<SysMessageVO> getUnReadList(SysMessageQo qo) {
         IPage<SysMessageVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         final Long userId = UserUtil.getUserId();
         return sysMessageService.getUnReadList(page,userId);

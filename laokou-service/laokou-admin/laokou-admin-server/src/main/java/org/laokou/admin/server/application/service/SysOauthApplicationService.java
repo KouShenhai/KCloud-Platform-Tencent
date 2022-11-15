@@ -17,10 +17,8 @@ package org.laokou.admin.server.application.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysOauthDTO;
-import org.laokou.admin.server.interfaces.qo.SysOauthQO;
+import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Kou Shenhai
@@ -29,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface SysOauthApplicationService {
 
-    IPage<SysOauthVO> queryOauthPage(SysOauthQO qo);
+    IPage<SysOauthVO> queryOauthPage(SysOauthQo qo);
 
     Boolean insertOauth(SysOauthDTO dto);
 

@@ -18,7 +18,7 @@ package org.laokou.admin.server.domain.sys.repository.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDO;
-import org.laokou.admin.server.interfaces.qo.SysMessageQO;
+import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
 
@@ -27,7 +27,7 @@ import org.laokou.admin.client.vo.SysMessageVO;
  */
 public interface SysMessageService extends IService<SysMessageDO> {
 
-    IPage<SysMessageVO> getMessageList(IPage<SysMessageVO> page, SysMessageQO qo);
+    IPage<SysMessageVO> getMessageList(IPage<SysMessageVO> page, SysMessageQo qo);
 
     MessageDetailVO getMessageByDetailId(Long id);
 

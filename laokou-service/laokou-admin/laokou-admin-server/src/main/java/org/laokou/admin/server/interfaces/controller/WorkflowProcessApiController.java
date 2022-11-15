@@ -17,7 +17,7 @@ package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.application.service.WorkflowProcessApplicationService;
 import org.laokou.admin.client.dto.AuditDTO;
-import org.laokou.admin.server.interfaces.qo.TaskQO;
+import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.admin.client.vo.TaskVO;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
@@ -42,7 +42,7 @@ public class WorkflowProcessApiController {
     @PostMapping("/resource/query")
     @ApiOperation("流程处理>资源查询")
     @PreAuthorize("hasAuthority('workflow:process:resource:query')")
-    public HttpResultUtil<IPage<TaskVO>> queryResource(@RequestBody TaskQO qo) {
+    public HttpResultUtil<IPage<TaskVO>> queryResource(@RequestBody TaskQo qo) {
         return new HttpResultUtil<IPage<TaskVO>>().ok(workflowProcessApplicationService.queryResourceTaskPage(qo));
     }
 

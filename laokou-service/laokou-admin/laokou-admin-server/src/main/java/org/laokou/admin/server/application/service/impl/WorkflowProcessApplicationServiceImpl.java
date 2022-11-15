@@ -24,7 +24,7 @@ import org.laokou.admin.server.infrastructure.component.feign.kafka.KafkaApiFeig
 import org.laokou.admin.server.infrastructure.utils.WorkFlowUtil;
 import org.laokou.admin.client.dto.AuditDTO;
 import org.laokou.admin.client.vo.StartProcessVO;
-import org.laokou.admin.server.interfaces.qo.TaskQO;
+import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.admin.client.vo.TaskVO;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
@@ -96,7 +96,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     }
 
     @Override
-    public IPage<TaskVO> queryResourceTaskPage(TaskQO qo) {
+    public IPage<TaskVO> queryResourceTaskPage(TaskQo qo) {
         final Integer pageNum = qo.getPageNum();
         final Integer pageSize = qo.getPageSize();
         String processName = qo.getProcessName();

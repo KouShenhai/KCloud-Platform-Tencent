@@ -199,7 +199,7 @@ public class DateUtil {
      * @param strDate 日期字符串
      * @param pattern 日期的格式，如：DateUtil.DATE_PATTERN
      */
-    public static Date stringToDDate(String strDate,String pattern){
+    public static Date stringToDate(String strDate,String pattern){
         if (StringUtil.isEmpty(strDate)){
             return null;
         }

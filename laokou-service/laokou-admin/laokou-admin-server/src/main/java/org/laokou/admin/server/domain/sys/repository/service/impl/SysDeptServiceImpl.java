@@ -18,7 +18,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.laokou.admin.server.domain.sys.entity.SysDeptDO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysDeptMapper;
 import org.laokou.admin.server.domain.sys.repository.service.SysDeptService;
-import org.laokou.admin.server.interfaces.qo.SysDeptQO;
+import org.laokou.admin.server.interfaces.qo.SysDeptQo;
 import org.laokou.admin.client.vo.SysDeptVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +33,7 @@ import java.util.List;
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDeptDO> implements SysDeptService {
 
     @Override
-    public List<SysDeptVO> getDeptList(SysDeptQO qo) {
+    public List<SysDeptVO> getDeptList(SysDeptQo qo) {
         return this.baseMapper.getDeptList(qo);
     }
 

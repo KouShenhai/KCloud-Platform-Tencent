@@ -17,7 +17,7 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.laokou.admin.server.application.service.WorkflowDefinitionApplicationService;
-import org.laokou.admin.server.interfaces.qo.DefinitionQO;
+import org.laokou.admin.server.interfaces.qo.DefinitionQo;
 import org.laokou.admin.client.vo.DefinitionVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +65,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     }
 
     @Override
-    public IPage<DefinitionVO> queryDefinitionPage(DefinitionQO qo) {
+    public IPage<DefinitionVO> queryDefinitionPage(DefinitionQo qo) {
         ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
                 .latestVersion()
                 .orderByProcessDefinitionKey().asc();

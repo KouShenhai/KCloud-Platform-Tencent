@@ -16,7 +16,7 @@
 package org.laokou.admin.server.domain.sys.repository.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.laokou.admin.server.interfaces.qo.SysMenuQO;
+import org.laokou.admin.server.interfaces.qo.SysMenuQo;
 import org.laokou.admin.client.vo.SysMenuVO;
 import org.laokou.admin.server.domain.sys.entity.SysMenuDO;
 import org.apache.ibatis.annotations.Mapper;
@@ -58,7 +58,7 @@ public interface SysMenuMapper extends BaseMapper<SysMenuDO> {
      * @param qo
      * @return
      */
-    List<SysMenuVO> queryMenuList(@Param("qo") SysMenuQO qo);
+    List<SysMenuVO> queryMenuList(@Param("qo") SysMenuQo qo);
 
     /**
      * 根据id查询菜单

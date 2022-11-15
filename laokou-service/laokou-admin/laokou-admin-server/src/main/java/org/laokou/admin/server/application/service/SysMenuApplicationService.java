@@ -16,7 +16,7 @@
 package org.laokou.admin.server.application.service;
 
 import org.laokou.admin.client.dto.SysMenuDTO;
-import org.laokou.admin.server.interfaces.qo.SysMenuQO;
+import org.laokou.admin.server.interfaces.qo.SysMenuQo;
 import org.laokou.admin.client.vo.SysMenuVO;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public interface SysMenuApplicationService {
 
     SysMenuVO getMenuList();
 
-    List<SysMenuVO> queryMenuList(SysMenuQO dto);
+    List<SysMenuVO> queryMenuList(SysMenuQo dto);
 
     SysMenuVO getMenuById(Long id);
 

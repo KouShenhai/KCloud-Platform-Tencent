@@ -19,7 +19,7 @@ package org.laokou.common.core.password;
  * @author Kou Shenhai
  */
 public class PasswordUtil {
-    private static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private static PasswordEncoder passwordEncoder = new BcryptPasswordEncoder();
 
     /**
      * 加密

@@ -26,7 +26,7 @@ import org.laokou.admin.server.domain.sys.repository.service.SysUserRoleService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
-import org.laokou.admin.server.interfaces.qo.SysUserQO;
+import org.laokou.admin.server.interfaces.qo.SysUserQo;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.client.dto.SysUserDTO;
 import org.laokou.auth.client.utils.UserUtil;
@@ -102,7 +102,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
 
     @Override
     @DataFilter(tableAlias = "boot_sys_user")
-    public IPage<SysUserVO> queryUserPage(SysUserQO qo) {
+    public IPage<SysUserVO> queryUserPage(SysUserQo qo) {
         IPage<SysUserVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysUserService.getUserPage(page,qo);
     }

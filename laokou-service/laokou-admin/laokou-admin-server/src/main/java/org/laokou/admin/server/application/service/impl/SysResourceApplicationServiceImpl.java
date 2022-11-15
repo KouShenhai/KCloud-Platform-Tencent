@@ -29,7 +29,7 @@ import org.laokou.admin.server.infrastructure.component.feign.elasticsearch.Elas
 import org.laokou.admin.client.index.ResourceIndex;
 import org.laokou.admin.server.infrastructure.utils.WorkFlowUtil;
 import org.laokou.admin.client.dto.SysResourceDTO;
-import org.laokou.admin.server.interfaces.qo.SysResourceQO;
+import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.StartProcessVO;
 import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
@@ -82,7 +82,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     private AsyncTaskExecutor asyncTaskExecutor;
 
     @Override
-    public IPage<SysResourceVO> queryResourcePage(SysResourceQO qo) {
+    public IPage<SysResourceVO> queryResourcePage(SysResourceQo qo) {
         IPage<SysResourceVO> page = new Page(qo.getPageNum(),qo.getPageSize());
         return sysResourceService.getResourceList(page,qo);
     }
@@ -158,9 +158,9 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                 //创建索引 - 时间分区
                 final String resourceIndex = "laokou_resource_" + code;
                 final String resourceIndexAlias = "laokou_resource";
-                final List<String> resourceYMPartitionList = sysResourceService.getResourceYMPartitionList(code);
-                CountDownLatch countDownLatch = new CountDownLatch(resourceYMPartitionList.size());
-                for (String ym : resourceYMPartitionList) {
+                final List<String> resourceYmPartitionList = sysResourceService.getResourceYmPartitionList(code);
+                CountDownLatch countDownLatch = new CountDownLatch(resourceYmPartitionList.size());
+                for (String ym : resourceYmPartitionList) {
                     asyncTaskExecutor.execute(() -> {
                         final CreateIndexModel model = new CreateIndexModel();
                         final String indexName = resourceIndex + "_" + ym;

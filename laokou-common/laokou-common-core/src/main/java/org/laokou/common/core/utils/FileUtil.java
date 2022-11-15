@@ -36,7 +36,7 @@ public class FileUtil extends FileUtils {
     public static final String RW = "rw";
 
     // 定义允许上传的文件扩展名
-    private static final Map<String, String> extMap = new HashMap<>(3);
+    private static final Map<String, String> EXT_MAP = new HashMap<>(3);
 
     public static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
             8,
@@ -52,13 +52,13 @@ public class FileUtil extends FileUtils {
         // 其中image,audio,video对应文件夹名称,对应dirName
         // key文件夹名称
         // value该文件夹内可以上传文件的后缀名
-        extMap.put("image", ".gif,.GIF,.jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.bmp,.BMP,.webp,.WEBP");
-        extMap.put("audio", ".flac,.FLAC,.cda,.wav,.mp3,.aif,.aiff,.mid,.wma,.ra,.vqf,.ape,.CDA,.WAV,.MP3,.AIF,.AIFF,.MID,.WMA,.RA,.VQF,.APE");
-        extMap.put("video", ".mp4,.MP4,.AVI,.mov,.rmvb,.rm,.FLV,.mp4,.3GP,.flv");
+        EXT_MAP.put("image", ".gif,.GIF,.jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.bmp,.BMP,.webp,.WEBP");
+        EXT_MAP.put("audio", ".flac,.FLAC,.cda,.wav,.mp3,.aif,.aiff,.mid,.wma,.ra,.vqf,.ape,.CDA,.WAV,.MP3,.AIF,.AIFF,.MID,.WMA,.RA,.VQF,.APE");
+        EXT_MAP.put("video", ".mp4,.MP4,.AVI,.mov,.rmvb,.rm,.FLV,.mp4,.3GP,.flv");
     }
 
     public static Boolean checkFileExt(String code,String fileSuffix) {
-        String extValue = extMap.get(code);
+        String extValue = EXT_MAP.get(code);
         List<String> extList = Arrays.asList(extValue.split(","));
         return extList.contains(fileSuffix);
     }
@@ -200,7 +200,7 @@ public class FileUtil extends FileUtils {
     /**
      * 以指定编码读取指定URL中的文本
      */
-    public static String readURLText(String urlPath, String encoding) {
+    public static String readUrlText(String urlPath, String encoding) {
         BufferedReader in =null;
         try {
             URL url = new URL(urlPath);

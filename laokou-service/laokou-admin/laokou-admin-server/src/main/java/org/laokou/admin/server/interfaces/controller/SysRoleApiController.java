@@ -17,7 +17,7 @@ package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.application.service.SysRoleApplicationService;
 import org.laokou.admin.client.dto.SysRoleDTO;
-import org.laokou.admin.server.interfaces.qo.SysRoleQO;
+import org.laokou.admin.server.interfaces.qo.SysRoleQo;
 import org.laokou.admin.client.vo.SysRoleVO;
 import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
 import io.swagger.annotations.Api;
@@ -42,13 +42,13 @@ public class SysRoleApiController {
     @PostMapping("/query")
     @ApiOperation("系统角色>查询")
     @PreAuthorize("hasAuthority('sys:role:query')")
-    public HttpResultUtil<IPage<SysRoleVO>> query(@RequestBody SysRoleQO qo) {
+    public HttpResultUtil<IPage<SysRoleVO>> query(@RequestBody SysRoleQo qo) {
         return new HttpResultUtil<IPage<SysRoleVO>>().ok(sysRoleApplicationService.queryRolePage(qo));
     }
 
     @PostMapping("/list")
     @ApiOperation("系统角色>列表")
-    public HttpResultUtil<List<SysRoleVO>> list(@RequestBody SysRoleQO qo) {
+    public HttpResultUtil<List<SysRoleVO>> list(@RequestBody SysRoleQo qo) {
         return new HttpResultUtil<List<SysRoleVO>>().ok(sysRoleApplicationService.getRoleList(qo));
     }
 

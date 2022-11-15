@@ -18,36 +18,36 @@ import org.laokou.common.core.utils.MessageUtil;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 /**
  * 自定义异常
- *
+ * 官方不再维护，过期类无法替换
  * @author Kou Shenhai
  */
-public class CustomOAuth2Exception extends OAuth2Exception {
+public class CustomOauth2Exception extends OAuth2Exception {
 	private String msg;
 	private String code;
 
-	public CustomOAuth2Exception(int code) {
+	public CustomOauth2Exception(int code) {
 		super(MessageUtil.getMessage(code));
 		this.msg = MessageUtil.getMessage(code);
 		this.code = "" + code;
 	}
 
-	public CustomOAuth2Exception(String msg) {
+	public CustomOauth2Exception(String msg) {
 		super(msg);
 		this.msg = msg;
 	}
 
-	public CustomOAuth2Exception(String msg, Throwable e) {
+	public CustomOauth2Exception(String msg, Throwable e) {
 		super(msg, e);
 		this.msg = msg;
 	}
 
-	public CustomOAuth2Exception(int code, String msg) {
+	public CustomOauth2Exception(int code, String msg) {
 		super(msg);
 		this.msg = msg;
 		this.code = "" + code;
 	}
 
-	public CustomOAuth2Exception(String code, String msg) {
+	public CustomOauth2Exception(String code, String msg) {
 		super(msg);
 		this.msg = msg;
 		this.code = code;
@@ -69,6 +69,10 @@ public class CustomOAuth2Exception extends OAuth2Exception {
 		this.code = "" + code;
 	}
 
+	/**
+	 * 官方方法，不能驼峰命名
+	 * @return
+	 */
 	@Override
 	public String getOAuth2ErrorCode() {
 		if(null == this.code){

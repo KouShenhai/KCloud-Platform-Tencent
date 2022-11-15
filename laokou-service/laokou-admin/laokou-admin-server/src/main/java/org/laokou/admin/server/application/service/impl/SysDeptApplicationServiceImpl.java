@@ -21,7 +21,7 @@ import org.laokou.admin.server.domain.sys.entity.SysUserDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.admin.client.dto.SysDeptDTO;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
-import org.laokou.admin.server.interfaces.qo.SysDeptQO;
+import org.laokou.admin.server.interfaces.qo.SysDeptQo;
 import org.laokou.admin.client.vo.SysDeptVO;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
@@ -52,7 +52,7 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
 
     @Override
     public SysDeptVO getDeptList() {
-        SysDeptQO qo = new SysDeptQO();
+        SysDeptQo qo = new SysDeptQo();
         qo.setStatus(Constant.NO);
         String deptAllKey = RedisKeyUtil.getDeptAllKey();
         Object obj = redisUtil.get(deptAllKey);
@@ -66,7 +66,7 @@ public class SysDeptApplicationServiceImpl implements SysDeptApplicationService 
     }
 
     @Override
-    public List<SysDeptVO> queryDeptList(SysDeptQO qo) {
+    public List<SysDeptVO> queryDeptList(SysDeptQo qo) {
         return sysDeptService.getDeptList(qo);
     }
 

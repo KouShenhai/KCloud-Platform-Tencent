@@ -18,7 +18,7 @@ package org.laokou.admin.server.domain.sys.repository.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
-import org.laokou.admin.server.interfaces.qo.SysOauthQO;
+import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
 
 /**
@@ -30,6 +30,6 @@ public interface SysOauthService extends IService<SysOauthDO> {
 
     void deleteOauth(Long id);
     SysOauthVO getOauthById(Long id);
-    IPage<SysOauthVO> getOauthList(IPage<SysOauthVO> page, SysOauthQO qo);
+    IPage<SysOauthVO> getOauthList(IPage<SysOauthVO> page, SysOauthQo qo);
 
 }

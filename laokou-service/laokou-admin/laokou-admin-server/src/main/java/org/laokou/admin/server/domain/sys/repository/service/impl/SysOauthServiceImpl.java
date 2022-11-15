@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysOauthMapper;
 import org.laokou.admin.server.domain.sys.repository.service.SysOauthService;
-import org.laokou.admin.server.interfaces.qo.SysOauthQO;
+import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +44,7 @@ public class SysOauthServiceImpl extends ServiceImpl<SysOauthMapper, SysOauthDO>
     }
 
     @Override
-    public IPage<SysOauthVO> getOauthList(IPage<SysOauthVO> page, SysOauthQO qo) {
+    public IPage<SysOauthVO> getOauthList(IPage<SysOauthVO> page, SysOauthQo qo) {
         return this.baseMapper.getOauthList(page,qo);
     }
 }

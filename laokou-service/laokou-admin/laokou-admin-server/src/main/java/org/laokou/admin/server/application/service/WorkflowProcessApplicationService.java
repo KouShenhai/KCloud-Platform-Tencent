@@ -17,7 +17,7 @@ package org.laokou.admin.server.application.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.AuditDTO;
-import org.laokou.admin.server.interfaces.qo.TaskQO;
+import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.admin.client.vo.StartProcessVO;
 import org.laokou.admin.client.vo.TaskVO;
 
@@ -28,7 +28,7 @@ public interface WorkflowProcessApplicationService {
 
     StartProcessVO startResourceProcess(String processKey,String businessKey,String instanceName);
 
-    IPage<TaskVO> queryResourceTaskPage(TaskQO qo);
+    IPage<TaskVO> queryResourceTaskPage(TaskQo qo);
 
     Boolean auditResourceTask(AuditDTO dto);
 }

@@ -25,7 +25,7 @@ import org.laokou.admin.server.domain.sys.repository.service.SysRoleDeptService;
 import org.laokou.admin.server.domain.sys.repository.service.SysRoleMenuService;
 import org.laokou.admin.server.domain.sys.repository.service.SysRoleService;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
-import org.laokou.admin.server.interfaces.qo.SysRoleQO;
+import org.laokou.admin.server.interfaces.qo.SysRoleQo;
 import org.laokou.admin.client.dto.SysRoleDTO;
 import org.laokou.admin.client.vo.SysRoleVO;
 import org.apache.commons.collections.CollectionUtils;
@@ -55,13 +55,13 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
 
     @Override
     @DataFilter(tableAlias = "boot_sys_role")
-    public IPage<SysRoleVO> queryRolePage(SysRoleQO qo) {
+    public IPage<SysRoleVO> queryRolePage(SysRoleQo qo) {
         IPage<SysRoleVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysRoleService.getRolePage(page,qo);
     }
 
     @Override
-    public List<SysRoleVO> getRoleList(SysRoleQO qo) {
+    public List<SysRoleVO> getRoleList(SysRoleQo qo) {
         return sysRoleService.getRoleList(qo);
     }
 

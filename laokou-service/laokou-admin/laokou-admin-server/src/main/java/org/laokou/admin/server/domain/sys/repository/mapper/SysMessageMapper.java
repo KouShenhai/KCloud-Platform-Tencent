@@ -18,7 +18,7 @@ package org.laokou.admin.server.domain.sys.repository.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDO;
-import org.laokou.admin.server.interfaces.qo.SysMessageQO;
+import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface SysMessageMapper extends BaseMapper<SysMessageDO> {
 
-    IPage<SysMessageVO> getMessageList(IPage<SysMessageVO> page, @Param("qo") SysMessageQO qo);
+    IPage<SysMessageVO> getMessageList(IPage<SysMessageVO> page, @Param("qo") SysMessageQo qo);
 
     MessageDetailVO getMessageByDetailId(@Param("id") Long id);
 

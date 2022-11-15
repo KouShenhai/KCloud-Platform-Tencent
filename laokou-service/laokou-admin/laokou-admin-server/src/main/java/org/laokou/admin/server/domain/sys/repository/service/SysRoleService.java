@@ -17,7 +17,7 @@ package org.laokou.admin.server.domain.sys.repository.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.laokou.admin.server.domain.sys.entity.SysRoleDO;
-import org.laokou.admin.server.interfaces.qo.SysRoleQO;
+import org.laokou.admin.server.interfaces.qo.SysRoleQo;
 import org.laokou.admin.client.vo.SysRoleVO;
 
 import java.util.List;
@@ -48,9 +48,9 @@ public interface SysRoleService extends IService<SysRoleDO> {
      * @param qo
      * @return
      */
-    IPage<SysRoleVO> getRolePage(IPage<SysRoleVO> page, SysRoleQO qo);
+    IPage<SysRoleVO> getRolePage(IPage<SysRoleVO> page, SysRoleQo qo);
 
-    List<SysRoleVO> getRoleList(SysRoleQO qo);
+    List<SysRoleVO> getRoleList(SysRoleQo qo);
 
     SysRoleVO getRoleById(Long id);
 

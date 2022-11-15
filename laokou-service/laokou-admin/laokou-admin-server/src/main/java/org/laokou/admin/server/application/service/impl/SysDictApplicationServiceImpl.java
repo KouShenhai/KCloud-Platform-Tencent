@@ -21,7 +21,7 @@ import org.laokou.admin.server.application.service.SysDictApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysDictDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysDictService;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
-import org.laokou.admin.server.interfaces.qo.SysDictQO;
+import org.laokou.admin.server.interfaces.qo.SysDictQo;
 import org.laokou.admin.client.vo.SysDictVO;
 import org.laokou.admin.client.dto.SysDictDTO;
 import org.laokou.auth.client.utils.UserUtil;
@@ -39,7 +39,7 @@ public class SysDictApplicationServiceImpl implements SysDictApplicationService 
 
     @Override
     @DataFilter(tableAlias = "boot_sys_dict")
-    public IPage<SysDictVO> queryDictPage(SysDictQO qo) {
+    public IPage<SysDictVO> queryDictPage(SysDictQo qo) {
         IPage<SysDictVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysDictService.getDictList(page,qo);
     }

@@ -21,8 +21,14 @@ package org.laokou.common.core.enums;
 
 public enum ResultStatusEnum {
 
+    /**
+     * 成功
+     */
     SUCCESS,
 
+    /**
+     * 失败
+     */
     FAIL;
 
 }

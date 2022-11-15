@@ -21,8 +21,8 @@ import org.laokou.admin.server.domain.sys.repository.service.SysLoginLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysOperateLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
-import org.laokou.admin.server.interfaces.qo.LoginLogQO;
-import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
+import org.laokou.admin.server.interfaces.qo.LoginLogQo;
+import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +45,13 @@ public class SysLogApplicationServiceImpl implements SysLogApplicationService {
 
     @Override
     @DataFilter(tableAlias = "boot_sys_operate_log")
-    public IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQO qo) {
+    public IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQo qo) {
         IPage<SysOperateLogVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysOperateLogService.getOperateLogList(page,qo);
     }
 
     @Override
-    public IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQO qo) {
+    public IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQo qo) {
         IPage<SysLoginLogVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysLoginLogService.getLoginLogList(page,qo);
     }

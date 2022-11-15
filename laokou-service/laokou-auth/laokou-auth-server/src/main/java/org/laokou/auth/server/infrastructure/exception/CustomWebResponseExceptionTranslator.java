@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 /**
  * 登录或者鉴权失败时的返回信息
- *
+ * 官方不再维护，过期类无法替换
  * @author Kou Shenhai
  */
 @Service
@@ -43,28 +43,28 @@ public class CustomWebResponseExceptionTranslator implements WebResponseExceptio
         Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
         Exception exception = (AuthenticationException) throwableAnalyzer.getFirstThrowableOfType(AuthenticationException.class, causeChain);
         if (exception != null) {
-            return handleOAuth2Exception(new CustomOAuth2Exception(e.getMessage(), e));
+            return handleOauth2Exception(new CustomOauth2Exception(e.getMessage(), e));
         }
         exception = (AccessDeniedException) throwableAnalyzer.getFirstThrowableOfType(AccessDeniedException.class, causeChain);
         if (exception != null) {
-            return handleOAuth2Exception(new CustomOAuth2Exception(exception.getMessage(), exception));
+            return handleOauth2Exception(new CustomOauth2Exception(exception.getMessage(), exception));
         }
         exception = (InvalidGrantException) throwableAnalyzer.getFirstThrowableOfType(InvalidGrantException.class, causeChain);
         if (exception != null) {
-            return handleOAuth2Exception(new CustomOAuth2Exception(exception.getMessage(), exception));
+            return handleOauth2Exception(new CustomOauth2Exception(exception.getMessage(), exception));
         }
         exception = (HttpRequestMethodNotSupportedException) throwableAnalyzer.getFirstThrowableOfType(HttpRequestMethodNotSupportedException.class, causeChain);
         if (exception != null) {
-            return handleOAuth2Exception(new CustomOAuth2Exception(exception.getMessage(), exception));
+            return handleOauth2Exception(new CustomOauth2Exception(exception.getMessage(), exception));
         }
         exception = (OAuth2Exception) throwableAnalyzer.getFirstThrowableOfType(OAuth2Exception.class, causeChain);
         if (exception != null) {
-            return handleOAuth2Exception((OAuth2Exception) exception);
+            return handleOauth2Exception((OAuth2Exception) exception);
         }
-        return handleOAuth2Exception(new CustomOAuth2Exception(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e));
+        return handleOauth2Exception(new CustomOauth2Exception(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e));
     }
 
-    private ResponseEntity<OAuth2Exception> handleOAuth2Exception(OAuth2Exception e) {
+    private ResponseEntity<OAuth2Exception> handleOauth2Exception(OAuth2Exception e) {
         int status = e.getHttpErrorCode();
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CACHE_CONTROL, "no-store");

@@ -40,6 +40,11 @@ public abstract class BaseHandler implements Handler {
         handler(dto);
     }
 
+    /**
+     * 处理消息
+     * @param dto
+     * @return
+     */
     public abstract boolean handler(MessageDTO dto);
 
 }

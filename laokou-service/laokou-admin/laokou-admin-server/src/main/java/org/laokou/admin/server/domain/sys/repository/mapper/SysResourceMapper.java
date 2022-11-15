@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
 import org.laokou.admin.client.index.ResourceIndex;
-import org.laokou.admin.server.interfaces.qo.SysResourceQO;
+import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -36,7 +36,7 @@ import java.util.List;
 @Repository
 public interface SysResourceMapper extends BaseMapper<SysResourceDO> {
 
-    IPage<SysResourceVO> getResourceList(IPage<SysResourceVO> page, @Param("qo") SysResourceQO qo);
+    IPage<SysResourceVO> getResourceList(IPage<SysResourceVO> page, @Param("qo") SysResourceQo qo);
 
     SysResourceVO getResourceById(@Param("id") Long id);
 
@@ -44,7 +44,7 @@ public interface SysResourceMapper extends BaseMapper<SysResourceDO> {
 
     Long getResourceTotal(@Param("code")String code);
 
-    List<String> getResourceYMPartitionList(@Param("code")String code);
+    List<String> getResourceYmPartitionList(@Param("code")String code);
 
     List<ResourceIndex> getResourceIndexList(@Param("pageSize")Integer pageSize, @Param("pageIndex")Integer pageIndex, @Param("code")String code);
 
