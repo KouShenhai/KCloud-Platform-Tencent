@@ -73,26 +73,26 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 #### 项目结构
 ~~~
 ├── laokou-common
-        └── laokou-common-bom -- 依赖版本库
-        └── laokou-common-core -- 公共组件
-        └── laokou-common-mybatis-plus mybatis-plus组件
-        └── laokou-common-swagger -- 文档组件
+        └── laokou-common-bom   依赖版本库
+        └── laokou-common-core   公共组件
+        └── laokou-common-mybatis-plus   mybatis-plus组件
+        └── laokou-common-swagger   文档组件
 ├── laokou-cloud
-        └── laokou-gateway -- API网关
-        └── laokou-monitor -- 服务监控
-        └── laokou-register -- 服务注册&发现
+        └── laokou-gateway   API网关
+        └── laokou-monitor   服务监控
+        └── laokou-register   服务注册&发现
 ├── laokou-service
-        └── laokou-admin -- 后台管理模块
-        └── laokou-generator -- 模板模块
-        └── laokou-auth -- 认证授权模块
+        └── laokou-admin   后台管理模块
+        └── laokou-generator   模板模块
+        └── laokou-auth   认证授权模块
         └── laokou-modlule
-                └── laokou-sms 短信模块 
-                └── laokou-email 邮件模块
-                └── laokou-oss 对象存储模块    
-                └── laokou-redis -- 缓存模块     
-                └── laokou-xxl-job 工作模块   
-                └── laokou-kafka 消息模块    
-                └── laokou-elasticsearch 搜索模块          
+                └── laokou-sms   短信模块 
+                └── laokou-email   邮件模块
+                └── laokou-oss   对象存储模块    
+                └── laokou-redis   缓存模块     
+                └── laokou-xxl-job   工作模块   
+                └── laokou-kafka   消息模块    
+                └── laokou-elasticsearch   搜索模块          
 ~~~
 
 ### 环境配置
