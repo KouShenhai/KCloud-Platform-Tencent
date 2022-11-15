@@ -66,7 +66,7 @@ import java.util.function.Function;
 @ConfigurationProperties(prefix = "gateway")
 public class AuthFilter implements GlobalFilter,Ordered {
 
-    private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
+    private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
     private static final String OAUTH_URI = "/oauth/token";
 
@@ -93,7 +93,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         }
         // 表单提交
         MediaType mediaType = request.getHeaders().getContentType();
-        if (antPathMatcher.match(OAUTH_URI,requestUri) && MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
+        if (ANT_PATH_MATCHER.match(OAUTH_URI,requestUri) && MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
             return authDecode(exchange,chain);
         }
         // 获取token
@@ -208,7 +208,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         Iterator<String> iterator = uris.iterator();
         while (iterator.hasNext()) {
             String url = iterator.next();
-            if (antPathMatcher.match(url,requestUri)){
+            if (ANT_PATH_MATCHER.match(url,requestUri)){
                 return true;
             }
         }

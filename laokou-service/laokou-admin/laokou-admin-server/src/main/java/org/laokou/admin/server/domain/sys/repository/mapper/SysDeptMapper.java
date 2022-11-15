@@ -32,16 +32,45 @@ import java.util.*;
 @Repository
 public interface SysDeptMapper extends BaseMapper<SysDeptDO> {
 
+    /**
+     * 查询部门列表
+     * @param qo
+     * @return
+     */
     List<SysDeptVO> getDeptList(@Param("qo") SysDeptQO qo);
 
+    /**
+     * 根据id删除部门
+     * @param id
+     */
     void deleteDept(@Param("id") Long id);
 
+    /**
+     * 根据id获取部门
+     * @param id
+     * @return
+     */
     SysDeptVO getDept(@Param("id") Long id);
 
+    /**
+     * 根据角色id获取部门ids
+     * @param roleId
+     * @return
+     */
     List<Long> getDeptIdsByRoleId(@Param("roleId") Long roleId);
 
+    /**
+     * 根据id修改部门路径
+     * @param id
+     * @param pid
+     */
     void updateDeptPath1ById(@Param("id")Long id,@Param("pid")Long pid);
 
+    /**
+     * 根据id修改部门路径
+     * @param id
+     * @param pid
+     */
     void updateDeptPath2ById(@Param("id")Long id,@Param("pid")Long pid);
 
 }

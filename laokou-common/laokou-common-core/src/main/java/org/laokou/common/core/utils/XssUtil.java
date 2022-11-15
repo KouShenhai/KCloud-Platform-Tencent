@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  */
 public class XssUtil extends Whitelist {
 
-    private static final Pattern[] scriptPatterns = {
+    private static final Pattern[] SCRIPT_PATTERNS = {
             Pattern.compile("<script(.*?)></script>",Pattern.CASE_INSENSITIVE),
             Pattern.compile("src[\r\n]*=[\r\n]*\\\'(.*?)\\\'",Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
             Pattern.compile("</script>",Pattern.CASE_INSENSITIVE),
@@ -48,7 +48,7 @@ public class XssUtil extends Whitelist {
     public static String clean(String value) {
         if (StringUtil.isNotEmpty(value)) {
             value = value.replaceAll("\0|\n|\r","");
-            for (Pattern pattern : scriptPatterns) {
+            for (Pattern pattern : SCRIPT_PATTERNS) {
                 value = pattern.matcher(value).replaceAll("");
             }
             value = filter(value.replaceAll("'","“"));

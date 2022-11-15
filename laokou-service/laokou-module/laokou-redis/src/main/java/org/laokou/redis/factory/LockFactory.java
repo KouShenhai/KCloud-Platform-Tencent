@@ -33,8 +33,8 @@ public class LockFactory {
         switch (scope) {
             case DISTRIBUTED_LOCK: return new RedissonLock(redisUtil);
             case STANDALONE_LOCK: return new LocalLock();
+            default: return null;
         }
-        return null;
     }
 
 }

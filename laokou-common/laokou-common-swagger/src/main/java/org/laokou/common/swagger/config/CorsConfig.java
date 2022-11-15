@@ -27,8 +27,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
@@ -39,11 +37,6 @@ import java.util.TimeZone;
 @Configuration
 @Slf4j
 public class CorsConfig {
-
-    /**
-     * SimpleDateFormat线程不安全
-     */
-    private static final ThreadLocal<DateFormat> df = ThreadLocal.withInitial(() -> new SimpleDateFormat(DateUtil.DATE_TIME_PATTERN));
 
     @Bean
     public CorsFilter corsFilter() {
@@ -70,7 +63,7 @@ public class CorsConfig {
         ObjectMapper mapper = new ObjectMapper();
         //日期格式转换
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
-        mapper.setDateFormat(df.get());
+        mapper.setDateFormat(new SimpleDateFormat(DateUtil.DATE_TIME_PATTERN));
         mapper.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         //Long类型转String类型
         JavaTimeModule javaTimeModule = new JavaTimeModule();

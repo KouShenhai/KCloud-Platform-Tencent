@@ -43,7 +43,7 @@ public class LocalCloudStorageService extends AbstractCloudStorageService{
        if (inputStream instanceof ByteArrayInputStream) {
            FileUtil.fileUpload(cloudStorageVO.getLocalPath(), directoryPath, fileName, inputStream);
        } else {
-           FileUtil.nioRandomFileChannelUpload(cloudStorageVO.getLocalPath(), directoryPath, fileName, inputStream, fileSize, chunkSize);
+           FileUtil.nioRandomFileChannelUpload(cloudStorageVO.getLocalPath(), directoryPath, fileName, inputStream, fileSize, CHUNK_SIZE);
        }
        return cloudStorageVO.getLocalDomain() + directoryPath + SEPARATOR + fileName ;
     }

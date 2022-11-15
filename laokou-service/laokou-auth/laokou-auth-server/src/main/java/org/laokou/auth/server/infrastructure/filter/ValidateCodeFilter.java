@@ -11,6 +11,7 @@ import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
-    private final static AntPathMatcher antPathMatcher = new AntPathMatcher();
+    private final static AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
     private final static String OAUTH_URL = "/oauth/token";
 
@@ -48,8 +49,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
-        if (antPathMatcher.match(request.getServletPath(), OAUTH_URL)
-                && request.getMethod().equalsIgnoreCase("POST")
+        if (ANT_PATH_MATCHER.match(request.getServletPath(), OAUTH_URL)
+                && request.getMethod().equalsIgnoreCase(HttpMethod.POST.name())
                 && GRANT_TYPE.equals(request.getParameter("grant_type"))) {
             String uuid = request.getParameter(OauthConstant.UUID);
             String captcha = request.getParameter(OauthConstant.CAPTCHA);

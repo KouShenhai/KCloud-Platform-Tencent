@@ -27,4 +27,6 @@ public interface Constant {
     Integer NO = 0;
 
     Integer SUCCESS = 200;
+
+    String UNDERLINE = "_";
 }

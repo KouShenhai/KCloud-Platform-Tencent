@@ -85,6 +85,7 @@ public class IpUtil {
                 {
                     case section6:
                         return true;
+                    default: return false;
                 }
             default:
                 return false;

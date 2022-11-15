@@ -32,7 +32,7 @@ public abstract class AbstractCloudStorageService {
     /**
      * 按10M分片
      */
-    protected static final Long chunkSize = 10L * 1024 * 1024;
+    protected static final Long CHUNK_SIZE = 10L * 1024 * 1024;
 
     protected static final String SEPARATOR = "/";
 

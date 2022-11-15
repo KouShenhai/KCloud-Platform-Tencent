@@ -17,6 +17,7 @@ package org.laokou.common.core.utils;
 
 import cn.hutool.core.text.StrFormatter;
 import org.apache.commons.lang3.StringUtils;
+import org.laokou.common.core.constant.Constant;
 
 import java.util.Collection;
 import java.util.Map;
@@ -301,7 +302,7 @@ public class StringUtil extends StringUtils
             }
 
             curreCharIsUpperCase = Character.isUpperCase(c);
-
+            boolean flag = i != 0 && !preCharIsUpperCase;
             if (i < (str.length() - 1))
             {
                 nexteCharIsUpperCase = Character.isUpperCase(str.charAt(i + 1));
@@ -311,7 +312,7 @@ public class StringUtil extends StringUtils
             {
                 sb.append(SEPARATOR);
             }
-            else if ((i != 0 && !preCharIsUpperCase) && curreCharIsUpperCase)
+            else if (flag && curreCharIsUpperCase)
             {
                 sb.append(SEPARATOR);
             }
@@ -358,13 +359,13 @@ public class StringUtil extends StringUtils
             // 没必要转换
             return "";
         }
-        else if (!name.contains("_"))
+        else if (!name.contains(Constant.UNDERLINE))
         {
             // 不含下划线，仅将首字母大写
             return name.substring(0, 1).toUpperCase() + name.substring(1);
         }
         // 用下划线将原始字符串分割
-        String[] camels = name.split("_");
+        String[] camels = name.split(Constant.UNDERLINE);
         for (String camel : camels)
         {
             // 跳过原始字符串中开头、结尾的下换线或双重下划线

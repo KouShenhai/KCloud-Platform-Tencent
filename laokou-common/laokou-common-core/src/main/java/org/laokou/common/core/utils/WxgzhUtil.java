@@ -26,16 +26,16 @@ import java.util.Arrays;
  */
 public class WxgzhUtil {
 
-	private static final  String Token = "67c626f6978143efb6920bf054a6243a";
+	private static final  String TOKEN = "67c626f6978143efb6920bf054a6243a";
 	private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5',
             '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-	public static boolean CheckSignature(String signature, String timestamp, String nonce) {
+	public static boolean checkSignature(String signature, String timestamp, String nonce) {
         /**
          * 1）将token、timestamp、nonce三个参数进行字典序排序
          * 2）将三个参数字符串拼接成一个字符串进行sha1加密
          * 3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
          */
-		String[] strings = new String[]{Token ,timestamp ,nonce};
+		String[] strings = new String[]{TOKEN ,timestamp ,nonce};
 		Arrays.sort(strings);
 		String str = strings[0] + strings[1] + strings[2];
 		String sigNature = sha1(str);

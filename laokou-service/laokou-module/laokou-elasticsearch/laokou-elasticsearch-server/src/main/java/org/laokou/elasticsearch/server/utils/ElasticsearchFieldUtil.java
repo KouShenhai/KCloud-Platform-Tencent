@@ -28,13 +28,13 @@ public class ElasticsearchFieldUtil {
 
     public static final String RESOURCE_INDEX = "laokou_resource";
 
-    private static final Map<String,Class<?>> classMap = new HashMap<>(16);
+    private static final Map<String,Class<?>> CLASS_MAP = new HashMap<>(16);
 
     static {
-        classMap.put(RESOURCE_INDEX, ResourceIndex.class);
+        CLASS_MAP.put(RESOURCE_INDEX, ResourceIndex.class);
     }
 
     public static Class<?> getClazz(final String indexName) {
-        return classMap.getOrDefault(indexName,Object.class);
+        return CLASS_MAP.getOrDefault(indexName,Object.class);
     }
 }

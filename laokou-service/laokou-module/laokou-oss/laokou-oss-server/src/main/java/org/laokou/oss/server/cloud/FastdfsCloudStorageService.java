@@ -44,7 +44,7 @@ public class FastdfsCloudStorageService extends AbstractCloudStorageService {
     }
 
     @Override
-    public String upload(InputStream inputStream, String fileName,Long size) throws Exception {
+    public String upload(InputStream inputStream, String fileName,Long size) {
         StorePath storePath;
         try {
             storePath = defaultGenerateStorageClient.uploadFile(cloudStorageVO.getFastdfsGroup(), inputStream, inputStream.available(), FilenameUtils.getExtension(fileName));
