@@ -46,6 +46,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
@@ -93,7 +95,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public Boolean insertResource(SysResourceDTO dto) {
+    public Boolean insertResource(SysResourceDTO dto) throws IOException {
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
         sysResourceDO.setCreator(UserUtil.getUserId());
         sysResourceDO.setAuthor(UserUtil.getUsername());
@@ -104,7 +106,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         return sysResourceService.updateById(sysResourceDO);
     }
 
-    private String startWork(Long id,String name) {
+    private String startWork(Long id,String name) throws IOException {
         StartProcessVO startProcessVO = workflowProcessApplicationService.startResourceProcess(PROCESS_KEY,id.toString(),name);
         String definitionId = startProcessVO.getDefinitionId();
         String instanceId = startProcessVO.getInstanceId();
@@ -114,7 +116,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public Boolean updateResource(SysResourceDTO dto) {
+    public Boolean updateResource(SysResourceDTO dto) throws IOException {
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
         sysResourceDO.setEditor(UserUtil.getUserId());
         sysResourceDO.setStatus(0);

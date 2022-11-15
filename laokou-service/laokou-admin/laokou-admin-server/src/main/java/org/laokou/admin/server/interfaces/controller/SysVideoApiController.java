@@ -96,7 +96,7 @@ public class SysVideoApiController {
     @ApiOperation("视频管理>新增")
     @OperateLog(module = "视频管理",name = "视频新增")
     @PreAuthorize("hasAuthority('sys:resource:video:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) {
+    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) throws IOException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto));
     }
 
@@ -104,7 +104,7 @@ public class SysVideoApiController {
     @ApiOperation("视频管理>修改")
     @OperateLog(module = "视频管理",name = "视频修改")
     @PreAuthorize("hasAuthority('sys:resource:video:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) {
+    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) throws IOException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto));
     }
 

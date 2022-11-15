@@ -10,6 +10,9 @@ spring:
     active: @profile.active@
   application:
     name: laokou-kafka-consumer
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
 
 #mybatis
 mybatis-plus:

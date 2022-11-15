@@ -16,6 +16,7 @@
 package org.laokou.auth.server.application.service.impl;
 import cn.hutool.core.thread.ThreadUtil;
 import lombok.SneakyThrows;
+import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.enums.UserStatusEnum;
 import org.laokou.auth.server.infrastructure.log.AuthLogUtil;
 import org.laokou.common.core.constant.Constant;
@@ -31,10 +32,13 @@ import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.exception.CustomOauth2Exception;
 import org.laokou.common.core.utils.MessageUtil;
+import org.laokou.common.core.utils.RedisKeyUtil;
 import org.laokou.common.core.utils.StringUtil;
+import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
@@ -69,6 +73,9 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
 
     @Autowired
     private TokenStore tokenStore;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Autowired
     private AuthLogUtil authLogUtil;
@@ -111,6 +118,10 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
             throw new CustomOauth2Exception(ErrorCode.ACCOUNT_DISABLE);
         }
+        if (CollectionUtils.isEmpty(userDetail.getPermissionList())) {
+            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
+            throw new CustomOauth2Exception(ErrorCode.NOT_PERMISSIONS);
+        }
         authLogUtil.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
         return userDetail;
     }
@@ -120,6 +131,11 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         String token = getToken(request);
         OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
         if (oAuth2AccessToken != null) {
+            OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(oAuth2AccessToken);
+            UserDetail userDetail = (UserDetail) oAuth2Authentication.getPrincipal();
+            Long userId = userDetail.getUserId();
+            String resourceTreeKey = RedisKeyUtil.getResourceTreeKey(userId);
+            redisUtil.delete(resourceTreeKey);
             tokenStore.removeAccessToken(oAuth2AccessToken);
             OAuth2RefreshToken refreshToken = oAuth2AccessToken.getRefreshToken();
             tokenStore.removeRefreshToken(refreshToken);

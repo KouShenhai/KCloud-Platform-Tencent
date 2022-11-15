@@ -28,6 +28,9 @@ import org.laokou.redis.enums.LockScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+
 /**
  * @author Kou Shenhai
  */
@@ -51,7 +54,7 @@ public class WorkflowProcessApiController {
     @OperateLog(module = "流程处理",name = "资源审批")
     @Lock4j(key = "resource_audit_lock", scope = LockScope.DISTRIBUTED_LOCK)
     @PreAuthorize("hasAuthority('workflow:process:resource:audit')")
-    public HttpResultUtil<Boolean> auditResource(@RequestBody AuditDTO dto) {
+    public HttpResultUtil<Boolean> auditResource(@RequestBody AuditDTO dto) throws IOException {
         return new HttpResultUtil<Boolean>().ok(workflowProcessApplicationService.auditResourceTask(dto));
     }
 

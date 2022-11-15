@@ -27,9 +27,9 @@ import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -67,7 +67,7 @@ public class WorkFlowUtil {
         for (SequenceFlow sequenceFlow : outFlows) {
             FlowElement sourceFlowElement = sequenceFlow.getSourceFlowElement();
             final String json = JacksonUtil.toJsonStr(sourceFlowElement);
-            return JacksonUtil.readTree(json).get("assignee").toString();
+            return JacksonUtil.readTree(json).get("assignee").asText();
         }
         return null;
     }
@@ -78,8 +78,7 @@ public class WorkFlowUtil {
      * @param type
      * @param sendChannel
      */
-    @Async
-    public void sendAuditMsg(String assignee, Integer type, Integer sendChannel,Long id,String name) {
+    public void sendAuditMsg(String assignee, Integer type, Integer sendChannel,Long id,String name) throws IOException {
         String title = "资源审批提醒";
         String content = String.format("编号为%s，名称为%s的资源需要审批，请及时查看并处理",id,name);
         Set set = new HashSet<>(1);

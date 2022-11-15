@@ -95,7 +95,7 @@ public class SysImageApiController {
     @ApiOperation("图片管理>新增")
     @OperateLog(module = "图片管理",name = "图片新增")
     @PreAuthorize("hasAuthority('sys:resource:image:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) {
+    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) throws IOException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto));
     }
 
@@ -103,7 +103,7 @@ public class SysImageApiController {
     @ApiOperation("图片管理>修改")
     @OperateLog(module = "图片管理",name = "图片修改")
     @PreAuthorize("hasAuthority('sys:resource:image:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) {
+    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) throws IOException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto));
     }
 

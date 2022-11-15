@@ -40,13 +40,7 @@ public interface SysMessageApplicationService {
      * @param dto
      * @return
      */
-    Boolean sendMessage(MessageDTO dto);
-
-    /**
-     * 消费消息
-     * @param dto
-     */
-    void consumeMessage(MessageDTO dto);
+    Boolean sendMessage(MessageDTO dto) throws IOException;
 
     /**
      * 新增消息

@@ -14,34 +14,28 @@
  * limitations under the License.
  */
 package org.laokou.auth.client.exception;
-
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.HttpResultUtil;
-import org.laokou.common.core.utils.JacksonUtil;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MimeTypeUtils;
-
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * @author Kou Shenhai
  */
+@RestControllerAdvice
+@ResponseBody
 @Component
 public class AuthExceptionHandler {
 
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler() {
-        return (req,resp,ex) -> {
-            resp.setStatus(ErrorCode.FORBIDDEN);
-            resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            resp.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
-            PrintWriter writer = resp.getWriter();
-            writer.write(JacksonUtil.toJsonStr(new HttpResultUtil().error(ErrorCode.FORBIDDEN)));
-            writer.flush();
-        };
+    /**
+     * 处理自定义异常
+     */
+    @ExceptionHandler({AccessDeniedException.class})
+    public HttpResultUtil<Boolean> handleRenException(){
+        return new HttpResultUtil<Boolean>().error(ErrorCode.FORBIDDEN);
     }
 
 }

@@ -26,8 +26,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -47,13 +47,16 @@ public class JacksonUtil {
 
     static {
         MAPPER = new ObjectMapper();
+        // 忽略未知字段
+        MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         // Long类型转String类型
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(Long.class, ToStringSerializer.instance);
         javaTimeModule.addSerializer(Long.TYPE,ToStringSerializer.instance);
         MAPPER.registerModule(javaTimeModule);
-        // 忽略未知字段
-        MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 日期格式转换
+        MAPPER.setDateFormat(new SimpleDateFormat(DateUtil.DATE_TIME_PATTERN));
+        MAPPER.setTimeZone(TimeZone.getTimeZone("GMT+8"));
     }
 
     /**
@@ -169,4 +172,5 @@ public class JacksonUtil {
     private boolean check(String json, Object... checkObj) {
         return json == null || json.isEmpty() || ObjectUtil.anyChecked(Objects::isNull, checkObj);
     }
+
 }

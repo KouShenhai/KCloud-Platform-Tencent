@@ -45,6 +45,7 @@ import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -140,7 +141,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     }
 
     @Override
-    public Boolean auditResourceTask(AuditDTO dto) {
+    public Boolean auditResourceTask(AuditDTO dto) throws IOException {
         Map<String, Object> values = dto.getValues();
         Boolean auditFlag = workflowTaskApplicationService.auditTask(dto);
         String auditUser = workFlowUtil.getAuditUser(dto.getDefinitionId(), dto.getInstanceId());
@@ -178,6 +179,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         auditLogDTO.setAuditName(UserUtil.getUsername());
         auditLogDTO.setCreator(UserUtil.getUserId());
         auditLogDTO.setComment(dto.getComment());
+        System.out.println("------------" + JacksonUtil.toJsonStr(auditLogDTO));
         KafkaDTO kafkaDTO = new KafkaDTO();
         kafkaDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
         kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_RESOURCE_AUDIT_TOPIC,kafkaDTO);

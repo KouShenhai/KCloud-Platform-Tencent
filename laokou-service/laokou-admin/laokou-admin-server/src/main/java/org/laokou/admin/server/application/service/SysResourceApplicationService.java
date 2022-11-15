@@ -21,6 +21,7 @@ import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.oss.client.vo.UploadVO;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 /**
@@ -49,14 +50,14 @@ public interface SysResourceApplicationService {
      * @param dto
      * @return
      */
-    Boolean insertResource(SysResourceDTO dto);
+    Boolean insertResource(SysResourceDTO dto) throws IOException;
 
     /**
      * 修改资源
      * @param dto
      * @return
      */
-    Boolean updateResource(SysResourceDTO dto);
+    Boolean updateResource(SysResourceDTO dto) throws IOException;
 
     /**
      * 根据id删除资源

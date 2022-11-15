@@ -102,7 +102,7 @@ public class SysAudioApiController {
     @ApiOperation("音频管理>新增")
     @OperateLog(module = "音频管理",name = "音频新增")
     @PreAuthorize("hasAuthority('sys:resource:audio:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) {
+    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) throws IOException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto));
     }
 
@@ -110,7 +110,7 @@ public class SysAudioApiController {
     @ApiOperation("音频管理>修改")
     @OperateLog(module = "音频管理",name = "音频修改")
     @PreAuthorize("hasAuthority('sys:resource:audio:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) {
+    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) throws IOException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto));
     }
 

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.application.service.impl;
-import cn.hutool.core.thread.ThreadUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,9 +23,6 @@ import org.laokou.admin.server.domain.sys.entity.SysMessageDetailDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageDetailService;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageService;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
-import org.laokou.admin.server.infrastructure.component.event.SaveMessageEvent;
-import org.laokou.admin.server.infrastructure.component.handler.message.HandleHolder;
-import org.laokou.admin.server.infrastructure.component.pipeline.ProcessController;
 import org.laokou.admin.server.infrastructure.config.WebSocketServer;
 import org.laokou.admin.client.dto.MessageDTO;
 import org.laokou.admin.server.interfaces.qo.SysMessageQo;
@@ -36,44 +32,24 @@ import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.ConvertUtil;
-import org.laokou.common.core.utils.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 /**
  * @author Kou Shenhai
  */
 @Service
 public class SysMessageApplicationServiceImpl implements SysMessageApplicationService {
 
-    private static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
-            8,
-            16,
-            60,
-            TimeUnit.SECONDS,
-            new LinkedBlockingQueue<>(512),
-            ThreadUtil.newNamedThreadFactory("laokou-message-service",true),
-            new ThreadPoolExecutor.CallerRunsPolicy()
-    );
-
     @Autowired
     private WebSocketServer webSocketServer;
-
-    @Autowired
-    private ProcessController processController;
 
     @Autowired
     private SysMessageService sysMessageService;
 
     @Autowired
     private SysMessageDetailService sysMessageDetailService;
-
-    @Autowired
-    private HandleHolder handleHolder;
 
     @Override
     public Boolean pushMessage(MessageDTO dto) throws IOException {
@@ -85,32 +61,20 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     }
 
     @Override
-    public Boolean sendMessage(MessageDTO dto) {
-        String username = dto.getUsername();
-        Long userId = dto.getUserId();
-        dto.setUsername(null == username ? UserUtil.getUsername() : username);
-        dto.setUserId(null == userId ? UserUtil.getUserId() : userId);
-        processController.process(dto);
+    public Boolean sendMessage(MessageDTO dto) throws IOException {
+        //1.插入日志
+        insertMessage(dto);
+        //2.推送消息
+        pushMessage(dto);
         return true;
     }
 
     @Override
-    public void consumeMessage(MessageDTO dto) {
-        //1.插入日志
-        SpringContextUtil.publishEvent(new SaveMessageEvent(dto));
-        //2.推送消息
-        executorService.execute(() -> {
-            //发送消息
-            handleHolder.route(dto.getSendChannel()).doHandler(dto);
-        });
-    }
-
-    @Override
-
     public Boolean insertMessage(MessageDTO dto) {
         SysMessageDO messageDO = ConvertUtil.sourceToTarget(dto, SysMessageDO.class);
         messageDO.setCreateDate(new Date());
         messageDO.setCreator(dto.getUserId());
+        System.out.println(UserUtil.userDetail());
         messageDO.setDeptId(UserUtil.getDeptId());
         sysMessageService.save(messageDO);
         Set<String> receiver = dto.getReceiver();

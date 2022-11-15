@@ -28,6 +28,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+
 /**
  * @author Kou Shenhai
  */
@@ -44,7 +47,7 @@ public class SysMessageApiController {
     @ApiOperation("系统消息>新增")
     @OperateLog(module = "系统消息",name = "消息新增")
     @PreAuthorize("hasAuthority('sys:message:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody MessageDTO dto) {
+    public HttpResultUtil<Boolean> insert(@RequestBody MessageDTO dto) throws IOException {
         return new HttpResultUtil<Boolean>().ok(sysMessageApplicationService.sendMessage(dto));
     }
 

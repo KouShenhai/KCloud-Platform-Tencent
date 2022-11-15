@@ -21,6 +21,8 @@ import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.admin.client.vo.StartProcessVO;
 import org.laokou.admin.client.vo.TaskVO;
 
+import java.io.IOException;
+
 /**
  * @author Kou Shenhai
  */
@@ -47,5 +49,5 @@ public interface WorkflowProcessApplicationService {
      * @param dto
      * @return
      */
-    Boolean auditResourceTask(AuditDTO dto);
+    Boolean auditResourceTask(AuditDTO dto) throws IOException;
 }
