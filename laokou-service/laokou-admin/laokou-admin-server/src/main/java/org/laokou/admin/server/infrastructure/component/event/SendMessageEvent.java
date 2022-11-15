@@ -17,6 +17,9 @@ package org.laokou.admin.server.infrastructure.component.event;
 
 import org.springframework.context.ApplicationEvent;
 
+/**
+ * @author Kou Shenhai
+ */
 public class SendMessageEvent extends ApplicationEvent {
     public SendMessageEvent(Object source) {
         super(source);

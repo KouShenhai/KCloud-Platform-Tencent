@@ -15,6 +15,9 @@
  */
 package org.laokou.admin.client.dto;
 import lombok.Data;
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class SysDictDTO {
 

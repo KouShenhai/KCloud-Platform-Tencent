@@ -16,6 +16,9 @@
 package org.laokou.kafka.client.dto;
 import lombok.Data;
 
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class LoginLogDTO {
 

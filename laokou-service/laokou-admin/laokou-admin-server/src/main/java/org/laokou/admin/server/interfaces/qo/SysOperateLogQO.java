@@ -18,6 +18,9 @@ package org.laokou.admin.server.interfaces.qo;
 import lombok.Data;
 import org.laokou.common.mybatisplus.entity.BasePage;
 
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class SysOperateLogQO extends BasePage {
 

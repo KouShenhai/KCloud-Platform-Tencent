@@ -20,6 +20,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.laokou.kafka.consumer.entity.SysOperateLogDO;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author Kou Shenhai
+ */
 @Mapper
 @Repository
 public interface SysOperateLogMapper extends BaseMapper<SysOperateLogDO> {

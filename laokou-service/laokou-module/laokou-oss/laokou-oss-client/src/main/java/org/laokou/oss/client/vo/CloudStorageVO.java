@@ -28,7 +28,7 @@ public class CloudStorageVO {
      * 2：阿里云
      * 3：minio
      */
-    private int type;
+    private Integer type;
 
     /**
      * 本地上传

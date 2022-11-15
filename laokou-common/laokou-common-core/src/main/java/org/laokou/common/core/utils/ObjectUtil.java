@@ -21,6 +21,9 @@ import org.springframework.util.ObjectUtils;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+/**
+ * @author Kou Shenhai
+ */
 @UtilityClass
 public class ObjectUtil extends ObjectUtils {
 

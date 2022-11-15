@@ -26,6 +26,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
+/**
+ * @author Kou Shenhai
+ */
 @Configuration
 public class RouterFunctionConfig {
 

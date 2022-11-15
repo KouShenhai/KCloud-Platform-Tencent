@@ -21,6 +21,9 @@ import org.laokou.admin.server.domain.sys.entity.SysOperateLogDO;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysOperateLogService extends IService<SysOperateLogDO> {
 
     IPage<SysOperateLogVO> getOperateLogList(IPage<SysOperateLogVO> page, SysOperateLogQO qo);

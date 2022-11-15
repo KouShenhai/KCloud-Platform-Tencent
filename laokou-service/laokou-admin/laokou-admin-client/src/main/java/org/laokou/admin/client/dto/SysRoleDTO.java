@@ -16,6 +16,9 @@
 package org.laokou.admin.client.dto;
 import lombok.Data;
 import java.util.List;
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class SysRoleDTO {
 

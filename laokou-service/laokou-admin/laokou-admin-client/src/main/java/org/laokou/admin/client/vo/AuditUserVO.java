@@ -17,6 +17,9 @@ package org.laokou.admin.client.vo;
 
 import lombok.Data;
 
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class AuditUserVO {
 

@@ -28,6 +28,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.laokou.common.core.constant.Constant;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -75,7 +77,7 @@ public class HttpUtil {
             //执行请求
             response = httpClient.execute(httpGet);
             //判断返回状态是否是200
-            if (response.getStatusLine().getStatusCode() == 200) {
+            if (response.getStatusLine().getStatusCode() == Constant.SUCCESS) {
                 resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
             }
         } catch (Exception e) {
@@ -117,7 +119,7 @@ public class HttpUtil {
                 //执行http请求
                 response = httpClient.execute(httpPost);
                 //判断返回状态是否是200
-                if (response.getStatusLine().getStatusCode() == 200) {
+                if (response.getStatusLine().getStatusCode() == Constant.SUCCESS) {
                     resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
                 }
             }

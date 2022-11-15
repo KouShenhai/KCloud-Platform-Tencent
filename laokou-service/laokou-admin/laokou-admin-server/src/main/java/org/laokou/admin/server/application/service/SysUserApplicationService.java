@@ -23,6 +23,9 @@ import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
 import java.util.List;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysUserApplicationService {
 
     /**

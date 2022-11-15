@@ -19,6 +19,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class CreateIndexModel implements Serializable {
 

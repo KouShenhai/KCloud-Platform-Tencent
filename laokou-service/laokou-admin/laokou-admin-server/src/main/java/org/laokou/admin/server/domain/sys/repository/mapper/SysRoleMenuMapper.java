@@ -20,6 +20,9 @@ import org.laokou.admin.server.domain.sys.entity.SysRoleMenuDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author Kou Shenhai
+ */
 @Repository
 @Mapper
 public interface SysRoleMenuMapper extends BaseMapper<SysRoleMenuDO> {

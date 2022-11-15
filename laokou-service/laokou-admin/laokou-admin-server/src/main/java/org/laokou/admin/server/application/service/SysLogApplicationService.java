@@ -21,6 +21,9 @@ import org.laokou.admin.server.interfaces.qo.SysOperateLogQO;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysLogApplicationService {
 
     IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQO qo);

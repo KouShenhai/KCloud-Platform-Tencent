@@ -20,6 +20,9 @@ import org.laokou.admin.server.domain.sys.entity.SysMessageDetailDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author Kou Shenhai
+ */
 @Repository
 @Mapper
 public interface SysMessageDetailMapper extends BaseMapper<SysMessageDetailDO> {

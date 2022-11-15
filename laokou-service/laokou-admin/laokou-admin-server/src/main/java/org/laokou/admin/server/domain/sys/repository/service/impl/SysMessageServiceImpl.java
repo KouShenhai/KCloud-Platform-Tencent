@@ -26,6 +26,9 @@ import org.laokou.admin.client.vo.SysMessageVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author Kou Shenhai
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMessageDO> implements SysMessageService {

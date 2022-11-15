@@ -20,6 +20,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.laokou.kafka.client.dto.OperateLogDTO;
 import org.laokou.kafka.consumer.entity.SysOperateLogDO;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysOperateLogService extends IService<SysOperateLogDO> {
     void insertOperateLog(OperateLogDTO dto);
 }

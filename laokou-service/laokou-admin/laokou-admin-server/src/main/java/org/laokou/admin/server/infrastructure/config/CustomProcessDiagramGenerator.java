@@ -279,7 +279,8 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
 
                 if (highLightedActivities.get(highLightedActivities.size() - 1).equals(flowNode.getId())
                         && !"endenv".equals(flowNode.getId())) {
-                    if ((flowNode.getId().contains("Event_"))) {
+                    String eventPrefix = "Event_";
+                    if ((flowNode.getId().contains(eventPrefix))) {
                         drawHighLightEnd((CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
                     } else {
                         drawHighLightNow((CustomProcessDiagramCanvas) processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));

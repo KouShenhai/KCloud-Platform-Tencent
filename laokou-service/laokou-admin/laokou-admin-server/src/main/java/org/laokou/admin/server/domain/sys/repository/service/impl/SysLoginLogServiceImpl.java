@@ -25,6 +25,9 @@ import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author Kou Shenhai
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLoginLogDO> implements SysLoginLogService {

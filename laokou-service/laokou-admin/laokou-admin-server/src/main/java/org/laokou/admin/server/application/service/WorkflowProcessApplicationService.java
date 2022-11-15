@@ -21,8 +21,9 @@ import org.laokou.admin.server.interfaces.qo.TaskQO;
 import org.laokou.admin.client.vo.StartProcessVO;
 import org.laokou.admin.client.vo.TaskVO;
 
-import javax.servlet.http.HttpServletRequest;
-
+/**
+ * @author Kou Shenhai
+ */
 public interface WorkflowProcessApplicationService {
 
     StartProcessVO startResourceProcess(String processKey,String businessKey,String instanceName);

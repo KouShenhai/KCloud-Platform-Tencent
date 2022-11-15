@@ -17,10 +17,11 @@ package org.laokou.admin.server.application.service;
 import org.laokou.admin.client.dto.AuditDTO;
 import org.laokou.admin.client.dto.ClaimDTO;
 import org.laokou.admin.client.dto.UnClaimDTO;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+/**
+ * @author Kou Shenhai
+ */
 public interface WorkflowTaskApplicationService {
 
     Boolean auditTask(AuditDTO dto);

@@ -20,6 +20,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.laokou.kafka.consumer.entity.SysLoginLogDO;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author Kou Shenhai
+ */
 @Repository
 @Mapper
 public interface SysLoginLogMapper extends BaseMapper<SysLoginLogDO> {

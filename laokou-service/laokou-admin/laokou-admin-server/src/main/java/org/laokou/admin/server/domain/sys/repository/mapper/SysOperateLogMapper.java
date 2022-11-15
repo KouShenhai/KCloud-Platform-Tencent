@@ -24,6 +24,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author Kou Shenhai
+ */
 @Mapper
 @Repository
 public interface SysOperateLogMapper extends BaseMapper<SysOperateLogDO> {

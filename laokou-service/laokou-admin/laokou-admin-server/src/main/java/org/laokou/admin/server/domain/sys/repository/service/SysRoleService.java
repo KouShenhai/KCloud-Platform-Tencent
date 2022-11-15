@@ -21,6 +21,10 @@ import org.laokou.admin.server.interfaces.qo.SysRoleQO;
 import org.laokou.admin.client.vo.SysRoleVO;
 
 import java.util.List;
+
+/**
+ * @author Kou Shenhai
+ */
 public interface SysRoleService extends IService<SysRoleDO> {
 
     /**

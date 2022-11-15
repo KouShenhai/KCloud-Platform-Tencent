@@ -109,8 +109,9 @@ public class IpUtil {
             switch (elements.length)
             {
                 case 1:
+                    long max = 4294967295L;
                     l = Long.parseLong(elements[0]);
-                    if ((l < 0L) || (l > 4294967295L)) {
+                    if ((l < 0L) || (l > max)) {
                         return null;
                     }
                     bytes[0] = (byte) (int) (l >> 24 & 0xFF);
@@ -119,13 +120,15 @@ public class IpUtil {
                     bytes[3] = (byte) (int) (l & 0xFF);
                     break;
                 case 2:
+                    long len3 = 255L;
                     l = Integer.parseInt(elements[0]);
-                    if ((l < 0L) || (l > 255L)) {
+                    if ((l < 0L) || (l > len3)) {
                         return null;
                     }
                     bytes[0] = (byte) (int) (l & 0xFF);
                     l = Integer.parseInt(elements[1]);
-                    if ((l < 0L) || (l > 16777215L)) {
+                    long max2 = 16777215L;
+                    if ((l < 0L) || (l > max2)) {
                         return null;
                     }
                     bytes[1] = (byte) (int) (l >> 16 & 0xFF);
@@ -133,7 +136,8 @@ public class IpUtil {
                     bytes[3] = (byte) (int) (l & 0xFF);
                     break;
                 case 3:
-                    for (i = 0; i < 2; ++i)
+                    int len1 = 2;
+                    for (i = 0; i < len1; ++i)
                     {
                         l = Integer.parseInt(elements[i]);
                         if ((l < 0L) || (l > 255L)) {
@@ -142,14 +146,16 @@ public class IpUtil {
                         bytes[i] = (byte) (int) (l & 0xFF);
                     }
                     l = Integer.parseInt(elements[2]);
-                    if ((l < 0L) || (l > 65535L)) {
+                    long max3 = 65535L;
+                    if ((l < 0L) || (l > max3)) {
                         return null;
                     }
                     bytes[2] = (byte) (int) (l >> 8 & 0xFF);
                     bytes[3] = (byte) (int) (l & 0xFF);
                     break;
                 case 4:
-                    for (i = 0; i < 4; ++i)
+                    int len2 = 4;
+                    for (i = 0; i < len2; ++i)
                     {
                         l = Integer.parseInt(elements[i]);
                         if ((l < 0L) || (l > 255L)) {

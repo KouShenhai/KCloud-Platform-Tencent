@@ -25,4 +25,6 @@ public interface Constant {
     String AUTHORIZATION_HEAD = "Authorization";
 
     Integer NO = 0;
+
+    Integer SUCCESS = 200;
 }

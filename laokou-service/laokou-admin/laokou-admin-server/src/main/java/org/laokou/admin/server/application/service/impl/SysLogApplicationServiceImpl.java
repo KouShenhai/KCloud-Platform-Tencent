@@ -28,6 +28,9 @@ import org.laokou.admin.client.vo.SysOperateLogVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author Kou Shenhai
+ */
 @Service
 public class SysLogApplicationServiceImpl implements SysLogApplicationService {
 

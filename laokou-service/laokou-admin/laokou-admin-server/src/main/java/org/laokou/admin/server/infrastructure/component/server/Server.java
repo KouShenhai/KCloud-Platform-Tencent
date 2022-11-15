@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import java.util.Properties;
 /**
  * 服务器相关信息
+ * @author Kou Shenhai
  */
 @Data
 public class Server {

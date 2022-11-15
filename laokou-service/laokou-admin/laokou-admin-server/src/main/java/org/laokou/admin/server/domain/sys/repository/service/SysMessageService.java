@@ -22,6 +22,9 @@ import org.laokou.admin.server.interfaces.qo.SysMessageQO;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysMessageService extends IService<SysMessageDO> {
 
     IPage<SysMessageVO> getMessageList(IPage<SysMessageVO> page, SysMessageQO qo);

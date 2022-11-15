@@ -15,6 +15,9 @@
  */
 package org.laokou.oss.client.vo;
 import lombok.Data;
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class UploadVO {
 

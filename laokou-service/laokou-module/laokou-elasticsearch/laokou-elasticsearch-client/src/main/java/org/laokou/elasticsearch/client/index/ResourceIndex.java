@@ -20,6 +20,9 @@ import org.laokou.elasticsearch.client.annotation.ElasticsearchFieldInfo;
 
 import java.io.Serializable;
 
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class ResourceIndex implements Serializable {
 

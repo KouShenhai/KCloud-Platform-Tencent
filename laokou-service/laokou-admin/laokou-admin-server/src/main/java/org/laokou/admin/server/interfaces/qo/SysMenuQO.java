@@ -15,6 +15,9 @@
  */
 package org.laokou.admin.server.interfaces.qo;
 import lombok.Data;
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class SysMenuQO {
 

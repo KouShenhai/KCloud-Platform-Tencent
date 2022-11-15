@@ -17,6 +17,9 @@ package org.laokou.admin.client.vo;
 import lombok.Data;
 import java.util.Date;
 import java.util.List;
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class SysUserVO {
     private Long id;

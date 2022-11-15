@@ -18,6 +18,9 @@ package org.laokou.xxl.job.server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author Kou Shenhai
+ */
 @SpringBootApplication
 public class XxlJobApplication {
 

@@ -20,6 +20,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.laokou.kafka.client.dto.LoginLogDTO;
 import org.laokou.kafka.consumer.entity.SysLoginLogDO;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysLoginLogService extends IService<SysLoginLogDO> {
     void insertLoginLog(LoginLogDTO dto);
 }

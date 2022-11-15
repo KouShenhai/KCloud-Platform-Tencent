@@ -18,10 +18,11 @@ package org.laokou.admin.server.application.service;
 import org.laokou.admin.client.dto.SysMenuDTO;
 import org.laokou.admin.server.interfaces.qo.SysMenuQO;
 import org.laokou.admin.client.vo.SysMenuVO;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysMenuApplicationService {
 
     SysMenuVO getMenuList();

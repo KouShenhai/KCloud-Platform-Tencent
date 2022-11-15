@@ -18,6 +18,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+/**
+ * @author Kou Shenhai
+ */
 @Data
 @TableName("boot_sys_login_log")
 @ApiModel("系统日志>登录日志DO")

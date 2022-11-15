@@ -16,6 +16,9 @@
 package org.laokou.admin.client.vo;
 import lombok.Data;
 import java.util.Date;
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class SysDictVO {
 

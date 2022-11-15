@@ -19,10 +19,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysRoleDTO;
 import org.laokou.admin.server.interfaces.qo.SysRoleQO;
 import org.laokou.admin.client.vo.SysRoleVO;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysRoleApplicationService {
 
     IPage<SysRoleVO> queryRolePage(SysRoleQO qo);

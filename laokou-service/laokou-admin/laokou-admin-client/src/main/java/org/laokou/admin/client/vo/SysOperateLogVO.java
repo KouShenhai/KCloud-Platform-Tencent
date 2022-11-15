@@ -19,6 +19,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author Kou Shenhai
+ */
 @Data
 public class SysOperateLogVO {
 

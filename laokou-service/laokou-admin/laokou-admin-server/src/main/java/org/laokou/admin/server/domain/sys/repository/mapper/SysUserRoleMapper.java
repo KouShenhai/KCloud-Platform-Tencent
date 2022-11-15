@@ -20,6 +20,9 @@ import org.laokou.admin.server.domain.sys.entity.SysUserRoleDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author Kou Shenhai
+ */
 @Repository
 @Mapper
 public interface SysUserRoleMapper extends BaseMapper<SysUserRoleDO> {

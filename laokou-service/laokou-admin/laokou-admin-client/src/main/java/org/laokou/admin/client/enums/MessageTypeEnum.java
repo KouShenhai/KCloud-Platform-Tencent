@@ -15,6 +15,10 @@
  */
 package org.laokou.admin.client.enums;
 
+/**
+ * @author Kou Shenhai
+ */
+
 public enum MessageTypeEnum {
 
     NOTICE,

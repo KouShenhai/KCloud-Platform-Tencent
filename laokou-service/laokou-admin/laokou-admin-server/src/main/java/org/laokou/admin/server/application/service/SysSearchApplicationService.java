@@ -19,6 +19,9 @@ package org.laokou.admin.server.application.service;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 
+/**
+ * @author Kou Shenhai
+ */
 public interface SysSearchApplicationService {
 
     SearchVO searchResource(SearchForm form);

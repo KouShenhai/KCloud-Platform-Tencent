@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.component.pipeline;
+/**
+ * @author Kou Shenhai
+ */
 public interface BusinessProcess<T> {
 
     void process(T dto);

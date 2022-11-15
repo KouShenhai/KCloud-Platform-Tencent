@@ -20,6 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * @author Kou Shenhai
+ */
 public abstract class BaseHandler implements Handler {
 
     @Autowired

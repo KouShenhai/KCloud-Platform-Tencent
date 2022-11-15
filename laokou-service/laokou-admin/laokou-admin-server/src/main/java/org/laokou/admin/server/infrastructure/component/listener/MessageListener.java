@@ -27,6 +27,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
 
+/**
+ * @author Kou Shenhai
+ */
 @Component
 @ConditionalOnWebApplication
 public class MessageListener {

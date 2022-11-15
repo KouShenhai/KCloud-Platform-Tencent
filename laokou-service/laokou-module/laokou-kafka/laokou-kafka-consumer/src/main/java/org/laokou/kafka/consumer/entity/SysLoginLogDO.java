@@ -19,6 +19,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 
+/**
+ * @author Kou Shenhai
+ */
 @Data
 @TableName("boot_sys_login_log")
 public class SysLoginLogDO extends BaseDO {

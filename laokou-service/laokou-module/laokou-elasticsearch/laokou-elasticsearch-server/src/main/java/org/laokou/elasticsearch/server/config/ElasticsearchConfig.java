@@ -92,7 +92,8 @@ public class ElasticsearchConfig {
     private HttpHost makeHttpHost(String address) {
         assert StringUtil.isNotEmpty(address);
         String[] hostAddress = address.split(":");
-        if (hostAddress.length == 2) {
+        int length = 2;
+        if (hostAddress.length == length) {
             String ip = hostAddress[0];
             Integer port = Integer.valueOf(hostAddress[1]);
             return new HttpHost(ip, port, HTTP_SCHEME);

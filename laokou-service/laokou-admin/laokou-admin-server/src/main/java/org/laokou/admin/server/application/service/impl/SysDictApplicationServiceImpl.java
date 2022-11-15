@@ -28,6 +28,9 @@ import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+/**
+ * @author Kou Shenhai
+ */
 @Service
 public class SysDictApplicationServiceImpl implements SysDictApplicationService {
 
