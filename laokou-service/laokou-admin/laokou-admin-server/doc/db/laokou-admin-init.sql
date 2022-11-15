@@ -1,6 +1,6 @@
 ------------------------------------菜单------------------------------------
 CREATE TABLE `boot_sys_menu` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `pid` bigint(20) NOT NULL COMMENT '父节点',
   `permissions` text NOT NULL COMMENT '授权(多个用逗号分隔，如：sys:user:list,sys:user:save)',
   `type` tinyint(1) unsigned DEFAULT NULL COMMENT '类型   0：菜单   1：按钮',
@@ -122,7 +122,7 @@ KEY `menu_id` (`menu_id`) USING BTREE
 
 ------------------------------------角色------------------------------------
 CREATE TABLE `boot_sys_role` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `name` varchar(50) NOT NULL COMMENT '角色名称',
   `creator` bigint(20) NOT NULL COMMENT '创建人',
   `editor` bigint(20) DEFAULT NULL COMMENT '编辑人',
@@ -150,7 +150,7 @@ CREATE TABLE `boot_sys_user_role` (
 
 ------------------------------------用户------------------------------------
 CREATE TABLE `boot_sys_user` (
-`id` bigint(20) NOT NULL COMMENT 'id',
+`id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
 `username` varchar(20) NOT NULL COMMENT '用户名',
 `password` varchar(100) NOT NULL COMMENT '密码',
 `super_admin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '超级管理员：0否 1是',
@@ -181,7 +181,7 @@ INSERT INTO `boot_sys_user` (`id`, `username`, `password`, `super_admin`, `creat
 
 ------------------------------------日志------------------------------------
 CREATE TABLE `boot_sys_operate_log` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `module` varchar(32) DEFAULT NULL COMMENT '模块名称，如：系统菜单',
   `operation` varchar(50) DEFAULT NULL COMMENT '操作名称',
   `request_uri` varchar(200) DEFAULT NULL COMMENT '请求URI',
@@ -204,7 +204,7 @@ CREATE TABLE `boot_sys_operate_log` (
   KEY `idx_module` (`module`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='操作日志';
 CREATE TABLE `boot_sys_login_log` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `creator` bigint(20) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
@@ -223,7 +223,7 @@ CREATE TABLE `boot_sys_login_log` (
 
 ------------------------------------字典------------------------------------
 CREATE TABLE `boot_sys_dict` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `creator` bigint(20) DEFAULT NULL COMMENT '创建者',
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
@@ -240,56 +240,9 @@ CREATE TABLE `boot_sys_dict` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='字典';
 ------------------------------------字典------------------------------------
 
-------------------------------------支付宝用户------------------------------------
-CREATE TABLE `boot_zfb_user` (
-`id` bigint(20) NOT NULL COMMENT 'id',
-`creator` bigint(20) DEFAULT NULL COMMENT '创建人',
-`editor` bigint(20) DEFAULT NULL COMMENT '编辑人',
-`create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-`update_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-`del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1已删除 0未删除',
-`openid` varchar(32) NOT NULL COMMENT '支付宝用户唯一标识',
-`gender` varchar(1) DEFAULT NULL COMMENT '性别',
-`province` varchar(10) DEFAULT NULL COMMENT '省份',
-`city` varchar(10) DEFAULT NULL COMMENT '城市',
-`avatar` varchar(400) DEFAULT NULL COMMENT '头像',
-PRIMARY KEY (`id`),
-UNIQUE KEY `idx_openid` (`openid`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付宝用户';
-------------------------------------支付宝用户------------------------------------
-
-------------------------------------微信公众号------------------------------------
-CREATE TABLE `boot_wx_mp_account` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
-  `name` varchar(100) DEFAULT NULL COMMENT '名称',
-  `app_id` varchar(100) DEFAULT NULL COMMENT 'AppID',
-  `app_secret` varchar(100) DEFAULT NULL COMMENT 'AppSecret',
-  `token` varchar(100) DEFAULT NULL COMMENT 'Token',
-  `aes_key` varchar(100) DEFAULT NULL COMMENT 'EncodingAESKey',
-  `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
-  `editor` bigint(20) DEFAULT NULL COMMENT '编辑人',
-  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1已删除 0未删除',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='微信公众号账号';
-CREATE TABLE `boot_wx_mp_menu` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
-  `menu` varchar(2000) DEFAULT NULL COMMENT '菜单json数据',
-  `app_id` varchar(100) DEFAULT NULL COMMENT 'AppID',
-  `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
-  `editor` bigint(20) DEFAULT NULL COMMENT '编辑人',
-  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1已删除 0未删除',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_app_id` (`app_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='微信公众号自定义菜单';
-------------------------------------微信公众号------------------------------------
-
 ------------------------------------消息------------------------------------
 CREATE TABLE `boot_sys_message` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `username` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT '发送用户',
   `title` varchar(400) DEFAULT NULL COMMENT '标题',
   `content` longtext COMMENT '内容',
@@ -304,7 +257,7 @@ CREATE TABLE `boot_sys_message` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息';
 CREATE TABLE `boot_sys_message_detail` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `message_id` bigint(20) DEFAULT NULL COMMENT '消息id',
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',
   `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
@@ -319,7 +272,7 @@ CREATE TABLE `boot_sys_message_detail` (
 
 ------------------------------------部门------------------------------------
 CREATE TABLE `boot_sys_dept` (
- `id` bigint(20) NOT NULL COMMENT 'id',
+ `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
  `pid` bigint(20) NOT NULL COMMENT '父节点',
  `name` varchar(100) DEFAULT NULL COMMENT '名称',
  `sort` int(11) DEFAULT '1' COMMENT '排序',
@@ -352,7 +305,7 @@ KEY `menu_id` (`dept_id`) USING BTREE
 
 ------------------------------------认证------------------------------------
 CREATE TABLE `boot_sys_oauth_client_details` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `client_id` varchar(128) DEFAULT NULL COMMENT '客户端id',
   `resource_ids` varchar(128) DEFAULT NULL COMMENT '资源ids',
   `client_secret` varchar(128) DEFAULT NULL COMMENT '客户端密钥',
@@ -382,7 +335,7 @@ INSERT INTO `boot_sys_oauth_client_details` (`id`, `client_id`, `resource_ids`, 
 
 ------------------------------------资源------------------------------------
 CREATE TABLE `boot_sys_resource` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `title` varchar(200) NOT NULL COMMENT '名称',
   `author` varchar(100) NOT NULL DEFAULT 'admin' COMMENT '作者',
   `uri` varchar(500) NOT NULL COMMENT '地址',
@@ -414,7 +367,7 @@ PARTITION BY RANGE ( UNIX_TIMESTAMP(`create_date`))
  PARTITION lk202211 VALUES LESS THAN (1667232000) ENGINE = InnoDB,
  PARTITION lk202212 VALUES LESS THAN (1669824000) ENGINE = InnoDB);
  CREATE TABLE `boot_sys_resource_audit_log` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `resource_id` bigint(20) DEFAULT NULL COMMENT '资源id',
   `audit_name` varchar(50) DEFAULT NULL COMMENT '审批人',
   `audit_date` datetime DEFAULT NULL COMMENT '审批时间',
@@ -486,7 +439,7 @@ INSERT INTO `boot_sys_resource` (`id`, `title`, `author`, `uri`, `status`, `code
 
 ------------------------------------存储------------------------------------
 CREATE TABLE `boot_sys_oss` (
-`id` bigint(20) NOT NULL COMMENT 'id',
+`id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
 `value` varchar(3000) DEFAULT NULL COMMENT '值',
 `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
 `editor` bigint(20) DEFAULT NULL COMMENT '编辑人',

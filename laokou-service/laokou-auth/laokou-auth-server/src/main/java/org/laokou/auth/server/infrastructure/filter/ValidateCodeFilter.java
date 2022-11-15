@@ -5,6 +5,8 @@ import lombok.SneakyThrows;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.server.infrastructure.constant.OauthConstant;
 import org.laokou.auth.server.infrastructure.handler.UserAuthenticationFailureHandler;
+import org.laokou.auth.server.infrastructure.log.AuthLogUtil;
+import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.StringUtil;
@@ -17,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Kou Shenhai
@@ -39,6 +42,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     @Autowired
     private UserAuthenticationFailureHandler userAuthenticationFailureHandler;
 
+    @Autowired
+    private AuthLogUtil authLogUtil;
+
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
@@ -47,8 +53,10 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
                 && GRANT_TYPE.equals(request.getParameter("grant_type"))) {
             String uuid = request.getParameter(OauthConstant.UUID);
             String captcha = request.getParameter(OauthConstant.CAPTCHA);
+            String username = request.getParameter(OauthConstant.USERNAME);
+            String password = request.getParameter(OauthConstant.PASSWORD);
             try {
-                validate(uuid, captcha);
+                validate(uuid, captcha,username,password);
             } catch (AuthenticationException e) {
                 //失败处理器
                 userAuthenticationFailureHandler.onAuthenticationFailure(request, response, e);
@@ -58,15 +66,22 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void validate(String uuid,String captcha) {
+    private void validate(String uuid,String captcha,String username,String password) throws IOException {
         if (StringUtil.isEmpty(uuid)) {
             throw new CredentialsExpiredException("唯一标识符不能为空");
         }
         if (StringUtil.isEmpty(captcha)) {
             throw new CredentialsExpiredException("验证码不能为空");
         }
+        if (StringUtil.isEmpty(username)) {
+            throw new CredentialsExpiredException("用户名不能为空");
+        }
+        if (StringUtil.isEmpty(password)) {
+            throw new CredentialsExpiredException("密码不能为空");
+        }
         boolean validate = sysCaptchaService.validate(uuid, captcha);
         if (!validate) {
+            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
             throw new CredentialsExpiredException(MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
         }
     }

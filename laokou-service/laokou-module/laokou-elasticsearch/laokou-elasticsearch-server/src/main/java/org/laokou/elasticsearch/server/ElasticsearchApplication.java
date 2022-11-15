@@ -16,7 +16,7 @@
 package org.laokou.elasticsearch.server;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.laokou.swagger.config.CorsConfig;
+import org.laokou.common.swagger.config.CorsConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;

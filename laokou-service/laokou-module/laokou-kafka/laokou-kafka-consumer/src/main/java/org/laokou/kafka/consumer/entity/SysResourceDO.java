@@ -17,7 +17,7 @@ package org.laokou.kafka.consumer.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import org.laokou.mybatis.plus.entity.BaseDO;
+import org.laokou.common.mybatisplus.entity.BaseDO;
 
 /**
  * @author Kou Shenhai

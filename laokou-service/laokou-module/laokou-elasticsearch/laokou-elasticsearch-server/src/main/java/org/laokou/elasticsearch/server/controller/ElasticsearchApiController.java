@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.elasticsearch.server.controller;
-import org.laokou.common.utils.HttpResultUtil;
+import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.elasticsearch.client.model.ElasticsearchModel;
@@ -86,7 +86,7 @@ public class ElasticsearchApiController {
             @ApiImplicitParam(name = "indexName",value = "索引名称",required = true,paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = "id",value = "主键",required = true,paramType = "query",dataType = "String")
     })
-    public HttpResultUtil<String> detail(@RequestParam("indexName")final String indexName,@RequestParam("id")final String id) {
+    public HttpResultUtil<String> detail(@RequestParam("indexName")final String indexName, @RequestParam("id")final String id) {
         return new HttpResultUtil<String>().ok(elasticsearchUtil.getIndexById(indexName,id));
     }
 

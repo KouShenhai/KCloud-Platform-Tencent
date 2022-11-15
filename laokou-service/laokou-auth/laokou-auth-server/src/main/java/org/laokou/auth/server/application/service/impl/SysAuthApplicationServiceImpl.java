@@ -17,7 +17,9 @@ package org.laokou.auth.server.application.service.impl;
 import cn.hutool.core.thread.ThreadUtil;
 import lombok.SneakyThrows;
 import org.laokou.auth.client.enums.UserStatusEnum;
+import org.laokou.auth.server.infrastructure.log.AuthLogUtil;
 import org.laokou.common.core.constant.Constant;
+import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.password.PasswordUtil;
 import org.laokou.auth.client.user.UserDetail;
@@ -28,6 +30,7 @@ import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.exception.CustomOAuth2Exception;
+import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -66,6 +69,9 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @Autowired
     private TokenStore tokenStore;
 
+    @Autowired
+    private AuthLogUtil authLogUtil;
+
     private static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
             8,
             16,
@@ -79,17 +85,13 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @SneakyThrows
     @Override
     public UserDetail login(String username, String password) {
-        if (StringUtil.isEmpty(username)) {
-            throw new CustomOAuth2Exception("用户名不能为空");
-        }
-        if (StringUtil.isEmpty(password)) {
-            throw new CustomOAuth2Exception("密码不能为空");
-        }
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
+            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
             throw new CustomOAuth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR);
         }
         if(!PasswordUtil.matches(password, userDetail.getPassword())) {
+            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
             throw new CustomOAuth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR);
         }
         CompletableFuture<UserDetail> c1 = CompletableFuture.supplyAsync(() -> sysDeptService.getDeptIds(userDetail))
@@ -105,8 +107,10 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         //等待所有任务都完成
         CompletableFuture.allOf(c1,c2).join();
         if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
+            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
             throw new CustomOAuth2Exception(ErrorCode.ACCOUNT_DISABLE);
         }
+        authLogUtil.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
         return userDetail;
     }
 

@@ -16,11 +16,17 @@
 package org.laokou.auth.server.infrastructure.log;
 
 import eu.bitwalker.useragentutils.UserAgent;
+import org.laokou.auth.server.infrastructure.feign.kafka.KafkaApiFeignClient;
 import org.laokou.common.core.utils.AddressUtil;
 import org.laokou.common.core.utils.HttpContextUtil;
 import org.laokou.common.core.utils.IpUtil;
+import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.kafka.client.constant.KafkaConstant;
+import org.laokou.kafka.client.dto.KafkaDTO;
 import org.laokou.kafka.client.dto.LoginLogDTO;
 import org.apache.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -28,9 +34,13 @@ import java.io.IOException;
 /**
  * @author Kou Shenhai
  */
+@Component
 public class AuthLogUtil {
 
-    public static void recordLogin(String username,Integer status,String msg) throws IOException {
+    @Autowired
+    private KafkaApiFeignClient kafkaApiFeignClient;
+
+    public void recordLogin(String username,Integer status,String msg) throws IOException {
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader(HttpHeaders.USER_AGENT));
         String ip = IpUtil.getIpAddr(request);
@@ -46,7 +56,9 @@ public class AuthLogUtil {
         dto.setOs(os);
         dto.setMsg(msg);
         dto.setRequestStatus(status);
-
+        KafkaDTO kafkaDTO = new KafkaDTO();
+        kafkaDTO.setData(JacksonUtil.toJsonStr(dto));
+        kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_LOGIN_LOG_TOPIC, kafkaDTO);
     }
 
 }

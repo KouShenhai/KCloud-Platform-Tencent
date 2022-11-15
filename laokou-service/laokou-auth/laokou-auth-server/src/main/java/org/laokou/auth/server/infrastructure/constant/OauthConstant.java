@@ -23,5 +23,7 @@ public interface OauthConstant {
 
    String UUID = "uuid";
    String CAPTCHA = "captcha";
+   String USERNAME = "username";
+   String PASSWORD = "password";
 
 }

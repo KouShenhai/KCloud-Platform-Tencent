@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.server.infrastructure.component.aspect;
 import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
+import org.laokou.admin.server.infrastructure.component.feign.kafka.KafkaApiFeignClient;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.enums.DataTypeEnum;
 import org.laokou.common.core.enums.ResultStatusEnum;
@@ -22,6 +23,8 @@ import org.laokou.common.core.utils.AddressUtil;
 import org.laokou.common.core.utils.HttpContextUtil;
 import org.laokou.common.core.utils.IpUtil;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.kafka.client.constant.KafkaConstant;
+import org.laokou.kafka.client.dto.KafkaDTO;
 import org.laokou.kafka.client.dto.OperateLogDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
@@ -32,6 +35,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -50,6 +54,9 @@ import java.util.stream.Collectors;
 @Aspect
 @Slf4j
 public class OperateLogAspect {
+
+    @Autowired
+    private KafkaApiFeignClient kafkaApiFeignClient;
 
     /**
      * 配置切入点
@@ -110,7 +117,9 @@ public class OperateLogAspect {
         if (DataTypeEnum.TEXT.equals(operateLog.type())) {
             dto.setRequestParams(JacksonUtil.toJsonStr(params,true));
         }
-
+        KafkaDTO kafkaDTO = new KafkaDTO();
+        kafkaDTO.setData(JacksonUtil.toJsonStr(dto));
+        kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_OPERATE_LOG_TOPIC, kafkaDTO);
     }
 
 }

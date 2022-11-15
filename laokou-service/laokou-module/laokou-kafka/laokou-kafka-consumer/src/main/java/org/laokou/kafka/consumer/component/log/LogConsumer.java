@@ -17,10 +17,10 @@ package org.laokou.kafka.consumer.component.log;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.utils.StringUtil;
+import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.core.utils.StringUtil;
 import org.laokou.kafka.client.dto.LoginLogDTO;
 import org.laokou.kafka.client.dto.OperateLogDTO;
-import org.laokou.common.utils.JacksonUtil;
 import org.laokou.kafka.client.constant.KafkaConstant;
 import org.laokou.kafka.consumer.service.SysLoginLogService;
 import org.laokou.kafka.consumer.service.SysOperateLogService;

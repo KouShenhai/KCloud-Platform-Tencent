@@ -17,8 +17,8 @@ package org.laokou.kafka.consumer.component.resource;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.utils.JacksonUtil;
-import org.laokou.common.utils.StringUtil;
+import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.core.utils.StringUtil;
 import org.laokou.kafka.client.constant.KafkaConstant;
 import org.laokou.kafka.client.dto.ResourceAuditLogDTO;
 import org.laokou.kafka.consumer.entity.SysResourceAuditLogDO;

@@ -16,8 +16,8 @@
 package org.laokou.kafka.consumer.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.kafka.client.dto.LoginLogDTO;
-import org.laokou.common.utils.ConvertUtil;
 import org.laokou.kafka.consumer.entity.SysLoginLogDO;
 import org.laokou.kafka.consumer.mapper.SysLoginLogMapper;
 import org.laokou.kafka.consumer.service.SysLoginLogService;

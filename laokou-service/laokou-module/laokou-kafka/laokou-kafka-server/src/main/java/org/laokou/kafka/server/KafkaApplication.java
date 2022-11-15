@@ -15,7 +15,7 @@
  */
 package org.laokou.kafka.server;
 
-import org.laokou.swagger.config.CorsConfig;
+import org.laokou.common.swagger.config.CorsConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
