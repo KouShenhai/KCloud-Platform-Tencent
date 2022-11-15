@@ -73,26 +73,26 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 #### 项目结构
 ~~~
 ├── laokou-common
-        └── laokou-common-bom   依赖版本库
-        └── laokou-common-core   公共组件
-        └── laokou-common-mybatis-plus   mybatis-plus组件
-        └── laokou-common-swagger   文档组件
+        └── laokou-common-bom               --- 依赖版本库
+        └── laokou-common-core              --- 公共组件
+        └── laokou-common-mybatis-plus      --- 对象映射组件
+        └── laokou-common-swagger           --- 文档组件
 ├── laokou-cloud
-        └── laokou-gateway   API网关
-        └── laokou-monitor   服务监控
-        └── laokou-register   服务注册&发现
+        └── laokou-gateway                  --- API网关
+        └── laokou-monitor                  --- 服务监控
+        └── laokou-register                 --- 服务注册&发现
 ├── laokou-service
-        └── laokou-admin   后台管理模块
-        └── laokou-generator   模板模块
-        └── laokou-auth   认证授权模块
+        └── laokou-admin                    --- 后台管理模块
+        └── laokou-auth                     --- 认证授权模块
+        └── laokou-generator                --- 模板模块
         └── laokou-modlule
-                └── laokou-sms   短信模块 
-                └── laokou-email   邮件模块
-                └── laokou-oss   对象存储模块    
-                └── laokou-redis   缓存模块     
-                └── laokou-xxl-job   工作模块   
-                └── laokou-kafka   消息模块    
-                └── laokou-elasticsearch   搜索模块          
+                └── laokou-sms              --- 短信模块 
+                └── laokou-email            --- 邮件模块
+                └── laokou-oss              --- 对象存储模块    
+                └── laokou-redis            --- 缓存模块     
+                └── laokou-xxl-job          --- 工作模块   
+                └── laokou-kafka            --- 消息模块    
+                └── laokou-elasticsearch    --- 搜索模块          
 ~~~
 
 ### 环境配置
@@ -226,6 +226,9 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
 }]
 ```
 
+### 构建系统高可用
+
+
 ### 演示地址
 [http://175.178.69.253](http://175.178.69.253)  
 admin/admin123  
@@ -235,52 +238,52 @@ laok5/test123
 ### 项目截图
 <table>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/1.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/2.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/1.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/2.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/3.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/4.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/3.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/4.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/5.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/6.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/5.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/6.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/7.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/8.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/7.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/8.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/9.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/10.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/9.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/10.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/11.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/12.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/11.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/12.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/13.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/14.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/13.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/14.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/15.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/16.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/15.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/16.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/17.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/18.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/17.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/18.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/19.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/20.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/19.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/20.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/21.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/22.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/21.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/22.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/23.png"/></td>
-        <td><img src="https://gitee.com/tttt_wmh_cn/KCloud-Platform/raw/master/image/24.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/23.png"/></td>
+        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/24.png"/></td>
     </tr>
 </table>
 
