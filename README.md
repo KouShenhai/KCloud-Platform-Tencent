@@ -227,7 +227,8 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
 ```
 
 ### 构建系统高可用
-
+- [] 代码质量，严格遵循阿里规范
+- 
 
 ### 演示地址
 [http://175.178.69.253](http://175.178.69.253)  
@@ -238,52 +239,52 @@ laok5/test123
 ### 项目截图
 <table>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/1.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/2.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/1.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/2.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/3.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/4.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/3.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/4.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/5.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/6.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/5.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/6.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/7.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/8.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/7.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/8.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/9.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/10.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/9.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/10.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/11.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/12.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/11.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/12.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/13.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/14.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/13.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/14.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/15.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/16.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/15.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/16.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/17.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/18.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/17.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/18.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/19.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/20.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/19.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/20.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/21.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/22.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/21.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/22.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/23.png"/></td>
-        <td><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/24.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/23.png"/></td>
+        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/24.png"/></td>
     </tr>
 </table>
 
