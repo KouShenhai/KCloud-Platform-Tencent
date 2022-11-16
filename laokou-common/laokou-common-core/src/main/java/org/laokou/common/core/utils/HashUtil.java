@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.common.core.utils;
-
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -23,6 +22,7 @@ package org.laokou.common.core.utils;
 public class HashUtil {
 
     /**
+     * {@link java.util.HashMap#hash(Object)}
      * 获取hash值
      * @param key
      * @return
