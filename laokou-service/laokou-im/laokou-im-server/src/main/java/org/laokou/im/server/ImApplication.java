@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.constant;
+package org.laokou.im.server;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author Kou Shenhai
  */
-public interface ServiceConstant {
+@SpringBootApplication
+@EnableDiscoveryClient
+public class ImApplication {
 
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_KAFKA = "laokou-kafka";
-    String LAOKOU_IM = "laokou-im";
+    public static void main(String[] args) {
+        SpringApplication.run(ImApplication.class, args);
+    }
 
 }

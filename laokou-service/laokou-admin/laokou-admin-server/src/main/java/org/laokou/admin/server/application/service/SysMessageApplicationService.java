@@ -26,23 +26,6 @@ import java.io.IOException;
  * @author Kou Shenhai
  */
 public interface SysMessageApplicationService {
-
-    /**
-     * 推消息
-     * @param dto
-     * @return
-     * @throws IOException
-     */
-    Boolean pushMessage(MessageDTO dto) throws IOException;
-
-    /**
-     * 发送消息
-     * @param dto
-     * @throws IOException
-     * @return
-     */
-    Boolean sendMessage(MessageDTO dto) throws IOException;
-
     /**
      * 新增消息
      * @param dto

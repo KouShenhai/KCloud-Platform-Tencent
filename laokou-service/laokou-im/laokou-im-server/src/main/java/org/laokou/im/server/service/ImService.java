@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.constant;
+package org.laokou.im.server.service;
+
+import org.laokou.im.client.PushMsgDTO;
+
+import java.io.IOException;
 
 /**
  * @author Kou Shenhai
  */
-public interface ServiceConstant {
+public interface ImService {
 
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_KAFKA = "laokou-kafka";
-    String LAOKOU_IM = "laokou-im";
+    /**
+     * 推送消息
+     * @param dto
+     * @throws IOException
+     */
+    void pusMessage(PushMsgDTO dto) throws IOException;
 
 }

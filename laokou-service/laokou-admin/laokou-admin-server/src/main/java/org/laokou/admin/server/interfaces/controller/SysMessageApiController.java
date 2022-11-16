@@ -48,7 +48,7 @@ public class SysMessageApiController {
     @OperateLog(module = "系统消息",name = "消息新增")
     @PreAuthorize("hasAuthority('sys:message:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody MessageDTO dto) throws IOException {
-        return new HttpResultUtil<Boolean>().ok(sysMessageApplicationService.sendMessage(dto));
+        return new HttpResultUtil<Boolean>().ok(sysMessageApplicationService.insertMessage(dto));
     }
 
     @PostMapping("/query")

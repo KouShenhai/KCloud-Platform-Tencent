@@ -1,0 +1,20 @@
+#spring
+spring:
+  profiles:
+    # 环境 dev|test|prod
+    active: @profile.active@
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  application:
+    name: laokou-im
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: -1
+      max-request-size: -1
+  cloud:
+    inetutils:
+      ignoredInterfaces:
+        - docker0
+        - veth.*

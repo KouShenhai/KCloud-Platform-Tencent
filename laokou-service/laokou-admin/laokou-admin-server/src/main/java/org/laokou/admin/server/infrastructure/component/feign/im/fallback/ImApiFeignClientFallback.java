@@ -13,16 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.constant;
+package org.laokou.admin.server.infrastructure.component.feign.im.fallback;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.laokou.admin.server.infrastructure.component.feign.im.ImApiFeignClient;
+import org.laokou.im.client.PushMsgDTO;
 
 /**
+ * 服务降级
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2020/9/5 0005 上午 12:12
  */
-public interface ServiceConstant {
+@Slf4j
+@AllArgsConstructor
+public class ImApiFeignClientFallback implements ImApiFeignClient {
 
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_KAFKA = "laokou-kafka";
-    String LAOKOU_IM = "laokou-im";
+    private final Throwable throwable;
 
+    @Override
+    public void push(PushMsgDTO dto) {
+        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+    }
 }

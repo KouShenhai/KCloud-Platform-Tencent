@@ -78,7 +78,7 @@ public class WorkFlowUtil {
      * @param type
      * @param sendChannel
      */
-    public void sendAuditMsg(String assignee, Integer type, Integer sendChannel,Long id,String name) throws IOException {
+    public void sendAuditMsg(String assignee, Integer type, Integer sendChannel,Long id,String name) {
         String title = "资源审批提醒";
         String content = String.format("编号为%s，名称为%s的资源需要审批，请及时查看并处理",id,name);
         Set set = new HashSet<>(1);
@@ -89,7 +89,7 @@ public class WorkFlowUtil {
         dto.setSendChannel(sendChannel);
         dto.setReceiver(set);
         dto.setType(type);
-        sysMessageApplicationService.sendMessage(dto);
+        sysMessageApplicationService.insertMessage(dto);
     }
 
 }

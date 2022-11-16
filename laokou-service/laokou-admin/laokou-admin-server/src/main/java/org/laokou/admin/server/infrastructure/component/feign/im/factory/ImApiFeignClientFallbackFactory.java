@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.constant;
+package org.laokou.admin.server.infrastructure.component.feign.im.factory;
+import org.laokou.admin.server.infrastructure.component.feign.im.fallback.ImApiFeignClientFallback;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
 
 /**
+ * 回调工厂
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2020/9/5 0005 上午 12:12
  */
-public interface ServiceConstant {
+@Component
+public class ImApiFeignClientFallbackFactory implements FallbackFactory<ImApiFeignClientFallback> {
 
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_KAFKA = "laokou-kafka";
-    String LAOKOU_IM = "laokou-im";
-
+    @Override
+    public ImApiFeignClientFallback create(Throwable throwable) {
+        return new ImApiFeignClientFallback(throwable);
+    }
 }

@@ -23,8 +23,8 @@ import org.laokou.admin.server.domain.sys.entity.SysMessageDetailDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageDetailService;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageService;
 import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
-import org.laokou.admin.server.infrastructure.config.WebSocketServer;
 import org.laokou.admin.client.dto.MessageDTO;
+import org.laokou.admin.server.infrastructure.component.feign.im.ImApiFeignClient;
 import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
@@ -32,9 +32,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.ConvertUtil;
+import org.laokou.im.client.PushMsgDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.io.IOException;
 import java.util.*;
 /**
  * @author Kou Shenhai
@@ -43,39 +43,21 @@ import java.util.*;
 public class SysMessageApplicationServiceImpl implements SysMessageApplicationService {
 
     @Autowired
-    private WebSocketServer webSocketServer;
-
-    @Autowired
     private SysMessageService sysMessageService;
 
     @Autowired
     private SysMessageDetailService sysMessageDetailService;
 
-    @Override
-    public Boolean pushMessage(MessageDTO dto) throws IOException {
-        Iterator<String> iterator = dto.getReceiver().iterator();
-        while (iterator.hasNext()) {
-            webSocketServer.sendMessages(String.format("%s发来一条消息",dto.getUsername()),Long.valueOf(iterator.next()));
-        }
-        return true;
-    }
-
-    @Override
-    public Boolean sendMessage(MessageDTO dto) throws IOException {
-        //1.插入日志
-        insertMessage(dto);
-        //2.推送消息
-        pushMessage(dto);
-        return true;
-    }
+    @Autowired
+    private ImApiFeignClient apiFeignClient;
 
     @Override
     public Boolean insertMessage(MessageDTO dto) {
         SysMessageDO messageDO = ConvertUtil.sourceToTarget(dto, SysMessageDO.class);
         messageDO.setCreateDate(new Date());
         messageDO.setCreator(dto.getUserId());
-        System.out.println(UserUtil.userDetail());
         messageDO.setDeptId(UserUtil.getDeptId());
+        messageDO.setUsername(UserUtil.getUsername());
         sysMessageService.save(messageDO);
         Set<String> receiver = dto.getReceiver();
         Iterator<String> iterator = receiver.iterator();
@@ -92,7 +74,17 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
         if (CollectionUtils.isNotEmpty(detailDOList)) {
             sysMessageDetailService.saveBatch(detailDOList);
         }
+        // 发送消息
+        sendMessage(dto);
         return true;
+    }
+
+    private void sendMessage(MessageDTO dto) {
+        PushMsgDTO pushMsgDTO = new PushMsgDTO();
+        pushMsgDTO.setSender(dto.getUsername());
+        pushMsgDTO.setMsg(String.format("%s发来一条消息",dto.getUsername()));
+        pushMsgDTO.setReceiver(dto.getReceiver());
+        apiFeignClient.push(pushMsgDTO);
     }
 
     @Override

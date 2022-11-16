@@ -81,8 +81,6 @@ gateway:
         location: /elasticsearch
       - name: laokou-kafka
         location: /kafka
-      - name: laokou-security
-        location: /security
   uris:
     - /oauth/captcha
     - /oauth/logout

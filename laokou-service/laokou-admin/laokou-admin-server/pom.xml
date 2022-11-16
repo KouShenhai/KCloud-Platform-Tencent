@@ -12,10 +12,6 @@
 	<description>后台管理模块</description>
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-websocket</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.laokou</groupId>
 			<artifactId>laokou-redis</artifactId>
 		</dependency>
@@ -56,6 +52,10 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.laokou</groupId>
+			<artifactId>laokou-im-client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.github.ulisesbocchio</groupId>
