@@ -16,6 +16,7 @@
 package org.laokou.admin.server.infrastructure.config;
 
 import lombok.AllArgsConstructor;
+import org.laokou.auth.client.exception.AuthExceptionHandler;
 import org.laokou.auth.client.exception.SecurityAuthenticationEntryPoint;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -44,7 +45,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.tokenStore(tokenStore);
         //token不存在或错误时，异常处理
-        resources.authenticationEntryPoint(new SecurityAuthenticationEntryPoint());
+        resources.authenticationEntryPoint(new SecurityAuthenticationEntryPoint())
+                .accessDeniedHandler(new AuthExceptionHandler());
     }
 
     @Override

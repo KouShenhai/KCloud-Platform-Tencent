@@ -14,28 +14,31 @@
  * limitations under the License.
  */
 package org.laokou.auth.client.exception;
+import cn.hutool.http.HttpStatus;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.core.utils.JacksonUtil;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.util.MimeTypeUtils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Kou Shenhai
  */
-@RestControllerAdvice
-@ResponseBody
-@Component
-public class AuthExceptionHandler {
+public class AuthExceptionHandler implements AccessDeniedHandler {
 
-    /**
-     * 处理自定义异常
-     */
-    @ExceptionHandler({AccessDeniedException.class})
-    public HttpResultUtil<Boolean> handleRenException(){
-        return new HttpResultUtil<Boolean>().error(ErrorCode.FORBIDDEN);
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
+        response.setStatus(HttpStatus.HTTP_OK);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
+        PrintWriter writer = response.getWriter();
+        writer.write(JacksonUtil.toJsonStr(new HttpResultUtil().error(ErrorCode.FORBIDDEN)));
+        writer.flush();
     }
-
 }
