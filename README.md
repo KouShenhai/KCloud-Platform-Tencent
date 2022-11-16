@@ -85,7 +85,6 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
         └── laokou-admin                    --- 后台管理模块
         └── laokou-auth                     --- 认证授权模块
         └── laokou-generator                --- 模板模块
-        └── laokou-im                       --- 即时通讯模块
         └── laokou-modlule
                 └── laokou-sms              --- 短信模块 
                 └── laokou-email            --- 邮件模块
@@ -93,7 +92,8 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
                 └── laokou-redis            --- 缓存模块     
                 └── laokou-xxl-job          --- 工作模块   
                 └── laokou-kafka            --- 消息模块    
-                └── laokou-elasticsearch    --- 搜索模块          
+                └── laokou-elasticsearch    --- 搜索模块     
+                └── laokou-im               --- 即时通讯模块     
 ~~~
 
 ### 环境配置
