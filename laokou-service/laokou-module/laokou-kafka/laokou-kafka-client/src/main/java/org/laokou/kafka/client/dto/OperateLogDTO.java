@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 package org.laokou.kafka.client.dto;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @author Kou Shenhai
  */
 @Data
-public class OperateLogDTO {
+public class OperateLogDTO implements Serializable {
 
     /**
      * 模块名称，如：系统菜单
@@ -75,6 +79,7 @@ public class OperateLogDTO {
     /**
      * 创建人
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long creator;
 
     /**

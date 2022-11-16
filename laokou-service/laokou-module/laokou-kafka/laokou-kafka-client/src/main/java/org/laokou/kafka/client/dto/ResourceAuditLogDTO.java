@@ -15,6 +15,8 @@
  */
 package org.laokou.kafka.client.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
@@ -36,6 +38,7 @@ public class ResourceAuditLogDTO implements Serializable {
 
     private Integer status;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long creator;
 
 }

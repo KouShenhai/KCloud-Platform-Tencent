@@ -15,21 +15,14 @@
  */
 package org.laokou.common.core.utils;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import java.io.InputStream;
 import java.util.*;
-
-
 /**
  * @author Kou Shenhai
  */
@@ -42,18 +35,7 @@ public class JacksonUtil {
      */
     public static final String JSON_EMPTY = "{}";
 
-    public static ObjectMapper MAPPER;
-
-    static {
-        MAPPER = new ObjectMapper();
-        // Long类型转String类型
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(Long.class, ToStringSerializer.instance);
-        javaTimeModule.addSerializer(Long.TYPE,ToStringSerializer.instance);
-        MAPPER.registerModule(javaTimeModule);
-        // 忽略未知字段
-        MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
+    public static ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * json字符转Bean
@@ -167,6 +149,12 @@ public class JacksonUtil {
 
     private boolean check(String json, Object... checkObj) {
         return json == null || json.isEmpty() || ObjectUtil.anyChecked(Objects::isNull, checkObj);
+    }
+
+    public static void main(String[] args) {
+        String json = "{\"name\":\"Jack\",\"age\":18}";
+        System.out.println(toBean(json, String.class));
+        System.out.println(toJsonStr(new Date()));
     }
 
 }

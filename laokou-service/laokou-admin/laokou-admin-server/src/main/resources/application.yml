@@ -14,9 +14,6 @@ spring:
   messages:
     encoding: UTF-8
     basename: i18n/messages
-  jackson:
-    time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
   servlet:
     multipart:
       enabled: true

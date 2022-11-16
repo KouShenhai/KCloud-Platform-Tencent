@@ -15,8 +15,6 @@
  */
 package org.laokou.elasticsearch.server.utils;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.elasticsearch.action.ActionListener;
@@ -475,15 +473,15 @@ public class ElasticsearchUtil {
         //WAIT_UNTIL >  请求向es提交数据，等待数据完成刷新<实时性高，资源消耗低>
         //NONE > 默认策略<实时性低>
         bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-        JSONArray jsonArray = JSONUtil.parseArray(jsonDataList);
-        if (jsonArray.isEmpty()) {
+        List<Object> jsonList = JacksonUtil.toList(jsonDataList, Object.class);
+        if (jsonList.isEmpty()) {
             return bulkRequest;
         }
         //循环数据封装bulkRequest
-        jsonArray.forEach(obj ->{
+        jsonList.forEach(obj ->{
             final Map<String, Object> map = (Map<String, Object>) obj;
             IndexRequest indexRequest = new IndexRequest(indexName);
-            indexRequest.source(JSONUtil.toJsonStr(obj),XContentType.JSON);
+            indexRequest.source(JacksonUtil.toJsonStr(obj),XContentType.JSON);
             indexRequest.id(map.get(PRIMARY_KEY_NAME).toString());
             bulkRequest.add(indexRequest);
         });
