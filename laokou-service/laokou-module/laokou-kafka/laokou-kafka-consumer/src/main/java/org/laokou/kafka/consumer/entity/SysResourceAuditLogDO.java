@@ -17,6 +17,7 @@ package org.laokou.kafka.consumer.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 
 import java.util.Date;
@@ -28,6 +29,7 @@ import java.util.Date;
  */
 @Data
 @TableName("boot_sys_resource_audit_log")
+@EqualsAndHashCode(callSuper=true)
 public class SysResourceAuditLogDO extends BaseDO {
 
     private Long resourceId;

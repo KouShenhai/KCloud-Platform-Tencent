@@ -45,7 +45,7 @@ public class DataFilterAspect {
     @Before("dataFilterPointCut()")
     public void dataFilterPoint(JoinPoint point) {
         Object params = point.getArgs()[0];
-        if (params != null && params instanceof BasePage) {
+        if (params instanceof BasePage) {
             UserDetail userDetail = UserUtil.userDetail();
             //如果是超级管理员，不进行数据过滤
             if (userDetail.getSuperAdmin() == SuperAdminEnum.YES.ordinal()) {
@@ -56,7 +56,7 @@ public class DataFilterAspect {
                 BasePage page = (BasePage)params;
                 String sqlFilter = getSqlFilter(userDetail, point);
                 page.setSqlFilter(sqlFilter);
-            }catch (Exception e){}
+            }catch (Exception ignored){}
             return;
         }
         throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
@@ -73,6 +73,7 @@ public class DataFilterAspect {
             dataFilter = AnnotationUtils.findAnnotation(method,DataFilter.class);
         }
         //获取表的别名
+        assert dataFilter != null;
         String tableAlias = dataFilter.tableAlias();
         if(StringUtil.isNotEmpty(tableAlias)){
             tableAlias +=  ".";

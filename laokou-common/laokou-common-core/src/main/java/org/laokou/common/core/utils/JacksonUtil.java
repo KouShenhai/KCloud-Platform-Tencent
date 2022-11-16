@@ -35,7 +35,7 @@ public class JacksonUtil {
      */
     public static final String JSON_EMPTY = "{}";
 
-    public static ObjectMapper MAPPER = new ObjectMapper();
+    public static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * json字符转Bean

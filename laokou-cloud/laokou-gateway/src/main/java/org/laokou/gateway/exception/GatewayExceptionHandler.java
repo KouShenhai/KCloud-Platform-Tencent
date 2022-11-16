@@ -20,7 +20,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
-import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.HttpMessageReader;
@@ -49,9 +48,9 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 	@Override
 	public Mono<Void> handle(ServerWebExchange exchange, Throwable e) {
 		log.error("网关全局处理异常，异常信息:{}",e.getMessage());
-		HttpResultUtil result = new HttpResultUtil<>();
-		if (e instanceof NotFoundException || e instanceof RuntimeException){
-			log.error("服务未启动或服务运行异常");
+		HttpResultUtil<Boolean> result = new HttpResultUtil<>();
+		if (e instanceof RuntimeException){
+			log.error("服务运行异常");
 			result = result.error("服务正在维护，请联系管理员");
 		}
 		TL.set(result);

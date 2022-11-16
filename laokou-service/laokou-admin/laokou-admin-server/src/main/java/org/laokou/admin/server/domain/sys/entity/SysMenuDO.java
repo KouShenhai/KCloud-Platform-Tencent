@@ -16,6 +16,7 @@
 package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,6 +30,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @TableName("boot_sys_menu")
 @ApiModel("菜单")
+@EqualsAndHashCode(callSuper=true)
 public class SysMenuDO extends BaseDO {
 
 	/**
@@ -58,7 +60,7 @@ public class SysMenuDO extends BaseDO {
 	 * 授权(多个用逗号分隔，如：sys:user:list,sys:user:save)
 	 */
     @TableField("permissions")
-    @ApiModelProperty(value = "授权(多个用逗号分隔，如：sys:user:list,sys:user:save)",name = "permissions",required = false,example = "sys:res:view")
+    @ApiModelProperty(value = "授权(多个用逗号分隔，如：sys:user:list,sys:user:save)",name = "permissions", example = "sys:res:view")
 	private String permissions;
 
 	/**

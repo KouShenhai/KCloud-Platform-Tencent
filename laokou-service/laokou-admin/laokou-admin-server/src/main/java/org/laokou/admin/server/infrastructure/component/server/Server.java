@@ -28,6 +28,8 @@ import oshi.software.os.FileSystem;
 import oshi.software.os.OSFileStore;
 import oshi.software.os.OperatingSystem;
 import oshi.util.Util;
+
+import java.io.Serial;
 import java.util.*;
 import java.io.Serializable;
 import java.lang.management.ManagementFactory;
@@ -109,7 +111,7 @@ public class Server {
         this.sysFiles = sysFiles;
     }
 
-    public void copyTo() throws Exception {
+    public void copyTo() {
         SystemInfo si = new SystemInfo();
         HardwareAbstractionLayer hal = si.getHardware();
 
@@ -232,6 +234,7 @@ public class Server {
 @Data
 class Jvm implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -326,6 +329,7 @@ class Jvm implements Serializable {
 
 @Data
 class Cpu implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -383,6 +387,7 @@ class Cpu implements Serializable {
 @Data
 class Mem implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -421,6 +426,7 @@ class Mem implements Serializable {
 @Data
 class Sys implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -452,6 +458,7 @@ class Sys implements Serializable {
 @Data
 class SysFile implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

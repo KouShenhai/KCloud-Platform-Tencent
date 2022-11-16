@@ -67,9 +67,6 @@ public class HttpContextUtil {
         String defaultLanguage = "z-CN";
         //request
         HttpServletRequest request = getHttpServletRequest();
-        if (null == request){
-            return defaultLanguage;
-        }
         //请求语言
         defaultLanguage = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
         return defaultLanguage;

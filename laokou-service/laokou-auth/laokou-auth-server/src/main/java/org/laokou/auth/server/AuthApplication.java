@@ -54,7 +54,6 @@ public class AuthApplication{
     /**
      * 监控服务
      * @param applicationName 应用名
-     * @return
      */
     @Bean
     MeterRegistryCustomizer<MeterRegistry> configurer(

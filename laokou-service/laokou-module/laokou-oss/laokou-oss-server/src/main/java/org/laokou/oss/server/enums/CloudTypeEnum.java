@@ -34,6 +34,6 @@ public enum CloudTypeEnum {
     /**
      * Minio
      */
-    MINIO;
+    MINIO
 
 }

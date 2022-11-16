@@ -138,7 +138,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
         return ConvertUtil.sourceToTarget(userDetail, UserInfoVO.class);
     }
 
-    private Boolean saveOrUpdate(Long userId,List<Long> roleIds) {
+    private void saveOrUpdate(Long userId, List<Long> roleIds) {
         List<SysUserRoleDO> doList = new ArrayList<>(roleIds.size());
         if (CollectionUtils.isNotEmpty(roleIds)) {
             for (Long roleId : roleIds) {
@@ -147,9 +147,8 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
                 sysUserRoleDO.setUserId(userId);
                 doList.add(sysUserRoleDO);
             }
-            return sysUserRoleService.saveBatch(doList);
+            sysUserRoleService.saveBatch(doList);
         }
-        return false;
     }
 
 }

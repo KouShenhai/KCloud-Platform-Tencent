@@ -15,11 +15,11 @@
  */
 package org.laokou.auth.server.infrastructure.provider;
 
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -40,10 +40,10 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class AuthAuthenticationProvider implements AuthenticationProvider {
 
-    @Autowired
-    private SysAuthApplicationService sysAuthApplicationService;
+    private final SysAuthApplicationService sysAuthApplicationService;
 
     @SneakyThrows
     @Override
@@ -54,8 +54,7 @@ public class AuthAuthenticationProvider implements AuthenticationProvider {
         List<String> permissionList = userDetail.getPermissionList();
         Set<GrantedAuthority> authorities = new HashSet<>(permissionList.size());
         authorities.addAll(permissionList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetail,authentication.getName(),authorities);
-        return authenticationToken;
+        return new UsernamePasswordAuthenticationToken(userDetail,authentication.getName(),authorities);
     }
 
     @Override

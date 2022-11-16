@@ -16,6 +16,7 @@
 package org.laokou.admin.server.domain.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import lombok.Data;
 
@@ -28,6 +29,7 @@ import java.util.Date;
  */
 @Data
 @TableName("boot_sys_resource_audit_log")
+@EqualsAndHashCode(callSuper=true)
 public class SysResourceAuditLogDO extends BaseDO {
 
     private Long resourceId;

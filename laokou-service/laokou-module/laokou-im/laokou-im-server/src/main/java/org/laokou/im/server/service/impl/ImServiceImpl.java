@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 /**
  * @author Kou Shenhai
@@ -36,9 +35,8 @@ public class ImServiceImpl implements ImService {
 
     @Override
     public void pusMessage(PushMsgDTO dto) throws IOException {
-        Iterator<String> iterator = dto.getReceiver().iterator();
-        while (iterator.hasNext()) {
-            webSocketServer.sendMessages(String.format("%s发来一条消息",dto.getSender()),Long.valueOf(iterator.next()));
+        for (String s : dto.getReceiver()) {
+            webSocketServer.sendMessages(String.format("%s发来一条消息", dto.getSender()), Long.valueOf(s));
         }
     }
 }

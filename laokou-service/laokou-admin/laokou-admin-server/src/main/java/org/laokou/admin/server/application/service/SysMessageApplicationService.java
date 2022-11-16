@@ -20,7 +20,6 @@ import org.laokou.admin.client.dto.MessageDTO;
 import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
-import java.io.IOException;
 
 /**
  * @author Kou Shenhai

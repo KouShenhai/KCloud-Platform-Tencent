@@ -91,6 +91,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         }
         final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey,businessKey);
         runtimeService.setProcessInstanceName(processInstance.getId(),instanceName);
+        assert processDefinition != null;
         vo.setDefinitionId(processDefinition.getId());
         vo.setInstanceId(processInstance.getId());
         return vo;
@@ -141,12 +142,12 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     }
 
     @Override
-    public Boolean auditResourceTask(AuditDTO dto) throws IOException {
+    public Boolean auditResourceTask(AuditDTO dto) {
         Map<String, Object> values = dto.getValues();
         Boolean auditFlag = workflowTaskApplicationService.auditTask(dto);
         String auditUser = workFlowUtil.getAuditUser(dto.getDefinitionId(), dto.getInstanceId());
-        Integer auditStatus = Integer.valueOf(values.get("auditStatus").toString());
-        Integer status;
+        int auditStatus = Integer.parseInt(values.get("auditStatus").toString());
+        int status;
         //1 审核中 2 审批拒绝 3审核通过
         if (null != auditUser) {
             //审批中

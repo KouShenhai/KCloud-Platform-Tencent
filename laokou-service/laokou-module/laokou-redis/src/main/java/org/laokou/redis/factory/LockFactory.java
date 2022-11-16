@@ -30,11 +30,10 @@ public class LockFactory {
     private RedisUtil redisUtil;
 
     public AbstractLock build(LockScope scope) {
-        switch (scope) {
-            case DISTRIBUTED_LOCK: return new RedissonLock(redisUtil);
-            case STANDALONE_LOCK: return new LocalLock();
-            default: return null;
-        }
+        return switch (scope) {
+            case DISTRIBUTED_LOCK -> new RedissonLock(redisUtil);
+            case STANDALONE_LOCK -> new LocalLock();
+        };
     }
 
 }

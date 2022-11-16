@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -24,6 +25,7 @@ import lombok.Data;
 @Data
 @TableName("boot_sys_login_log")
 @ApiModel("系统日志>登录日志DO")
+@EqualsAndHashCode(callSuper=true)
 public class SysLoginLogDO extends BaseDO {
 
     /**

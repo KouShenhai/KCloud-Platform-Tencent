@@ -3,7 +3,6 @@ server:
 
 elasticsearch:
   host: 101.33.251.11:9200
-  cluster-name: ENC(a2+u6NnvkCrnz6kgiZsTj+q7W3zoz/u0CJYGHqvteBE=)
   username: ENC(VcPrVKUHLwRVZVtLbkOoGw==)
   password: ENC(AHdloD6Rp4bu9SYZJbO7bcwErNCQm43R1b4zh6x4B10=)
 

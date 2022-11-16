@@ -29,12 +29,13 @@ public class WxgzhUtil {
 	private static final  String TOKEN = "67c626f6978143efb6920bf054a6243a";
 	private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5',
             '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+    /**
+     * 1）将token、timestamp、nonce三个参数进行字典序排序
+     * 2）将三个参数字符串拼接成一个字符串进行sha1加密
+     * 3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
+     */
 	public static boolean checkSignature(String signature, String timestamp, String nonce) {
-        /**
-         * 1）将token、timestamp、nonce三个参数进行字典序排序
-         * 2）将三个参数字符串拼接成一个字符串进行sha1加密
-         * 3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
-         */
 		String[] strings = new String[]{TOKEN ,timestamp ,nonce};
 		Arrays.sort(strings);
 		String str = strings[0] + strings[1] + strings[2];
@@ -59,9 +60,9 @@ public class WxgzhUtil {
         int len = bytes.length;
         StringBuilder buf = new StringBuilder(1 << len);
         // 把密文转换成十六进制的字符串形式
-        for (int j = 0; j < len; j++) {
-            buf.append(HEX_DIGITS[(bytes[j] >> 4) & 0x0f]);
-            buf.append(HEX_DIGITS[bytes[j] & 0x0f]);
+        for (byte aByte : bytes) {
+            buf.append(HEX_DIGITS[(aByte >> 4) & 0x0f]);
+            buf.append(HEX_DIGITS[aByte & 0x0f]);
         }
         return buf.toString();
 	}

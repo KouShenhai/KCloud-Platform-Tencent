@@ -19,10 +19,10 @@ import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfigChangeListener;
 import com.github.benmanes.caffeine.cache.Cache;
+import lombok.RequiredArgsConstructor;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
@@ -40,6 +40,7 @@ import java.util.Collection;
  */
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class ApolloRouteDefinitionRepository implements RouteDefinitionRepository, ApplicationEventPublisherAware {
 
     private static final String ROUTES = "gateway.routes";
@@ -49,8 +50,7 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     /**
      * 高性能缓存
      */
-    @Autowired
-    private Cache<String,Collection<RouteDefinition>> caffeineCache;
+    private final Cache<String,Collection<RouteDefinition>> caffeineCache;
 
     @ApolloConfig
     private Config config;

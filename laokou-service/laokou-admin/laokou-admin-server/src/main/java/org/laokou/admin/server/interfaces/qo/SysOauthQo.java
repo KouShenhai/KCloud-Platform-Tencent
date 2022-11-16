@@ -16,6 +16,7 @@
 package org.laokou.admin.server.interfaces.qo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BasePage;
 
 /**
@@ -24,6 +25,7 @@ import org.laokou.common.mybatisplus.entity.BasePage;
  * @date 2022/8/11 0011 上午 9:39
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class SysOauthQo extends BasePage {
 
     private String clientId;

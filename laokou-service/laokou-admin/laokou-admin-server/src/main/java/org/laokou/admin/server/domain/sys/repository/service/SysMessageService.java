@@ -52,10 +52,10 @@ public interface SysMessageService extends IService<SysMessageDO> {
 
     /**
      * 消息读取
+     *
      * @param id
-     * @return
      */
-    Boolean readMessage(Long id);
+    void readMessage(Long id);
 
     /**
      * 根据id查询消息

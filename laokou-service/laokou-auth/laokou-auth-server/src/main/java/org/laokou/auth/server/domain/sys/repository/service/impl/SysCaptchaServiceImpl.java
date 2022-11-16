@@ -52,10 +52,7 @@ public class SysCaptchaServiceImpl implements SysCaptchaService {
         //获取验证码
         String captcha = getCache(uuid);
         //效验成功
-        if (code.equalsIgnoreCase(captcha)) {
-            return true;
-        }
-        return false;
+        return code.equalsIgnoreCase(captcha);
     }
 
     private void setCache(String key,String value) {

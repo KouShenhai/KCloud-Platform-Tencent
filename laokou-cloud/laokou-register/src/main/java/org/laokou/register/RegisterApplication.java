@@ -38,7 +38,7 @@ public class RegisterApplication {
      * 必须关闭csrf 不然client注册不上
      */
     @EnableWebSecurity
-    public class  WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable().httpBasic();

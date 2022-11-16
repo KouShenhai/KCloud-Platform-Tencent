@@ -41,7 +41,7 @@ public class KafkaSender {
 
     @PostMapping("/send/{topic}")
     @ApiOperation("Kafka消息>同步发送")
-    public void sendMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto) throws InterruptedException, ExecutionException, TimeoutException {
+    public void sendMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto) throws InterruptedException, ExecutionException {
         kafkaTemplate.send(topic,dto.getData()).get();
     }
 

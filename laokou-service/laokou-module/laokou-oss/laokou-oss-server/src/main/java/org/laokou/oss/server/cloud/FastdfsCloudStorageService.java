@@ -33,10 +33,10 @@ import java.io.InputStream;
 @Slf4j
 public class FastdfsCloudStorageService extends AbstractCloudStorageService {
 
-    private static DefaultGenerateStorageClient defaultGenerateStorageClient;
+    private static final DefaultGenerateStorageClient DEFAULT_GENERATE_STORAGE_CLIENT;
 
     static {
-        defaultGenerateStorageClient =  (DefaultGenerateStorageClient) SpringContextUtil.getBean("defaultGenerateStorageClient");
+        DEFAULT_GENERATE_STORAGE_CLIENT =  (DefaultGenerateStorageClient) SpringContextUtil.getBean("defaultGenerateStorageClient");
     }
 
     public FastdfsCloudStorageService(CloudStorageVO vo){
@@ -47,7 +47,7 @@ public class FastdfsCloudStorageService extends AbstractCloudStorageService {
     public String upload(InputStream inputStream, String fileName,Long size) {
         StorePath storePath;
         try {
-            storePath = defaultGenerateStorageClient.uploadFile(cloudStorageVO.getFastdfsGroup(), inputStream, inputStream.available(), FilenameUtils.getExtension(fileName));
+            storePath = DEFAULT_GENERATE_STORAGE_CLIENT.uploadFile(cloudStorageVO.getFastdfsGroup(), inputStream, inputStream.available(), FilenameUtils.getExtension(fileName));
         } catch (Exception ex) {
             log.error("错误信息:{}", ex.getMessage());
             throw new CustomException(ex.getMessage());

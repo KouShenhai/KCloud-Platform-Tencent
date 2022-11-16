@@ -27,5 +27,5 @@ public enum SuperAdminEnum {
     /**
      * 是
      */
-    YES;
+    YES
 }

@@ -48,9 +48,8 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     }
 
     @Override
-    public Boolean readMessage(Long id) {
+    public void readMessage(Long id) {
         this.baseMapper.readMessage(id);
-        return true;
     }
 
     @Override

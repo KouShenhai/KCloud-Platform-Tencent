@@ -28,6 +28,6 @@ public enum MessageTypeEnum {
     /**
      * 提醒
      */
-    REMIND;
+    REMIND
 
 }

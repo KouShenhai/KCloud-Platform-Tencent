@@ -24,8 +24,6 @@ public class HashUtil {
     /**
      * {@link java.util.HashMap#hash(Object)}
      * 获取hash值
-     * @param key
-     * @return
      */
     public static int getHash(String key) {
         int h;

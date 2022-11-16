@@ -17,7 +17,6 @@ package org.laokou.kafka.consumer.component.resource;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.core.utils.DateUtil;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.kafka.client.constant.KafkaConstant;
@@ -51,6 +50,7 @@ public class ResourceConsumer {
         try {
             if (StringUtil.isNotEmpty(message)) {
                 final ResourceAuditLogDTO auditLogDTO = JacksonUtil.toBean(message, ResourceAuditLogDTO.class);
+                assert auditLogDTO != null;
                 SysResourceDO sysResourceDO = sysResourceService.getById(auditLogDTO.getResourceId());
                 sysResourceDO.setStatus(auditLogDTO.getStatus());
                 sysResourceService.updateById(sysResourceDO);

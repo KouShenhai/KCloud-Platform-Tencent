@@ -42,8 +42,6 @@ public class FieldMappingUtil {
                 //获取字段名称
                 String name = field.getName();
                 fieldMappingList.add(new FieldMapping(name, elasticsearchFieldInfo.type(), elasticsearchFieldInfo.participle()));
-            } else {
-                continue;
             }
         }
         return fieldMappingList;

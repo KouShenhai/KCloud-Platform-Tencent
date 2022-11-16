@@ -17,6 +17,7 @@ package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,6 +29,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 @TableName("boot_sys_user")
+@EqualsAndHashCode(callSuper=true)
 public class SysUserDO extends BaseDO {
 
     @NotBlank(message = "{sys.user.password.require}")

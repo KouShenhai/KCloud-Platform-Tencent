@@ -61,6 +61,7 @@ public class LockAspect {
         if (lock4j == null) {
             lock4j = AnnotationUtils.findAnnotation(method,Lock4j.class);
         }
+        assert lock4j != null;
         String key = lock4j.key();
         long expire = lock4j.expire();
         long timeout = lock4j.timeout();

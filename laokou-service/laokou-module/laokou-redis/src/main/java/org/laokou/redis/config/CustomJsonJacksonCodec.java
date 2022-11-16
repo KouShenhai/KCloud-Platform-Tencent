@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.buffer.*;
-import org.laokou.common.core.utils.JacksonUtil;
 import org.redisson.client.codec.BaseCodec;
 import org.redisson.client.protocol.Decoder;
 import org.redisson.client.protocol.Encoder;
@@ -59,12 +58,12 @@ public class CustomJsonJacksonCodec extends BaseCodec {
         }
     };
 
-    private Decoder<Object> decoder = (buf, state) -> mapObjectMapper.readValue((InputStream) new ByteBufInputStream(buf), Object.class);
+    private final Decoder<Object> DECODER = (buf, state) -> mapObjectMapper.readValue((InputStream) new ByteBufInputStream(buf), Object.class);
 
 
     @Override
     public Decoder<Object> getValueDecoder() {
-        return decoder;
+        return DECODER;
     }
 
     @Override

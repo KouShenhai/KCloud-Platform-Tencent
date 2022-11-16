@@ -28,7 +28,7 @@ public class XssUtil extends Whitelist {
 
     private static final Pattern[] SCRIPT_PATTERNS = {
             Pattern.compile("<script(.*?)></script>",Pattern.CASE_INSENSITIVE),
-            Pattern.compile("src[\r\n]*=[\r\n]*\\\'(.*?)\\\'",Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
+            Pattern.compile("src[\r\n]*=[\r\n]*\\'(.*?)\\'",Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
             Pattern.compile("</script>",Pattern.CASE_INSENSITIVE),
             Pattern.compile("<script(.*?)>",Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
             Pattern.compile("eval\\((.*?)\\)",Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),

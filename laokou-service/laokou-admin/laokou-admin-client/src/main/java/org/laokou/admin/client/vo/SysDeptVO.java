@@ -16,6 +16,7 @@
 package org.laokou.admin.client.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.core.utils.TreeUtil;
 
 import java.io.Serializable;
@@ -24,6 +25,7 @@ import java.io.Serializable;
  * @author Kou Shenhai
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class SysDeptVO extends TreeUtil.TreeNo<SysDeptVO> implements Serializable {
 
     private Integer sort;

@@ -43,20 +43,20 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
     /**
      * 定义走过流程连线颜色为绿色
      */
-    protected static Color HIGHLIGHT_SequenceFlow_COLOR = Color.GREEN;
+    protected static final Color HIGHLIGHT_SequenceFlow_COLOR = Color.GREEN;
     /**
      * 设置未走过流程的连接线颜色
      */
-    protected static Color CONNECTION_COLOR = Color.BLACK;
+    protected static final Color CONNECTION_COLOR = Color.BLACK;
     /**
      * 设置flows连接线字体颜色red
      */
-    protected static Color LABEL_COLOR = new Color(0, 0, 0);
+    protected static final Color LABEL_COLOR = new Color(0, 0, 0);
     /**
      * 高亮显示task框颜色
      */
-    protected static Color HIGHLIGHT_COLOR = Color.GREEN;
-    protected static Color HIGHLIGHT_COLOR1 = Color.RED;
+    protected static final Color HIGHLIGHT_COLOR = Color.GREEN;
+    protected static final Color HIGHLIGHT_COLOR1 = Color.RED;
     public CustomProcessDiagramCanvas(int width, int height, int minX, int minY, String imageType, String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader) {
         super(width, height, minX, minY, imageType, activityFontName, labelFontName, annotationFontName, customClassLoader);
         this.initialize(imageType);
@@ -88,24 +88,24 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
             int sourceY = yPoints[i - 1];
             int targetX = xPoints[i];
             int targetY = yPoints[i];
-            java.awt.geom.Line2D.Double line = new java.awt.geom.Line2D.Double((double) sourceX, (double) sourceY, (double) targetX, (double) targetY);
+            java.awt.geom.Line2D.Double line = new java.awt.geom.Line2D.Double(sourceX, sourceY, targetX, targetY);
             this.g.draw(line);
         }
         java.awt.geom.Line2D.Double line;
         if (isDefault) {
-            line = new java.awt.geom.Line2D.Double((double) xPoints[0], (double) yPoints[0], (double) xPoints[1], (double) yPoints[1]);
+            line = new java.awt.geom.Line2D.Double(xPoints[0], yPoints[0], xPoints[1], yPoints[1]);
             this.drawDefaultSequenceFlowIndicator(line, scaleFactor);
         }
         if (conditional) {
-            line = new java.awt.geom.Line2D.Double((double) xPoints[0], (double) yPoints[0], (double) xPoints[1], (double) yPoints[1]);
+            line = new java.awt.geom.Line2D.Double(xPoints[0], yPoints[0], xPoints[1], yPoints[1]);
             this.drawConditionalSequenceFlowIndicator(line, scaleFactor);
         }
         if (associationDirection.equals(AssociationDirection.ONE) || associationDirection.equals(AssociationDirection.BOTH)) {
-            line = new java.awt.geom.Line2D.Double((double) xPoints[xPoints.length - 2], (double) yPoints[xPoints.length - 2], (double) xPoints[xPoints.length - 1], (double) yPoints[xPoints.length - 1]);
+            line = new java.awt.geom.Line2D.Double(xPoints[xPoints.length - 2], yPoints[xPoints.length - 2], xPoints[xPoints.length - 1], yPoints[xPoints.length - 1]);
             this.drawArrowHead(line, scaleFactor);
         }
         if (associationDirection.equals(AssociationDirection.BOTH)) {
-            line = new java.awt.geom.Line2D.Double((double) xPoints[1], (double) yPoints[1], (double) xPoints[0], (double) yPoints[0]);
+            line = new java.awt.geom.Line2D.Double(xPoints[1], yPoints[1], xPoints[0], yPoints[0]);
             this.drawArrowHead(line, scaleFactor);
         }
         this.g.setPaint(originalPaint);
@@ -136,7 +136,7 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
         this.fontMetrics = this.g.getFontMetrics();
         //修改连接线字体大小
         LABEL_FONT = new Font(this.labelFontName, 10, 15);
-        ANNOTATION_FONT = new Font(this.annotationFontName, 0, 11);
+        ANNOTATION_FONT = new Font(this.annotationFontName, Font.PLAIN, 11);
         try {
             USERTASK_IMAGE = ImageIO.read(ReflectUtil.getResource("org/flowable/icons/userTask.png", this.customClassLoader));
             SCRIPTTASK_IMAGE = ImageIO.read(ReflectUtil.getResource("org/flowable/icons/scriptTask.png", this.customClassLoader));
@@ -305,7 +305,7 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
         }
     }
 
-    protected static Color EVENT_COLOR = new Color(255, 255, 255);
+    protected static final Color EVENT_COLOR = new Color(255, 255, 255);
 
     /**
      * 重写开始事件

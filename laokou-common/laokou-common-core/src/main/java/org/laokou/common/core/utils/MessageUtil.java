@@ -22,9 +22,9 @@ import org.springframework.context.i18n.LocaleContextHolder;
  * @author 86189
  */
 public class MessageUtil {
-    private static MessageSource messageSource;
+    private static final MessageSource MESSAGE_SOURCE;
     static {
-        messageSource = SpringContextUtil.getBean(MessageSource.class);
+        MESSAGE_SOURCE = SpringContextUtil.getBean(MessageSource.class);
     }
 
     public static String getMessage(int code){
@@ -32,7 +32,7 @@ public class MessageUtil {
     }
 
     public static String getMessage(int code, String... params){
-        return messageSource.getMessage(code + "", params, LocaleContextHolder.getLocale());
+        return MESSAGE_SOURCE.getMessage(code + "", params, LocaleContextHolder.getLocale());
     }
 
 }

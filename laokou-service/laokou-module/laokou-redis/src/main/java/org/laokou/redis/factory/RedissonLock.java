@@ -32,13 +32,12 @@ public class RedissonLock extends AbstractLock<RLock>{
 
     @Override
     public RLock getLock(LockType type,String key) {
-        switch(type) {
-            case LOCK: return redisUtil.getLock(key);
-            case FAIR: return redisUtil.getFairLock(key);
-            case READ: return redisUtil.getReadLock(key);
-            case WRITE: return redisUtil.getWriteLock(key);
-            default: return null;
-        }
+        return switch (type) {
+            case LOCK -> redisUtil.getLock(key);
+            case FAIR -> redisUtil.getFairLock(key);
+            case READ -> redisUtil.getReadLock(key);
+            case WRITE -> redisUtil.getWriteLock(key);
+        };
     }
 
     /**

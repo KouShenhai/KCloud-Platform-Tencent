@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Import;
 /**
  * @author Kou Shenhai
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.kafka.server","org.laokou.swagger", "org.laokou.common"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.kafka.server","org.laokou.common.swagger", "org.laokou.common.core"})
 @EnableDiscoveryClient
 @Import({CorsConfig.class})
 public class KafkaApplication {

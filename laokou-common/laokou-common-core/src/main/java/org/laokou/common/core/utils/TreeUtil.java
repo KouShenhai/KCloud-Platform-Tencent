@@ -29,7 +29,7 @@ import java.util.*;
 @Data
 public class TreeUtil {
     public static <T extends TreeNo> TreeNo<T> rootRootNode(String name) {
-        return new TreeNo(0L,name,null, new ArrayList<>(5));
+        return new TreeNo<>(0L,name,null, new ArrayList<>(5));
     }
     public static <T extends TreeNo> TreeNo<T> rootRootNode() {
         return rootRootNode("根节点");
@@ -52,7 +52,7 @@ public class TreeUtil {
         }
         return rootNode;
     }
-    public static <T extends TreeNo> TreeNo<T> findNode(Long id,List<TreeNo> nodeList) {
+    public static <T extends TreeNo> TreeNo findNode(Long id, List<TreeNo> nodeList) {
         for (TreeNo treeNo : nodeList) {
             if (CollectionUtils.isNotEmpty(treeNo.getChildren())) {
                 findNode(id,treeNo.getChildren());

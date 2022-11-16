@@ -95,26 +95,21 @@ public class FileUtil extends FileUtils {
             //文件通道
             inChannel = ((FileInputStream)inputStream).getChannel();
             //需要分多少个片
-            final Long chunkCount = (fileSize / chunkSize) + (fileSize % chunkSize == 0 ? 0 : 1);
+            final long chunkCount = (fileSize / chunkSize) + (fileSize % chunkSize == 0 ? 0 : 1);
             //同步工具，允许1或N个线程等待其他线程完成执行
-            final CountDownLatch latch = new CountDownLatch(chunkCount.intValue());
+            final CountDownLatch latch = new CountDownLatch((int) chunkCount);
             //position 指针 > 读取或写入的位置
             for (long index = 0, position = 0, finalEndSize = position + chunkSize ; index < chunkCount; index++,position = index * chunkSize) {
                 //指定位置
                 final Long finalPosition = position;
                 //读通道
-                final FileChannel finalInChannel = inChannel;
-                executorService.execute(new RandomFileChannelRun(finalPosition,finalEndSize, fileSize, newFile, finalInChannel,latch));
+                executorService.execute(new RandomFileChannelRun(finalPosition,finalEndSize, fileSize, newFile, inChannel,latch));
             }
             //等待其他线程
             latch.await();
             //关闭线程池
             log.info("文件传输结束...");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -210,9 +205,9 @@ public class FileUtil extends FileUtils {
             URL url = new URL(urlPath);
             in = new BufferedReader(new InputStreamReader(url.openStream(), encoding));
             String line;
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             while ((line = in.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
             }
 
             return sb.toString();
@@ -300,9 +295,10 @@ public class FileUtil extends FileUtils {
             return false;
         }
         File[] tempList = dir.listFiles();
-        for (int i = 0; i < tempList.length; i++) {
-            log.info("删除："+dir);
-            if (!delete(tempList[i])) {
+        assert tempList != null;
+        for (File file : tempList) {
+            log.info("删除：" + dir);
+            if (!delete(file)) {
                 return false;
             }
         }
@@ -358,7 +354,7 @@ public class FileUtil extends FileUtils {
         InputStream inStream = null;
         FileOutputStream fs =null;
         try {
-            int byteread = 0;
+            int byteread;
             // 读入原文件
             inStream = new FileInputStream(oldFile);
             File newFile = new File(newPath);
@@ -415,9 +411,10 @@ public class FileUtil extends FileUtils {
             // 如果文件夹不存在 则建立新文件夹
             (new File(newPath)).mkdirs();
             File[] files = oldDir.listFiles();
-            File temp = null;
-            for (int i = 0; i < files.length; i++) {
-                temp = files[i];
+            File temp;
+            assert files != null;
+            for (File file : files) {
+                temp = file;
                 if (temp.isFile()) {
                     if (!FileUtil.copyFile(temp, newPath + "/" + temp.getName())) {
                         return false;
@@ -448,14 +445,14 @@ public class FileUtil extends FileUtils {
         if (subStr == null || "".equals(subStr) || subStr.length() > str.length() || reStr == null) {
             return str;
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int lastIndex = 0;
         while (true) {
             int index = str.indexOf(subStr, lastIndex);
             if (index < 0) {
                 break;
             } else {
-                sb.append(str.substring(lastIndex, index));
+                sb.append(str, lastIndex, index);
                 sb.append(reStr);
             }
             lastIndex = index + subStr.length();
@@ -500,7 +497,7 @@ public class FileUtil extends FileUtils {
             // 如果目标文件存在，并且允许覆盖
             if (coverlay) {
                 log.debug("目标文件已存在，准备删除!");
-                if (!delFile(descFileName)) {
+                if (delFile(descFileName)) {
                     log.debug("删除目标文件 " + descFileName + " 失败!");
                     return false;
                 }
@@ -521,7 +518,7 @@ public class FileUtil extends FileUtils {
         }
         // 准备复制文件
         // 读取的位数
-        int readByte = 0;
+        int readByte;
         InputStream ins = null;
         OutputStream outs = null;
         try {
@@ -602,7 +599,7 @@ public class FileUtil extends FileUtils {
             if (coverlay) {
                 // 允许覆盖目标目录
                 log.debug("目标目录已存在，准备删除!");
-                if (!FileUtil.delFile(descDirNames)) {
+                if (FileUtil.delFile(descDirNames)) {
                     log.debug("删除目录 " + descDirNames + " 失败!");
                     return false;
                 }
@@ -623,20 +620,21 @@ public class FileUtil extends FileUtils {
         boolean flag = true;
         // 列出源目录下的所有文件名和子目录名
         File[] files = srcDir.listFiles();
-        for (int i = 0; i < files.length; i++) {
+        assert files != null;
+        for (File file : files) {
             // 如果是一个单个文件，则直接复制
-            if (files[i].isFile()) {
-                flag = FileUtil.copyFile(files[i].getAbsolutePath(),
-                        descDirName + files[i].getName());
+            if (file.isFile()) {
+                flag = FileUtil.copyFile(file.getAbsolutePath(),
+                        descDirName + file.getName());
                 // 如果拷贝文件失败，则退出循环
                 if (!flag) {
                     break;
                 }
             }
             // 如果是子目录，则继续复制目录
-            if (files[i].isDirectory()) {
-                flag = FileUtil.copyDirectory(files[i]
-                        .getAbsolutePath(), descDirName + files[i].getName());
+            if (file.isDirectory()) {
+                flag = FileUtil.copyDirectory(file
+                        .getAbsolutePath(), descDirName + file.getName());
                 // 如果拷贝目录失败，则退出循环
                 if (!flag) {
                     break;
@@ -664,12 +662,12 @@ public class FileUtil extends FileUtils {
         File file = new File(fileName);
         if (!file.exists()) {
             log.debug(fileName + " 文件不存在!");
-            return true;
+            return false;
         } else {
             if (file.isFile()) {
-                return FileUtil.deleteFile(fileName);
+                return !FileUtil.deleteFile(fileName);
             } else {
-                return FileUtil.deleteDirectory(fileName);
+                return !FileUtil.deleteDirectory(fileName);
             }
         }
     }
@@ -717,18 +715,19 @@ public class FileUtil extends FileUtils {
         boolean flag = true;
         // 列出全部文件及子目录
         File[] files = dirFile.listFiles();
-        for (int i = 0; i < files.length; i++) {
+        assert files != null;
+        for (File file : files) {
             // 删除子文件
-            if (files[i].isFile()) {
-                flag = FileUtil.deleteFile(files[i].getAbsolutePath());
+            if (file.isFile()) {
+                flag = FileUtil.deleteFile(file.getAbsolutePath());
                 // 如果删除文件失败，则退出循环
                 if (!flag) {
                     break;
                 }
             }
             // 删除子目录
-            else if (files[i].isDirectory()) {
-                flag = FileUtil.deleteDirectory(files[i]
+            else if (file.isDirectory()) {
+                flag = FileUtil.deleteDirectory(file
                         .getAbsolutePath());
                 // 如果删除子目录失败，则退出循环
                 if (!flag) {
@@ -815,6 +814,7 @@ public class FileUtil extends FileUtils {
         if (fileDir.isDirectory()) {
             File[] files = fileDir.listFiles();
             // 空的文件夹
+            assert files != null;
             if (files.length == 0) {
                 // 目录信息
                 ZipEntry entry = new ZipEntry(getEntryName(dirPath, fileDir));
@@ -827,14 +827,14 @@ public class FileUtil extends FileUtils {
                 return;
             }
 
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isFile()) {
+            for (File file : files) {
+                if (file.isFile()) {
                     // 如果是文件，则调用文件压缩方法
                     FileUtil
-                            .zipFilesToZipFile(dirPath, files[i], zouts);
+                            .zipFilesToZipFile(dirPath, file, zouts);
                 } else {
                     // 如果是目录，则递归调用
-                    FileUtil.zipDirectoryToZipFile(dirPath, files[i],
+                    FileUtil.zipDirectoryToZipFile(dirPath, file,
                             zouts);
                 }
             }
@@ -852,10 +852,10 @@ public class FileUtil extends FileUtils {
     public static void zipFilesToZipFile(String dirPath, File file,
                                          ZipOutputStream zouts) {
         FileInputStream fin = null;
-        ZipEntry entry = null;
+        ZipEntry entry;
         // 创建复制缓冲区
         byte[] buf = new byte[4096];
-        int readByte = 0;
+        int readByte;
         if (file.isFile()) {
             try {
                 // 创建一个文件输入流
@@ -926,17 +926,17 @@ public class FileUtil extends FileUtils {
 
     private static class RandomFileChannelRun extends Thread {
         //写通道
-        private File newFile;
+        private final File newFile;
         //读通道
-        private FileChannel srcChannel;
+        private final FileChannel srcChannel;
         //读取或写入的位置
-        private long position;
+        private final long position;
         //结束位置
         private long endSize;
         //计数器
-        private CountDownLatch latch;
+        private final CountDownLatch latch;
         //文件大小
-        private Long fileSize;
+        private final Long fileSize;
 
         RandomFileChannelRun(final Long position,final Long endSize,final Long fileSize,final File newFile, final FileChannel srcChannel,final CountDownLatch latch) {
             this.newFile = newFile;

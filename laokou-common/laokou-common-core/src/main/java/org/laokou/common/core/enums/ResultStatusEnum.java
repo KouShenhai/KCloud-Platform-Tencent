@@ -29,6 +29,6 @@ public enum ResultStatusEnum {
     /**
      * 失败
      */
-    FAIL;
+    FAIL
 
 }

@@ -15,12 +15,14 @@
  */
 package org.laokou.admin.server.interfaces.qo;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BasePage;
 
 /**
  * @author Kou Shenhai
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class LoginLogQo extends BasePage {
 
     private String loginName;

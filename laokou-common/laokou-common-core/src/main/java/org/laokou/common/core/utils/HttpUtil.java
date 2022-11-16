@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class HttpUtil {
 
-    private static Pattern linePattern = Pattern.compile("_(\\w)");
+    private static final Pattern LINE_PATTERN = Pattern.compile("_(\\w)");
 
     public static String doGet(String url, Map<String, String> params,Map<String, String> headers) throws IOException {
         //创建HttpClient对象
@@ -142,8 +142,8 @@ public class HttpUtil {
      */
     public static String transformerUnderHumpData(String data) {
         data = data.toLowerCase();
-        Matcher matcher = linePattern.matcher(data);
-        StringBuffer sb = new StringBuffer();
+        Matcher matcher = LINE_PATTERN.matcher(data);
+        StringBuilder sb = new StringBuilder();
         while (matcher.find()) {
             matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
         }

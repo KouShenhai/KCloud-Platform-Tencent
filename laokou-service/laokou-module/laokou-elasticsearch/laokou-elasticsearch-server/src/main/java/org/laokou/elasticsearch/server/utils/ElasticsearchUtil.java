@@ -89,27 +89,27 @@ public class ElasticsearchUtil {
 
     /**
      * 批量同步数据到ES
-     * @param indexName 索引名称
+     *
+     * @param indexName    索引名称
      * @param jsonDataList 数据列表
-     * @return
      * @throws IOException
      */
-    public boolean syncBatchIndex(String indexName,String jsonDataList) throws IOException {
+    public void syncBatchIndex(String indexName, String jsonDataList) throws IOException {
         //判空
         if (StringUtil.isEmpty(jsonDataList)) {
-            return false;
+            return;
         }
         //批量操作Request
         BulkRequest bulkRequest = packBulkIndexRequest(indexName, jsonDataList);
         if (bulkRequest.requests().isEmpty()) {
-            return false;
+            return;
         }
         final BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
         if (bulk.hasFailures()) {
             for (BulkItemResponse item : bulk.getItems()) {
                 log.error("索引[{}],主键[{}]更新操作失败，状态为:[{}],错误信息:{}",indexName,item.getId(),item.status(),item.getFailureMessage());
             }
-            return false;
+            return;
         }
         //记录索引新增与修改数量
         Integer createdCount = 0;
@@ -122,23 +122,22 @@ public class ElasticsearchUtil {
             }
         }
         log.info("索引[{}]批量同步更新成功，共新增[{}]个，修改[{}]个",indexName,createdCount,updatedCount);
-        return true;
     }
 
     /**
      * 批量修改ES
-     * @param indexName 索引名称
-     * @param indexAlias 别名
+     *
+     * @param indexName    索引名称
+     * @param indexAlias   别名
      * @param jsonDataList 数据列表
-     * @param clazz 类型
-     * @return
+     * @param clazz        类型
      * @throws IOException
      */
-    public boolean updateBatchIndex(String indexName,String indexAlias, String jsonDataList,Class clazz) throws IOException {
-        if (!syncIndex(indexName,indexAlias,clazz)) {
-            return false;
+    public void updateBatchIndex(String indexName, String indexAlias, String jsonDataList, Class clazz) throws IOException {
+        if (syncIndex(indexName, indexAlias, clazz)) {
+            return;
         }
-        return this.updateDataBatch(indexName,jsonDataList);
+        this.updateDataBatch(indexName, jsonDataList);
     }
 
     /**
@@ -152,21 +151,19 @@ public class ElasticsearchUtil {
     private boolean syncIndex(String indexName,String indexAlias,Class clazz) throws IOException {
         //创建索引
         if (!isIndexExists(indexName)) {
-            if (!createIndex(indexName, indexAlias, clazz, false)) {
-                return false;
-            }
+            return !createIndex(indexName, indexAlias, clazz, false);
         }
-        return true;
+        return false;
     }
 
     /**
      * ES修改数据
+     *
      * @param indexName 索引名称
-     * @param id 主键
+     * @param id        主键
      * @param paramJson 参数JSON
-     * @return
      */
-    public boolean updateIndex(String indexName,String id,String paramJson) {
+    public void updateIndex(String indexName, String id, String paramJson) {
         UpdateRequest updateRequest = new UpdateRequest(indexName, id);
         //如果修改索引中不存在则进行新增
         updateRequest.docAsUpsert(true);
@@ -179,31 +176,26 @@ public class ElasticsearchUtil {
             if (DocWriteResponse.Result.CREATED.equals(updateResponse.getResult())) {
                 //新增
                 log.info("索引：【{}】,主键：【{}】新增成功",indexName,id);
-                return true;
             } else if (DocWriteResponse.Result.UPDATED.equals(updateResponse.getResult())) {
                 //修改
                 log.info("索引：【{}】，主键：【{}】修改成功",indexName, id);
-                return true;
             } else if (DocWriteResponse.Result.NOOP.equals(updateResponse.getResult())) {
                 //无变化
                 log.info("索引:[{}],主键:[{}]无变化",indexName, id);
-                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
             log.error("索引：[{}],主键：【{}】，更新异常:[{}]",indexName, id,e);
-            return false;
         }
-        return false;
     }
 
     /**
      * 删除数据
+     *
      * @param indexName 索引名称
-     * @param id 主键
-     * @return
+     * @param id        主键
      */
-    public boolean deleteIndex(String indexName,String id) {
+    public void deleteIndex(String indexName, String id) {
         DeleteRequest deleteRequest = new DeleteRequest(indexName);
         deleteRequest.id(id);
         deleteRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -211,27 +203,24 @@ public class ElasticsearchUtil {
             DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
             if (DocWriteResponse.Result.NOT_FOUND.equals(deleteResponse.getResult())) {
                 log.error("索引：【{}】，主键：【{}】删除失败",indexName, id);
-                return false;
             } else {
                 log.info("索引【{}】主键【{}】删除成功",indexName, id);
-                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
             log.error("删除索引【{}】出现异常[{}]",indexName,e);
-            return false;
         }
     }
 
     /**
      * 批量删除ES
+     *
      * @param indexName 索引名称
-     * @param ids id列表
-     * @return
+     * @param ids       id列表
      */
-    public boolean deleteBatchIndex(String indexName,List<String> ids) {
+    public void deleteBatchIndex(String indexName, List<String> ids) {
         if (CollectionUtils.isEmpty(ids)) {
-            return false;
+            return;
         }
         BulkRequest bulkRequest = packBulkDeleteRequest(indexName, ids);
         try {
@@ -240,7 +229,7 @@ public class ElasticsearchUtil {
                 for (BulkItemResponse item : bulk.getItems()) {
                     log.error("删除索引:[{}],主键：{}失败，信息：{}",indexName,item.getId(),item.getFailureMessage());
                 }
-                return false;
+                return;
             }
             //记录索引新增与修改数量
             Integer deleteCount = 0;
@@ -250,11 +239,9 @@ public class ElasticsearchUtil {
                 }
             }
             log.info("批量删除索引[{}]成功，共删除[{}]个",indexName,deleteCount);
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
             log.error("删除索引：【{}】出现异常:{}",indexName,e);
-            return false;
         }
     }
 
@@ -370,15 +357,15 @@ public class ElasticsearchUtil {
 
     /**
      * 清空索引内容
+     *
      * @param indexName 索引名称
-     * @return
      */
-    public boolean deleteAllIndex(String indexName) {
+    public void deleteAllIndex(String indexName) {
         //判断索引是否存在
         boolean result = isIndexExists(indexName);
         if (!result) {
             log.error("索引【{}】不存在，删除失败",indexName);
-            return false;
+            return;
         }
         DeleteRequest deleteRequest = new DeleteRequest(indexName);
         deleteRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -386,32 +373,30 @@ public class ElasticsearchUtil {
             DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
             if (DocWriteResponse.Result.NOT_FOUND.equals(deleteResponse.getResult())) {
                 log.error("索引【{}】删除失败",indexName);
-                return false;
+                return;
             }
             log.info("索引【{}】删除成功",indexName);
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
             log.error("删除索引[{}]，出现异常[{}]",indexName,e);
-            return false;
         }
     }
 
     /**
      * 批量数据保存到ES-异步
-     * @param indexName 索引名称
+     *
+     * @param indexName    索引名称
      * @param jsonDataList 数据列表
-     * @return
      */
-    public boolean syncAsyncBatchIndex(String indexName,String jsonDataList) {
+    public void syncAsyncBatchIndex(String indexName, String jsonDataList) {
         //判空
         if (StringUtil.isEmpty(jsonDataList)) {
-            return false;
+            return;
         }
         //批量操作Request
         BulkRequest bulkRequest = packBulkIndexRequest(indexName, jsonDataList);
         if (bulkRequest.requests().isEmpty()) {
-            return false;
+            return;
         }
         //异步执行
         ActionListener<BulkResponse> listener = new ActionListener<>() {
@@ -433,7 +418,6 @@ public class ElasticsearchUtil {
         };
         restHighLevelClient.bulkAsync(bulkRequest,RequestOptions.DEFAULT,listener);
         log.info("索引批量更新索引【{}】中",indexName);
-        return true;
     }
 
     /**
@@ -516,16 +500,16 @@ public class ElasticsearchUtil {
 
     /**
      * 数据同步到ES
-     * @param id 主键
+     *
+     * @param id        主键
      * @param indexName 索引名称
-     * @param jsonData json数据
-     * @param clazz 类型
-     * @return
+     * @param jsonData  json数据
+     * @param clazz     类型
      */
-    public boolean syncIndex(String id,String indexName,String indexAlias,String jsonData,Class clazz) throws IOException {
+    public void syncIndex(String id, String indexName, String indexAlias, String jsonData, Class clazz) throws IOException {
         //创建索引
-        if (!syncIndex(indexName,indexAlias,clazz)) {
-            return false;
+        if (syncIndex(indexName, indexAlias, clazz)) {
+            return;
         }
         //创建操作Request
         IndexRequest indexRequest = new IndexRequest(indexName);
@@ -538,12 +522,9 @@ public class ElasticsearchUtil {
         //判断索引是新增还是修改
         if (IndexResponse.Result.CREATED.equals(response.getResult())) {
             log.info("索引【{}】保存成功",indexName);
-            return true;
         } else if (IndexResponse.Result.UPDATED.equals(response.getResult())) {
             log.info("索引【{}】修改成功",indexName);
-            return true;
         }
-        return false;
     }
 
     /**
@@ -828,7 +809,7 @@ public class ElasticsearchUtil {
      * @return
      */
     public SearchVO<Map<String,Long>> aggregationSearchIndex(SearchForm searchForm) throws IOException {
-        SearchVO vo = new SearchVO();
+        SearchVO<Map<String,Long>> vo = new SearchVO();
         List<Map<String,Long>> list = new ArrayList<>(5);
         String[] indexNames = searchForm.getIndexNames();
         AggregationDTO aggregationKey = searchForm.getAggregationKey();

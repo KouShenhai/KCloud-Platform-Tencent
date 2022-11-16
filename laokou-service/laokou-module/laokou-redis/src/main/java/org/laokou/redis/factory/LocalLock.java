@@ -31,13 +31,12 @@ public class LocalLock extends AbstractLock<Lock> {
 
     @Override
     public Lock getLock(LockType type,String key) {
-        switch (type) {
-            case LOCK: return new ReentrantLock();
-            case FAIR: return new ReentrantLock(true);
-            case READ: return new ReentrantReadWriteLock().readLock();
-            case WRITE: return new ReentrantReadWriteLock().writeLock();
-        }
-        return null;
+        return switch (type) {
+            case LOCK -> new ReentrantLock();
+            case FAIR -> new ReentrantLock(true);
+            case READ -> new ReentrantReadWriteLock().readLock();
+            case WRITE -> new ReentrantReadWriteLock().writeLock();
+        };
     }
 
     @Override

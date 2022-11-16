@@ -85,7 +85,7 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
         return true;
     }
 
-    private Boolean saveOrUpdate(Long roleId,List<Long> menuIds,List<Long> deptIds) {
+    private void saveOrUpdate(Long roleId, List<Long> menuIds, List<Long> deptIds) {
         if (CollectionUtils.isNotEmpty(menuIds)) {
             List<SysRoleMenuDO> roleMenuList = new ArrayList<>(menuIds.size());
             for (Long menuId : menuIds) {
@@ -106,7 +106,6 @@ public class SysRoleApplicationServiceImpl implements SysRoleApplicationService 
             }
             sysRoleDeptService.saveBatch(roleDeptList);
         }
-        return true;
     }
 
     @Override

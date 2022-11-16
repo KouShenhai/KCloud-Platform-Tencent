@@ -20,6 +20,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisServerCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -46,7 +47,7 @@ public final class RedisUtil {
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24L;
 
     /**  过期时长为1小时，单位：秒 */
-    public final static long HOUR_ONE_EXPIRE = 60 * 60 * 1L;
+    public final static long HOUR_ONE_EXPIRE = (long) 60 * 60;
 
     /**  过期时长为6小时，单位：秒 */
     public final static long HOUR_SIX_EXPIRE = 60 * 60 * 6L;
@@ -146,13 +147,14 @@ public final class RedisUtil {
     }
 
     public Long getKeysSize() {
-        final Object obj = redisTemplate.execute((RedisCallback) connection -> connection.dbSize());
-        return obj == null ? 0 : Long.valueOf(obj.toString());
+        final Object obj = redisTemplate.execute((RedisCallback) RedisServerCommands::dbSize);
+        return obj == null ? 0 : Long.parseLong(obj.toString());
     }
 
     public List<Map<String, String>> getCommandStatus() {
         final Properties commandStats = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info("commandstats"));
         List<Map<String, String>> pieList = new ArrayList<>();
+        assert commandStats != null;
         commandStats.stringPropertyNames().forEach(key -> {
             Map<String, String> data = new HashMap<>(2);
             String property = commandStats.getProperty(key);
@@ -164,7 +166,8 @@ public final class RedisUtil {
     }
 
     public Map<String, String> getInfo() {
-        final Properties properties = (Properties) redisTemplate.execute((RedisCallback) connection -> connection.info());
+        final Properties properties = (Properties) redisTemplate.execute((RedisCallback) RedisServerCommands::info);
+        assert properties != null;
         final Set<String> set = properties.stringPropertyNames();
         final Iterator<String> iterator = set.iterator();
         Map<String,String> dataMap = new HashMap<>(set.size());

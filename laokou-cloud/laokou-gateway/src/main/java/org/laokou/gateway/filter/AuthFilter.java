@@ -36,6 +36,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.stereotype.Component;
@@ -49,9 +50,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -80,7 +81,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
     private List<String> uris;
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+    public Mono filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 放行uris
         // 获取request对象
         ServerHttpRequest request = exchange.getRequest();
@@ -109,7 +110,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
     @Bean(value = "ipKeyResolver")
     public KeyResolver ipKeyResolver() {
         return exchange -> {
-            String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
+            String ip = Objects.requireNonNull(exchange.getRequest().getRemoteAddress()).getAddress().getHostAddress();
             return Mono.just(ip);
         };
     }
@@ -119,10 +120,10 @@ public class AuthFilter implements GlobalFilter,Ordered {
         return Ordered.LOWEST_PRECEDENCE;
     }
 
-    private Mono<Void> authDecode(ServerWebExchange exchange,GatewayFilterChain chain) {
+    private Mono authDecode(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerRequest serverRequest = ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders());
-        Mono<String> modifiedBody = serverRequest.bodyToMono(String.class).flatMap(decrypt());
-        BodyInserter bodyInserter = BodyInserters.fromPublisher(modifiedBody, String.class);
+        Mono modifiedBody = serverRequest.bodyToMono(String.class).flatMap(decrypt());
+        BodyInserter<Mono, ReactiveHttpOutputMessage> bodyInserter = BodyInserters.fromPublisher(modifiedBody, String.class);
         HttpHeaders headers = new HttpHeaders();
         headers.putAll(exchange.getRequest().getHeaders());
         headers.remove(HttpHeaders.CONTENT_LENGTH);
@@ -205,10 +206,8 @@ public class AuthFilter implements GlobalFilter,Ordered {
      * @return
      */
     private boolean pathMatcher(String requestUri) {
-        Iterator<String> iterator = uris.iterator();
-        while (iterator.hasNext()) {
-            String url = iterator.next();
-            if (ANT_PATH_MATCHER.match(url,requestUri)){
+        for (String url : uris) {
+            if (ANT_PATH_MATCHER.match(url, requestUri)) {
                 return true;
             }
         }
@@ -218,7 +217,6 @@ public class AuthFilter implements GlobalFilter,Ordered {
     /**
      * 获取token
      * @param request
-     * @return
      */
     private String getToken(ServerHttpRequest request){
         //从header中获取token
@@ -227,6 +225,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         if(StringUtil.isEmpty(token)){
             token = request.getQueryParams().getFirst(Constant.AUTHORIZATION_HEAD);
         }
+        assert token != null;
         return token.trim();
     }
 

@@ -16,10 +16,6 @@
 
 package org.laokou.im.server.controller;
 
-/**
- * @author Kou Shenhai
- */
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;

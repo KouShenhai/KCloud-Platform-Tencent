@@ -21,7 +21,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.common.DefaultThrowableAnalyzer;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.exceptions.ClientAuthenticationException;
 import org.springframework.security.oauth2.common.exceptions.InsufficientScopeException;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
@@ -35,45 +34,47 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
  * @author Kou Shenhai
  */
 @Service
-public class CustomWebResponseExceptionTranslator implements WebResponseExceptionTranslator<OAuth2Exception> {
-    private ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
+public class CustomWebResponseExceptionTranslator implements WebResponseExceptionTranslator {
+    private final ThrowableAnalyzer THROWABLE_ANALYZER = new DefaultThrowableAnalyzer();
 
     @Override
-    public ResponseEntity<OAuth2Exception> translate(Exception e) {
-        Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
-        Exception exception = (AuthenticationException) throwableAnalyzer.getFirstThrowableOfType(AuthenticationException.class, causeChain);
+    public ResponseEntity translate(Exception e) {
+        Throwable[] causeChain = THROWABLE_ANALYZER.determineCauseChain(e);
+        Exception exception = (AuthenticationException) THROWABLE_ANALYZER.getFirstThrowableOfType(AuthenticationException.class, causeChain);
         if (exception != null) {
             return handleOauth2Exception(new CustomOauth2Exception(e.getMessage(), e));
         }
-        exception = (AccessDeniedException) throwableAnalyzer.getFirstThrowableOfType(AccessDeniedException.class, causeChain);
+        exception = (AccessDeniedException) THROWABLE_ANALYZER.getFirstThrowableOfType(AccessDeniedException.class, causeChain);
         if (exception != null) {
             return handleOauth2Exception(new CustomOauth2Exception(exception.getMessage(), exception));
         }
-        exception = (InvalidGrantException) throwableAnalyzer.getFirstThrowableOfType(InvalidGrantException.class, causeChain);
+        exception = (InvalidGrantException) THROWABLE_ANALYZER.getFirstThrowableOfType(InvalidGrantException.class, causeChain);
         if (exception != null) {
             return handleOauth2Exception(new CustomOauth2Exception(exception.getMessage(), exception));
         }
-        exception = (HttpRequestMethodNotSupportedException) throwableAnalyzer.getFirstThrowableOfType(HttpRequestMethodNotSupportedException.class, causeChain);
+        exception = (HttpRequestMethodNotSupportedException) THROWABLE_ANALYZER.getFirstThrowableOfType(HttpRequestMethodNotSupportedException.class, causeChain);
         if (exception != null) {
             return handleOauth2Exception(new CustomOauth2Exception(exception.getMessage(), exception));
         }
-        exception = (OAuth2Exception) throwableAnalyzer.getFirstThrowableOfType(OAuth2Exception.class, causeChain);
+        exception = (OAuth2Exception) THROWABLE_ANALYZER.getFirstThrowableOfType(OAuth2Exception.class, causeChain);
         if (exception != null) {
             return handleOauth2Exception((OAuth2Exception) exception);
         }
         return handleOauth2Exception(new CustomOauth2Exception(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e));
     }
 
-    private ResponseEntity<OAuth2Exception> handleOauth2Exception(OAuth2Exception e) {
+    /**
+     * 自定义异常响应
+     * @param e
+     * @return
+     */
+    private ResponseEntity handleOauth2Exception(OAuth2Exception e) {
         int status = e.getHttpErrorCode();
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CACHE_CONTROL, "no-store");
         headers.set(HttpHeaders.PRAGMA, "no-cache");
         if (status == HttpStatus.UNAUTHORIZED.value() || (e instanceof InsufficientScopeException)) {
             headers.set(HttpHeaders.WWW_AUTHENTICATE, String.format("%s %s", OAuth2AccessToken.BEARER_TYPE, e.getSummary()));
-        }
-        if (e instanceof ClientAuthenticationException) {
-            return new ResponseEntity<>(e, headers, HttpStatus.valueOf(status));
         }
         return new ResponseEntity(new CustomHttpResult(e.getOAuth2ErrorCode(),e.getMessage()), headers, HttpStatus.OK);
     }

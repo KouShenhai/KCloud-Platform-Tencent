@@ -16,6 +16,7 @@
 package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -28,6 +29,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @TableName("boot_sys_role")
 @ApiModel("系统角色DO")
+@EqualsAndHashCode(callSuper=true)
 public class SysRoleDO extends BaseDO {
 
     /**

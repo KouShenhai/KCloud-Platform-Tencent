@@ -49,7 +49,6 @@ import org.springframework.util.DigestUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -106,7 +105,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         return sysResourceService.updateById(sysResourceDO);
     }
 
-    private String startWork(Long id,String name) throws IOException {
+    private String startWork(Long id,String name) {
         StartProcessVO startProcessVO = workflowProcessApplicationService.startResourceProcess(PROCESS_KEY,id.toString(),name);
         String definitionId = startProcessVO.getDefinitionId();
         String instanceId = startProcessVO.getInstanceId();
@@ -166,9 +165,8 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                     asyncTaskExecutor.execute(() -> {
                         final CreateIndexModel model = new CreateIndexModel();
                         final String indexName = resourceIndex + "_" + ym;
-                        final String indexAlias = resourceIndexAlias;
                         model.setIndexName(indexName);
-                        model.setIndexAlias(indexAlias);
+                        model.setIndexAlias(resourceIndexAlias);
                         elasticsearchApiFeignClient.create(model);
                         countDownLatch.countDown();
                     });
@@ -180,9 +178,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                 while (pageIndex < resourceTotal) {
                     final List<ResourceIndex> resourceIndexList = sysResourceService.getResourceIndexList(chunkSize, pageIndex,code);
                     final Map<String, List<ResourceIndex>> resourceDataMap = resourceIndexList.stream().collect(Collectors.groupingBy(ResourceIndex::getYm));
-                    final Iterator<Map.Entry<String, List<ResourceIndex>>> iterator = resourceDataMap.entrySet().iterator();
-                    while (iterator.hasNext()) {
-                        final Map.Entry<String, List<ResourceIndex>> entry = iterator.next();
+                    for (Map.Entry<String, List<ResourceIndex>> entry : resourceDataMap.entrySet()) {
                         final String ym = entry.getKey();
                         final List<ResourceIndex> resourceDataList = entry.getValue();
                         //同步数据

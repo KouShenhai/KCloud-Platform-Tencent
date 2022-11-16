@@ -49,10 +49,10 @@ public class RedisSessionConfig {
 
     private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
 
-    @Bean
     /**
      * ConditionalOnMissingBean -> 相同类型的bean被注入，保证bean只有一个
      */
+    @Bean
     @ConditionalOnMissingBean(RedisClient.class)
     public RedissonClient redisClient(RedisProperties properties) {
         Config config;

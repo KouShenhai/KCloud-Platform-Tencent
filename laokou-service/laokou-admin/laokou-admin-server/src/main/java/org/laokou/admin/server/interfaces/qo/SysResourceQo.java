@@ -16,6 +16,7 @@
 package org.laokou.admin.server.interfaces.qo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BasePage;
 
 /**
@@ -24,6 +25,7 @@ import org.laokou.common.mybatisplus.entity.BasePage;
  * @date 2022/8/19 0019 下午 3:46
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class SysResourceQo extends BasePage {
 
     private String title;

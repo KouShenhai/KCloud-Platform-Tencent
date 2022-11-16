@@ -98,6 +98,7 @@ public class OperateLogAspect {
         List<?> params = new ArrayList<>(Arrays.asList(args)).stream().filter(arg -> (!(arg instanceof HttpServletRequest)
                 && !(arg instanceof HttpServletResponse))).collect(Collectors.toList());
         OperateLogDTO dto = new OperateLogDTO();
+        assert operateLog != null;
         dto.setModule(operateLog.module());
         dto.setOperation(operateLog.name());
         dto.setRequestUri(request.getRequestURI());

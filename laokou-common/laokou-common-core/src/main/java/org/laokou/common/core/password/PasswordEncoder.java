@@ -17,7 +17,7 @@ package org.laokou.common.core.password;
 
 /**
  * Service interface for encoding passwords.
- *
+ * <p>
  * The preferred implementation is {@code BCryptPasswordEncoder}.
  *
  * @author Keith Donald

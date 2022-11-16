@@ -61,7 +61,7 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
     }
 
     @Override
-    public void destroy() throws Exception {
+    public void destroy() {
 
     }
 

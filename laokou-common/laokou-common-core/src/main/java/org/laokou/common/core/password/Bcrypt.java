@@ -19,7 +19,7 @@ package org.laokou.common.core.password;
 import org.laokou.common.core.exception.CustomException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 
 /**
@@ -301,21 +301,21 @@ public class Bcrypt {
 	/**
 	 * Decode a string encoded using bcrypt's base64 scheme to a byte array. Note that
 	 * this is *not* compatible with the standard MIME-base64 encoding.
+	 *
 	 * @param s the string to decode
-	 * @param maxolen the maximum number of bytes to decode
 	 * @return an array containing the decoded bytes
 	 * @throws IllegalArgumentException if maxolen is invalid
 	 */
-	static byte[] decodeBase64(String s, int maxolen) throws IllegalArgumentException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream(maxolen);
+	static byte[] decodeBase64(String s) throws IllegalArgumentException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream(Bcrypt.BCRYPT_SALT_LEN);
 		int off = 0, slen = s.length(), olen = 0;
 		byte c1, c2, c3, c4, o;
 
-		if (maxolen <= 0) {
+		if (Bcrypt.BCRYPT_SALT_LEN <= 0) {
 			throw new CustomException("Invalid maxolen");
 		}
 
-		while (off < slen - 1 && olen < maxolen) {
+		while (off < slen - 1 && olen < Bcrypt.BCRYPT_SALT_LEN) {
 			c1 = char64(s.charAt(off++));
 			c2 = char64(s.charAt(off++));
 			if (c1 == -1 || c2 == -1) {
@@ -324,7 +324,7 @@ public class Bcrypt {
 			o = (byte) (c1 << 2);
 			o |= (c2 & 0x30) >> 4;
 			out.write(o);
-			if (++olen >= maxolen || off >= slen) {
+			if (++olen >= Bcrypt.BCRYPT_SALT_LEN || off >= slen) {
 				break;
 			}
 			c3 = char64(s.charAt(off++));
@@ -334,7 +334,7 @@ public class Bcrypt {
 			o = (byte) ((c2 & 0x0f) << 4);
 			o |= (c3 & 0x3c) >> 2;
 			out.write(o);
-			if (++olen >= maxolen || off >= slen) {
+			if (++olen >= Bcrypt.BCRYPT_SALT_LEN || off >= slen) {
 				break;
 			}
 			c4 = char64(s.charAt(off++));
@@ -352,7 +352,7 @@ public class Bcrypt {
 	 * @param lr an array containing the two 32-bit half blocks
 	 * @param off the position in the array of the blocks
 	 */
-	private final void encipher(int[] lr, int off) {
+	private void encipher(int[] lr, int off) {
 		int i, n, l = lr[off], r = lr[off + 1],j = 2;
 		l ^= p[0];
 		for (i = 0; i <= BLOWFISH_NUM_ROUNDS - j;) {
@@ -398,8 +398,8 @@ public class Bcrypt {
 	 * Initialise the Blowfish key schedule
 	 */
 	private void initKey() {
-		p = (int[]) P_ORIG.clone();
-		s = (int[]) S_ORIG.clone();
+		p = P_ORIG.clone();
+		s = S_ORIG.clone();
 	}
 
 	/**
@@ -432,7 +432,7 @@ public class Bcrypt {
 
 	/**
 	 * Perform the "enhanced key schedule" step described by Provos and Mazieres in
-	 * "A Future-Adaptable Password Scheme" http://www.openbsd.org/papers/bcrypt-paper.ps
+	 * "A Future-Adaptable Password Scheme" <a href="http://www.openbsd.org/papers/bcrypt-paper.ps">...</a>
 	 * @param data salt information
 	 * @param key password information
 	 */
@@ -479,7 +479,7 @@ public class Bcrypt {
 	 * @return an array containing the binary hashed password
 	 */
 	private byte[] cryptRaw(byte[] password, byte[] salt, int logRounds) {
-		int[] cdata = (int[]) BF_CRYPT_CIPHERTEXT.clone();
+		int[] cdata = BF_CRYPT_CIPHERTEXT.clone();
 		int clen = cdata.length;
 		byte[] ret;
 		int len = 64;
@@ -520,7 +520,7 @@ public class Bcrypt {
 		String realSalt;
 		byte[] passwordb, saltb, hashed;
 		char minor = (char) 0;
-		int rounds, off = 0;
+		int rounds, off;
 		StringBuilder rs = new StringBuilder();
 		char var1 = 'a',var2 = '$',var3 = '2';
 		int i = 2,j = 3,m = 25,n = 10;
@@ -559,20 +559,15 @@ public class Bcrypt {
 		rounds = Integer.parseInt(salt.substring(off, off + 2));
 
 		realSalt = salt.substring(off + 3, off + 25);
-		try {
-			passwordb = (password + (minor >= 'a' ? "\000" : "")).getBytes("UTF-8");
-		}
-		catch (UnsupportedEncodingException uee) {
-			throw new CustomException("UTF-8 is not supported");
-		}
+		passwordb = (password + (minor == 'a' ? "\000" : "")).getBytes(StandardCharsets.UTF_8);
 
-		saltb = decodeBase64(realSalt, BCRYPT_SALT_LEN);
+		saltb = decodeBase64(realSalt);
 
 		bCrypt = new Bcrypt();
 		hashed = bCrypt.cryptRaw(passwordb, saltb, rounds);
 
 		rs.append("$2");
-		if (minor >= var1) {
+		if (minor == var1) {
 			rs.append(minor);
 		}
 		rs.append("$");

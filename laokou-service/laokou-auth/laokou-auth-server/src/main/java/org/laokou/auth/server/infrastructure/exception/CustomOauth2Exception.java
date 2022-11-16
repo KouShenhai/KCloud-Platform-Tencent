@@ -14,31 +14,24 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.exception;
-import org.laokou.common.core.utils.MessageUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 /**
  * 自定义异常
  * 官方不再维护，过期类无法替换
  * @author Kou Shenhai
  */
+@Getter
+@Setter
 public class CustomOauth2Exception extends OAuth2Exception {
 	private String msg;
 	private String code;
 
-	public CustomOauth2Exception(int code) {
-		super(MessageUtil.getMessage(code));
-		this.msg = MessageUtil.getMessage(code);
-		this.code = "" + code;
-	}
-
-	public CustomOauth2Exception(String msg) {
-		super(msg);
-		this.msg = msg;
-	}
-
 	public CustomOauth2Exception(String msg, Throwable e) {
 		super(msg, e);
 		this.msg = msg;
+		this.code = "500";
 	}
 
 	public CustomOauth2Exception(int code, String msg) {
@@ -46,29 +39,6 @@ public class CustomOauth2Exception extends OAuth2Exception {
 		this.msg = msg;
 		this.code = "" + code;
 	}
-
-	public CustomOauth2Exception(String code, String msg) {
-		super(msg);
-		this.msg = msg;
-		this.code = code;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(int code) {
-		this.code = "" + code;
-	}
-
 	/**
 	 * 官方方法，不能驼峰命名
 	 * @return

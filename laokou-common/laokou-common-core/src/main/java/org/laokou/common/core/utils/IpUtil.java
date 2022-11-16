@@ -81,12 +81,7 @@ public class IpUtil {
                     return true;
                 }
             case section5:
-                switch (b1)
-                {
-                    case section6:
-                        return true;
-                    default: return false;
-                }
+                return b1 == section6;
             default:
                 return false;
         }

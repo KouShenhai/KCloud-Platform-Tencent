@@ -28,7 +28,7 @@ import java.util.Map;
  * 校验工具类
  *
  * @author limingze
- * @create: 2022-07-13 09:45
+ * @date 2022-07-13 09:45
  * @since 1.0.0
  */
 public class AssertUtil {
@@ -39,7 +39,7 @@ public class AssertUtil {
 
     public static void isBlank(String str, Integer code, String... params) {
         if (code == null) {
-            throw new CustomException(ErrorCode.NOT_NULL, "code");
+            throw new CustomException(ErrorCode.NOT_NULL, "The code cannot be empty");
         }
         if (StringUtil.isEmpty(str)) {
             throw new CustomException(code, params);
@@ -52,7 +52,7 @@ public class AssertUtil {
 
     public static void isNull(Object object, Integer code, String... params) {
         if (code == null) {
-            throw new CustomException(ErrorCode.NOT_NULL, "code");
+            throw new CustomException(ErrorCode.NOT_NULL, "The code cannot be empty");
         }
         if (object == null) {
             throw new CustomException(code, params);
@@ -65,7 +65,7 @@ public class AssertUtil {
 
     public static void isArrayEmpty(Object[] array, Integer code, String... params) {
         if (code == null) {
-            throw new CustomException(ErrorCode.NOT_NULL, "code");
+            throw new CustomException(ErrorCode.NOT_NULL, "The code cannot be empty");
         }
         if (ArrayUtil.isEmpty(array)) {
             throw new CustomException(code, params);
@@ -78,7 +78,7 @@ public class AssertUtil {
 
     public static void isListEmpty(List<?> list, Integer code, String... params) {
         if (code == null) {
-            throw new CustomException(ErrorCode.NOT_NULL, "code");
+            throw new CustomException(ErrorCode.NOT_NULL, "The code cannot be empty");
         }
         if (CollUtil.isEmpty(list)) {
             throw new CustomException(code, params);
@@ -91,7 +91,7 @@ public class AssertUtil {
 
     public static void isMapEmpty(Map<?, ?> map, Integer code, String... params) {
         if (code == null) {
-            throw new CustomException(ErrorCode.NOT_NULL, "code");
+            throw new CustomException(ErrorCode.NOT_NULL, "The code cannot be empty");
         }
         if (MapUtil.isEmpty(map)) {
             throw new CustomException(code, params);

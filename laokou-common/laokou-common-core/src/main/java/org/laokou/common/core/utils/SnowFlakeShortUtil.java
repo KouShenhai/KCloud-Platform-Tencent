@@ -45,9 +45,9 @@ public class SnowFlakeShortUtil {
     /**
      * 每一部分的最大值
      */
-    private final static long MAX_SEQUENCE = -1L ^ (-1L << SEQUENCE_BIT);
-    private final static long MAX_MACHINE_NUM = -1L ^ (-1L << MACHINE_BIT);
-    private final static long MAX_DATA_CENTER_NUM = -1L ^ (-1L << DATA_CENTER_BIT);
+    private final static long MAX_SEQUENCE = ~(-1L << SEQUENCE_BIT);
+    private final static long MAX_MACHINE_NUM = ~(-1L << MACHINE_BIT);
+    private final static long MAX_DATA_CENTER_NUM = ~(-1L << DATA_CENTER_BIT);
 
     /**
      * 每一部分向左的位移
@@ -59,11 +59,11 @@ public class SnowFlakeShortUtil {
     /**
      * 数据中心
      */
-    private long dataCenterId;
+    private final long DATACENTER_ID;
     /**
      * 机器标识
      */
-    private long machineId;
+    private final long MACHINE_ID;
     /**
      * 序列号
      */
@@ -98,8 +98,8 @@ public class SnowFlakeShortUtil {
         if (machineId > MAX_MACHINE_NUM || machineId < 0) {
             throw new CustomException("MachineId can't be greater than MAX_MACHINE_NUM or less than 0！");
         }
-        this.dataCenterId = dataCenterId;
-        this.machineId = machineId;
+        this.DATACENTER_ID = dataCenterId;
+        this.MACHINE_ID = machineId;
     }
 
     /**
@@ -129,9 +129,9 @@ public class SnowFlakeShortUtil {
                 //时间戳部分
         return (currTimeStamp - START_TIMESTAMP) << TIMESTAMP_LEFT
                 //数据中心部分
-                | dataCenterId << DATA_CENTER_LEFT
+                | DATACENTER_ID << DATA_CENTER_LEFT
                 //机器标识部分
-                | machineId << MACHINE_LEFT
+                | MACHINE_ID << MACHINE_LEFT
                 //序列号部分
                 | sequence;
     }

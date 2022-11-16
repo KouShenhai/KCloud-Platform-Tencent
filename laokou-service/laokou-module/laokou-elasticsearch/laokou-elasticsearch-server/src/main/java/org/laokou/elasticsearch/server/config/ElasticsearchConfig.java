@@ -95,7 +95,7 @@ public class ElasticsearchConfig {
         int length = 2;
         if (hostAddress.length == length) {
             String ip = hostAddress[0];
-            Integer port = Integer.valueOf(hostAddress[1]);
+            int port = Integer.parseInt(hostAddress[1]);
             return new HttpHost(ip, port, HTTP_SCHEME);
         } else {
             return null;

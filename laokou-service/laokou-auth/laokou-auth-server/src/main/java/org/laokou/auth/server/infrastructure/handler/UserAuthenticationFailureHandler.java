@@ -8,7 +8,8 @@
 package org.laokou.auth.server.infrastructure.handler;
 
 import lombok.SneakyThrows;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.auth.server.infrastructure.exception.CustomHttpResult;
+import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -27,6 +28,6 @@ public class UserAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)  {
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(JacksonUtil.toJsonStr(new HttpResultUtil<>().error(e.getMessage())));
+        response.getWriter().write(JacksonUtil.toJsonStr(new CustomHttpResult("" + ErrorCode.INTERNAL_SERVER_ERROR,e.getMessage())));
     }
 }

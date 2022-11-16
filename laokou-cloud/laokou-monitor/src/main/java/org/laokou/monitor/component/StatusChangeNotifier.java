@@ -40,14 +40,18 @@ public class StatusChangeNotifier extends AbstractStatusChangeNotifier {
                 String status = ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus();
                 switch (status) {
                     //健康检查没通过
-                    case "DOWN":  log.info("健康检查没通过"); break;
+                    case "DOWN" -> log.info("健康检查没通过");
+
                     //服务离线
-                    case "OFFLINE": log.info("服务离线"); break;
+                    case "OFFLINE" -> log.info("服务离线");
+
                     //服务上线
-                    case "UP": log.info("服务上线"); break;
+                    case "UP" -> log.info("服务上线");
+
                     //服务未知异常
-                    case "UNKNOWN": log.error("服务未知异常"); break;
-                    default:break;
+                    case "UNKNOWN" -> log.error("服务未知异常");
+                    default -> {
+                    }
                 }
             }
         });

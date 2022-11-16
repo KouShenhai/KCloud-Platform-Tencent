@@ -55,8 +55,7 @@ public class AdminApplication {
 
 	/**
 	 * 监控服务
-	 * @param applicationName
-	 * @return
+	 * @param applicationName 应用名
 	 */
 	@Bean
 	MeterRegistryCustomizer<MeterRegistry> configurer(

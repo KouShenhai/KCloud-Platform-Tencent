@@ -26,6 +26,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Kou Shenhai
@@ -119,24 +120,24 @@ public class RsaCoder {
         return cipher.doFinal(data);
     }
 
-    public static String getPrivateKey(Map<String, Key> keyMap) throws Exception {
+    public static String getPrivateKey(Map<String, Key> keyMap) {
         Key key = keyMap.get("RSAPrivateKey");
         return encryptBase64(key.getEncoded());
     }
 
-    public static String getPublicKey(Map<String, Key> keyMap) throws Exception {
+    public static String getPublicKey(Map<String, Key> keyMap) {
         Key key = keyMap.get("RSAPublicKey");
         return encryptBase64(key.getEncoded());
     }
 
     public static String getPrivateKey() {
         InputStream in = RsaCoder.class.getResourceAsStream("/conf/privateKey.scr");
-        return new String(readByte(in));
+        return new String(Objects.requireNonNull(readByte(in)));
     }
 
     public static String getPublicKey() {
         InputStream in = RsaCoder.class.getResourceAsStream("/conf/publicKey.scr");
-        return new String(readByte(in));
+        return new String(Objects.requireNonNull(readByte(in)));
     }
 
     public static Map<String, Key> initKey() throws Exception {

@@ -96,11 +96,11 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
-            throw new CustomOauth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR);
+            throw new CustomOauth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         if(!PasswordUtil.matches(password, userDetail.getPassword())) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
-            throw new CustomOauth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR);
+            throw new CustomOauth2Exception(ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         CompletableFuture<UserDetail> c1 = CompletableFuture.supplyAsync(() -> sysDeptService.getDeptIds(userDetail))
                 .thenApplyAsync(deptIds -> {
@@ -116,11 +116,11 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         CompletableFuture.allOf(c1,c2).join();
         if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
-            throw new CustomOauth2Exception(ErrorCode.ACCOUNT_DISABLE);
+            throw new CustomOauth2Exception(ErrorCode.ACCOUNT_DISABLE,MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
         }
         if (CollectionUtils.isEmpty(userDetail.getPermissionList())) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
-            throw new CustomOauth2Exception(ErrorCode.NOT_PERMISSIONS);
+            throw new CustomOauth2Exception(ErrorCode.NOT_PERMISSIONS,MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
         }
         authLogUtil.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
         return userDetail;
@@ -146,7 +146,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @Override
     public void captcha(String uuid, HttpServletResponse response) throws IOException {
         if (StringUtil.isEmpty(uuid)) {
-            throw new CustomOauth2Exception(ErrorCode.IDENTIFIER_NOT_NULL);
+            throw new CustomOauth2Exception(ErrorCode.IDENTIFIER_NOT_NULL,MessageUtil.getMessage(ErrorCode.IDENTIFIER_NOT_NULL));
         }
         BufferedImage image = sysCaptchaService.createImage(uuid);
         response.setHeader("Cache-Control", "no-store, no-cache");

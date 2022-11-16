@@ -28,6 +28,6 @@ public enum DataTypeEnum {
     /**
      * 文件
      */
-    FILE;
+    FILE
 
 }

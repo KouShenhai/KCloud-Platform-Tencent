@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.im.server.config;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.utils.JacksonUtil;
@@ -24,7 +25,6 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 /**
  * @author  Kou Shenhai
@@ -34,6 +34,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Slf4j
 @ServerEndpoint("/ws/{userId}")
 public class WebSocketServer {
+
+    private static final String USER_KEY = "userId";
     /**
      * 静态变量，用来记录当前在线连接数。设计成线程安全
      */
@@ -87,9 +89,9 @@ public class WebSocketServer {
     public void onMessage(String message,Session session) throws IOException {
         log.info("收到来自：{}",this.userId,"的消息:{}",message);
         if(StringUtil.isNotEmpty(message)) {
-            Map<String, Object> map = JacksonUtil.toMap(message, String.class, Object.class);
+            JsonNode node = JacksonUtil.readTree(message);
             log.info("接到数据：{}",message);
-            final Long userId = Long.valueOf(map.get("userId").toString());
+            final Long userId = node.get(USER_KEY).asLong();
             sendMessages(message,userId);
         }
     }

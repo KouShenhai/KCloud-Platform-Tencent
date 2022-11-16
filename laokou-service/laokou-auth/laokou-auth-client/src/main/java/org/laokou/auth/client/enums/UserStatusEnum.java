@@ -26,5 +26,5 @@ public enum UserStatusEnum {
     /**
      * 禁用
      */
-    DISABLE;
+    DISABLE
 }

@@ -49,6 +49,7 @@ public class CloudFactory {
            ossConfig = object.toString();
        }
        CloudStorageVO vo = JacksonUtil.toBean(ossConfig, CloudStorageVO.class);
+       assert vo != null;
        if (CloudTypeEnum.ALIYUN.ordinal() == vo.getType()){
            return new AliyunCloudStorageService(vo);
        }

@@ -15,7 +15,6 @@
  */
 package org.laokou.common.core.utils;
 
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
@@ -56,22 +55,12 @@ public class SslUtil {
 			return null;
 		}
 
-		public boolean isServerTrusted(X509Certificate[] certs) {
-			return true;
-		}
-
-		public boolean isClientTrusted(X509Certificate[] certs) {
-			return true;
+		@Override
+		public void checkServerTrusted(X509Certificate[] certs, String authType) {
 		}
 
 		@Override
-		public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
-			return;
-		}
-
-		@Override
-		public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {
-			return;
+		public void checkClientTrusted(X509Certificate[] certs, String authType) {
 		}
 	}
 

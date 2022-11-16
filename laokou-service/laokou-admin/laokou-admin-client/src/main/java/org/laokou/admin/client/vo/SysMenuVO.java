@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.client.vo;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.core.utils.TreeUtil;
 
 /**
@@ -24,6 +25,7 @@ import org.laokou.common.core.utils.TreeUtil;
  * @date 2021/1/16 0016 下午 9:08
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class SysMenuVO extends TreeUtil.TreeNo<SysMenuVO> {
 
     /**

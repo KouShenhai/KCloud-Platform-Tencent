@@ -16,6 +16,7 @@
 package org.laokou.common.core.exception;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.laokou.common.core.utils.MessageUtil;
 
 /**
@@ -23,6 +24,7 @@ import org.laokou.common.core.utils.MessageUtil;
  * @author Kou Shenhai
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class CustomException extends RuntimeException{
 
     private int code;

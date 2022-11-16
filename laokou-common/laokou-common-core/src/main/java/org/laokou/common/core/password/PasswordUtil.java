@@ -19,7 +19,7 @@ package org.laokou.common.core.password;
  * @author Kou Shenhai
  */
 public class PasswordUtil {
-    private static PasswordEncoder passwordEncoder = new BcryptPasswordEncoder();
+    private static final PasswordEncoder PASSWORD_ENCODER = new BcryptPasswordEncoder();
 
     /**
      * 加密
@@ -27,7 +27,7 @@ public class PasswordUtil {
      * @return     返回加密字符串
      */
     public static String encode(String str){
-        return passwordEncoder.encode(str);
+        return PASSWORD_ENCODER.encode(str);
     }
 
     public static String decode(String str) throws Exception {
@@ -42,7 +42,7 @@ public class PasswordUtil {
      * @return     true：成功    false：失败
      */
     public static boolean matches(String str, String password){
-        return passwordEncoder.matches(str, password);
+        return PASSWORD_ENCODER.matches(str, password);
     }
 
 }

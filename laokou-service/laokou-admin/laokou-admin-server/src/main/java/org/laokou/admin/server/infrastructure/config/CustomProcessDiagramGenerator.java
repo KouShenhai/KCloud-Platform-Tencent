@@ -60,7 +60,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             while (subProcesses1.hasNext()) {
                 FlowNode artifact1 = (FlowNode) subProcesses1.next();
                 if (!this.isPartOfCollapsedSubProcess(artifact1, bpmnModel)) {
-                    this.drawActivity(processDiagramCanvas, bpmnModel, artifact1, highLightedActivities, highLightedFlows, scaleFactor, Boolean.valueOf(drawSequenceFlowNameWithNoLabelDi));
+                    this.drawActivity(processDiagramCanvas, bpmnModel, artifact1, highLightedActivities, highLightedFlows, scaleFactor, drawSequenceFlowNameWithNoLabelDi);
                 }
             }
         }
@@ -91,11 +91,9 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
                         }
                         subProcess1 = (SubProcess) artifact3.next();
                         graphicInfo = bpmnModel.getGraphicInfo(subProcess1.getId());
-                    } while (graphicInfo != null && graphicInfo.getExpanded() != null && !graphicInfo.getExpanded().booleanValue());
+                    } while (graphicInfo != null && graphicInfo.getExpanded() != null && !graphicInfo.getExpanded());
                 } while (this.isPartOfCollapsedSubProcess(subProcess1, bpmnModel));
-                Iterator var19 = subProcess1.getArtifacts().iterator();
-                while (var19.hasNext()) {
-                    Artifact subProcessArtifact = (Artifact) var19.next();
+                for (Artifact subProcessArtifact : subProcess1.getArtifacts()) {
                     this.drawArtifact(processDiagramCanvas, bpmnModel, subProcessArtifact);
                 }
             }
@@ -145,9 +143,8 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
                     SequenceFlow graphicInfoList = (SequenceFlow) process.next();
                     l = bpmnModel.getFlowLocationGraphicInfo(graphicInfoList.getId());
                 } while (l == null);
-                Iterator graphicInfo = l.iterator();
-                while (graphicInfo.hasNext()) {
-                    GraphicInfo graphicInfo1 = (GraphicInfo) graphicInfo.next();
+                for (Object o : l) {
+                    GraphicInfo graphicInfo1 = (GraphicInfo) o;
                     if (graphicInfo1.getX() > maxX) {
                         maxX = graphicInfo1.getX();
                     }
@@ -194,10 +191,9 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             }
             List var33 = bpmnModel.getFlowLocationGraphicInfo(var29.getId());
             if (var33 != null) {
-                Iterator var35 = var33.iterator();
 
-                while (var35.hasNext()) {
-                    var37 = (GraphicInfo) var35.next();
+                for (Object o : var33) {
+                    var37 = (GraphicInfo) o;
                     if (var37.getX() > maxX) {
                         maxX = var37.getX();
                     }
@@ -214,12 +210,8 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             }
         }
         int var28 = 0;
-        Iterator var30 = bpmnModel.getProcesses().iterator();
-        while (var30.hasNext()) {
-            Process var32 = (Process) var30.next();
-            Iterator var34 = var32.getLanes().iterator();
-            while (var34.hasNext()) {
-                Lane var36 = (Lane) var34.next();
+        for (Process var32 : bpmnModel.getProcesses()) {
+            for (Lane var36 : var32.getLanes()) {
                 ++var28;
                 var37 = bpmnModel.getGraphicInfo(var36.getId());
                 if (var37.getX() + var37.getWidth() > maxX) {
@@ -297,10 +289,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             } else if (flowNode instanceof Gateway) {
                 defaultFlow = ((Gateway) flowNode).getDefaultFlow();
             }
-            boolean isDefault = false;
-            if (defaultFlow != null && defaultFlow.equalsIgnoreCase(sequenceFlow.getId())) {
-                isDefault = true;
-            }
+            boolean isDefault = defaultFlow != null && defaultFlow.equalsIgnoreCase(sequenceFlow.getId());
             boolean drawConditionalIndicator = sequenceFlow.getConditionExpression() != null && !(flowNode instanceof Gateway);
             String sourceRef = sequenceFlow.getSourceRef();
             String targetRef = sequenceFlow.getTargetRef();
@@ -356,8 +345,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             boolean multiInstanceSequential = false;
             boolean multiInstanceParallel = false;
             boolean collapsed = false;
-            if (flowNode instanceof Activity) {
-                Activity activity = (Activity) flowNode;
+            if (flowNode instanceof Activity activity) {
                 MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = activity.getLoopCharacteristics();
                 if (multiInstanceLoopCharacteristics != null) {
                     multiInstanceSequential = multiInstanceLoopCharacteristics.isSequential();

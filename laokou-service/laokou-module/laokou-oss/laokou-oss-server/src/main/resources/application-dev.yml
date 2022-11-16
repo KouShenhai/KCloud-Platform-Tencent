@@ -3,11 +3,6 @@ server:
   address: 127.0.0.1
   tomcat:
     uri-encoding: UTF-8
-    max-threads: 1000
-    min-spare-threads: 30
-    session:
-      cookie:
-        http-only: true
     connection-timeout: 18000000
 
 spring:
