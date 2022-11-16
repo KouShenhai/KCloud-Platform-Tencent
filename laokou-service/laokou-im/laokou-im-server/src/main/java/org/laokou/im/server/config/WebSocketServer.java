@@ -120,10 +120,12 @@ public class WebSocketServer {
     public synchronized void sendMessages(String message,Long userId)throws IOException{
         for (WebSocketServer webSocketServer : webSocketServerCopyOnWriteArraySet){
                 if (userId == null) {
-                    log.info("推送消息给:{}" , webSocketServer.userId + ",推送内容：{}" , message);
+                    log.info("推送消息给:{}" , webSocketServer.userId);
+                    log.info("推送内容：{}",message);
                     webSocketServer.sendMessage(message);
                 } else if (userId.equals(webSocketServer.userId)) {
-                    log.info("推送消息给:{}" , webSocketServer.userId + ",推送内容：{}" , message);
+                    log.info("推送消息给:{}" , webSocketServer.userId);
+                    log.info("推送内容：{}",message);
                     webSocketServer.sendMessage(message);
                 }
         }
