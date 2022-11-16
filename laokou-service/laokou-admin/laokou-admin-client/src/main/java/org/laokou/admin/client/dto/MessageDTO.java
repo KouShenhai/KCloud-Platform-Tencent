@@ -39,10 +39,6 @@ public class MessageDTO {
     @NotNull(message = "发送渠道不为空")
     private Integer sendChannel;
 
-    private String username;
-
-    private Long userId;
-
     /**
      * 0通知 1提醒
      */

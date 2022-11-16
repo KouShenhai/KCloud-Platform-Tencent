@@ -55,9 +55,9 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     public Boolean insertMessage(MessageDTO dto) {
         SysMessageDO messageDO = ConvertUtil.sourceToTarget(dto, SysMessageDO.class);
         messageDO.setCreateDate(new Date());
-        messageDO.setCreator(dto.getUserId());
-        messageDO.setDeptId(UserUtil.getDeptId());
+        messageDO.setCreator(UserUtil.getUserId());
         messageDO.setUsername(UserUtil.getUsername());
+        messageDO.setDeptId(UserUtil.getDeptId());
         sysMessageService.save(messageDO);
         Set<String> receiver = dto.getReceiver();
         Iterator<String> iterator = receiver.iterator();
@@ -68,7 +68,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
             detailDO.setMessageId(messageDO.getId());
             detailDO.setUserId(Long.valueOf(next));
             detailDO.setCreateDate(new Date());
-            detailDO.setCreator(dto.getUserId());
+            detailDO.setCreator(UserUtil.getUserId());
             detailDOList.add(detailDO);
         }
         if (CollectionUtils.isNotEmpty(detailDOList)) {
@@ -81,8 +81,8 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
 
     private void sendMessage(MessageDTO dto) {
         PushMsgDTO pushMsgDTO = new PushMsgDTO();
-        pushMsgDTO.setSender(dto.getUsername());
-        pushMsgDTO.setMsg(String.format("%s发来一条消息",dto.getUsername()));
+        pushMsgDTO.setSender(UserUtil.getUsername());
+        pushMsgDTO.setMsg(String.format("%s发来一条消息",UserUtil.getUsername()));
         pushMsgDTO.setReceiver(dto.getReceiver());
         apiFeignClient.push(pushMsgDTO);
     }
