@@ -4,10 +4,6 @@ jasypt:
 
 #spring
 spring:
-  security:
-    user:
-      name: root
-      password: 123
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

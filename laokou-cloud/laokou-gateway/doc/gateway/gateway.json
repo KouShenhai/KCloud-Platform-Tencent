@@ -183,5 +183,42 @@
     ],
     "metadata": {},
     "order": 0
+  },
+  {
+    "id": "laokou-oss",
+    "uri": "lb://laokou-oss",
+    "predicates": [
+      {
+        "name": "Path",
+        "args": {
+          "pattern": "/oss/**"
+        }
+      }
+    ],
+    "filters": [
+      {
+        "name": "StripPrefix",
+        "args": {
+          "parts": "1"
+        }
+      },
+      {
+        "name": "RequestRateLimiter",
+        "args": {
+          "key-resolver": "#{@ipKeyResolver}",
+          "redis-rate-limiter.replenishRate": "1000",
+          "redis-rate-limiter.burstCapacity": "3000"
+        }
+      },
+      {
+        "name": "CircuitBreaker",
+        "args": {
+          "name": "default",
+          "fallbackUri": "forward:/fallback"
+        }
+      }
+    ],
+    "metadata": {},
+    "order": 0
   }
 ]

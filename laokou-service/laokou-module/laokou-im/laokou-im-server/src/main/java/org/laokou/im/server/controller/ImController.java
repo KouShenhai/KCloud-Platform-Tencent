@@ -42,7 +42,7 @@ public class ImController {
     private ImService imService;
 
     @PostMapping("/push")
-    @ApiOperation("即时通讯API>推送")
+    @ApiOperation("即时通讯API>消息推送")
     public void push(@RequestBody PushMsgDTO dto) throws IOException {
         imService.pusMessage(dto);
     }

@@ -81,6 +81,10 @@ gateway:
         location: /elasticsearch
       - name: laokou-kafka
         location: /kafka
+      - name: laokou-im
+        location: /im
+      - name: laokou-oss
+        location: /oss
   uris:
     - /oauth/captcha
     - /oauth/logout
@@ -92,3 +96,4 @@ gateway:
     - /webjars/**
     - /druid/**
     - /ws/**
+    - /favicon.ico

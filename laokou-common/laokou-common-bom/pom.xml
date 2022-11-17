@@ -61,8 +61,6 @@
         <aliyun-sdk-oss.version>3.8.0</aliyun-sdk-oss.version>
         <!--alipay-sdk-java版本-->
         <alipay-sdk-java.version>4.22.34.ALL</alipay-sdk-java.version>
-        <!--shiro版本-->
-        <shiro.version>1.9.0</shiro.version>
         <!--druid版本-->
         <druid.version>1.1.17</druid.version>
         <!--kaptcha版本-->
@@ -311,11 +309,6 @@
                 <groupId>net.java.dev.jna</groupId>
                 <artifactId>jna-platform</artifactId>
                 <version>${oshi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-spring-boot-starter</artifactId>
-                <version>${shiro.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.axet</groupId>
