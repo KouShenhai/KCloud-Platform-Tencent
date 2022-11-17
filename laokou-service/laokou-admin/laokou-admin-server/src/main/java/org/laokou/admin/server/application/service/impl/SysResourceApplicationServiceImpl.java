@@ -170,9 +170,10 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                             model.setIndexName(indexName);
                             model.setIndexAlias(resourceIndexAlias);
                             elasticsearchApiFeignClient.create(model);
-                            countDownLatch.countDown();
                         } catch (final FeignException e) {
                             log.error("错误信息：{}",e.getMessage());
+                        } finally {
+                            countDownLatch.countDown();
                         }
                     });
                 }
