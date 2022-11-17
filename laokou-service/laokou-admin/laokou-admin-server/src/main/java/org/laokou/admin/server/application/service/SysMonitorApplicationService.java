@@ -16,7 +16,7 @@
 package org.laokou.admin.server.application.service;
 
 import org.laokou.admin.client.vo.CacheVO;
-import org.laokou.admin.server.infrastructure.component.server.Server;
+import org.laokou.admin.server.infrastructure.server.Server;
 
 /**
  * @author Kou Shenhai

@@ -13,22 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.feign.kafka.factory;
-import org.laokou.admin.server.infrastructure.component.feign.kafka.fallback.KafkaApiFeignClientFallback;
-import org.springframework.cloud.openfeign.FallbackFactory;
-import org.springframework.stereotype.Component;
+package org.laokou.admin.server.infrastructure.feign.im.fallback;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.laokou.admin.server.infrastructure.feign.im.ImApiFeignClient;
+import org.laokou.im.client.PushMsgDTO;
 
 /**
- * 回调工厂
+ * 服务降级
  * @author Kou Shenhai
  * @version 1.0
  * @date 2020/9/5 0005 上午 12:12
  */
-@Component
-public class KafkaApiFeignClientFallbackFactory implements FallbackFactory<KafkaApiFeignClientFallback> {
+@Slf4j
+@AllArgsConstructor
+public class ImApiFeignClientFallback implements ImApiFeignClient {
+
+    private final Throwable throwable;
 
     @Override
-    public KafkaApiFeignClientFallback create(Throwable throwable) {
-        return new KafkaApiFeignClientFallback(throwable);
+    public void push(PushMsgDTO dto) {
+        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
     }
 }

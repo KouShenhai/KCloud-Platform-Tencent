@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.feign.elasticsearch;
-import org.laokou.admin.server.infrastructure.component.feign.elasticsearch.factory.ElasticsearchApiFeignClientFallbackFactory;
+package org.laokou.admin.server.infrastructure.feign.elasticsearch;
+import org.laokou.admin.server.infrastructure.feign.elasticsearch.factory.ElasticsearchApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;

@@ -16,6 +16,7 @@
 package org.laokou.auth.server.infrastructure.log;
 
 import eu.bitwalker.useragentutils.UserAgent;
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.server.infrastructure.feign.kafka.KafkaApiFeignClient;
 import org.laokou.common.core.utils.AddressUtil;
@@ -62,8 +63,8 @@ public class AuthLogUtil {
             KafkaDTO kafkaDTO = new KafkaDTO();
             kafkaDTO.setData(JacksonUtil.toJsonStr(dto));
             kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_LOGIN_LOG_TOPIC, kafkaDTO);
-        } catch (Exception e) {
-            log.info("异常信息：{}",e.getMessage());
+        } catch (FeignException | IOException e) {
+            log.error("异常信息：{}",e.getMessage());
         }
     }
 

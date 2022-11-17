@@ -22,7 +22,7 @@ import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.server.application.service.SysUserApplicationService;
 import org.laokou.common.core.utils.HttpResultUtil;
-import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
+import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

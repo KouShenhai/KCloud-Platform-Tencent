@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.aspect;
-import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
+package org.laokou.admin.server.infrastructure.aspect;
+import org.laokou.admin.server.infrastructure.annotation.DataFilter;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.enums.SuperAdminEnum;
-import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.common.mybatisplus.entity.BasePage;
 import org.laokou.auth.client.user.UserDetail;
@@ -39,7 +37,7 @@ import java.util.List;
 @Aspect
 public class DataFilterAspect {
 
-    @Pointcut("@annotation(org.laokou.admin.server.infrastructure.component.annotation.DataFilter)")
+    @Pointcut("@annotation(org.laokou.admin.server.infrastructure.annotation.DataFilter)")
     public void dataFilterPointCut() {}
 
     @Before("dataFilterPointCut()")
@@ -57,9 +55,7 @@ public class DataFilterAspect {
                 String sqlFilter = getSqlFilter(userDetail, point);
                 page.setSqlFilter(sqlFilter);
             }catch (Exception ignored){}
-            return;
         }
-        throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
     }
 
     /**

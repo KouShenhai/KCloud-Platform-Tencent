@@ -20,7 +20,7 @@ import org.laokou.admin.server.application.service.SysLogApplicationService;
 import org.laokou.admin.server.domain.sys.repository.service.SysLoginLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysOperateLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
-import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
+import org.laokou.admin.server.infrastructure.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.LoginLogQo;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;

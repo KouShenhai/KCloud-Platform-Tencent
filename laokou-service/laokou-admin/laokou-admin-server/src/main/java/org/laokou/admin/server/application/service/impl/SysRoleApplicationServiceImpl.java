@@ -24,7 +24,7 @@ import org.laokou.admin.server.domain.sys.entity.SysRoleMenuDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysRoleDeptService;
 import org.laokou.admin.server.domain.sys.repository.service.SysRoleMenuService;
 import org.laokou.admin.server.domain.sys.repository.service.SysRoleService;
-import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
+import org.laokou.admin.server.infrastructure.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysRoleQo;
 import org.laokou.admin.client.dto.SysRoleDTO;
 import org.laokou.admin.client.vo.SysRoleVO;

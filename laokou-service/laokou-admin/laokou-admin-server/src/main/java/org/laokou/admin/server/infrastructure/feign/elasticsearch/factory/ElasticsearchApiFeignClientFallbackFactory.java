@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.feign.im.factory;
-import org.laokou.admin.server.infrastructure.component.feign.im.fallback.ImApiFeignClientFallback;
+package org.laokou.admin.server.infrastructure.feign.elasticsearch.factory;
+import org.laokou.admin.server.infrastructure.feign.elasticsearch.fallback.ElasticsearchApiFeignClientFallback;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -25,10 +25,10 @@ import org.springframework.stereotype.Component;
  * @date 2020/9/5 0005 上午 12:12
  */
 @Component
-public class ImApiFeignClientFallbackFactory implements FallbackFactory<ImApiFeignClientFallback> {
+public class ElasticsearchApiFeignClientFallbackFactory implements FallbackFactory<ElasticsearchApiFeignClientFallback> {
 
     @Override
-    public ImApiFeignClientFallback create(Throwable throwable) {
-        return new ImApiFeignClientFallback(throwable);
+    public ElasticsearchApiFeignClientFallback create(Throwable throwable) {
+        return new ElasticsearchApiFeignClientFallback(throwable);
     }
 }

@@ -18,6 +18,7 @@ import com.alibaba.ttl.TransmittableThreadLocal;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.http.HttpHeaders;
@@ -51,7 +52,7 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 		HttpResultUtil<Boolean> result = new HttpResultUtil<>();
 		if (e instanceof RuntimeException){
 			log.error("服务运行异常");
-			result = result.error("服务正在维护，请联系管理员");
+			result = result.error(ErrorCode.SERVICE_MAINTENANCE,"服务正在维护，请联系管理员");
 		}
 		TL.set(result);
 		ServerRequest serverRequest = ServerRequest.create(exchange, this.messageReaders);

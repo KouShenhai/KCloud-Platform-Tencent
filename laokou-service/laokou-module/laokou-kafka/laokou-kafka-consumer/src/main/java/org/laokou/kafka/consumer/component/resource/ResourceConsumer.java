@@ -65,7 +65,7 @@ public class ResourceConsumer {
                 sysResourceAuditLogService.save(logDO);
             }
         } catch (Exception e) {
-            log.error("消息消费失败", e);
+            log.error("消息消费失败，错误信息:{}", e.getMessage());
         } finally {
             //手动签发，并回馈信息给MQ
             acknowledgment.acknowledge();

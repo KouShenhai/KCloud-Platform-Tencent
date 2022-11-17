@@ -369,7 +369,7 @@ public class FileUtil extends FileUtils {
             }
 
         } catch (Exception e) {
-            log.info("复制单个文件" + oldFile.getPath() + "操作出错。错误原因:" + e.getMessage());
+            log.error("复制单个文件" + oldFile.getPath() + "操作出错。错误原因:" + e.getMessage());
             e.printStackTrace();
             return false;
         }finally {
@@ -429,7 +429,7 @@ public class FileUtil extends FileUtils {
             }
             return true;
         } catch (Exception e) {
-            log.info("复制整个文件夹内容操作出错。错误原因:" + e.getMessage());
+            log.error("复制整个文件夹内容操作出错。错误原因:" + e.getMessage());
             return false;
         }
     }

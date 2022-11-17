@@ -13,32 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.annotation;
+package org.laokou.admin.server.infrastructure.feign.kafka.fallback;
 
-import java.lang.annotation.*;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.laokou.admin.server.infrastructure.feign.kafka.KafkaApiFeignClient;
+import org.laokou.kafka.client.dto.KafkaDTO;
 
 /**
- * 数据过滤
+ * 服务降级
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2020/9/5 0005 上午 12:12
  */
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface DataFilter {
+@Slf4j
+@AllArgsConstructor
+public class KafkaApiFeignClientFallback implements KafkaApiFeignClient {
 
-    /**
-     * 表别名
-     */
-    String tableAlias();
+    private final Throwable throwable;
 
-    /**
-     * 用户ID
-     */
-    String userId() default "creator";
-
-    /**
-     * 部门ID
-     */
-    String deptId() default "dept_id";
-
+    @Override
+    public void sendAsyncMessage(String topic, KafkaDTO dto) {
+        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+    }
 }

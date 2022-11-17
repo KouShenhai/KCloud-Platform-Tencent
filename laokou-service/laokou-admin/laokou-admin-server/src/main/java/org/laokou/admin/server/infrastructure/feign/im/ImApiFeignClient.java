@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.feign.im;
-import org.laokou.admin.server.infrastructure.component.feign.im.factory.ImApiFeignClientFallbackFactory;
+package org.laokou.admin.server.infrastructure.feign.im;
+import org.laokou.admin.server.infrastructure.feign.im.factory.ImApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.im.client.PushMsgDTO;
 import org.springframework.cloud.openfeign.FeignClient;

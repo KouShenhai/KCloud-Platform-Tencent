@@ -13,22 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.feign.elasticsearch.factory;
-import org.laokou.admin.server.infrastructure.component.feign.elasticsearch.fallback.ElasticsearchApiFeignClientFallback;
-import org.springframework.cloud.openfeign.FallbackFactory;
-import org.springframework.stereotype.Component;
+package org.laokou.admin.server.infrastructure.annotation;
+
+import java.lang.annotation.*;
 
 /**
- * 回调工厂
+ * 数据过滤
  * @author Kou Shenhai
- * @version 1.0
- * @date 2020/9/5 0005 上午 12:12
  */
-@Component
-public class ElasticsearchApiFeignClientFallbackFactory implements FallbackFactory<ElasticsearchApiFeignClientFallback> {
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface DataFilter {
 
-    @Override
-    public ElasticsearchApiFeignClientFallback create(Throwable throwable) {
-        return new ElasticsearchApiFeignClientFallback(throwable);
-    }
+    /**
+     * 表别名
+     */
+    String tableAlias();
+
+    /**
+     * 用户ID
+     */
+    String userId() default "creator";
+
+    /**
+     * 部门ID
+     */
+    String deptId() default "dept_id";
+
 }

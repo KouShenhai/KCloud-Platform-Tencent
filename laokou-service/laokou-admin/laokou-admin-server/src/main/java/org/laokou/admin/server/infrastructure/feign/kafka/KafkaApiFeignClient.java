@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.feign.kafka;
+package org.laokou.admin.server.infrastructure.feign.kafka;
 
-import org.laokou.admin.server.infrastructure.component.feign.kafka.factory.KafkaApiFeignClientFallbackFactory;
+import org.laokou.admin.server.infrastructure.feign.kafka.factory.KafkaApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.kafka.client.dto.KafkaDTO;
 import org.springframework.cloud.openfeign.FeignClient;

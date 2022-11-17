@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import feign.FeignException;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
 import org.laokou.admin.server.application.service.WorkflowProcessApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
@@ -25,7 +26,7 @@ import org.laokou.admin.server.domain.sys.repository.service.SysResourceAuditLog
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceService;
 import org.laokou.admin.client.enums.ChannelTypeEnum;
 import org.laokou.admin.client.enums.MessageTypeEnum;
-import org.laokou.admin.server.infrastructure.component.feign.elasticsearch.ElasticsearchApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.admin.client.index.ResourceIndex;
 import org.laokou.admin.server.infrastructure.utils.WorkFlowUtil;
 import org.laokou.admin.client.dto.SysResourceDTO;
@@ -163,12 +164,16 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                 CountDownLatch countDownLatch = new CountDownLatch(resourceYmPartitionList.size());
                 for (String ym : resourceYmPartitionList) {
                     asyncTaskExecutor.execute(() -> {
-                        final CreateIndexModel model = new CreateIndexModel();
-                        final String indexName = resourceIndex + "_" + ym;
-                        model.setIndexName(indexName);
-                        model.setIndexAlias(resourceIndexAlias);
-                        elasticsearchApiFeignClient.create(model);
-                        countDownLatch.countDown();
+                        try {
+                            final CreateIndexModel model = new CreateIndexModel();
+                            final String indexName = resourceIndex + "_" + ym;
+                            model.setIndexName(indexName);
+                            model.setIndexAlias(resourceIndexAlias);
+                            elasticsearchApiFeignClient.create(model);
+                            countDownLatch.countDown();
+                        } catch (final FeignException e) {
+                            log.error("错误信息：{}",e.getMessage());
+                        }
                     });
                 }
                 countDownLatch.await();
@@ -183,13 +188,17 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         final List<ResourceIndex> resourceDataList = entry.getValue();
                         //同步数据
                         asyncTaskExecutor.execute(() -> {
-                            final String indexName = resourceIndex + "_" + ym;
-                            final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
-                            final ElasticsearchModel model = new ElasticsearchModel();
-                            model.setIndexName(indexName);
-                            model.setData(jsonDataList);
-                            //同步数据
-                            elasticsearchApiFeignClient.syncAsyncBatch(model);
+                            try {
+                                final String indexName = resourceIndex + "_" + ym;
+                                final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
+                                final ElasticsearchModel model = new ElasticsearchModel();
+                                model.setIndexName(indexName);
+                                model.setData(jsonDataList);
+                                //同步数据
+                                elasticsearchApiFeignClient.syncAsyncBatch(model);
+                            } catch (final FeignException e) {
+                                log.error("错误信息：{}",e.getMessage());
+                            }
                         });
                     }
                     pageIndex += chunkSize;

@@ -24,7 +24,7 @@ import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.oss.client.vo.UploadVO;
-import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
+import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.laokou.redis.annotation.Lock4j;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

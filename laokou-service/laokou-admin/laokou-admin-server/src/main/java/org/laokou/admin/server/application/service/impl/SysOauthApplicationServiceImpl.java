@@ -21,7 +21,7 @@ import org.laokou.admin.server.application.service.SysOauthApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysOauthService;
 import org.laokou.admin.client.dto.SysOauthDTO;
-import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
+import org.laokou.admin.server.infrastructure.annotation.DataFilter;
 import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.laokou.auth.client.utils.UserUtil;

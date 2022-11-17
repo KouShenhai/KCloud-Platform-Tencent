@@ -16,11 +16,13 @@
 package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import feign.FeignException;
+import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.application.service.WorkflowProcessApplicationService;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
 import org.laokou.admin.client.enums.ChannelTypeEnum;
 import org.laokou.admin.client.enums.MessageTypeEnum;
-import org.laokou.admin.server.infrastructure.component.feign.kafka.KafkaApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.kafka.KafkaApiFeignClient;
 import org.laokou.admin.server.infrastructure.utils.WorkFlowUtil;
 import org.laokou.admin.client.dto.AuditDTO;
 import org.laokou.admin.client.vo.StartProcessVO;
@@ -45,7 +47,6 @@ import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,6 +55,7 @@ import java.util.Map;
  * @author Kou Shenhai
  */
 @Service
+@Slf4j
 public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApplicationService {
 
     @Autowired
@@ -144,6 +146,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     @Override
     public Boolean auditResourceTask(AuditDTO dto) {
         Map<String, Object> values = dto.getValues();
+        String comment = dto.getComment();
         Boolean auditFlag = workflowTaskApplicationService.auditTask(dto);
         String auditUser = workFlowUtil.getAuditUser(dto.getDefinitionId(), dto.getInstanceId());
         int auditStatus = Integer.parseInt(values.get("auditStatus").toString());
@@ -172,18 +175,26 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         } else {
             redisUtil.hSet(resourceAuditKey,taskId,taskId,RedisUtil.HOUR_ONE_EXPIRE);
         }
-        ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
-        auditLogDTO.setResourceId(resourceId);
-        auditLogDTO.setStatus(status);
-        auditLogDTO.setAuditStatus(auditStatus);
-        auditLogDTO.setAuditDate(new Date());
-        auditLogDTO.setAuditName(UserUtil.getUsername());
-        auditLogDTO.setCreator(UserUtil.getUserId());
-        auditLogDTO.setComment(dto.getComment());
-        KafkaDTO kafkaDTO = new KafkaDTO();
-        kafkaDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
-        kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_RESOURCE_AUDIT_TOPIC,kafkaDTO);
+        saveAuditLog(resourceId,status,auditStatus,comment);
         return auditFlag;
+    }
+
+    private void saveAuditLog(Long resourceId,int status,int auditStatus,String comment) {
+        try {
+            ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
+            auditLogDTO.setResourceId(resourceId);
+            auditLogDTO.setStatus(status);
+            auditLogDTO.setAuditStatus(auditStatus);
+            auditLogDTO.setAuditDate(new Date());
+            auditLogDTO.setAuditName(UserUtil.getUsername());
+            auditLogDTO.setCreator(UserUtil.getUserId());
+            auditLogDTO.setComment(comment);
+            KafkaDTO kafkaDTO = new KafkaDTO();
+            kafkaDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
+            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_RESOURCE_AUDIT_TOPIC, kafkaDTO);
+        } catch (FeignException e) {
+            log.error("错误信息：{}",e.getMessage());
+        }
     }
 
 }

@@ -19,7 +19,7 @@ import org.laokou.admin.client.dto.SysDeptDTO;
 import org.laokou.admin.server.interfaces.qo.SysDeptQo;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.admin.client.vo.SysDeptVO;
-import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
+import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

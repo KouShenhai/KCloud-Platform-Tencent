@@ -17,14 +17,16 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import feign.FeignException;
+import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDO;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDetailDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageDetailService;
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageService;
-import org.laokou.admin.server.infrastructure.component.annotation.DataFilter;
+import org.laokou.admin.server.infrastructure.annotation.DataFilter;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.admin.server.infrastructure.component.feign.im.ImApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.im.ImApiFeignClient;
 import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
@@ -40,6 +42,7 @@ import java.util.*;
  * @author Kou Shenhai
  */
 @Service
+@Slf4j
 public class SysMessageApplicationServiceImpl implements SysMessageApplicationService {
 
     @Autowired
@@ -80,11 +83,15 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     }
 
     private void sendMessage(MessageDTO dto) {
-        PushMsgDTO pushMsgDTO = new PushMsgDTO();
-        pushMsgDTO.setSender(UserUtil.getUsername());
-        pushMsgDTO.setMsg(String.format("%s发来一条消息",UserUtil.getUsername()));
-        pushMsgDTO.setReceiver(dto.getReceiver());
-        apiFeignClient.push(pushMsgDTO);
+        try {
+            PushMsgDTO pushMsgDTO = new PushMsgDTO();
+            pushMsgDTO.setSender(UserUtil.getUsername());
+            pushMsgDTO.setMsg(String.format("%s发来一条消息", UserUtil.getUsername()));
+            pushMsgDTO.setReceiver(dto.getReceiver());
+            apiFeignClient.push(pushMsgDTO);
+        } catch (FeignException e) {
+            log.error("错误消息：{}",e.getMessage());
+        }
     }
 
     @Override

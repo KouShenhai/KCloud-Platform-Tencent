@@ -16,10 +16,9 @@
 package org.laokou.admin.server.application.service.impl;
 
 import feign.FeignException;
+import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.application.service.SysSearchApplicationService;
-import org.laokou.admin.server.infrastructure.component.feign.elasticsearch.ElasticsearchApiFeignClient;
-import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.exception.ErrorCode;
+import org.laokou.admin.server.infrastructure.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
@@ -31,6 +30,7 @@ import java.util.Map;
  * @author Kou Shenhai
  */
 @Service
+@Slf4j
 public class SysSearchApplicationServiceImpl implements SysSearchApplicationService {
 
     @Autowired
@@ -38,12 +38,12 @@ public class SysSearchApplicationServiceImpl implements SysSearchApplicationServ
 
     @Override
     public SearchVO<Map<String,Object>> searchResource(SearchForm form) {
-        HttpResultUtil<SearchVO<Map<String, Object>>> result;
         try {
-             result = elasticsearchApiFeignClient.highlightSearch(form);
+            HttpResultUtil<SearchVO<Map<String, Object>>> result = elasticsearchApiFeignClient.highlightSearch(form);
+            return result.getData();
         } catch (FeignException ex) {
-            throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
+            log.error("错误信息：{}",ex.getMessage());
         }
-        return result.getData();
+        return new SearchVO<>();
     }
 }

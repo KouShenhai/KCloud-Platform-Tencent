@@ -57,7 +57,7 @@ public final class FieldUtil extends ReflectUtil {
             }
             throw new CustomException("属性字段值丢失");
         } catch (Exception e) {
-            log.info("获取字段名称失败 信息:{},错误:{}",e.getMessage(),e);
+            log.error("获取字段名称失败 信息:{},错误:{}",e.getMessage(),e);
             return null;
         }
     }

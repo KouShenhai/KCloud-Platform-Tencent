@@ -13,27 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.annotation;
-import org.laokou.common.core.enums.DataTypeEnum;
-import java.lang.annotation.*;
+package org.laokou.admin.server.infrastructure.feign.im.factory;
+import org.laokou.admin.server.infrastructure.feign.im.fallback.ImApiFeignClientFallback;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
+
 /**
- * 自定义操作日志注解
+ * 回调工厂
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2020/9/5 0005 上午 12:12
  */
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface OperateLog {
+@Component
+public class ImApiFeignClientFallbackFactory implements FallbackFactory<ImApiFeignClientFallback> {
 
-    String module();
-
-    String name();
-
-    /**
-     * TEXT文本
-     * FILE文件
-     * @return
-     */
-    DataTypeEnum type() default DataTypeEnum.TEXT;
-
+    @Override
+    public ImApiFeignClientFallback create(Throwable throwable) {
+        return new ImApiFeignClientFallback(throwable);
+    }
 }

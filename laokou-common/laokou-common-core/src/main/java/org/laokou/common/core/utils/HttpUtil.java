@@ -81,7 +81,7 @@ public class HttpUtil {
                 resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
             }
         } catch (Exception e) {
-            log.info("调用失败:{}",e);
+            log.error("调用失败，错误信息:{}",e);
         } finally {
             if (response != null) {
                 response.close();

@@ -16,7 +16,7 @@
 package org.laokou.admin.server.application.service.impl;
 import org.laokou.admin.server.application.service.SysMonitorApplicationService;
 import org.laokou.admin.client.vo.CacheVO;
-import org.laokou.admin.server.infrastructure.component.server.Server;
+import org.laokou.admin.server.infrastructure.server.Server;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

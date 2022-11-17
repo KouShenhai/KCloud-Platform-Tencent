@@ -43,6 +43,7 @@ public class MapperUtil<T> {
                 baseBatchDao.insertBatch(partition.get(i));
             } catch (Exception e) {
                 sqlSession.rollback();
+                log.error("错误信息：{}",e.getMessage());
                 throw new CustomException(500,"批量插入数据失败");
             }
             if (i % batchNum == 0) {

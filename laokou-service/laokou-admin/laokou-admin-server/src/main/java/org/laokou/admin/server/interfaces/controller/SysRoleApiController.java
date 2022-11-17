@@ -19,7 +19,7 @@ import org.laokou.admin.server.application.service.SysRoleApplicationService;
 import org.laokou.admin.client.dto.SysRoleDTO;
 import org.laokou.admin.server.interfaces.qo.SysRoleQo;
 import org.laokou.admin.client.vo.SysRoleVO;
-import org.laokou.admin.server.infrastructure.component.annotation.OperateLog;
+import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.laokou.common.core.utils.HttpResultUtil;

@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.component.feign.kafka.fallback;
-
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.laokou.admin.server.infrastructure.component.feign.kafka.KafkaApiFeignClient;
-import org.laokou.kafka.client.dto.KafkaDTO;
-
+package org.laokou.admin.server.infrastructure.annotation;
+import org.laokou.common.core.enums.DataTypeEnum;
+import java.lang.annotation.*;
 /**
- * 服务降级
+ * 自定义操作日志注解
  * @author Kou Shenhai
- * @version 1.0
- * @date 2020/9/5 0005 上午 12:12
  */
-@Slf4j
-@AllArgsConstructor
-public class KafkaApiFeignClientFallback implements KafkaApiFeignClient {
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface OperateLog {
 
-    private final Throwable throwable;
+    String module();
 
-    @Override
-    public void sendAsyncMessage(String topic, KafkaDTO dto) {
-        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-    }
+    String name();
+
+    /**
+     * TEXT文本
+     * FILE文件
+     * @return
+     */
+    DataTypeEnum type() default DataTypeEnum.TEXT;
+
 }
