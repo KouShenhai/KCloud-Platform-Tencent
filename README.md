@@ -226,7 +226,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
   }
 }]
 ```
-
+    
 ### 高可用系统构建
 - [x] 严格遵循阿里规范，注重代码质量
 - [x] 使用集群，减少单点故障
