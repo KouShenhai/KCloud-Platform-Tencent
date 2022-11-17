@@ -43,7 +43,7 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
     /**
      * 定义走过流程连线颜色为绿色
      */
-    protected static final Color HIGHLIGHT_SequenceFlow_COLOR = Color.GREEN;
+    protected static final Color HIGHLIGHT_SEQUENCEFLOW_COLOR = Color.GREEN;
     /**
      * 设置未走过流程的连接线颜色
      */
@@ -80,7 +80,7 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
         if (ASSOCIATION.equals(connectionType)) {
             this.g.setStroke(ASSOCIATION_STROKE);
         } else if (highLighted) {
-            this.g.setPaint(HIGHLIGHT_SequenceFlow_COLOR);
+            this.g.setPaint(HIGHLIGHT_SEQUENCEFLOW_COLOR);
             this.g.setStroke(HIGHLIGHT_FLOW_STROKE);
         }
         for (int i = 1; i < xPoints.length; ++i) {
