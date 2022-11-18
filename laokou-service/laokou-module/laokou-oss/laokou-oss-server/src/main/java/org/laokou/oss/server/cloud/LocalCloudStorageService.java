@@ -23,7 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 /**
- * OSS本地上传
+ * 本地上传
  * @author : Kou Shenhai
  * @date : 2020-06-21 23:42
  */

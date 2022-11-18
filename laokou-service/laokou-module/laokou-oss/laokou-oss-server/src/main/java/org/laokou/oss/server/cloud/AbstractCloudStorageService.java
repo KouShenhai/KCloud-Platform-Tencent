@@ -20,7 +20,6 @@ import org.laokou.oss.client.vo.CloudStorageVO;
 import java.io.InputStream;
 
 /**
- * 阿里云/腾讯云
  * @author  Kou Shenhai
  */
 public abstract class AbstractCloudStorageService {
