@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.oss.server.cloud;
+package org.laokou.oss.server.support;
 
 import cn.hutool.core.util.IdUtil;
 import com.aliyun.oss.OSS;
@@ -30,9 +30,9 @@ import java.io.InputStream;
  * @author Kou Shenhai
  */
 @Slf4j
-public class AliyunCloudStorageService extends AbstractCloudStorageService {
+public class AliyunStorageService extends AbstractStorageService {
 
-    public AliyunCloudStorageService (CloudStorageVO vo){
+    public AliyunStorageService(CloudStorageVO vo){
         super.cloudStorageVO = vo;
     }
 

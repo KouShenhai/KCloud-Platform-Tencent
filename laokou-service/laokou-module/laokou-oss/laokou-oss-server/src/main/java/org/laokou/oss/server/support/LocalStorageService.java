@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.oss.server.cloud;
+package org.laokou.oss.server.support;
 import cn.hutool.core.util.IdUtil;
 import org.laokou.common.core.utils.FileUtil;
 import org.laokou.common.core.utils.HashUtil;
@@ -27,11 +27,11 @@ import java.io.InputStream;
  * @author : Kou Shenhai
  * @date : 2020-06-21 23:42
  */
-public class LocalCloudStorageService extends AbstractCloudStorageService{
+public class LocalStorageService extends AbstractStorageService {
 
     private static final String[] NODES = {"node1","node2","node3","node4","node5"};
 
-    public LocalCloudStorageService(CloudStorageVO vo){
+    public LocalStorageService(CloudStorageVO vo){
         this.cloudStorageVO = vo;
     }
 

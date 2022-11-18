@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.oss.server.cloud;
+package org.laokou.oss.server.support;
 
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.DefaultGenerateStorageClient;
@@ -31,7 +31,7 @@ import java.io.InputStream;
  */
 
 @Slf4j
-public class FastdfsCloudStorageService extends AbstractCloudStorageService {
+public class FastdfsStorageService extends AbstractStorageService {
 
     private static final DefaultGenerateStorageClient DEFAULT_GENERATE_STORAGE_CLIENT;
 
@@ -39,7 +39,7 @@ public class FastdfsCloudStorageService extends AbstractCloudStorageService {
         DEFAULT_GENERATE_STORAGE_CLIENT =  (DefaultGenerateStorageClient) SpringContextUtil.getBean("defaultGenerateStorageClient");
     }
 
-    public FastdfsCloudStorageService(CloudStorageVO vo){
+    public FastdfsStorageService(CloudStorageVO vo){
         super.cloudStorageVO = vo;
     }
 

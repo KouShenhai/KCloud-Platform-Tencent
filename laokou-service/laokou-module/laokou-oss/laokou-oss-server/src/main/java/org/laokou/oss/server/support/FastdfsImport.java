@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.laokou.oss.server.cloud;
+package org.laokou.oss.server.support;
 import com.github.tobato.fastdfs.FdfsClientConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;

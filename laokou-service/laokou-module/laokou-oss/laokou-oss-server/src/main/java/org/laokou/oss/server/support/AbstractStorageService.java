@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.oss.server.cloud;
+package org.laokou.oss.server.support;
 
 import org.laokou.oss.client.vo.CloudStorageVO;
 
@@ -22,7 +22,7 @@ import java.io.InputStream;
 /**
  * @author  Kou Shenhai
  */
-public abstract class AbstractCloudStorageService {
+public abstract class AbstractStorageService {
     /**
      * 配置文件
      */

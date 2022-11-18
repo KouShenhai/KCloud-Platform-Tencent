@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.oss.server.cloud;
+package org.laokou.oss.server.support;
 import lombok.RequiredArgsConstructor;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.JacksonUtil;
@@ -29,13 +29,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class CloudFactory {
+public class StorageFactory {
 
     private final SysOssService sysOssService;
 
     private final RedisUtil redisUtil;
 
-   public AbstractCloudStorageService build(){
+   public AbstractStorageService build(){
        String ossConfigKey = RedisKeyUtil.getOssConfigKey();
        Object object = redisUtil.get(ossConfigKey);
        String ossConfig;
@@ -51,16 +51,16 @@ public class CloudFactory {
        CloudStorageVO vo = JacksonUtil.toBean(ossConfig, CloudStorageVO.class);
        assert vo != null;
        if (CloudTypeEnum.ALIYUN.ordinal() == vo.getType()){
-           return new AliyunCloudStorageService(vo);
+           return new AliyunStorageService(vo);
        }
        if (CloudTypeEnum.LOCAL.ordinal() == vo.getType()){
-           return new LocalCloudStorageService(vo);
+           return new LocalStorageService(vo);
        }
        if (CloudTypeEnum.FASTDFS.ordinal() == vo.getType()){
-           return new FastdfsCloudStorageService(vo);
+           return new FastdfsStorageService(vo);
        }
        if (CloudTypeEnum.MINIO.ordinal() == vo.getType()) {
-           return new MinioCloudStorageService(vo);
+           return new MinioStorageService(vo);
        }
        throw new CustomException("请检查OSS相关配置");
    }

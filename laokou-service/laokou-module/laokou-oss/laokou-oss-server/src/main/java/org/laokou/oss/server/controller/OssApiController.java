@@ -20,7 +20,7 @@ import org.laokou.common.core.utils.HttpResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.laokou.oss.client.vo.UploadVO;
-import org.laokou.oss.server.cloud.CloudFactory;
+import org.laokou.oss.server.support.StorageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +37,7 @@ import java.io.InputStream;
 public class OssApiController {
 
     @Autowired
-    private CloudFactory cloudFactory;
+    private StorageFactory storageFactory;
 
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiOperation("对象存储>上传")
@@ -53,7 +53,7 @@ public class OssApiController {
         final Long fileSize = file.getSize();
         //上传文件
         UploadVO vo = new UploadVO();
-        String url = cloudFactory.build().upload(inputStream, fileName, fileSize);
+        String url = storageFactory.build().upload(inputStream, fileName, fileSize);
         log.info("上传文件地址：{}",url);
         vo.setUrl(url);
         return new HttpResultUtil<UploadVO>().ok(vo);

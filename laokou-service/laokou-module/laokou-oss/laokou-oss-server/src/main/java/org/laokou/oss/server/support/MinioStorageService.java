@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.oss.server.cloud;
+package org.laokou.oss.server.support;
 
 import cn.hutool.core.util.IdUtil;
 import io.minio.*;
@@ -25,7 +25,7 @@ import java.io.InputStream;
 /**
  * @author Kou Shenhai
  */
-public class MinioCloudStorageService extends AbstractCloudStorageService{
+public class MinioStorageService extends AbstractStorageService {
 
     private MinioClient minioClient;
 
@@ -38,7 +38,7 @@ public class MinioCloudStorageService extends AbstractCloudStorageService{
                 .build();
     }
 
-    public MinioCloudStorageService(CloudStorageVO vo) {
+    public MinioStorageService(CloudStorageVO vo) {
         this.cloudStorageVO = vo;
         init();
     }
