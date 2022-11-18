@@ -252,7 +252,7 @@ laok5/test123
 ### 项目截图
 <table>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/1.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/1.png"/></td>
         <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/2.png"/></td>
     </tr>
     <tr>
