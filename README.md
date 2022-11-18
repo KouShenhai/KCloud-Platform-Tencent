@@ -253,51 +253,51 @@ laok5/test123
 <table>
     <tr>
         <td><img alt="暂无图片" src="./doc/image/1.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/2.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/2.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/3.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/4.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/3.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/4.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/5.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/6.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/5.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/6.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/7.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/8.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/7.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/8.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/9.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/10.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/9.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/10.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/11.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/12.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/11.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/12.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/13.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/14.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/13.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/14.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/15.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/16.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/15.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/16.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/17.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/18.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/17.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/18.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/19.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/20.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/19.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/20.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/21.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/22.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/21.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/22.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/23.png"/></td>
-        <td><img alt="暂无图片" src="https://gitee.com/laokouyun/KCloud-Platform-Official/raw/master/doc/image/24.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/23.png"/></td>
+        <td><img alt="暂无图片" src="./doc/image/24.png"/></td>
     </tr>
 </table>
 
@@ -311,15 +311,16 @@ laok5/test123
 
 ### 开源协议
 KCloud-Platform-Official 开源软件遵循 [Apache 2.0 协议](https://www.apache.org/licenses/LICENSE-2.0.html) 请务必保留作者、Copyright信息  
-![](https://minio.pigx.vip/oss/1655474288.jpg)
+![](doc/image/25.png)
 
 ### 项目地址
 后端地址：[KCloud-Platform-Official](https://gitee.com/tttt_wmh_cn/KCloud-Platform-Official)  
 前端地址：[KCloud-Antdv-Official](https://gitee.com/tttt_wmh_cn/KCloud-Antdv-Official)
 
 ### 致谢
+[Spring官网](https://spring.io)  
 [人人社区](https://www.renren.io)  
-[若依社区](http://www.ruoyi.vip)
+[若依社区](https://www.ruoyi.vip)
 
 ### 联系
 博客：[https://kcloud.blog.csdn.net](https://kcloud.blog.csdn.net)  
