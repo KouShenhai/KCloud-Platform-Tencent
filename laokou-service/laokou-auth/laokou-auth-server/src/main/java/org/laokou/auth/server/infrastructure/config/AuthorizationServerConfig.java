@@ -102,6 +102,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) {
         // 不开启allowFormAuthenticationForClients，自定义ClientCredentialsTokenEndpointFilter
         CustomClientCredentialsTokenEndpointFilter endpointFilter = new CustomClientCredentialsTokenEndpointFilter(security);
+        // 这个方法一定要先执行
         endpointFilter.afterPropertiesSet();
         endpointFilter.setAuthenticationEntryPoint(customAuthenticationEntryPoint);
         security
