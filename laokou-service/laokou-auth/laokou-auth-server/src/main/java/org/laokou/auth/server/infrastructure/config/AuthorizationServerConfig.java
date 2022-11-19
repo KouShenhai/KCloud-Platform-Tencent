@@ -102,12 +102,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) {
         // 不开启allowFormAuthenticationForClients，自定义ClientCredentialsTokenEndpointFilter
         CustomClientCredentialsTokenEndpointFilter endpointFilter = new CustomClientCredentialsTokenEndpointFilter(security);
-        // 这个方法一定要先执行
-        endpointFilter.afterPropertiesSet();
         endpointFilter.setAuthenticationEntryPoint(customAuthenticationEntryPoint);
+        /**
+         * 开启allowFormAuthenticationForClients，ClientCredentialsTokenEndpointFilter会创建对象并赋值，通过调用postProcess(clientCredentialsTokenEndpointFilter)（对象后置处理），将new的对象放到spring容器进行管理，因此会调用afterPropertiesSet
+         * 调用endpointFilter.afterPropertiesSet()，将已经进行属性填充的对象进行初始化，只需要实现InitializingBean即可（InitializingBean只有一个方法，那就是afterPropertiesSet）
+         */
+        endpointFilter.afterPropertiesSet();
         security
+                // allowFormAuthenticationForClients => 允许表单认证，并且client_id和client_secret会走ClientCredentialsTokenEndpointFilter逻辑（详情查看源码）
                 .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()").addTokenEndpointAuthenticationFilter(endpointFilter);
+                .checkTokenAccess("isAuthenticated()")
+                .addTokenEndpointAuthenticationFilter(endpointFilter);
     }
 
 }

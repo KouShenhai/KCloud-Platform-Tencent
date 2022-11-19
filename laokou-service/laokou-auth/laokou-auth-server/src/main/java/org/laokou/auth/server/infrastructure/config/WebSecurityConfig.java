@@ -74,7 +74,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         ,"/oauth/captcha"
                         ,"/doc.html"
                         ,"/v2/api-docs"
-                        ,"/oauth/token"
                         ,"/swagger/api-docs"
                         ,"/oauth/logout"
                         ,"/actuator/**").permitAll()
