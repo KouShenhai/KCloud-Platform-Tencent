@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 package org.laokou.auth.client.exception;
-
+import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.exception.ErrorCode;
-import org.laokou.common.core.utils.HttpResultUtil;
-import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.core.utils.MessageUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -30,11 +29,12 @@ import java.io.IOException;
  *
  * @author Mark sunlightcs@gmail.com
  */
+@Slf4j
 public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().print(JacksonUtil.toJsonStr(new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED)));
+        log.error("错误信息：{}",authException.getMessage());
+        CustomExceptionHandler.handleException(response,"" +ErrorCode.UNAUTHORIZED, MessageUtil.getMessage(ErrorCode.UNAUTHORIZED));
     }
 }

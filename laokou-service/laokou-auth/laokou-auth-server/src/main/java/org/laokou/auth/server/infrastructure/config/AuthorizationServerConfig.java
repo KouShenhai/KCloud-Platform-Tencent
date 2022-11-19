@@ -15,10 +15,13 @@
  */
 package org.laokou.auth.server.infrastructure.config;
 import lombok.AllArgsConstructor;
+import org.laokou.auth.server.infrastructure.exception.CustomAuthenticationEntryPoint;
+import org.laokou.auth.server.infrastructure.exception.CustomClientCredentialsTokenEndpointFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -43,6 +46,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private final WebResponseExceptionTranslator<OAuth2Exception> webResponseExceptionTranslator;
     private final TokenStore tokenStore;
     private final ClientDetailsService clientDetailsService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     /**
      * 配置客户端信息
@@ -65,7 +69,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 HttpMethod.OPTIONS, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE);
         //密码模式
         endpoints.authenticationManager(authenticationManager);
-        //登录或者鉴权失败时的返回信息
+        //登录或者鉴权失败时的返回信息(自定义)
         endpoints.exceptionTranslator(webResponseExceptionTranslator);
         // 令牌配置
         endpoints.tokenServices(tokenServices());
@@ -88,11 +92,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return services;
     }
 
+    /**
+     * 详情参考下面给的两个方法
+     * {@link AuthorizationServerSecurityConfigurer#configure(HttpSecurity)}
+     * {@link AuthorizationServerSecurityConfigurer#clientCredentialsTokenEndpointFilter(HttpSecurity)}
+     * @param security a fluent configurer for security features
+     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
-        security.allowFormAuthenticationForClients()
+        // 不开启allowFormAuthenticationForClients，自定义ClientCredentialsTokenEndpointFilter
+        CustomClientCredentialsTokenEndpointFilter endpointFilter = new CustomClientCredentialsTokenEndpointFilter(security);
+        endpointFilter.afterPropertiesSet();
+        endpointFilter.setAuthenticationEntryPoint(customAuthenticationEntryPoint);
+        security
                 .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
+                .checkTokenAccess("isAuthenticated()").addTokenEndpointAuthenticationFilter(endpointFilter);
     }
 
 }

@@ -17,7 +17,6 @@ package org.laokou.auth.client.user;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
 import java.io.Serializable;
 import java.util.List;
 /**
@@ -31,10 +30,10 @@ public class UserDetail implements Serializable {
     private String username;
     private String imgUrl;
     private Integer superAdmin;
-    private Integer status;
+    private transient Integer status;
     private String email;
     private String mobile;
-    private String password;
+    private transient String password;
     private Long deptId;
     private List<Long> deptIds;
     private List<String> permissionList;

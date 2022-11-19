@@ -34,10 +34,10 @@ public class CustomOauth2Exception extends OAuth2Exception {
 		this.code = "500";
 	}
 
-	public CustomOauth2Exception(int code, String msg) {
+	public CustomOauth2Exception(String code, String msg) {
 		super(msg);
 		this.msg = msg;
-		this.code = "" + code;
+		this.code = code;
 	}
 	/**
 	 * 官方方法，不能驼峰命名

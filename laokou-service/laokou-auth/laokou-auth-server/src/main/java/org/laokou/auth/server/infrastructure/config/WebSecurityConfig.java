@@ -16,6 +16,7 @@
 package org.laokou.auth.server.infrastructure.config;
 
 import lombok.AllArgsConstructor;
+import org.laokou.auth.server.infrastructure.exception.CustomWebResponseExceptionTranslator;
 import org.laokou.auth.server.infrastructure.filter.ValidateCodeFilter;
 import org.laokou.auth.server.infrastructure.provider.AuthAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -60,6 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable()
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors().and().csrf().disable()
                 .formLogin()
@@ -70,6 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         ,"/oauth/captcha"
                         ,"/doc.html"
                         ,"/v2/api-docs"
+                        ,"/oauth/token"
                         ,"/swagger/api-docs"
                         ,"/oauth/logout"
                         ,"/actuator/**").permitAll()
@@ -84,5 +89,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return NoOpPasswordEncoder.getInstance();
+    }
+
+    @Bean
+    public WebResponseExceptionTranslator<OAuth2Exception> webResponseExceptionTranslator() {
+        return new CustomWebResponseExceptionTranslator();
     }
 }
