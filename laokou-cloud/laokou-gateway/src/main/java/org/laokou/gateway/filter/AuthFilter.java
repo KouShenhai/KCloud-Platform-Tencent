@@ -24,6 +24,7 @@ import org.laokou.common.core.password.PasswordUtil;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
+import org.laokou.gateway.constant.GatewayConstant;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -100,7 +101,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         // 获取token
         String token = getToken(request);
         if (StringUtil.isEmpty(token)) {
-            return response(exchange, new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED,"未授权"));
+            return response(exchange, new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED, GatewayConstant.UNAUTHORIZED_MSG));
         }
         ServerHttpRequest build = exchange.getRequest().mutate()
                 .header(Constant.AUTHORIZATION_HEAD, token).build();

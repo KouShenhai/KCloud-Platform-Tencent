@@ -20,6 +20,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.gateway.constant.GatewayConstant;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -51,11 +52,11 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
 		log.error("网关全局处理异常，异常信息:{}",e.getMessage());
 		HttpResultUtil<Boolean> result = new HttpResultUtil<>();
 		if (e instanceof RuntimeException){
-			log.error("服务运行异常");
-			result = result.error(ErrorCode.SERVICE_MAINTENANCE,"服务正在维护，请联系管理员");
+			log.error("服务正在维护，请联系管理员");
+			result = result.error(ErrorCode.SERVICE_MAINTENANCE, GatewayConstant.SERVICE_MAINTENANCE_MSG);
 		}
 		TL.set(result);
-		ServerRequest serverRequest = ServerRequest.create(exchange, this.messageReaders);
+		ServerRequest serverRequest = ServerRequest.create(exchange, messageReaders);
 		return RouterFunctions.route(RequestPredicates.all(),this::renderErrorResponse)
 				.route(serverRequest)
 				.switchIfEmpty(Mono.error(e))
