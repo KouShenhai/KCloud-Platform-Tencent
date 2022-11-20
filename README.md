@@ -314,8 +314,8 @@ KCloud-Platform-Official 开源软件遵循 [Apache 2.0 协议](https://www.apac
 ![](doc/image/25.png)
 
 ### 项目地址
-后端地址：[KCloud-Platform-Official](https://gitee.com/tttt_wmh_cn/KCloud-Platform-Official)  
-前端地址：[KCloud-Antdv-Official](https://gitee.com/tttt_wmh_cn/KCloud-Antdv-Official)
+后端地址：[KCloud-Platform-Official](https://gitee.com/laokouyun/KCloud-Platform-Official)  
+前端地址：[KCloud-Antdv-Official](https://gitee.com/laokouyun/KCloud-Antdv-Official)
 
 ### 致谢
 [Spring官网](https://spring.io)  
