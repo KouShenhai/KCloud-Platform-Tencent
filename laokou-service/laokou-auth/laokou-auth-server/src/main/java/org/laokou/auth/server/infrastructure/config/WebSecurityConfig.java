@@ -17,7 +17,7 @@ package org.laokou.auth.server.infrastructure.config;
 
 import lombok.AllArgsConstructor;
 import org.laokou.auth.server.infrastructure.exception.CustomWebResponseExceptionTranslator;
-import org.laokou.auth.server.infrastructure.filter.ValidateCodeFilter;
+import org.laokou.auth.server.infrastructure.filter.ValidateInfoFilter;
 import org.laokou.auth.server.infrastructure.provider.AuthAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -45,7 +45,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthAuthenticationProvider authAuthenticationProvider;
-    private final ValidateCodeFilter validateCodeFilter;
+    private final ValidateInfoFilter validateInfoFilter;
     /**
      * 密码模式
      */
@@ -64,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
-                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(validateInfoFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors().and().csrf().disable()
                 .formLogin()
                 .disable()

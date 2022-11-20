@@ -12,7 +12,7 @@ import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -20,7 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * @author Kou Shenhai
@@ -29,13 +28,15 @@ import java.io.IOException;
  */
 @Component
 @AllArgsConstructor
-public class ValidateCodeFilter extends OncePerRequestFilter {
+public class ValidateInfoFilter extends OncePerRequestFilter {
 
     private final static AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
     private final static String OAUTH_URL = "/oauth/token";
 
-    private final static String GRANT_TYPE = "password";
+    private final static String GRANT_TYPE_NAME = "grant_type";
+
+    private final static String GRANT_TYPE = OauthConstant.PASSWORD;
 
     @Autowired
     private SysCaptchaService sysCaptchaService;
@@ -51,7 +52,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         if (ANT_PATH_MATCHER.match(request.getServletPath(), OAUTH_URL)
                 && request.getMethod().equalsIgnoreCase(HttpMethod.POST.name())
-                && GRANT_TYPE.equals(request.getParameter("grant_type"))) {
+                && GRANT_TYPE.equals(request.getParameter(GRANT_TYPE_NAME))) {
             String uuid = request.getParameter(OauthConstant.UUID);
             String captcha = request.getParameter(OauthConstant.CAPTCHA);
             String username = request.getParameter(OauthConstant.USERNAME);
@@ -67,23 +68,23 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void validate(String uuid,String captcha,String username,String password) throws IOException {
+    private void validate(String uuid,String captcha,String username,String password) {
         if (StringUtil.isEmpty(uuid)) {
-            throw new CredentialsExpiredException("唯一标识符不能为空");
+            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.IDENTIFIER_NOT_NULL));
         }
         if (StringUtil.isEmpty(captcha)) {
-            throw new CredentialsExpiredException("验证码不能为空");
+            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.CAPTCHA_NOT_NULL));
         }
         if (StringUtil.isEmpty(username)) {
-            throw new CredentialsExpiredException("用户名不能为空");
+            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.USERNAME_NOT_NULL));
         }
         if (StringUtil.isEmpty(password)) {
-            throw new CredentialsExpiredException("密码不能为空");
+            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.PASSWORD_NOT_NULL));
         }
         boolean validate = sysCaptchaService.validate(uuid, captcha);
         if (!validate) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
-            throw new CredentialsExpiredException(MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
+            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
         }
     }
 

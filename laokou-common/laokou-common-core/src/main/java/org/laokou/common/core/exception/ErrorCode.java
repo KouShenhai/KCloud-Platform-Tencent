@@ -55,7 +55,7 @@ public interface ErrorCode {
      */
     int ACCOUNT_DISABLE = 10005;
     /**
-     * 标识符不为空
+     * 唯一标识不为空
      */
     int IDENTIFIER_NOT_NULL = 10006;
     /**
@@ -231,8 +231,59 @@ public interface ErrorCode {
      */
     int SERVICE_MAINTENANCE = 20002;
     /**
-     * 帐户或密码解密失败，请检查密钥
+     * 账号或密码解密失败，请检查密钥
      */
     int DECRYPT_FAIL = 20003;
-
+    /**
+     * 账号不为空
+     */
+    int USERNAME_NOT_NULL = 20004;
+    /**
+     * 密码不为空
+     */
+    int PASSWORD_NOT_NULL = 20005;
+    /**
+     * 验证码不为空
+     */
+    int CAPTCHA_NOT_NULL = 20006;
+    /**
+     * 无效客户端凭据
+     */
+    int INVALID_CLIENT = 20007;
+    /**
+     * 客户端未授权
+     */
+    int UNAUTHORIZED_CLIENT = 20008;
+    /**
+     * 无效授权
+     */
+    int INVALID_GRANT = 20009;
+    /**
+     * 无效作用域
+     */
+    int INVALID_SCOPE = 20010;
+    /**
+     * 无效令牌
+     */
+    int INVALID_TOKEN = 20011;
+    /**
+     * 无效请求
+     */
+    int INVALID_REQUEST = 20012;
+    /**
+     * 错误重定向地址
+     */
+    int REDIRECT_URI_MISMATCH = 20013;
+    /**
+     * 不支持的认证类型
+     */
+    int UNSUPPORTED_GRANT_TYPE = 20014;
+    /**
+     * 不支持的资源类型
+     */
+    int UNSUPPORTED_RESPONSE_TYPE = 20015;
+    /**
+     * 访问被拒绝
+     */
+    int ACCESS_DENIED = 20016;
 }

@@ -15,9 +15,11 @@
  */
 package org.laokou.auth.server.application.service.impl;
 import cn.hutool.core.thread.ThreadUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.enums.UserStatusEnum;
+import org.laokou.auth.server.infrastructure.constant.OauthConstant;
 import org.laokou.auth.server.infrastructure.log.AuthLogUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.enums.ResultStatusEnum;
@@ -35,7 +37,6 @@ import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.RedisKeyUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.redis.utils.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -57,28 +58,16 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SysAuthApplicationServiceImpl implements SysAuthApplicationService {
 
-    @Autowired
-    private SysUserServiceImpl sysUserService;
-
-    @Autowired
-    private SysMenuService sysMenuService;
-
-    @Autowired
-    private SysDeptService sysDeptService;
-
-    @Autowired
-    private SysCaptchaService sysCaptchaService;
-
-    @Autowired
-    private TokenStore tokenStore;
-
-    @Autowired
-    private RedisUtil redisUtil;
-
-    @Autowired
-    private AuthLogUtil authLogUtil;
+    private final SysUserServiceImpl sysUserService;
+    private final SysMenuService sysMenuService;
+    private final SysDeptService sysDeptService;
+    private final SysCaptchaService sysCaptchaService;
+    private final TokenStore tokenStore;
+    private final RedisUtil redisUtil;
+    private final AuthLogUtil authLogUtil;
 
     private static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
             8,
@@ -93,6 +82,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @SneakyThrows
     @Override
     public UserDetail login(String username, String password) {
+        log.info("账号：{}，密码：{}",username,password);
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
@@ -112,7 +102,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                     userDetail.setPermissionList(permissionList);
                     return userDetail;
                 }, executorService);
-        //等待所有任务都完成
+        // 等待所有任务都完成
         CompletableFuture.allOf(c1,c2).join();
         if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
@@ -122,7 +112,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
             throw new CustomOauth2Exception("" + ErrorCode.NOT_PERMISSIONS,MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
         }
-        authLogUtil.recordLogin(username, ResultStatusEnum.SUCCESS.ordinal(),"登录成功");
+        // 登录成功
+        authLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), OauthConstant.LOGIN_SUCCESS_MSG);
         return userDetail;
     }
 

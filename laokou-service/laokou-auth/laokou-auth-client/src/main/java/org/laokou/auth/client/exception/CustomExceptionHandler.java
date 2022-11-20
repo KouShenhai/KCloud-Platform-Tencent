@@ -16,10 +16,12 @@
 
 package org.laokou.auth.client.exception;
 
+import cn.hutool.http.HttpStatus;
+import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.core.utils.MessageUtil;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.util.MimeTypeUtils;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,7 +33,7 @@ import java.nio.charset.StandardCharsets;
 public class CustomExceptionHandler {
 
     public static void handleException(HttpServletResponse response, String code, String message) throws IOException {
-        response.setStatus(cn.hutool.http.HttpStatus.HTTP_OK);
+        response.setStatus(HttpStatus.HTTP_OK);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
         PrintWriter writer = response.getWriter();
@@ -41,16 +43,16 @@ public class CustomExceptionHandler {
 
     public static String getMsg(String code,String message) {
         return switch (code) {
-            case OAuth2Exception.INVALID_CLIENT -> "无效客户端凭据";
-            case OAuth2Exception.UNAUTHORIZED_CLIENT -> "未经授权的客户端";
-            case OAuth2Exception.INVALID_GRANT -> "无效授权";
-            case OAuth2Exception.INVALID_SCOPE -> "无效作用域";
-            case OAuth2Exception.INVALID_TOKEN -> "无效令牌";
-            case OAuth2Exception.INVALID_REQUEST -> "无效请求";
-            case OAuth2Exception.REDIRECT_URI_MISMATCH -> "错误重定向地址";
-            case OAuth2Exception.UNSUPPORTED_GRANT_TYPE -> "不支持的认证模式";
-            case OAuth2Exception.UNSUPPORTED_RESPONSE_TYPE -> "不支持的资源类型";
-            case OAuth2Exception.ACCESS_DENIED -> "访问被拒绝";
+            case OAuth2Exception.INVALID_CLIENT ->  MessageUtil.getMessage(ErrorCode.INVALID_CLIENT);
+            case OAuth2Exception.UNAUTHORIZED_CLIENT ->  MessageUtil.getMessage(ErrorCode.UNAUTHORIZED_CLIENT);
+            case OAuth2Exception.INVALID_GRANT ->  MessageUtil.getMessage(ErrorCode.INVALID_GRANT);
+            case OAuth2Exception.INVALID_SCOPE ->  MessageUtil.getMessage(ErrorCode.INVALID_SCOPE);
+            case OAuth2Exception.INVALID_TOKEN ->  MessageUtil.getMessage(ErrorCode.INVALID_TOKEN);
+            case OAuth2Exception.INVALID_REQUEST ->  MessageUtil.getMessage(ErrorCode.INVALID_REQUEST);
+            case OAuth2Exception.REDIRECT_URI_MISMATCH ->  MessageUtil.getMessage(ErrorCode.REDIRECT_URI_MISMATCH);
+            case OAuth2Exception.UNSUPPORTED_GRANT_TYPE ->  MessageUtil.getMessage(ErrorCode.UNSUPPORTED_GRANT_TYPE);
+            case OAuth2Exception.UNSUPPORTED_RESPONSE_TYPE ->  MessageUtil.getMessage(ErrorCode.UNSUPPORTED_RESPONSE_TYPE);
+            case OAuth2Exception.ACCESS_DENIED -> MessageUtil.getMessage(ErrorCode.ACCESS_DENIED);
             default -> message;
         };
     }

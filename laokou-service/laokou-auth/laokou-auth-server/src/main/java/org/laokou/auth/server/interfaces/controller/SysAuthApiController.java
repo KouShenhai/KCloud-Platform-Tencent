@@ -17,25 +17,24 @@ package org.laokou.auth.server.interfaces.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.auth.server.infrastructure.constant.OauthConstant;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 /**
  * 系统认证控制器
  * @author Kou Shenhai
  */
 @RestController
 @Api(value = "系统认证API",protocols = "http",tags = "系统认证API")
+@RequiredArgsConstructor
 public class SysAuthApiController {
 
-    @Autowired
-    private SysAuthApplicationService sysAuthApplicationService;
+    private final SysAuthApplicationService sysAuthApplicationService;
 
     @GetMapping("/oauth/captcha")
     @ApiOperation("系统认证>验证码")

@@ -20,10 +20,25 @@ package org.laokou.auth.server.infrastructure.constant;
  * @date 2022/8/10 0010 下午 4:28
  */
 public interface OauthConstant {
-
+   /**
+    * 标识
+    */
    String UUID = "uuid";
+   /**
+    * 验证码
+    */
    String CAPTCHA = "captcha";
+   /**
+    * 账号
+    */
    String USERNAME = "username";
+   /**
+    * 密码
+    */
    String PASSWORD = "password";
+   /**
+    * 登录成功
+    */
+   String LOGIN_SUCCESS_MSG = "登录成功";
 
 }

@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 匿名用户(token不存在、错误)，异常处理器
+ * 匿名用户(token失效)，异常处理器
  *
  * @author Mark sunlightcs@gmail.com
  */
@@ -35,6 +35,6 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         log.error("错误信息：{}",authException.getMessage());
-        CustomExceptionHandler.handleException(response,"" +ErrorCode.UNAUTHORIZED, MessageUtil.getMessage(ErrorCode.UNAUTHORIZED));
+        CustomExceptionHandler.handleException(response,"" + ErrorCode.AUTHORIZATION_INVALID, MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
     }
 }
