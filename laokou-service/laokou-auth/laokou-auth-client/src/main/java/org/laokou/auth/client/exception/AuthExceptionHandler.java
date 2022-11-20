@@ -31,6 +31,6 @@ public class AuthExceptionHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         log.error("错误信息：{}",accessDeniedException.getMessage());
-        CustomExceptionHandler.handleException(response,"" +ErrorCode.FORBIDDEN, MessageUtil.getMessage(ErrorCode.FORBIDDEN));
+        CustomExceptionHandler.handleException(response,"" + ErrorCode.FORBIDDEN, MessageUtil.getMessage(ErrorCode.FORBIDDEN));
     }
 }

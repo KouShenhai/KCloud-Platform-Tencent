@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laokou.auth.server.domain.sys.repository.mapper.SysMenuMapper">
     <select id="getPermissionsList" resultType="string" flushCache="true">
-        SELECT permissions FROM boot_sys_menu
+        SELECT permission FROM boot_sys_menu
         where del_flag = '0'
-        GROUP BY permissions
+        GROUP BY permission
     </select>
 
     <select id="getPermissionsListByUserId" resultType="string" flushCache="true">
-        SELECT boot_sys_menu.permissions FROM boot_sys_menu
+        SELECT boot_sys_menu.permission FROM boot_sys_menu
         ,boot_sys_role
         ,boot_sys_role_menu
         ,boot_sys_user
@@ -20,7 +20,7 @@
         AND boot_sys_role.id = boot_sys_user_role.role_id
         AND boot_sys_user.id = #{userId}
         and boot_sys_menu.del_flag = '0'
-        GROUP BY boot_sys_menu.permissions
+        GROUP BY boot_sys_menu.permission
     </select>
 
 </mapper>

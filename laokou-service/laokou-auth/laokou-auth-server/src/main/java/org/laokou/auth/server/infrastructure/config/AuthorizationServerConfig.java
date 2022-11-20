@@ -15,6 +15,7 @@
  */
 package org.laokou.auth.server.infrastructure.config;
 import lombok.AllArgsConstructor;
+import org.laokou.auth.server.infrastructure.constant.OauthConstant;
 import org.laokou.auth.server.infrastructure.exception.CustomAuthenticationEntryPoint;
 import org.laokou.auth.server.infrastructure.exception.CustomClientCredentialsTokenEndpointFilter;
 import org.springframework.context.annotation.Bean;
@@ -29,10 +30,14 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+
+import javax.sql.DataSource;
+
 /**
  * @author Kou Shenhai
  * 官方不再维护，过期类无法替换
@@ -47,26 +52,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private final TokenStore tokenStore;
     private final ClientDetailsService clientDetailsService;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
+    private final DataSource dataSource;
     /**
      * 配置客户端信息
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        //in-memory存储
-        clients.inMemory()
-                .withClient("client_auth")
-                //授权类型
-                .authorizedGrantTypes("password","refresh_token")
-                .scopes("auth")
-                .secret("secret")
-                .autoApprove(true);
+        JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
+        clientDetailsService.setSelectClientDetailsSql(OauthConstant.SELECT_STATEMENT);
+        clientDetailsService.setFindClientDetailsSql(OauthConstant.FIND_STATEMENT);
+        clients.withClientDetails(clientDetailsService);
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST,
-                HttpMethod.OPTIONS, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE);
+        endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS);
         //密码模式
         endpoints.authenticationManager(authenticationManager);
         //登录或者鉴权失败时的返回信息(自定义)
@@ -85,10 +85,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         services.setSupportRefreshToken(true);
         // 存储令牌策略
         services.setTokenStore(tokenStore);
-        // 令牌时间1小时
-        services.setAccessTokenValiditySeconds(60 * 60);
-        // 刷新令牌时间1天
-        services.setRefreshTokenValiditySeconds(60 * 60 * 24);
         return services;
     }
 

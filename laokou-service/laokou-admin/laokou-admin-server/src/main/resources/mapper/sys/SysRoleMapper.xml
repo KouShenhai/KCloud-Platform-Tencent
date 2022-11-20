@@ -3,7 +3,7 @@
 <mapper namespace="org.laokou.admin.server.domain.sys.repository.mapper.SysRoleMapper">
 
     <select id="getRoleIdsByUserId" resultType="long">
-        SELECT distinct boot_sys_role.id FROM boot_sys_role
+        SELECT boot_sys_role.id FROM boot_sys_role
         ,boot_sys_user
         ,boot_sys_user_role
         <where>
@@ -13,6 +13,7 @@
                 AND boot_sys_user.id = #{userId}
             </if>
         </where>
+        group by boot_sys_role.id
         order by boot_sys_role.update_date desc
     </select>
 

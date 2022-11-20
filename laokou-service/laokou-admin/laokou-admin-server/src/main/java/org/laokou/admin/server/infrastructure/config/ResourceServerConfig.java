@@ -52,8 +52,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .cors().and().csrf().disable()
+                .formLogin()
+                .disable()
                 .authorizeRequests()
                 .antMatchers("/druid/**"
                         ,"/webjars/**"
@@ -63,7 +67,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         ,"/swagger/api-docs"
                         ,"/actuator/**"
                         ,"/ws/**").permitAll()
-                .anyRequest().authenticated()
-                .and().headers().frameOptions().disable();
+                .anyRequest().authenticated();
     }
 }

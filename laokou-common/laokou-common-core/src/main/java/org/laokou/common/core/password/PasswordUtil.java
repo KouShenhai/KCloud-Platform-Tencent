@@ -26,7 +26,7 @@ public class PasswordUtil {
      * @param str  字符串
      * @return     返回加密字符串
      */
-    public static String encode(String str){
+    public static String encode(CharSequence str){
         return PASSWORD_ENCODER.encode(str);
     }
 
@@ -41,7 +41,7 @@ public class PasswordUtil {
      * @param  password  加密后密码
      * @return     true：成功    false：失败
      */
-    public static boolean matches(String str, String password){
+    public static boolean matches(CharSequence str, String password){
         return PASSWORD_ENCODER.matches(str, password);
     }
 

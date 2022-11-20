@@ -22,7 +22,6 @@ import org.laokou.admin.server.domain.sys.entity.SysMenuDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 /**
@@ -32,13 +31,6 @@ import java.util.List;
 @Mapper
 @Repository
 public interface SysMenuMapper extends BaseMapper<SysMenuDO> {
-
-    /**
-     * 查询用户权限列表
-     * @param userId
-     * @return
-     */
-    List<String> getPermissionsListByUserId(@Param("userId") Long userId);
 
     /**
      * 获取所有的资源列表

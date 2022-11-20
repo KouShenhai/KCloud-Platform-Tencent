@@ -6,7 +6,7 @@
     id
     ,client_id
     ,client_secret
-    ,scope
+    ,`scope`
     ,authorized_grant_types
     ,web_server_redirect_uri
     ,access_token_validity
@@ -31,7 +31,7 @@
     id
     ,client_id
     ,client_secret
-    ,scope
+    ,`scope`
     ,authorized_grant_types
     ,web_server_redirect_uri
     ,access_token_validity
