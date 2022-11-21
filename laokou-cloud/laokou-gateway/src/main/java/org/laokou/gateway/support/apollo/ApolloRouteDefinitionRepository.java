@@ -57,8 +57,8 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
 
     @ApolloConfigChangeListener(value = "application")
     private void changeHandler(ConfigChangeEvent event) {
-        log.info("apollo动态拉取配置...");
         if (event.isChanged(ROUTES)) {
+            log.info("apollo动态拉取配置...");
             this.publisher.publishEvent(new RefreshRoutesEvent(this));
         }
     }
@@ -80,6 +80,7 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
         return route.flatMap(item -> {
+            log.info("保存路由");
             this.caffeineCache.invalidate(ROUTES);
             return Mono.empty();
         });
@@ -88,6 +89,7 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
         return routeId.flatMap(item -> {
+            log.info("删除路由");
             this.caffeineCache.invalidate(ROUTES);
             return Mono.empty();
         });
