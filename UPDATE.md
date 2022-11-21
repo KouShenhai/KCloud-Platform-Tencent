@@ -6,6 +6,8 @@ SpringCloud 2021.0.4 > 2021.0.5
 ### 2022.11.16 更新日志
 ###### 1.服务拆分
 laokou-admin > laokou-admin + laokou-im
+###### 2.替换依赖
+Shiro -> SpringSecurity
 
 
 ### 2022.10.13 更新日志
