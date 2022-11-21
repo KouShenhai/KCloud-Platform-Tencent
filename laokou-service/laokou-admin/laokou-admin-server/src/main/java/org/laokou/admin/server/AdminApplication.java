@@ -30,7 +30,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
-import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * 架构演变
@@ -44,7 +43,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableConfigurationProperties
 @EnableApolloConfig
 @EnableAspectJAutoProxy
-@EnableAsync
 @Import({CorsConfig.class})
 @EnableEncryptableProperties
 @EnableFeignClients

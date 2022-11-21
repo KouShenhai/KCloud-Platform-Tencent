@@ -43,9 +43,8 @@ public class AuthLogUtil {
     @Autowired
     private KafkaApiFeignClient kafkaApiFeignClient;
 
-    public void recordLogin(String username,Integer status,String msg) {
+    public void recordLogin(String username,Integer status,String msg,HttpServletRequest request) {
         try {
-            HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
             UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader(HttpHeaders.USER_AGENT));
             String ip = IpUtil.getIpAddr(request);
             //获取客户端操作系统

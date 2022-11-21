@@ -58,7 +58,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
             String username = request.getParameter(OauthConstant.USERNAME);
             String password = request.getParameter(OauthConstant.PASSWORD);
             try {
-                validate(uuid, captcha,username,password);
+                validate(uuid, captcha,username,password,request);
             } catch (AuthenticationException e) {
                 //失败处理器
                 userAuthenticationFailureHandler.onAuthenticationFailure(request, response, e);
@@ -68,7 +68,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void validate(String uuid,String captcha,String username,String password) {
+    private void validate(String uuid,String captcha,String username,String password,HttpServletRequest request) {
         if (StringUtil.isEmpty(uuid)) {
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.IDENTIFIER_NOT_NULL));
         }
@@ -83,7 +83,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
         }
         boolean validate = sysCaptchaService.validate(uuid, captcha);
         if (!validate) {
-            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
+            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
         }
     }

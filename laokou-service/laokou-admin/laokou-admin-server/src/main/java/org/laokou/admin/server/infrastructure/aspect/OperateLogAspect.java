@@ -38,7 +38,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -78,7 +77,6 @@ public class OperateLogAspect {
         handleLog(joinPoint,e);
     }
 
-    @Async
     protected void handleLog(final JoinPoint joinPoint,final Exception e) throws IOException {
         try {
             //获取注解
