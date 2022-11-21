@@ -20,8 +20,7 @@ import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.*;
 import org.flowable.image.impl.DefaultProcessDiagramCanvas;
 import org.flowable.image.impl.DefaultProcessDiagramGenerator;
-
-import java.math.BigDecimal;
+import org.laokou.common.core.utils.BigDecimalUtil;
 import java.util.Iterator;
 import java.util.List;
 /**
@@ -359,9 +358,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             } else if (flowNode instanceof CallActivity) {
                 collapsed = true;
             }
-            BigDecimal bigDecimal1 = new BigDecimal("1.0");
-            BigDecimal bigDecimal2 = new BigDecimal(scaleFactor);
-            if ( bigDecimal1.compareTo(bigDecimal2) == 0) {
+            if (BigDecimalUtil.compareTo(1.0,scaleFactor) == 0) {
                 // Actually draw the markers
                 processDiagramCanvas.drawActivityMarkers((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(), (int) graphicInfo.getHeight(),
                         multiInstanceSequential, multiInstanceParallel, collapsed);

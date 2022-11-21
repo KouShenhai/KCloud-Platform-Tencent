@@ -18,6 +18,8 @@ import org.flowable.bpmn.model.AssociationDirection;
 import org.flowable.bpmn.model.GraphicInfo;
 import org.flowable.image.impl.DefaultProcessDiagramCanvas;
 import org.flowable.image.util.ReflectUtil;
+import org.laokou.common.core.utils.BigDecimalUtil;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -29,7 +31,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 /**
@@ -294,9 +295,7 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
         }
         g.setPaint(originalPaint);
         // text
-        BigDecimal bigDecimal1 = new BigDecimal("1.0");
-        BigDecimal bigDecimal2 = new BigDecimal(scaleFactor);
-        if (bigDecimal1.compareTo(bigDecimal2) == 0 && name != null && name.length() > 0) {
+        if (BigDecimalUtil.compareTo(1.0,scaleFactor) == 0 && name != null && name.length() > 0) {
             int boxWidth = width - (1 << TEXT_PADDING);
             int boxHeight = height - 16 - ICON_PADDING - ICON_PADDING - MARKER_WIDTH - 2 - 2;
             int boxX = x + width / 2 - boxWidth / 2;
@@ -347,9 +346,7 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
                 graphicInfo.getWidth(), graphicInfo.getHeight());
         g.fill(circle);
         g.setPaint(EVENT_BORDER_COLOR);
-        BigDecimal bigDecimal1 = new BigDecimal("1.0");
-        BigDecimal bigDecimal2 = new BigDecimal(scaleFactor);
-        if (bigDecimal1.compareTo(bigDecimal2) == 0) {
+        if (BigDecimalUtil.compareTo(1.0,scaleFactor) == 0) {
             g.setStroke(END_EVENT_STROKE);
         } else {
             g.setStroke(new BasicStroke(2.0f));
