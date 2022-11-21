@@ -58,7 +58,8 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     @ApolloConfigChangeListener(value = "application")
     private void changeHandler(ConfigChangeEvent event) {
         if (event.isChanged(ROUTES)) {
-            log.info("apollo动态拉取配置...");
+            log.info("拉取Apollo Gateway动态配置");
+            this.caffeineCache.invalidate(ROUTES);
             this.publisher.publishEvent(new RefreshRoutesEvent(this));
         }
     }

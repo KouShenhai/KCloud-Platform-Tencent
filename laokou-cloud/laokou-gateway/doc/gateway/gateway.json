@@ -34,7 +34,7 @@
       }
     ],
     "metadata": {},
-    "order": 0
+    "order": 999
   },
   {
     "id": "laokou-auth",
@@ -71,7 +71,7 @@
       }
     ],
     "metadata": {},
-    "order": 0
+    "order": 999
   },
   {
     "id": "laokou-elasticsearch",
@@ -108,7 +108,7 @@
       }
     ],
     "metadata": {},
-    "order": 0
+    "order": 999
   },
   {
     "id": "laokou-kafka",
@@ -145,7 +145,7 @@
       }
     ],
     "metadata": {},
-    "order": 0
+    "order": 999
   },
   {
     "id": "laokou-im",
@@ -182,7 +182,7 @@
       }
     ],
     "metadata": {},
-    "order": 0
+    "order": 999
   },
   {
     "id": "laokou-oss",
@@ -219,6 +219,6 @@
       }
     ],
     "metadata": {},
-    "order": 0
+    "order": 999
   }
 ]
