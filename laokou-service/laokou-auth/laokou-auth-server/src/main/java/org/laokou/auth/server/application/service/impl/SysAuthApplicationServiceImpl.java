@@ -92,6 +92,10 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
+        if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
+            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
+            throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_DISABLE,MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
+        }
         CompletableFuture<UserDetail> c1 = CompletableFuture.supplyAsync(() -> sysDeptService.getDeptIds(userDetail))
                 .thenApplyAsync(deptIds -> {
                     userDetail.setDeptIds(deptIds);
@@ -104,10 +108,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 }, executorService);
         // 等待所有任务都完成
         CompletableFuture.allOf(c1,c2).join();
-        if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
-            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
-            throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_DISABLE,MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
-        }
         if (CollectionUtils.isEmpty(userDetail.getPermissionList())) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
             throw new CustomOauth2Exception("" + ErrorCode.NOT_PERMISSIONS,MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
