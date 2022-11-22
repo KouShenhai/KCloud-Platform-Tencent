@@ -105,11 +105,9 @@ public class FileUtil extends FileUtils {
                 //读通道
                 executorService.execute(new RandomFileChannelRun(finalPosition,finalEndSize, fileSize, newFile, inChannel,latch));
             }
-            //等待其他线程
-            latch.await();
             //关闭线程池
             log.info("文件传输结束...");
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -950,25 +948,27 @@ public class FileUtil extends FileUtils {
         @SneakyThrows
         @Override
         public void run() {
+            // 等待其他线程
+            latch.await();
             //结束位置
             if (endSize > fileSize) {
                 endSize = fileSize;
             }
-            //随机文件读取
+            // 随机文件读取
             RandomAccessFile accessFile = new RandomAccessFile(newFile, RW);
-            //写通道
+            // 写通道
             FileChannel newChannel = accessFile.getChannel();
-            //标记位置
+            // 标记位置
             newChannel.position(position);
-            //零拷贝
-            //transferFrom 与 transferTo 区别
-            //transferTo 最多拷贝2gb，和源文件大小保持一致
-            //transferFrom 每个线程拷贝20MB
+            // 零拷贝
+            // transferFrom 与 transferTo 区别
+            // transferTo 最多拷贝2gb，和源文件大小保持一致
+            // transferFrom 每个线程拷贝20MB
             srcChannel.transferTo(position,endSize,newChannel);
-            //减一，当为0时，线程就会执行
-            latch.countDown();
-            //关闭流
+            // 关闭流
             closeStream(accessFile,newChannel);
+            // 减一，当为0时，线程就会执行
+            latch.countDown();
         }
     }
 }

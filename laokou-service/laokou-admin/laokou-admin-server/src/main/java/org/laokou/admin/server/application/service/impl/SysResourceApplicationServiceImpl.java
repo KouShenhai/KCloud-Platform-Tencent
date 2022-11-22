@@ -165,6 +165,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                 for (String ym : resourceYmPartitionList) {
                     asyncTaskExecutor.execute(() -> {
                         try {
+                            countDownLatch.await();
                             final CreateIndexModel model = new CreateIndexModel();
                             final String indexName = resourceIndex + "_" + ym;
                             model.setIndexName(indexName);
@@ -172,12 +173,14 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                             elasticsearchApiFeignClient.create(model);
                         } catch (final FeignException e) {
                             log.error("错误信息：{}",e.getMessage());
+                        } catch (InterruptedException e) {
+                            log.error("错误信息：{}",e.getMessage());
+                            throw new RuntimeException(e);
                         } finally {
                             countDownLatch.countDown();
                         }
                     });
                 }
-                countDownLatch.await();
                 //同步数据 - 异步
                 final int chunkSize = 500;
                 int pageIndex = 0;
