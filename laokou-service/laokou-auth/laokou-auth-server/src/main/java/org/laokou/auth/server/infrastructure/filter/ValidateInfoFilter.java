@@ -3,7 +3,7 @@ package org.laokou.auth.server.infrastructure.filter;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
-import org.laokou.auth.server.infrastructure.constant.OauthConstant;
+import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.server.infrastructure.handler.UserAuthenticationFailureHandler;
 import org.laokou.auth.server.infrastructure.log.AuthLogUtil;
 import org.laokou.common.core.enums.ResultStatusEnum;
@@ -36,7 +36,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
 
     private final static String GRANT_TYPE_NAME = "grant_type";
 
-    private final static String GRANT_TYPE = OauthConstant.PASSWORD;
+    private final static String GRANT_TYPE = AuthConstant.PASSWORD;
 
     @Autowired
     private SysCaptchaService sysCaptchaService;
@@ -53,10 +53,10 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
         if (ANT_PATH_MATCHER.match(request.getServletPath(), OAUTH_URL)
                 && request.getMethod().equalsIgnoreCase(HttpMethod.POST.name())
                 && GRANT_TYPE.equals(request.getParameter(GRANT_TYPE_NAME))) {
-            String uuid = request.getParameter(OauthConstant.UUID);
-            String captcha = request.getParameter(OauthConstant.CAPTCHA);
-            String username = request.getParameter(OauthConstant.USERNAME);
-            String password = request.getParameter(OauthConstant.PASSWORD);
+            String uuid = request.getParameter(AuthConstant.UUID);
+            String captcha = request.getParameter(AuthConstant.CAPTCHA);
+            String username = request.getParameter(AuthConstant.USERNAME);
+            String password = request.getParameter(AuthConstant.PASSWORD);
             try {
                 validate(uuid, captcha,username,password,request);
             } catch (AuthenticationException e) {

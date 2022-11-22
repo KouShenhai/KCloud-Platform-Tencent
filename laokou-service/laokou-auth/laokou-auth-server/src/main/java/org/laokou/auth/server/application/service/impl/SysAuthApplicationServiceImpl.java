@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.enums.UserStatusEnum;
-import org.laokou.auth.server.infrastructure.constant.OauthConstant;
+import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.server.infrastructure.log.AuthLogUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.enums.ResultStatusEnum;
@@ -122,7 +122,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         }
         executorService.execute(() -> {
             // 登录成功
-            authLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), OauthConstant.LOGIN_SUCCESS_MSG,request);
+            authLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
         });
         return userDetail;
     }

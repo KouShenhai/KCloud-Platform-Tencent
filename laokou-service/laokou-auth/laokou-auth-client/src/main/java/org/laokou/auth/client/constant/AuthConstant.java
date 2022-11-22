@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.auth.server.infrastructure.constant;
+package org.laokou.auth.client.constant;
 /**
  * @author Kou Shenhai
  * @version 1.0
  * @date 2022/8/10 0010 下午 4:28
  */
-public interface OauthConstant {
+public interface AuthConstant {
    /**
     * 标识
     */

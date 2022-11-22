@@ -15,7 +15,7 @@
  */
 package org.laokou.auth.server.infrastructure.config;
 import lombok.AllArgsConstructor;
-import org.laokou.auth.server.infrastructure.constant.OauthConstant;
+import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.server.infrastructure.exception.CustomAuthenticationEntryPoint;
 import org.laokou.auth.server.infrastructure.exception.CustomClientCredentialsTokenEndpointFilter;
 import org.springframework.context.annotation.Bean;
@@ -59,8 +59,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
-        clientDetailsService.setSelectClientDetailsSql(OauthConstant.SELECT_STATEMENT);
-        clientDetailsService.setFindClientDetailsSql(OauthConstant.FIND_STATEMENT);
+        clientDetailsService.setSelectClientDetailsSql(AuthConstant.SELECT_STATEMENT);
+        clientDetailsService.setFindClientDetailsSql(AuthConstant.FIND_STATEMENT);
         clients.withClientDetails(clientDetailsService);
     }
 

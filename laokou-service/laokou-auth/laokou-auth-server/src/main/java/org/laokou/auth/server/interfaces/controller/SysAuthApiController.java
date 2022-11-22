@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
-import org.laokou.auth.server.infrastructure.constant.OauthConstant;
+import org.laokou.auth.client.constant.AuthConstant;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ public class SysAuthApiController {
     @GetMapping("/oauth/captcha")
     @ApiOperation("系统认证>验证码")
     @ApiImplicitParam(name = "uuid",value = "唯一标识",required = true,paramType = "query",dataType = "String")
-    public void captcha(@RequestParam(OauthConstant.UUID)String uuid, HttpServletResponse response) throws IOException {
+    public void captcha(@RequestParam(AuthConstant.UUID)String uuid, HttpServletResponse response) throws IOException {
         sysAuthApplicationService.captcha(uuid,response);
     }
 
