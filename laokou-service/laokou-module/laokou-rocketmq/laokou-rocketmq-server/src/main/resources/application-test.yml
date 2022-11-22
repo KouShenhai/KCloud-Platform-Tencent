@@ -1,0 +1,11 @@
+server:
+  port: 10004
+  address: 192.168.62.1
+rocketmq:
+  name-server: 192.168.62.1:9876
+  # 生产者
+  producer:
+    group: laokou-rocketmq-group
+logging:
+  file:
+    name: logs/${spring.application.name}/info.log

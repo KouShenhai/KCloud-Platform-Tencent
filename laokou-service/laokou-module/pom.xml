@@ -20,5 +20,6 @@
         <module>laokou-kafka</module>
         <module>laokou-elasticsearch</module>
         <module>laokou-redis</module>
+        <module>laokou-rocketmq</module>
     </modules>
 </project>

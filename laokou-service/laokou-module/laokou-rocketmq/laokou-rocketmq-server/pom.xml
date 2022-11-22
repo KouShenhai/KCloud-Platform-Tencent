@@ -4,34 +4,23 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.laokou</groupId>
-        <artifactId>laokou-kafka</artifactId>
+        <artifactId>laokou-rocketmq</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>org.laokou</groupId>
-    <artifactId>laokou-kafka-consumer</artifactId>
-
+    <artifactId>laokou-rocketmq-server</artifactId>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bus-kafka</artifactId>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.laokou</groupId>-->
-<!--            <artifactId>laokou-kafka-client</artifactId>-->
-<!--        </dependency>-->
+
         <dependency>
             <groupId>org.laokou</groupId>
-            <artifactId>laokou-auth-client</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.laokou</groupId>
-                    <artifactId>laokou-common-swagger</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.laokou</groupId>
-                    <artifactId>laokou-redis</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>laokou-rocketmq-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
@@ -39,9 +28,14 @@
         </dependency>
         <dependency>
             <groupId>org.laokou</groupId>
-            <artifactId>laokou-common-mybatis-plus</artifactId>
+            <artifactId>laokou-common-swagger</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -51,7 +45,7 @@
                 <configuration>
                     <finalName>${project.artifactId}</finalName>
                     <!-- main方法的地址 只需要修改这个地址-->
-                    <mainClass>org.laokou.kafka.consumer.KafkaConsumerApplication</mainClass>
+                    <mainClass>org.laokou.rocketmq.server.RocketmqApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -63,4 +57,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
