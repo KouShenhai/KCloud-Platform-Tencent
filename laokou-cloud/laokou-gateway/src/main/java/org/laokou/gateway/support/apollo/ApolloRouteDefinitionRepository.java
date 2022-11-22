@@ -19,7 +19,9 @@ import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfigChangeListener;
 import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -50,7 +54,14 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     /**
      * 高性能缓存
      */
-    private final Cache<String,Collection<RouteDefinition>> caffeineCache;
+    private final Cache<String,RouteDefinition> caffeineCache;
+
+    public ApolloRouteDefinitionRepository() {
+        caffeineCache = Caffeine.newBuilder().initialCapacity(10)
+                .expireAfterAccess(10, TimeUnit.MINUTES)
+                .maximumSize(100)
+                .build();
+    }
 
     @ApolloConfig
     private Config config;
@@ -59,41 +70,33 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
     private void changeHandler(ConfigChangeEvent event) {
         if (event.isChanged(ROUTES)) {
             log.info("拉取Apollo Gateway动态配置");
-            this.caffeineCache.invalidate(ROUTES);
+            this.caffeineCache.invalidateAll();
             this.publisher.publishEvent(new RefreshRoutesEvent(this));
         }
     }
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
-        Collection<RouteDefinition> routeDefinitions = caffeineCache.getIfPresent(ROUTES);
-        if (routeDefinitions == null) {
+        Collection<RouteDefinition> routeDefinitions = caffeineCache.asMap().values();
+        if (CollectionUtils.isEmpty(routeDefinitions)) {
             final String property = config.getProperty(ROUTES, null);
             if (StringUtil.isEmpty(property)) {
                 return Flux.fromIterable(new ArrayList<>(0));
             }
             routeDefinitions = JacksonUtil.toList(property, RouteDefinition.class);
-            caffeineCache.put(ROUTES,routeDefinitions);
+            routeDefinitions.forEach(item -> caffeineCache.put(item.getId(),item));
         }
         return Flux.fromIterable(routeDefinitions);
     }
 
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
-        return route.flatMap(item -> {
-            log.info("保存路由");
-            this.caffeineCache.invalidate(ROUTES);
-            return Mono.empty();
-        });
+        return Mono.empty();
     }
 
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
-        return routeId.flatMap(item -> {
-            log.info("删除路由");
-            this.caffeineCache.invalidate(ROUTES);
-            return Mono.empty();
-        });
+        return Mono.empty();
     }
 
     @Override
