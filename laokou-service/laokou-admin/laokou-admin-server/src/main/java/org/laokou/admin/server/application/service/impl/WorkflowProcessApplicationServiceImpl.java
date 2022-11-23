@@ -22,7 +22,7 @@ import org.laokou.admin.server.application.service.WorkflowProcessApplicationSer
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
 import org.laokou.admin.client.enums.ChannelTypeEnum;
 import org.laokou.admin.client.enums.MessageTypeEnum;
-import org.laokou.admin.server.infrastructure.feign.kafka.KafkaApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;
 import org.laokou.admin.server.infrastructure.utils.WorkFlowUtil;
 import org.laokou.admin.client.dto.AuditDTO;
 import org.laokou.admin.client.vo.StartProcessVO;
@@ -40,10 +40,11 @@ import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.RedisKeyUtil;
 import org.laokou.common.core.utils.StringUtil;
-//import org.laokou.kafka.client.constant.KafkaConstant;
-//import org.laokou.kafka.client.dto.KafkaDTO;
-//import org.laokou.kafka.client.dto.ResourceAuditLogDTO;
+import org.laokou.common.core.utils.ThreadUtil;
 import org.laokou.redis.utils.RedisUtil;
+import org.laokou.rocketmq.client.constant.RocketmqConstant;
+import org.laokou.rocketmq.client.dto.ResourceAuditLogDTO;
+import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     private WorkflowTaskApplicationService workflowTaskApplicationService;
 
     @Autowired
-    private KafkaApiFeignClient kafkaApiFeignClient;
+    private RocketmqApiFeignClient rocketmqApiFeignClient;
 
     @Autowired
     private WorkFlowUtil workFlowUtil;
@@ -175,26 +176,26 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         } else {
             redisUtil.hSet(resourceAuditKey,taskId,taskId,RedisUtil.HOUR_ONE_EXPIRE);
         }
-        //saveAuditLog(resourceId,status,auditStatus,comment);
+        ThreadUtil.executorService.execute(() -> saveAuditLog(resourceId,status,auditStatus,comment));
         return auditFlag;
     }
 
-//    private void saveAuditLog(Long resourceId,int status,int auditStatus,String comment) {
-//        try {
-//            ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
-//            auditLogDTO.setResourceId(resourceId);
-//            auditLogDTO.setStatus(status);
-//            auditLogDTO.setAuditStatus(auditStatus);
-//            auditLogDTO.setAuditDate(new Date());
-//            auditLogDTO.setAuditName(UserUtil.getUsername());
-//            auditLogDTO.setCreator(UserUtil.getUserId());
-//            auditLogDTO.setComment(comment);
-//            KafkaDTO kafkaDTO = new KafkaDTO();
-//            kafkaDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
-//            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_RESOURCE_AUDIT_TOPIC, kafkaDTO);
-//        } catch (FeignException e) {
-//            log.error("错误信息：{}",e.getMessage());
-//        }
-//    }
+    private void saveAuditLog(Long resourceId,int status,int auditStatus,String comment) {
+        try {
+            ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
+            auditLogDTO.setResourceId(resourceId);
+            auditLogDTO.setStatus(status);
+            auditLogDTO.setAuditStatus(auditStatus);
+            auditLogDTO.setAuditDate(new Date());
+            auditLogDTO.setAuditName(UserUtil.getUsername());
+            auditLogDTO.setCreator(UserUtil.getUserId());
+            auditLogDTO.setComment(comment);
+            RocketmqDTO rocketmqDTO = new RocketmqDTO();
+            rocketmqDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
+            rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_RESOURCE_AUDIT_TOPIC, rocketmqDTO);
+        } catch (FeignException e) {
+            log.error("错误信息：{}",e.getMessage());
+        }
+    }
 
 }

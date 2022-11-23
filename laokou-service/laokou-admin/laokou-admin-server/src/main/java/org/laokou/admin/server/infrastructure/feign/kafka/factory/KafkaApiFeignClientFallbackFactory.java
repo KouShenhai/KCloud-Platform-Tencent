@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.feign.kafka.factory;
-import org.laokou.admin.server.infrastructure.feign.kafka.fallback.KafkaApiFeignClientFallback;
+import org.laokou.admin.server.infrastructure.feign.kafka.fallback.RocketmqApiFeignClientFallback;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -25,10 +25,10 @@ import org.springframework.stereotype.Component;
  * @date 2020/9/5 0005 上午 12:12
  */
 @Component
-public class KafkaApiFeignClientFallbackFactory implements FallbackFactory<KafkaApiFeignClientFallback> {
+public class KafkaApiFeignClientFallbackFactory implements FallbackFactory<RocketmqApiFeignClientFallback> {
 
     @Override
-    public KafkaApiFeignClientFallback create(Throwable throwable) {
-        return new KafkaApiFeignClientFallback(throwable);
+    public RocketmqApiFeignClientFallback create(Throwable throwable) {
+        return new RocketmqApiFeignClientFallback(throwable);
     }
 }

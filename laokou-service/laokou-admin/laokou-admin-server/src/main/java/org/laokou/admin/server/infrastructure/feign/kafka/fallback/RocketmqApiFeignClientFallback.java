@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.auth.server.infrastructure.feign.kafka.fallback;
-import org.laokou.auth.server.infrastructure.feign.kafka.KafkaApiFeignClient;
+package org.laokou.admin.server.infrastructure.feign.kafka.fallback;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;
+import org.laokou.rocketmq.client.dto.RocketmqDTO;
 
 /**
  * 服务降级
@@ -26,12 +28,18 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @AllArgsConstructor
-public class KafkaApiFeignClientFallback implements KafkaApiFeignClient {
+public class RocketmqApiFeignClientFallback implements RocketmqApiFeignClient {
 
     private final Throwable throwable;
 
-//    @Override
-//    public void sendAsyncMessage(String topic, KafkaDTO dto) {
-//        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-//    }
+    @Override
+    public void sendAsyncMessage(String topic, RocketmqDTO dto) {
+        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+    }
+
+    @Override
+    public void sendOneMessage(String topic, RocketmqDTO dto) {
+        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+    }
+
 }

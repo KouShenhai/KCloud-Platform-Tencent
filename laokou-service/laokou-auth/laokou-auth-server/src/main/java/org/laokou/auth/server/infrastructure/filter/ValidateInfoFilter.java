@@ -10,6 +10,7 @@ import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.StringUtil;
+import org.laokou.common.core.utils.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -83,7 +84,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
         }
         boolean validate = sysCaptchaService.validate(uuid, captcha);
         if (!validate) {
-            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
+            ThreadUtil.executorService.execute(() -> authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request));
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
         }
     }

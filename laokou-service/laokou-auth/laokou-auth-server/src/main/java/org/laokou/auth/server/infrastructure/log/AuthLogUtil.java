@@ -18,12 +18,14 @@ package org.laokou.auth.server.infrastructure.log;
 import eu.bitwalker.useragentutils.UserAgent;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.auth.server.infrastructure.feign.kafka.KafkaApiFeignClient;
+import org.apache.http.HttpHeaders;
+import org.laokou.auth.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
 import org.laokou.common.core.utils.AddressUtil;
-import org.laokou.common.core.utils.HttpContextUtil;
 import org.laokou.common.core.utils.IpUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.apache.http.HttpHeaders;
+import org.laokou.rocketmq.client.constant.RocketmqConstant;
+import org.laokou.rocketmq.client.dto.LoginLogDTO;
+import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,30 +40,30 @@ import java.io.IOException;
 public class AuthLogUtil {
 
     @Autowired
-    private KafkaApiFeignClient kafkaApiFeignClient;
+    private RocketmqApiFeignClient rocketmqApiFeignClient;
 
     public void recordLogin(String username,Integer status,String msg,HttpServletRequest request) {
-//        try {
-//            UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader(HttpHeaders.USER_AGENT));
-//            String ip = IpUtil.getIpAddr(request);
-//            //获取客户端操作系统
-//            String os = userAgent.getOperatingSystem().getName();
-//            //获取客户端浏览器
-//            String browser = userAgent.getBrowser().getName();
-////            LoginLogDTO dto = new LoginLogDTO();
-////            dto.setLoginName(username);
-////            dto.setRequestIp(ip);
-////            dto.setRequestAddress(AddressUtil.getRealAddress(ip));
-////            dto.setBrowser(browser);
-////            dto.setOs(os);
-////            dto.setMsg(msg);
-////            dto.setRequestStatus(status);
-////            KafkaDTO kafkaDTO = new KafkaDTO();
-////            kafkaDTO.setData(JacksonUtil.toJsonStr(dto));
-////            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_LOGIN_LOG_TOPIC, kafkaDTO);
-//        } catch (FeignException | IOException e) {
-//            log.error("异常信息：{}",e.getMessage());
-//        }
+        try {
+            UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader(HttpHeaders.USER_AGENT));
+            String ip = IpUtil.getIpAddr(request);
+            //获取客户端操作系统
+            String os = userAgent.getOperatingSystem().getName();
+            //获取客户端浏览器
+            String browser = userAgent.getBrowser().getName();
+            LoginLogDTO dto = new LoginLogDTO();
+            dto.setLoginName(username);
+            dto.setRequestIp(ip);
+            dto.setRequestAddress(AddressUtil.getRealAddress(ip));
+            dto.setBrowser(browser);
+            dto.setOs(os);
+            dto.setMsg(msg);
+            dto.setRequestStatus(status);
+            RocketmqDTO rocketmqDTO = new RocketmqDTO();
+            rocketmqDTO.setData(JacksonUtil.toJsonStr(dto));
+            rocketmqApiFeignClient.sendOneMessage(RocketmqConstant.LAOKOU_LOGIN_LOG_TOPIC, rocketmqDTO);
+        } catch (FeignException | IOException e) {
+            log.error("异常信息：{}",e.getMessage());
+        }
     }
 
 }

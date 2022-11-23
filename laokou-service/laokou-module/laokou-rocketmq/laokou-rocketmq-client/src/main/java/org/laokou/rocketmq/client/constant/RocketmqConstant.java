@@ -36,4 +36,20 @@ public interface RocketmqConstant {
      * 资源审批消息
      */
     String LAOKOU_RESOURCE_AUDIT_TOPIC = "laokou-resource-audit-topic";
+
+    /**
+     * 资源同步消息
+     */
+    String LAOKOU_RESOURCE_SYNC_TOPIC = "laokou-resource-sync-topic";
+
+    /**
+     * 消息通知
+     */
+    String LAOKOU_MESSAGE_NOTICE_TOPIC = "laokou-message-notice-topic";
+
+    /**
+     * 消息提醒
+     */
+    String LAOKOU_MESSAGE_REMIND_TOPIC = "laokou-message-remind-topic";
+
 }

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.application.service.impl;
-import cn.hutool.core.thread.ThreadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.collections.CollectionUtils;
@@ -33,10 +32,7 @@ import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.exception.CustomOauth2Exception;
-import org.laokou.common.core.utils.HttpContextUtil;
-import org.laokou.common.core.utils.MessageUtil;
-import org.laokou.common.core.utils.RedisKeyUtil;
-import org.laokou.common.core.utils.StringUtil;
+import org.laokou.common.core.utils.*;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
@@ -50,9 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 /**
  * 官方不再维护，过期类无法替换
  * @author Kou Shenhai
@@ -70,16 +63,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private final RedisUtil redisUtil;
     private final AuthLogUtil authLogUtil;
 
-    private static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
-            8,
-            16,
-            60,
-            TimeUnit.SECONDS,
-            new LinkedBlockingQueue<>(512),
-            ThreadUtil.newNamedThreadFactory("laokou-auth-service",true),
-            new ThreadPoolExecutor.CallerRunsPolicy()
-    );
-
     @SneakyThrows
     @Override
     public UserDetail login(String username, String password) {
@@ -87,19 +70,19 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
-            executorService.execute(() -> {
+            ThreadUtil.executorService.execute(() -> {
                 authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             });
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         if(!PasswordUtil.matches(password, userDetail.getPassword())) {
-            executorService.execute(() -> {
+            ThreadUtil.executorService.execute(() -> {
                 authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             });
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
-            executorService.execute(() -> {
+            ThreadUtil.executorService.execute(() -> {
                 authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
             });
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_DISABLE,MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
@@ -108,19 +91,19 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 .thenApplyAsync(deptIds -> {
                     userDetail.setDeptIds(deptIds);
                     return userDetail;
-                }, executorService);
+                }, ThreadUtil.executorService);
         CompletableFuture<UserDetail> c2 = CompletableFuture.supplyAsync(() -> sysMenuService.getPermissionsList(userDetail))
                 .thenApplyAsync(permissionList -> {
                     userDetail.setPermissionList(permissionList);
                     return userDetail;
-                }, executorService);
+                }, ThreadUtil.executorService);
         // 等待所有任务都完成
         CompletableFuture.allOf(c1,c2).join();
         if (CollectionUtils.isEmpty(userDetail.getPermissionList())) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
             throw new CustomOauth2Exception("" + ErrorCode.NOT_PERMISSIONS,MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
         }
-        executorService.execute(() -> {
+        ThreadUtil.executorService.execute(() -> {
             // 登录成功
             authLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
         });

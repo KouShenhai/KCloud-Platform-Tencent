@@ -13,26 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.auth.server.infrastructure.feign.kafka;
-import org.laokou.auth.server.infrastructure.feign.kafka.factory.KafkaApiFeignClientFallbackFactory;
+package org.laokou.admin.server.infrastructure.feign.kafka;
+
+import org.laokou.admin.server.infrastructure.feign.kafka.factory.KafkaApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
+import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @author Kou Shenhai
  */
-@FeignClient(name = ServiceConstant.LAOKOU_KAFKA,path = "/api", fallback = KafkaApiFeignClientFallbackFactory.class)
+@FeignClient(name = ServiceConstant.LAOKOU_ROCKETMQ,path = "/api", fallback = KafkaApiFeignClientFallbackFactory.class)
 @Service
-public interface KafkaApiFeignClient {
+public interface RocketmqApiFeignClient {
 
     /**
      * 异步发送
      * @param topic: 主题
      * @param dto:   消息内容（Json格式）
      */
-//    @PostMapping("/sendAsync/{topic}")
-//    void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto);
+    @PostMapping("/sendAsync/{topic}")
+    void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto);
+
+    /**
+     * 异步发送
+     * @param topic: 主题
+     * @param dto:   消息内容（Json格式）
+     */
+    @PostMapping("/sendOne/{topic}")
+    void sendOneMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto);
 
 }

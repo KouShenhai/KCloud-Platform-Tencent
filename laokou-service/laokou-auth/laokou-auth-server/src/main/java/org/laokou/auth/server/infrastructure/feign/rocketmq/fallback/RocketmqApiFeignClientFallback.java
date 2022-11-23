@@ -13,22 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.auth.server.infrastructure.feign.kafka.factory;
-import org.laokou.auth.server.infrastructure.feign.kafka.fallback.KafkaApiFeignClientFallback;
-import org.springframework.cloud.openfeign.FallbackFactory;
-import org.springframework.stereotype.Component;
+package org.laokou.auth.server.infrastructure.feign.rocketmq.fallback;
+import org.laokou.auth.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.laokou.rocketmq.client.dto.RocketmqDTO;
 
 /**
- * 回调工厂
+ * 服务降级
  * @author Kou Shenhai
  * @version 1.0
  * @date 2020/9/5 0005 上午 12:12
  */
-@Component
-public class KafkaApiFeignClientFallbackFactory implements FallbackFactory<KafkaApiFeignClientFallback> {
+@Slf4j
+@AllArgsConstructor
+public class RocketmqApiFeignClientFallback implements RocketmqApiFeignClient {
+
+    private final Throwable throwable;
 
     @Override
-    public KafkaApiFeignClientFallback create(Throwable throwable) {
-        return new KafkaApiFeignClientFallback(throwable);
+    public void sendAsyncMessage(String topic, RocketmqDTO dto) {
+        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+    }
+
+    @Override
+    public void sendOneMessage(String topic, RocketmqDTO dto) {
+        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
     }
 }

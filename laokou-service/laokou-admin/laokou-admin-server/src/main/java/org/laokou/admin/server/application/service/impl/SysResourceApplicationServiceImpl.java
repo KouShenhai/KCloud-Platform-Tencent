@@ -39,16 +39,14 @@ import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.common.core.utils.FileUtil;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.core.utils.ThreadUtil;
 import org.laokou.oss.client.vo.UploadVO;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.elasticsearch.client.model.ElasticsearchModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -80,9 +78,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     @Autowired
     private ElasticsearchApiFeignClient elasticsearchApiFeignClient;
 
-    @Autowired
-    private AsyncTaskExecutor asyncTaskExecutor;
-
     @Override
     public IPage<SysResourceVO> queryResourcePage(SysResourceQo qo) {
         IPage<SysResourceVO> page = new Page(qo.getPageNum(),qo.getPageSize());
@@ -95,7 +90,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public Boolean insertResource(SysResourceDTO dto) throws IOException {
+    public Boolean insertResource(SysResourceDTO dto) {
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
         sysResourceDO.setCreator(UserUtil.getUserId());
         sysResourceDO.setAuthor(UserUtil.getUsername());
@@ -116,7 +111,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public Boolean updateResource(SysResourceDTO dto) throws IOException {
+    public Boolean updateResource(SysResourceDTO dto) {
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
         sysResourceDO.setEditor(UserUtil.getUserId());
         sysResourceDO.setStatus(0);
@@ -152,7 +147,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public Boolean syncAsyncBatchResource(String code) throws InterruptedException {
+    public Boolean syncAsyncBatchResource(String code) {
             //总数
             final Long resourceTotal = sysResourceService.getResourceTotal(code);
             if (resourceTotal > 0) {
@@ -163,7 +158,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                 final List<String> resourceYmPartitionList = sysResourceService.getResourceYmPartitionList(code);
                 CountDownLatch countDownLatch = new CountDownLatch(resourceYmPartitionList.size());
                 for (String ym : resourceYmPartitionList) {
-                    asyncTaskExecutor.execute(() -> {
+                    ThreadUtil.executorService.execute(() -> {
                         try {
                             countDownLatch.await();
                             final CreateIndexModel model = new CreateIndexModel();
@@ -191,7 +186,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         final String ym = entry.getKey();
                         final List<ResourceIndex> resourceDataList = entry.getValue();
                         //同步数据
-                        asyncTaskExecutor.execute(() -> {
+                        ThreadUtil.executorService.execute(() -> {
                             try {
                                 final String indexName = resourceIndex + "_" + ym;
                                 final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.common.core.utils;
-import cn.hutool.core.thread.ThreadUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -41,16 +40,6 @@ public class FileUtil extends FileUtils {
      * 定义允许上传的文件扩展名
      */
     private static final Map<String, String> EXT_MAP = new HashMap<>(3);
-
-    public static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
-            8,
-            16,
-            60,
-            TimeUnit.SECONDS,
-            new LinkedBlockingQueue<>(512),
-            ThreadUtil.newNamedThreadFactory("laokou-oss-service",true),
-            new ThreadPoolExecutor.CallerRunsPolicy()
-    );
 
     static {
         // 其中image,audio,video对应文件夹名称,对应dirName
@@ -103,7 +92,7 @@ public class FileUtil extends FileUtils {
                 //指定位置
                 final Long finalPosition = position;
                 //读通道
-                executorService.execute(new RandomFileChannelRun(finalPosition,finalEndSize, fileSize, newFile, inChannel,latch));
+                ThreadUtil.executorService.execute(new RandomFileChannelRun(finalPosition,finalEndSize, fileSize, newFile, inChannel,latch));
             }
             //关闭线程池
             log.info("文件传输结束...");
