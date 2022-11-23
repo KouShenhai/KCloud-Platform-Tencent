@@ -17,7 +17,6 @@
         <module>laokou-email</module>
         <module>laokou-xxl-job</module>
         <module>laokou-im</module>
-        <module>laokou-kafka</module>
         <module>laokou-elasticsearch</module>
         <module>laokou-redis</module>
         <module>laokou-rocketmq</module>
