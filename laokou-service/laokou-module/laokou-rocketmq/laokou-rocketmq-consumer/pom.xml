@@ -14,14 +14,34 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-rocketmq-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-auth-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.laokou</groupId>
+                    <artifactId>laokou-common-swagger</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.laokou</groupId>
+                    <artifactId>laokou-redis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-common-mybatis-plus</artifactId>
         </dependency>
     </dependencies>
 
