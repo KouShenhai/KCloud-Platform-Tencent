@@ -94,7 +94,7 @@
         <!--minio版本 -->
         <minio.version>8.4.3</minio.version>
         <!--rocketmq版本 -->
-        <rocketmq.version>2.0.3</rocketmq.version>
+        <rocketmq.version>2.2.0</rocketmq.version>
         <!--servlet-api版本 -->
         <servlet.api.version>4.0.4</servlet.api.version>
     </properties>

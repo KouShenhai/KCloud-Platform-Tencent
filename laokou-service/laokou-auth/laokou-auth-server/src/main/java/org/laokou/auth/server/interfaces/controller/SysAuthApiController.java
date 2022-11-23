@@ -21,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.auth.client.constant.AuthConstant;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -45,9 +44,8 @@ public class SysAuthApiController {
 
     @GetMapping("/oauth/logout")
     @ApiOperation("系统认证>退出登录")
-    public Mono<Void> logout(HttpServletRequest request) {
+    public void logout(HttpServletRequest request) {
         sysAuthApplicationService.logout(request);
-        return Mono.empty();
     }
 
 }

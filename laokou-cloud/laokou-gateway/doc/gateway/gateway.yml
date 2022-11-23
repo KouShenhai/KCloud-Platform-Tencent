@@ -56,10 +56,10 @@ spring:
                 name: default
                 # 降级接口地址
                 fallbackUri: 'forward:/fallback'
-        - id: laokou-kafka
-          uri: lb://laokou-kafka
+        - id: laokou-rocketmq
+          uri: lb://laokou-rocketmq
           predicates:
-            - Path=/kafka/**
+            - Path=/rocketmq/**
           filters:
             - StripPrefix=1
             # 限流

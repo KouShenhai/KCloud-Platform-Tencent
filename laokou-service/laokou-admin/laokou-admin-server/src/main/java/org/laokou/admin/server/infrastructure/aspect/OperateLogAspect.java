@@ -65,31 +65,19 @@ public class OperateLogAspect {
      * 处理完请求后执行
      */
     @AfterReturning(pointcut = "logPointCut()")
-    public void doAfterReturning(JoinPoint joinPoint) {
-        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-        ThreadUtil.executorService.execute(() -> {
-            try {
-                handleLog(joinPoint,null,request);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+    public void doAfterReturning(JoinPoint joinPoint) throws IOException {
+        handleLog(joinPoint,null);
+
     }
 
     @AfterThrowing(pointcut = "logPointCut()",throwing = "e")
-    public void doAfterThrowing(JoinPoint joinPoint,Exception e) {
-        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-        ThreadUtil.executorService.execute(() -> {
-            try {
-                handleLog(joinPoint,e,request);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+    public void doAfterThrowing(JoinPoint joinPoint,Exception e) throws IOException {
+        handleLog(joinPoint,e);
     }
 
-    protected void handleLog(final JoinPoint joinPoint,final Exception e,HttpServletRequest request) throws IOException {
+    protected void handleLog(final JoinPoint joinPoint,final Exception e) throws IOException {
         try {
+            HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
             //获取注解
             Signature signature = joinPoint.getSignature();
             MethodSignature methodSignature = (MethodSignature) signature;

@@ -44,7 +44,6 @@ import org.laokou.common.core.utils.ThreadUtil;
 import org.laokou.oss.client.vo.UploadVO;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
-import org.laokou.elasticsearch.client.model.ElasticsearchModel;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.ResourceSyncDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
@@ -67,6 +66,8 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
 
     @Autowired
     private SysResourceService sysResourceService;
+
+    private static final String RESOURCE_KEY = "laokou_resource";
 
     private static final String PROCESS_KEY = "Process_88888888";
 
@@ -160,8 +161,8 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             if (resourceTotal > 0) {
                 beforeSync();
                 //创建索引 - 时间分区
-                final String resourceIndex = "laokou_resource_" + code;
-                final String resourceIndexAlias = "laokou_resource";
+                final String resourceIndex = RESOURCE_KEY + "_" + code;
+                final String resourceIndexAlias = RESOURCE_KEY;
                 final List<String> resourceYmPartitionList = sysResourceService.getResourceYmPartitionList(code);
                 CountDownLatch countDownLatch = new CountDownLatch(resourceYmPartitionList.size());
                 for (String ym : resourceYmPartitionList) {
@@ -202,7 +203,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                                 model.setIndexName(indexName);
                                 model.setData(jsonDataList);
                                 dto.setData(JacksonUtil.toJsonStr(model));
-                                rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC,dto);
+                                rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_RESOURCE_SYNC_TOPIC,dto);
                             } catch (final FeignException e) {
                                 log.error("错误信息：{}",e.getMessage());
                             }

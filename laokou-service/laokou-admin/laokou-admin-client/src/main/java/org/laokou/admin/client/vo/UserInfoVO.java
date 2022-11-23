@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.admin.client.vo;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
@@ -28,9 +24,6 @@ import java.util.List;
  * @date 2021/5/14 0014 下午 8:02
  */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserInfoVO {
     private Long userId;
 

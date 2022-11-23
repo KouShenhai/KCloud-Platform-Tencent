@@ -176,19 +176,21 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         } else {
             redisUtil.hSet(resourceAuditKey,taskId,taskId,RedisUtil.HOUR_ONE_EXPIRE);
         }
-        ThreadUtil.executorService.execute(() -> saveAuditLog(resourceId,status,auditStatus,comment));
+        String username = UserUtil.getUsername();
+        Long userId = UserUtil.getUserId();
+        ThreadUtil.executorService.execute(() -> saveAuditLog(resourceId,status,auditStatus,comment, username,userId));
         return auditFlag;
     }
 
-    private void saveAuditLog(Long resourceId,int status,int auditStatus,String comment) {
+    private void saveAuditLog(Long resourceId,int status,int auditStatus,String comment,String username,Long userId) {
         try {
             ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
             auditLogDTO.setResourceId(resourceId);
             auditLogDTO.setStatus(status);
             auditLogDTO.setAuditStatus(auditStatus);
             auditLogDTO.setAuditDate(new Date());
-            auditLogDTO.setAuditName(UserUtil.getUsername());
-            auditLogDTO.setCreator(UserUtil.getUserId());
+            auditLogDTO.setAuditName(username);
+            auditLogDTO.setCreator(userId);
             auditLogDTO.setComment(comment);
             RocketmqDTO rocketmqDTO = new RocketmqDTO();
             rocketmqDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));

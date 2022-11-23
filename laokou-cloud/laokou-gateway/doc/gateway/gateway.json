@@ -111,13 +111,13 @@
     "order": 999
   },
   {
-    "id": "laokou-kafka",
-    "uri": "lb://laokou-kafka",
+    "id": "laokou-rocketmq",
+    "uri": "lb://laokou-rocketmq",
     "predicates": [
       {
         "name": "Path",
         "args": {
-          "pattern": "/kafka/**"
+          "pattern": "/rocketmq/**"
         }
       }
     ],
