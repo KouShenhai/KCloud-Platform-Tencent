@@ -11,8 +11,6 @@ services:
       - "5555:5555"
     depends_on:
       - laokou-register-service
-    volumes:
-      - /etc/localtime:/etc/localtime
   laokou-register-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-register:1.0-SNAPSHOT
@@ -22,8 +20,6 @@ services:
     ports:
       - "1111:1111"
     restart: on-failure
-    volumes:
-      - /etc/localtime:/etc/localtime
   laokou-admin-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-admin-server:1.0-SNAPSHOT
@@ -35,8 +31,6 @@ services:
     restart: on-failure
     depends_on:
       - laokou-register-service
-    volumes:
-      - /etc/localtime:/etc/localtime
   laokou-auth-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-auth-server:1.0-SNAPSHOT
@@ -44,12 +38,10 @@ services:
     environment:
       - TZ="Asia/Shanghai"
     ports:
-      - "9000:9000"
+      - "10000:10000"
     restart: on-failure
     depends_on:
       - laokou-register-service
-    volumes:
-      - /etc/localtime:/etc/localtime
   laokou-monitor-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-monitor:1.0-SNAPSHOT
@@ -59,8 +51,6 @@ services:
     ports:
       - "5000:5000"
     restart: on-failure
-    volumes:
-      - /etc/localtime:/etc/localtime
   laokou-elasticsearch-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-elasticsearch-server:1.0-SNAPSHOT
@@ -68,9 +58,7 @@ services:
     environment:
       - TZ="Asia/Shanghai"
     ports:
-      - "9998:9998"
+      - "10003:10003"
     restart: on-failure
     depends_on:
       - laokou-register-service
-    volumes:
-      - /etc/localtime:/etc/localtime

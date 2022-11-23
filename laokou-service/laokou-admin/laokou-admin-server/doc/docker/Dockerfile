@@ -1,38 +1,14 @@
-FROM jdk:17
+FROM docker.io/sunrdocker/jdk17-jre-font-openssl-alpine:latest
 LABEL maintainer="koushenhai"
 LABEL description="laokou-admin-server"
 COPY laokou-admin-server.jar app.jar
-COPY apr-1.7.0.tar.gz /opt/apr-1.7.0.tar.gz
-COPY apr-iconv-1.2.2.tar.gz /opt/apr-iconv-1.2.2.tar.gz
-COPY apr-util-1.6.1.tar.gz /opt/apr-util-1.6.1.tar.gz
-COPY tomcat-native-1.2.33-src.tar.gz /opt/tomcat-native-1.2.33-src.tar.gz
-ENV LD_LIBRARY_PATH /usr/local/apr/lib
 RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
-RUN yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel expat-devel \
-    && cd /opt \
-    && tar -xvzf /opt/apr-1.7.0.tar.gz \
-    && cd apr-1.7.0 \
-    && ./configure --prefix=/usr/local/apr/lib \
-    && make \
-    && make install \
-    && cd /opt \
-    && tar -xvzf /opt/apr-iconv-1.2.2.tar.gz \
-    && cd apr-iconv-1.2.2 \
-    && ./configure --with-apr=/usr/local/apr/lib --with-java-home=/usr/local/jdk \
-    && make \
-    && make install \
-    && cd /opt \
-    && tar -xvzf /opt/apr-util-1.6.1.tar.gz \
-    && cd apr-util-1.6.1 \
-    && ./configure --with-apr=/usr/local/apr/lib --with-java-home=/usr/local/jdk \
-    && make \
-    && make install \
-    && cd /opt \
-    && tar -xvzf /opt/tomcat-native-1.2.33-src.tar.gz \
-    && cd tomcat-native-1.2.33-src/native \
-    && ./configure --with-apr=/usr/local/apr/lib --with-java-home=/usr/local/jdk \
-    && make \
-    && make install
-EXPOSE 8016
-VOLUME /data
-ENTRYPOINT java -Xms256m -Xmx512m --add-opens=java.base/java.lang=ALL-UNNAMED -Ddruid.filters=mergeStat -Ddruid.useGlobalDataSourceStat=true -Djava.library.path=/usr/local/apr/lib -Djasypt.encryptor.password=koushenhai5201314wumeihua -Denv=DEV -Dapollo.configService=http://124.222.196.51:8080 -jar app.jar --spring.profiles.active=prod > app.log
+EXPOSE 9999
+ENTRYPOINT java -Xms256m -Xmx512m --add-opens=java.base/java.lang=ALL-UNNAMED \
+ -Ddruid.filters=mergeStat \
+ -Ddruid.useGlobalDataSourceStat=true \
+ -Djasypt.encryptor.password=koushenhai5201314wumeihua \
+  -Denv=DEV \
+  -Dapollo.configService=http://124.222.196.51:8080 \
+  -jar app.jar \
+  --spring.profiles.active=prod > app.log

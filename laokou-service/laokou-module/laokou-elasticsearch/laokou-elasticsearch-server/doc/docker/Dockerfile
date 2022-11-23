@@ -4,7 +4,7 @@ FROM docker.io/sunrdocker/jdk17-jre-font-openssl-alpine:latest
 LABEL maintainer="koushenhai"
 LABEL description="laokou-elasticsearch-server"
 # 暴露端口
-EXPOSE 9998
+EXPOSE 10003
 # 复制文件
 COPY laokou-elasticsearch-server.jar app.jar
 RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
