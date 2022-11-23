@@ -97,7 +97,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
                 └── laokou-oss              --- 对象存储模块    
                 └── laokou-redis            --- 缓存模块     
                 └── laokou-xxl-job          --- 工作模块   
-                └── laokou-kafka            --- 消息模块    
+                └── laokou-rocketmq         --- 消息模块    
                 └── laokou-elasticsearch    --- 搜索模块     
                 └── laokou-im               --- 即时通讯模块     
 ~~~
@@ -114,7 +114,6 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 [centos7 安装jenkins](https://kcloud.blog.csdn.net/article/details/112171878)  
 [centos7 安装nacos](https://kcloud.blog.csdn.net/article/details/82589017)  
 [centos7 安装elasticsearch7.6.2](https://kcloud.blog.csdn.net/article/details/123123229)  
-
 
 #### 安装包
 [百度网盘](https://pan.baidu.com/s/1swrV9ffJnmz4S0mfkuBbIw) 提取码：1111
