@@ -14,7 +14,7 @@ rocketmq:
   name-server: 127.0.0.1:9876
   # 生产者
   producer:
-    group: laokou-group
+    group: laokou-producer-group
 spring:
   datasource:
     druid:

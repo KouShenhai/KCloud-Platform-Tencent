@@ -13,38 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.feign.kafka;
+package org.laokou.rocketmq.consumer.feign.elasticsearch;
 
-import org.laokou.admin.server.infrastructure.feign.kafka.factory.RocketmqApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
-import org.laokou.rocketmq.client.dto.RocketmqDTO;
+import org.laokou.elasticsearch.client.model.ElasticsearchModel;
+import org.laokou.rocketmq.consumer.feign.elasticsearch.factory.ElasticsearchApiFeignClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 /**
  * @author Kou Shenhai
  */
-@FeignClient(name = ServiceConstant.LAOKOU_ROCKETMQ,path = "/api", fallback = RocketmqApiFeignClientFallbackFactory.class)
+@FeignClient(name = ServiceConstant.LAOKOU_ELASTICSEARCH, fallbackFactory = ElasticsearchApiFeignClientFallbackFactory.class)
 @Service
-public interface RocketmqApiFeignClient {
+public interface ElasticsearchApiFeignClient {
 
     /**
-     * 异步发送
-     * @param topic: 主题
-     * @param dto:   消息内容（Json格式）
+     * 异步批量同步索引
+     * @param model
      */
-    @PostMapping("/sendAsync/{topic}")
-    void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto);
-
-    /**
-     * 异步发送
-     * @param topic: 主题
-     * @param dto:   消息内容（Json格式）
-     */
-    @PostMapping("/sendOne/{topic}")
-    void sendOneMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto);
+    @PostMapping("/api/syncAsyncBatch")
+    void syncAsyncBatch(@RequestBody final ElasticsearchModel model);
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.feign.rocketmq;
-import org.laokou.auth.server.infrastructure.feign.rocketmq.factory.KafkaApiFeignClientFallbackFactory;
+import org.laokou.auth.server.infrastructure.feign.rocketmq.factory.RocketmqApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 /**
  * @author Kou Shenhai
  */
-@FeignClient(name = ServiceConstant.LAOKOU_ROCKETMQ,path = "/api", fallback = KafkaApiFeignClientFallbackFactory.class)
+@FeignClient(name = ServiceConstant.LAOKOU_ROCKETMQ,path = "/api", fallback = RocketmqApiFeignClientFallbackFactory.class)
 @Service
 public interface RocketmqApiFeignClient {
 

@@ -14,7 +14,7 @@ rocketmq:
   name-server: 192.168.62.137:9876
   # 生产者
   producer:
-    group: laokou-group
+    group: laokou-producer-group
 logging:
   file:
     name: /opt/logs/${spring.application.name}/info.log

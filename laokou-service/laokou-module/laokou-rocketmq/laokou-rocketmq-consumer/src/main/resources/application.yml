@@ -15,3 +15,14 @@ mybatis-plus:
   type-aliases-package: org.laokou.rocketmq.consumer.entity
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+feign:
+  httpclient:
+    enabled: true # 支持HttpClient的开关
+    max-connections: 200 # 最大连接数
+    max-connections-per-route: 50 # 单个路径的最大连接数
+  client:
+    config:
+      default:
+        connectTimeout: 10000 # 连接时间
+        readTimeout: 15000 # 超时时间

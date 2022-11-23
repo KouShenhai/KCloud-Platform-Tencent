@@ -19,7 +19,6 @@ import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
-import org.laokou.elasticsearch.client.model.ElasticsearchModel;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -38,13 +37,6 @@ public interface ElasticsearchApiFeignClient {
      */
     @PostMapping("/api/create")
     void create(@RequestBody final CreateIndexModel model);
-
-    /**
-     * 异步批量同步索引
-     * @param model
-     */
-    @PostMapping("/api/syncAsyncBatch")
-    void syncAsyncBatch(@RequestBody final ElasticsearchModel model);
 
     /**
      * 高亮搜索

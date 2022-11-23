@@ -13,27 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.feign.im.fallback;
-
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.laokou.admin.server.infrastructure.feign.im.ImApiFeignClient;
+package org.laokou.rocketmq.consumer.feign.im;
+import org.laokou.rocketmq.consumer.feign.im.factory.ImApiFeignClientFallbackFactory;
+import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.im.client.PushMsgDTO;
-
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 /**
- * 服务降级
  * @author Kou Shenhai
- * @version 1.0
- * @date 2020/9/5 0005 上午 12:12
  */
-@Slf4j
-@AllArgsConstructor
-public class ImApiFeignClientFallback implements ImApiFeignClient {
+@FeignClient(name = ServiceConstant.LAOKOU_IM, fallbackFactory = ImApiFeignClientFallbackFactory.class)
+@Service
+public interface ImApiFeignClient {
 
-    private final Throwable throwable;
+    /**
+     * 推送消息
+     * @param dto
+     */
+    @PostMapping("/api/push")
+    void push(@RequestBody PushMsgDTO dto);
 
-    @Override
-    public void push(PushMsgDTO dto) {
-        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-    }
 }

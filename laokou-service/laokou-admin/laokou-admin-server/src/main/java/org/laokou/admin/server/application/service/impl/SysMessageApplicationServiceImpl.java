@@ -26,7 +26,7 @@ import org.laokou.admin.server.domain.sys.repository.service.SysMessageDetailSer
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageService;
 import org.laokou.admin.server.infrastructure.annotation.DataFilter;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.admin.server.infrastructure.feign.im.ImApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;
 import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
@@ -34,7 +34,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.ConvertUtil;
-import org.laokou.im.client.PushMsgDTO;
+import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.core.utils.ThreadUtil;
+import org.laokou.rocketmq.client.constant.RocketmqConstant;
+import org.laokou.rocketmq.client.dto.MsgDTO;
+import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -52,7 +56,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     private SysMessageDetailService sysMessageDetailService;
 
     @Autowired
-    private ImApiFeignClient apiFeignClient;
+    private RocketmqApiFeignClient rocketmqApiFeignClient;
 
     @Override
     public Boolean insertMessage(MessageDTO dto) {
@@ -78,17 +82,18 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
             sysMessageDetailService.saveBatch(detailDOList);
         }
         // 发送消息
-        sendMessage(dto);
+        ThreadUtil.executorService.execute(() -> sendMessage(dto.getReceiver(),messageDO.getUsername()));
         return true;
     }
 
-    private void sendMessage(MessageDTO dto) {
+    private void sendMessage(Set<String> receiver,String sender) {
         try {
-            PushMsgDTO pushMsgDTO = new PushMsgDTO();
-            pushMsgDTO.setSender(UserUtil.getUsername());
-            pushMsgDTO.setMsg(String.format("%s发来一条消息", UserUtil.getUsername()));
-            pushMsgDTO.setReceiver(dto.getReceiver());
-            apiFeignClient.push(pushMsgDTO);
+            MsgDTO msgDTO = new MsgDTO();
+            msgDTO.setSender(sender);
+            msgDTO.setReceiver(receiver);
+            RocketmqDTO dto = new RocketmqDTO();
+            dto.setData(JacksonUtil.toJsonStr(msgDTO));
+            rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC,dto);
         } catch (FeignException e) {
             log.error("错误消息：{}",e.getMessage());
         }

@@ -28,6 +28,7 @@ import org.laokou.admin.client.enums.ChannelTypeEnum;
 import org.laokou.admin.client.enums.MessageTypeEnum;
 import org.laokou.admin.server.infrastructure.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.admin.client.index.ResourceIndex;
+import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;
 import org.laokou.admin.server.infrastructure.utils.WorkFlowUtil;
 import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
@@ -44,6 +45,9 @@ import org.laokou.oss.client.vo.UploadVO;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.elasticsearch.client.model.ElasticsearchModel;
+import org.laokou.rocketmq.client.constant.RocketmqConstant;
+import org.laokou.rocketmq.client.dto.ResourceSyncDTO;
+import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -77,6 +81,9 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
 
     @Autowired
     private ElasticsearchApiFeignClient elasticsearchApiFeignClient;
+
+    @Autowired
+    private RocketmqApiFeignClient rocketmqApiFeignClient;
 
     @Override
     public IPage<SysResourceVO> queryResourcePage(SysResourceQo qo) {
@@ -188,13 +195,14 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         //同步数据
                         ThreadUtil.executorService.execute(() -> {
                             try {
+                                RocketmqDTO dto = new RocketmqDTO();
                                 final String indexName = resourceIndex + "_" + ym;
                                 final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
-                                final ElasticsearchModel model = new ElasticsearchModel();
+                                final ResourceSyncDTO model = new ResourceSyncDTO();
                                 model.setIndexName(indexName);
                                 model.setData(jsonDataList);
-                                //同步数据
-                                elasticsearchApiFeignClient.syncAsyncBatch(model);
+                                dto.setData(JacksonUtil.toJsonStr(model));
+                                rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC,dto);
                             } catch (final FeignException e) {
                                 log.error("错误信息：{}",e.getMessage());
                             }

@@ -19,22 +19,12 @@ package org.laokou.rocketmq.client.dto;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * @author Kou Shenhai
  */
 @Data
-public class MsgDTO implements Serializable {
-
-    /**
-     * 接收者
-     */
-    private Set<String> receiver;
-
-    /**
-     * 发送者
-     */
-    private String sender;
-
+public class ResourceSyncDTO implements Serializable {
+    private String data;
+    private String indexName;
 }

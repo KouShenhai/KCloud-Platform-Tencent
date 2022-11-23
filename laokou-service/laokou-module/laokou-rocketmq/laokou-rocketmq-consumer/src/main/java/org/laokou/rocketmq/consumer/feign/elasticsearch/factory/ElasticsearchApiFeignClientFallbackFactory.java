@@ -13,38 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.client.constant;
+package org.laokou.rocketmq.consumer.feign.elasticsearch.factory;
+import org.laokou.rocketmq.consumer.feign.elasticsearch.fallback.ElasticsearchApiFeignClientFallback;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
+
 /**
- * 队列常量值
+ * 回调工厂
  * @author Kou Shenhai
  * @version 1.0
- * @date 2020/9/18 0018 上午 7:07
+ * @date 2020/9/5 0005 上午 12:12
  */
-public interface RocketmqConstant {
+@Component
+public class ElasticsearchApiFeignClientFallbackFactory implements FallbackFactory<ElasticsearchApiFeignClientFallback> {
 
-    /**
-     * 操作日志消息
-     */
-    String LAOKOU_OPERATE_LOG_TOPIC = "laokou-operate-log-topic";
-
-    /**
-     * 登录日志消息
-     */
-    String LAOKOU_LOGIN_LOG_TOPIC = "laokou-login-log-topic";
-
-    /**
-     * 资源审批消息
-     */
-    String LAOKOU_RESOURCE_AUDIT_TOPIC = "laokou-resource-audit-topic";
-
-    /**
-     * 资源同步消息
-     */
-    String LAOKOU_RESOURCE_SYNC_TOPIC = "laokou-resource-sync-topic";
-
-    /**
-     * 通知消息
-     */
-    String LAOKOU_MESSAGE_NOTICE_TOPIC = "laokou-message-notice-topic";
-
+    @Override
+    public ElasticsearchApiFeignClientFallback create(Throwable throwable) {
+        return new ElasticsearchApiFeignClientFallback(throwable);
+    }
 }

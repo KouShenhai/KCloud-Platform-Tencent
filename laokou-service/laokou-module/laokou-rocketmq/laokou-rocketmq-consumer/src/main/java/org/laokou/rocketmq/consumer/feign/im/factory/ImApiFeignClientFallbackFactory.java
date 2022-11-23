@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,28 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.laokou.rocketmq.client.dto;
-
-import lombok.Data;
-
-import java.io.Serializable;
-import java.util.Set;
+package org.laokou.rocketmq.consumer.feign.im.factory;
+import org.laokou.rocketmq.consumer.feign.im.fallback.ImApiFeignClientFallback;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
 
 /**
+ * 回调工厂
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2020/9/5 0005 上午 12:12
  */
-@Data
-public class MsgDTO implements Serializable {
+@Component
+public class ImApiFeignClientFallbackFactory implements FallbackFactory<ImApiFeignClientFallback> {
 
-    /**
-     * 接收者
-     */
-    private Set<String> receiver;
-
-    /**
-     * 发送者
-     */
-    private String sender;
-
+    @Override
+    public ImApiFeignClientFallback create(Throwable throwable) {
+        return new ImApiFeignClientFallback(throwable);
+    }
 }
