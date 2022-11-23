@@ -16,7 +16,7 @@
 package org.laokou.rocketmq.consumer.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.laokou.kafka.consumer.entity.SysResourceAuditLogDO;
+import org.laokou.rocketmq.consumer.entity.SysResourceAuditLogDO;
 
 /**
  * @author Kou Shenhai

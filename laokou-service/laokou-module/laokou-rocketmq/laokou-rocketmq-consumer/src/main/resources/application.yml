@@ -2,9 +2,6 @@ jasypt:
   encryptor:
     password: koushenhai5201314wumeihua
 
-server:
-  port: 10006
-
 spring:
   profiles:
     active: @profile.active@

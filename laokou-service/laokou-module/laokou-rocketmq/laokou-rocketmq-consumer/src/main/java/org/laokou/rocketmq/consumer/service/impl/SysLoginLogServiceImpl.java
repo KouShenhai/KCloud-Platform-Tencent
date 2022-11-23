@@ -17,10 +17,10 @@ package org.laokou.rocketmq.consumer.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.laokou.common.core.utils.ConvertUtil;
-import org.laokou.kafka.client.dto.LoginLogDTO;
-import org.laokou.kafka.consumer.entity.SysLoginLogDO;
-import org.laokou.kafka.consumer.mapper.SysLoginLogMapper;
-import org.laokou.kafka.consumer.service.SysLoginLogService;
+import org.laokou.rocketmq.client.dto.LoginLogDTO;
+import org.laokou.rocketmq.consumer.entity.SysLoginLogDO;
+import org.laokou.rocketmq.consumer.mapper.SysLoginLogMapper;
+import org.laokou.rocketmq.consumer.service.SysLoginLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

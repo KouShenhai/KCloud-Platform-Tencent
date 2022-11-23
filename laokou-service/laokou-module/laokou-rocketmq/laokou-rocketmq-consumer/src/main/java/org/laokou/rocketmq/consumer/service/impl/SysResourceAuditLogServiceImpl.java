@@ -16,9 +16,9 @@
 package org.laokou.rocketmq.consumer.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.laokou.kafka.consumer.entity.SysResourceAuditLogDO;
-import org.laokou.kafka.consumer.mapper.SysResourceAuditLogMapper;
-import org.laokou.kafka.consumer.service.SysResourceAuditLogService;
+import org.laokou.rocketmq.consumer.entity.SysResourceAuditLogDO;
+import org.laokou.rocketmq.consumer.mapper.SysResourceAuditLogMapper;
+import org.laokou.rocketmq.consumer.service.SysResourceAuditLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**

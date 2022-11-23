@@ -19,13 +19,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
-import org.laokou.kafka.client.dto.LoginLogDTO;
-import org.laokou.kafka.client.dto.OperateLogDTO;
-import org.laokou.kafka.client.constant.KafkaConstant;
-import org.laokou.kafka.consumer.service.SysLoginLogService;
-import org.laokou.kafka.consumer.service.SysOperateLogService;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.support.Acknowledgment;
+//import org.laokou.kafka.client.dto.LoginLogDTO;
+//import org.laokou.kafka.client.dto.OperateLogDTO;
+//import org.laokou.kafka.client.constant.KafkaConstant;
+//import org.laokou.kafka.consumer.service.SysLoginLogService;
+//import org.laokou.kafka.consumer.service.SysOperateLogService;
+//import org.springframework.kafka.annotation.KafkaListener;
+//import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -35,45 +35,45 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class LogConsumer {
-
-    private final SysLoginLogService sysLoginLogService;
-
-    private final SysOperateLogService sysOperateLogService;
-
-    /**
-     * 登录日志消息
-     */
-    @KafkaListener(topics = {KafkaConstant.LAOKOU_LOGIN_LOG_TOPIC})
-    public void loginLog(String message, Acknowledgment acknowledgment) {
-        try {
-            if (StringUtil.isNotEmpty(message)) {
-                final LoginLogDTO loginLogDTO = JacksonUtil.toBean(message, LoginLogDTO.class);
-                sysLoginLogService.insertLoginLog(loginLogDTO);
-            }
-        } catch (Exception e) {
-            log.error("消息消费失败，错误信息：{}", e.getMessage());
-        } finally {
-            //手动签发，并回馈信息给MQ
-            acknowledgment.acknowledge();
-        }
-    }
-
-    /**
-     * 操作日志消息
-     */
-    @KafkaListener(topics = {KafkaConstant.LAOKOU_OPERATE_LOG_TOPIC})
-    public void operateLog(String message, Acknowledgment acknowledgment) {
-        try {
-            if (StringUtil.isNotEmpty(message)) {
-                final OperateLogDTO operateLogDTO = JacksonUtil.toBean(message, OperateLogDTO.class);
-                sysOperateLogService.insertOperateLog(operateLogDTO);
-            }
-        } catch (Exception e) {
-            log.error("消息消费失败，错误信息：{}", e.getMessage());
-        } finally {
-            //手动签发，并回馈信息给MQ
-            acknowledgment.acknowledge();
-        }
-    }
+//
+//    private final SysLoginLogService sysLoginLogService;
+//
+//    private final SysOperateLogService sysOperateLogService;
+//
+//    /**
+//     * 登录日志消息
+//     */
+//    @KafkaListener(topics = {KafkaConstant.LAOKOU_LOGIN_LOG_TOPIC})
+//    public void loginLog(String message, Acknowledgment acknowledgment) {
+//        try {
+//            if (StringUtil.isNotEmpty(message)) {
+//                final LoginLogDTO loginLogDTO = JacksonUtil.toBean(message, LoginLogDTO.class);
+//                sysLoginLogService.insertLoginLog(loginLogDTO);
+//            }
+//        } catch (Exception e) {
+//            log.error("消息消费失败，错误信息：{}", e.getMessage());
+//        } finally {
+//            //手动签发，并回馈信息给MQ
+//            acknowledgment.acknowledge();
+//        }
+//    }
+//
+//    /**
+//     * 操作日志消息
+//     */
+//    @KafkaListener(topics = {KafkaConstant.LAOKOU_OPERATE_LOG_TOPIC})
+//    public void operateLog(String message, Acknowledgment acknowledgment) {
+//        try {
+//            if (StringUtil.isNotEmpty(message)) {
+//                final OperateLogDTO operateLogDTO = JacksonUtil.toBean(message, OperateLogDTO.class);
+//                sysOperateLogService.insertOperateLog(operateLogDTO);
+//            }
+//        } catch (Exception e) {
+//            log.error("消息消费失败，错误信息：{}", e.getMessage());
+//        } finally {
+//            //手动签发，并回馈信息给MQ
+//            acknowledgment.acknowledge();
+//        }
+//    }
 
 }

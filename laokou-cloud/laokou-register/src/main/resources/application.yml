@@ -1,5 +1,3 @@
-server:
-  port: 1111
 spring:
   application:
     name: laokou-register

@@ -17,7 +17,7 @@ package org.laokou.rocketmq.consumer.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.laokou.kafka.consumer.entity.SysResourceDO;
+import org.laokou.rocketmq.consumer.entity.SysResourceDO;
 import org.springframework.stereotype.Repository;
 /**
  * @author Kou Shenhai

@@ -17,8 +17,8 @@ package org.laokou.rocketmq.consumer.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.laokou.kafka.client.dto.LoginLogDTO;
-import org.laokou.kafka.consumer.entity.SysLoginLogDO;
+import org.laokou.rocketmq.client.dto.LoginLogDTO;
+import org.laokou.rocketmq.consumer.entity.SysLoginLogDO;
 
 /**
  * @author Kou Shenhai
