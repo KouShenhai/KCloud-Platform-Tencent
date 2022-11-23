@@ -16,15 +16,16 @@
 package org.laokou.auth.client.user;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
+
 /**
  * @author Kou Shenhai
  */
 @Getter
 @Setter
-@ToString
 public class UserDetail implements Serializable {
     private Long userId;
     private String username;
@@ -37,4 +38,36 @@ public class UserDetail implements Serializable {
     private Long deptId;
     private List<Long> deptIds;
     private List<String> permissionList;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UserDetail that = (UserDetail) o;
+        return userId.equals(that.userId) && username.equals(that.username) && imgUrl.equals(that.imgUrl) && superAdmin.equals(that.superAdmin) && email.equals(that.email) && mobile.equals(that.mobile) && deptId.equals(that.deptId) && deptIds.equals(that.deptIds) && permissionList.equals(that.permissionList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, username, imgUrl, superAdmin, email, mobile, deptId, deptIds, permissionList);
+    }
+
+    @Override
+    public String toString() {
+        return "UserDetail{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", superAdmin=" + superAdmin +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", deptId=" + deptId +
+                ", deptIds=" + deptIds +
+                ", permissionList=" + permissionList +
+                '}';
+    }
 }
