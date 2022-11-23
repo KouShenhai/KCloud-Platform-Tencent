@@ -49,7 +49,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 | Mysql             | 5.7.9    |
 | Redis             | 6.0.6    |
 | Elasticsearch     | 7.6.2    |
-| Kafka             | 2.8.1    |
+| RocketMQ          | 5.0.0    |
 
 > Spring 全家桶版本对应关系，详见：[版本说明](https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)
 
@@ -57,13 +57,13 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 
 - API 网关：Spring Cloud Gateway
 - 服务注册&发现：Eureka
-- 配置中心: Apollo
+- 配置中心：Apollo
 - 认证授权：Spring Security OAuth2
 - 服务消费：Spring Cloud OpenFeign & RestTemplate & OkHttps
 - 负载均衡：Spring Cloud Loadbalancer
 - 服务熔断&降级&限流：Resilience4j
 - 服务监控：Spring Boot Admin、Prometheus
-- 消息队列：使用 Spring Cloud 消息总线 Spring Cloud Bus 默认 Kafka
+- 消息队列：RocketMQ
 - 链路跟踪：Skywalking
 - 数据库：MySQL、Oracle 
 - 数据缓存：Redis

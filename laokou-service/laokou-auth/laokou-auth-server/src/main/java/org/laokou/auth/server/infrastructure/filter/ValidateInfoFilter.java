@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.client.constant.AuthConstant;
-import org.laokou.auth.server.infrastructure.handler.UserAuthenticationFailureHandler;
+import org.laokou.auth.server.infrastructure.handler.AuthAuthenticationFailureHandler;
 import org.laokou.auth.server.infrastructure.log.AuthLogUtil;
 import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.exception.ErrorCode;
@@ -43,7 +43,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
     private SysCaptchaService sysCaptchaService;
 
     @Autowired
-    private UserAuthenticationFailureHandler userAuthenticationFailureHandler;
+    private AuthAuthenticationFailureHandler authAuthenticationFailureHandler;
 
     @Autowired
     private AuthLogUtil authLogUtil;
@@ -62,7 +62,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
                 validate(uuid, captcha,username,password,request);
             } catch (AuthenticationException e) {
                 //失败处理器
-                userAuthenticationFailureHandler.onAuthenticationFailure(request, response, e);
+                authAuthenticationFailureHandler.onAuthenticationFailure(request, response, e);
                 return;
             }
         }

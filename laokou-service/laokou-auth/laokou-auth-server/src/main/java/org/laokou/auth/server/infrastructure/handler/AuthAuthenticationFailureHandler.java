@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 @Slf4j
-public class UserAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class AuthAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @SneakyThrows
     @Override

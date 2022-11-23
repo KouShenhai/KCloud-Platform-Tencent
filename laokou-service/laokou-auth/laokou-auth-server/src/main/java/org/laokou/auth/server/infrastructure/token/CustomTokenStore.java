@@ -18,7 +18,7 @@ package org.laokou.auth.server.infrastructure.token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 /**
@@ -30,11 +30,11 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 @RequiredArgsConstructor
 public class CustomTokenStore {
 
-    private final RedisConnectionFactory redisConnectionFactory;
+    private final LettuceConnectionFactory lettuceConnectionFactory;
 
     @Bean
     public TokenStore tokenStore() {
-        return new RedisTokenStore(redisConnectionFactory);
+        return new RedisTokenStore(lettuceConnectionFactory);
     }
 
 }

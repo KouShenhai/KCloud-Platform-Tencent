@@ -107,7 +107,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         security
                 // allowFormAuthenticationForClients => 允许表单认证，并且client_id和client_secret会走ClientCredentialsTokenEndpointFilter逻辑（详情查看源码）
                 .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()")
+                .checkTokenAccess("permitAll()")
                 .addTokenEndpointAuthenticationFilter(endpointFilter);
     }
 
