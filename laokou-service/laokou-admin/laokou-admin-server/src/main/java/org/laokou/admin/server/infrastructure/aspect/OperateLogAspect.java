@@ -24,9 +24,6 @@ import org.laokou.common.core.utils.AddressUtil;
 import org.laokou.common.core.utils.HttpContextUtil;
 import org.laokou.common.core.utils.IpUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.kafka.client.constant.KafkaConstant;
-import org.laokou.kafka.client.dto.KafkaDTO;
-import org.laokou.kafka.client.dto.OperateLogDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
 import org.aspectj.lang.JoinPoint;
@@ -69,61 +66,61 @@ public class OperateLogAspect {
      */
     @AfterReturning(pointcut = "logPointCut()")
     public void doAfterReturning(JoinPoint joinPoint) throws IOException {
-        handleLog(joinPoint,null);
+        //handleLog(joinPoint,null);
     }
 
     @AfterThrowing(pointcut = "logPointCut()",throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint,Exception e) throws IOException {
-        handleLog(joinPoint,e);
+        //handleLog(joinPoint,e);
     }
 
-    protected void handleLog(final JoinPoint joinPoint,final Exception e) throws IOException {
-        try {
-            //获取注解
-            Signature signature = joinPoint.getSignature();
-            MethodSignature methodSignature = (MethodSignature) signature;
-            Method method = methodSignature.getMethod();
-            if (null == method) {
-                return;
-            }
-            OperateLog operateLog = method.getAnnotation(OperateLog.class);
-            if (operateLog == null) {
-                operateLog = AnnotationUtils.findAnnotation(method, OperateLog.class);
-            }
-            HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-            String ip = IpUtil.getIpAddr(request);
-            String className = joinPoint.getTarget().getClass().getName();
-            String methodName = joinPoint.getSignature().getName();
-            Object[] args = joinPoint.getArgs();
-            List<?> params = new ArrayList<>(Arrays.asList(args)).stream().filter(arg -> (!(arg instanceof HttpServletRequest)
-                    && !(arg instanceof HttpServletResponse))).collect(Collectors.toList());
-            OperateLogDTO dto = new OperateLogDTO();
-            assert operateLog != null;
-            dto.setModule(operateLog.module());
-            dto.setOperation(operateLog.name());
-            dto.setRequestUri(request.getRequestURI());
-            dto.setRequestIp(ip);
-            dto.setRequestAddress(AddressUtil.getRealAddress(ip));
-            dto.setOperator(UserUtil.getUsername());
-            dto.setCreator(UserUtil.getUserId());
-            if (null != e) {
-                dto.setRequestStatus(ResultStatusEnum.FAIL.ordinal());
-                dto.setErrorMsg(e.getMessage());
-            } else {
-                dto.setRequestStatus(ResultStatusEnum.SUCCESS.ordinal());
-            }
-            dto.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
-            dto.setMethodName(className + "." + methodName + "()");
-            dto.setRequestMethod(request.getMethod());
-            if (DataTypeEnum.TEXT.equals(operateLog.type())) {
-                dto.setRequestParams(JacksonUtil.toJsonStr(params, true));
-            }
-            KafkaDTO kafkaDTO = new KafkaDTO();
-            kafkaDTO.setData(JacksonUtil.toJsonStr(dto));
-            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_OPERATE_LOG_TOPIC, kafkaDTO);
-        } catch (FeignException ex) {
-            log.error("错误信息：{}", ex.getMessage());
-        }
-    }
+//    protected void handleLog(final JoinPoint joinPoint,final Exception e) throws IOException {
+//        try {
+//            //获取注解
+//            Signature signature = joinPoint.getSignature();
+//            MethodSignature methodSignature = (MethodSignature) signature;
+//            Method method = methodSignature.getMethod();
+//            if (null == method) {
+//                return;
+//            }
+//            OperateLog operateLog = method.getAnnotation(OperateLog.class);
+//            if (operateLog == null) {
+//                operateLog = AnnotationUtils.findAnnotation(method, OperateLog.class);
+//            }
+//            HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
+//            String ip = IpUtil.getIpAddr(request);
+//            String className = joinPoint.getTarget().getClass().getName();
+//            String methodName = joinPoint.getSignature().getName();
+//            Object[] args = joinPoint.getArgs();
+//            List<?> params = new ArrayList<>(Arrays.asList(args)).stream().filter(arg -> (!(arg instanceof HttpServletRequest)
+//                    && !(arg instanceof HttpServletResponse))).collect(Collectors.toList());
+//            OperateLogDTO dto = new OperateLogDTO();
+//            assert operateLog != null;
+//            dto.setModule(operateLog.module());
+//            dto.setOperation(operateLog.name());
+//            dto.setRequestUri(request.getRequestURI());
+//            dto.setRequestIp(ip);
+//            dto.setRequestAddress(AddressUtil.getRealAddress(ip));
+//            dto.setOperator(UserUtil.getUsername());
+//            dto.setCreator(UserUtil.getUserId());
+//            if (null != e) {
+//                dto.setRequestStatus(ResultStatusEnum.FAIL.ordinal());
+//                dto.setErrorMsg(e.getMessage());
+//            } else {
+//                dto.setRequestStatus(ResultStatusEnum.SUCCESS.ordinal());
+//            }
+//            dto.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
+//            dto.setMethodName(className + "." + methodName + "()");
+//            dto.setRequestMethod(request.getMethod());
+//            if (DataTypeEnum.TEXT.equals(operateLog.type())) {
+//                dto.setRequestParams(JacksonUtil.toJsonStr(params, true));
+//            }
+//            KafkaDTO kafkaDTO = new KafkaDTO();
+//            kafkaDTO.setData(JacksonUtil.toJsonStr(dto));
+//            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_OPERATE_LOG_TOPIC, kafkaDTO);
+//        } catch (FeignException ex) {
+//            log.error("错误信息：{}", ex.getMessage());
+//        }
+//    }
 
 }

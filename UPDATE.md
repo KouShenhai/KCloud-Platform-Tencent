@@ -1,3 +1,12 @@
+### 2022.11.23 更新日志
+###### 1.更新依赖
+kafka > rocketmq
+tomcat > undertow
+###### 2.移除依赖
+kafka
+maven部署脚本 + jenkins构建脚本
+tomcat
+
 ### 2022.11.17 更新日志
 ###### 1.升级依赖
 SpringCloud 2021.0.4 > 2021.0.5

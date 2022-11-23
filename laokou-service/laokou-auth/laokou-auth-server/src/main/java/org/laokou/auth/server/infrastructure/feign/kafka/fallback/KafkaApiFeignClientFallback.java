@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.feign.kafka.fallback;
-import org.laokou.kafka.client.dto.KafkaDTO;
 import org.laokou.auth.server.infrastructure.feign.kafka.KafkaApiFeignClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +30,8 @@ public class KafkaApiFeignClientFallback implements KafkaApiFeignClient {
 
     private final Throwable throwable;
 
-    @Override
-    public void sendAsyncMessage(String topic, KafkaDTO dto) {
-        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-    }
+//    @Override
+//    public void sendAsyncMessage(String topic, KafkaDTO dto) {
+//        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+//    }
 }

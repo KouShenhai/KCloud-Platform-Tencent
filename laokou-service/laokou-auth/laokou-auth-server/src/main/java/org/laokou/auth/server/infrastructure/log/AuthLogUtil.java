@@ -23,9 +23,6 @@ import org.laokou.common.core.utils.AddressUtil;
 import org.laokou.common.core.utils.HttpContextUtil;
 import org.laokou.common.core.utils.IpUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.kafka.client.constant.KafkaConstant;
-import org.laokou.kafka.client.dto.KafkaDTO;
-import org.laokou.kafka.client.dto.LoginLogDTO;
 import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,27 +41,27 @@ public class AuthLogUtil {
     private KafkaApiFeignClient kafkaApiFeignClient;
 
     public void recordLogin(String username,Integer status,String msg,HttpServletRequest request) {
-        try {
-            UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader(HttpHeaders.USER_AGENT));
-            String ip = IpUtil.getIpAddr(request);
-            //获取客户端操作系统
-            String os = userAgent.getOperatingSystem().getName();
-            //获取客户端浏览器
-            String browser = userAgent.getBrowser().getName();
-            LoginLogDTO dto = new LoginLogDTO();
-            dto.setLoginName(username);
-            dto.setRequestIp(ip);
-            dto.setRequestAddress(AddressUtil.getRealAddress(ip));
-            dto.setBrowser(browser);
-            dto.setOs(os);
-            dto.setMsg(msg);
-            dto.setRequestStatus(status);
-            KafkaDTO kafkaDTO = new KafkaDTO();
-            kafkaDTO.setData(JacksonUtil.toJsonStr(dto));
-            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_LOGIN_LOG_TOPIC, kafkaDTO);
-        } catch (FeignException | IOException e) {
-            log.error("异常信息：{}",e.getMessage());
-        }
+//        try {
+//            UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader(HttpHeaders.USER_AGENT));
+//            String ip = IpUtil.getIpAddr(request);
+//            //获取客户端操作系统
+//            String os = userAgent.getOperatingSystem().getName();
+//            //获取客户端浏览器
+//            String browser = userAgent.getBrowser().getName();
+////            LoginLogDTO dto = new LoginLogDTO();
+////            dto.setLoginName(username);
+////            dto.setRequestIp(ip);
+////            dto.setRequestAddress(AddressUtil.getRealAddress(ip));
+////            dto.setBrowser(browser);
+////            dto.setOs(os);
+////            dto.setMsg(msg);
+////            dto.setRequestStatus(status);
+////            KafkaDTO kafkaDTO = new KafkaDTO();
+////            kafkaDTO.setData(JacksonUtil.toJsonStr(dto));
+////            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_LOGIN_LOG_TOPIC, kafkaDTO);
+//        } catch (FeignException | IOException e) {
+//            log.error("异常信息：{}",e.getMessage());
+//        }
     }
 
 }

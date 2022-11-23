@@ -40,9 +40,9 @@ import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.RedisKeyUtil;
 import org.laokou.common.core.utils.StringUtil;
-import org.laokou.kafka.client.constant.KafkaConstant;
-import org.laokou.kafka.client.dto.KafkaDTO;
-import org.laokou.kafka.client.dto.ResourceAuditLogDTO;
+//import org.laokou.kafka.client.constant.KafkaConstant;
+//import org.laokou.kafka.client.dto.KafkaDTO;
+//import org.laokou.kafka.client.dto.ResourceAuditLogDTO;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -175,26 +175,26 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         } else {
             redisUtil.hSet(resourceAuditKey,taskId,taskId,RedisUtil.HOUR_ONE_EXPIRE);
         }
-        saveAuditLog(resourceId,status,auditStatus,comment);
+        //saveAuditLog(resourceId,status,auditStatus,comment);
         return auditFlag;
     }
 
-    private void saveAuditLog(Long resourceId,int status,int auditStatus,String comment) {
-        try {
-            ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
-            auditLogDTO.setResourceId(resourceId);
-            auditLogDTO.setStatus(status);
-            auditLogDTO.setAuditStatus(auditStatus);
-            auditLogDTO.setAuditDate(new Date());
-            auditLogDTO.setAuditName(UserUtil.getUsername());
-            auditLogDTO.setCreator(UserUtil.getUserId());
-            auditLogDTO.setComment(comment);
-            KafkaDTO kafkaDTO = new KafkaDTO();
-            kafkaDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
-            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_RESOURCE_AUDIT_TOPIC, kafkaDTO);
-        } catch (FeignException e) {
-            log.error("错误信息：{}",e.getMessage());
-        }
-    }
+//    private void saveAuditLog(Long resourceId,int status,int auditStatus,String comment) {
+//        try {
+//            ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
+//            auditLogDTO.setResourceId(resourceId);
+//            auditLogDTO.setStatus(status);
+//            auditLogDTO.setAuditStatus(auditStatus);
+//            auditLogDTO.setAuditDate(new Date());
+//            auditLogDTO.setAuditName(UserUtil.getUsername());
+//            auditLogDTO.setCreator(UserUtil.getUserId());
+//            auditLogDTO.setComment(comment);
+//            KafkaDTO kafkaDTO = new KafkaDTO();
+//            kafkaDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
+//            kafkaApiFeignClient.sendAsyncMessage(KafkaConstant.LAOKOU_RESOURCE_AUDIT_TOPIC, kafkaDTO);
+//        } catch (FeignException e) {
+//            log.error("错误信息：{}",e.getMessage());
+//        }
+//    }
 
 }

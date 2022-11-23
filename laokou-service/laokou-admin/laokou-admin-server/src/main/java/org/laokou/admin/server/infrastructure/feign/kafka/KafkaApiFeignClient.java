@@ -17,7 +17,6 @@ package org.laokou.admin.server.infrastructure.feign.kafka;
 
 import org.laokou.admin.server.infrastructure.feign.kafka.factory.KafkaApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
-import org.laokou.kafka.client.dto.KafkaDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +35,7 @@ public interface KafkaApiFeignClient {
      * @param topic: 主题
      * @param dto:   消息内容（Json格式）
      */
-    @PostMapping("/sendAsync/{topic}")
-    void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto);
+//    @PostMapping("/sendAsync/{topic}")
+//    void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto);
 
 }

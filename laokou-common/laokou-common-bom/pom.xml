@@ -95,6 +95,8 @@
         <minio.version>8.4.3</minio.version>
         <!--rocketmq版本 -->
         <rocketmq.version>2.0.3</rocketmq.version>
+        <!--servlet-api版本 -->
+        <servlet.api.version>4.0.4</servlet.api.version>
     </properties>
 
     <!-- 定义全局jar版本,模块使用需要再次引入但不用写版本号 -->
@@ -506,6 +508,11 @@
                 <groupId>org.apache.rocketmq</groupId>
                 <artifactId>rocketmq-spring-boot-starter</artifactId>
                 <version>${rocketmq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${servlet.api.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
