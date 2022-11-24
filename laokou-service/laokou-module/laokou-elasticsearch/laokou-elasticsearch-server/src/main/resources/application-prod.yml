@@ -35,6 +35,7 @@ app:
 apollo:
   cacheDir: config # 自定义本地配置文件缓存路径
   bootstrap:
+    namespaces: application
     enabled: true # 设置在应用启动阶段就加载 Apollo 配置
     eagerLoad:
       enabled: true

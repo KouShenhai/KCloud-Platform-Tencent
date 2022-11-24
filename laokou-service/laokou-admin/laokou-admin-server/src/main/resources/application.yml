@@ -1,6 +1,3 @@
-jasypt:
-  encryptor:
-    password: koushenhai5201314wumeihua
 #spring
 spring:
   mvc:

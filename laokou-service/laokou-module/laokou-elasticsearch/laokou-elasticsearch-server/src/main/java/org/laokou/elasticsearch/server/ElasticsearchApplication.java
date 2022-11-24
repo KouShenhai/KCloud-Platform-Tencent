@@ -15,6 +15,7 @@
  */
 package org.laokou.elasticsearch.server;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.laokou.common.swagger.config.CorsConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,7 @@ import org.springframework.context.annotation.Import;
  */
 @EnableDiscoveryClient
 @EnableConfigurationProperties
+@EnableEncryptableProperties
 @EnableApolloConfig
 @Import({CorsConfig.class})
 @SpringBootApplication(scanBasePackages = {"org.laokou.elasticsearch"})
