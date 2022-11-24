@@ -1,39 +1,40 @@
 ### 2022.11.23 更新日志
 ###### 1.更新依赖
-kafka > rocketmq
-tomcat > undertow
+* kafka > rocketmq  
+* tomcat > undertow  
 ###### 2.移除依赖
-kafka
-maven部署脚本 + jenkins构建脚本
-tomcat
+* kafka
+* maven部署脚本
+* jenkins构建脚本
+* tomcat
 
 ### 2022.11.17 更新日志
 ###### 1.升级依赖
-SpringCloud 2021.0.4 > 2021.0.5
+* SpringCloud 2021.0.4 > 2021.0.5
 
 
 ### 2022.11.16 更新日志
 ###### 1.服务拆分
-laokou-admin > laokou-admin + laokou-im
+* laokou-admin > laokou-admin + laokou-im
 ###### 2.替换依赖
-Shiro -> SpringSecurity
+* Shiro -> SpringSecurity
 
 
 ### 2022.10.13 更新日志
 ###### 1.部署方式
-Shell > Docker-Compose
+* Shell > Docker-Compose
 
 
 ### 2022.10.10 更新日志
 ###### 1.升级
-jdk1.8 > jdk17
+* jdk1.8 > jdk17
 
 
 ### 2022.09.20 更新日志
 ###### 1.升级/替换依赖
-SpringBoot 2.2.5.RELEASE > SpringBoot 2.7.4
-SpringCloud Hoxton.SR6 > SpringCloud 2021.0.4
-Netflix Hystrix > Resilience4j
+* SpringBoot 2.2.5.RELEASE > SpringBoot 2.7.4
+* SpringCloud Hoxton.SR6 > SpringCloud 2021.0.4
+* Netflix Hystrix > Resilience4j
 
 
 ### 2022.08.31 更新日志
@@ -63,7 +64,7 @@ Netflix Hystrix > Resilience4j
 
 ### 2022.07.25 更新日志
 ###### 1.动态路由
-gateway + apollo
+* gateway + apollo
 
 
 ### 2022.07.20 更新日志

@@ -118,7 +118,7 @@ public class OperateLogAspect {
             }
             RocketmqDTO rocketmqDTO = new RocketmqDTO();
             rocketmqDTO.setData(JacksonUtil.toJsonStr(dto));
-            rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_OPERATE_LOG_TOPIC, rocketmqDTO);
+            rocketmqApiFeignClient.sendOneMessage(RocketmqConstant.LAOKOU_OPERATE_LOG_TOPIC, rocketmqDTO);
         } catch (FeignException ex) {
             log.error("错误信息：{}", ex.getMessage());
         }
