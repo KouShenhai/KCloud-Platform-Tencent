@@ -71,7 +71,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 - 日志中心：EFK
 - 持久层框架：Mybatis Plus
 - JSON 序列化：Jackson
-- 文件服务：Local/阿里云 OSS/FastDFS/Minio
+- 文件服务：Local/Alibaba Cloud OSS/FastDFS/Minio
 - 服务部署：Docker-Compose
 - 持续交付：Jenkins
 - 服务发布：金丝雀发布
