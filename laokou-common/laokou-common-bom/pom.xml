@@ -83,20 +83,22 @@
         <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
         <!--oshi版本-->
         <oshi.version>5.8.0</oshi.version>
-        <!-- elasticsearch版本 -->
+        <!-- elasticsearch版本-->
         <elasticsearch.version>7.6.2</elasticsearch.version>
-        <!--jaxb版本 -->
+        <!--jaxb版本-->
         <jaxb.version>2.3.0</jaxb.version>
-        <!--activation版本 -->
+        <!--activation版本-->
         <activation.version>1.1.1</activation.version>
-        <!--springfox版本 -->
+        <!--springfox版本-->
         <springfox.version>3.0.0</springfox.version>
-        <!--minio版本 -->
+        <!--minio版本-->
         <minio.version>8.4.3</minio.version>
-        <!--rocketmq版本 -->
+        <!--rocketmq版本-->
         <rocketmq.version>2.2.0</rocketmq.version>
-        <!--servlet-api版本 -->
+        <!--servlet-api版本-->
         <servlet.api.version>4.0.4</servlet.api.version>
+        <!--kotlin版本-->
+        <kotlin.version>1.7.10</kotlin.version>
     </properties>
 
     <!-- 定义全局jar版本,模块使用需要再次引入但不用写版本号 -->
@@ -225,11 +227,6 @@
                 <groupId>com.oracle</groupId>
                 <artifactId>ojdbc6</artifactId>
                 <version>${oracle.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring-boot.version}</version>
             </dependency>
             <!-- 解析客户端操作系统、浏览器等 -->
             <dependency>
@@ -513,6 +510,32 @@
                 <groupId>jakarta.servlet</groupId>
                 <artifactId>jakarta.servlet-api</artifactId>
                 <version>${servlet.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib-jdk8</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-allopen</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-noarg</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-reflect</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-test</artifactId>
+                <version>${kotlin.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
