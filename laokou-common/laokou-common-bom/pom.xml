@@ -96,7 +96,7 @@
         <!--rocketmq版本-->
         <rocketmq.version>2.2.0</rocketmq.version>
         <!--servlet-api版本-->
-        <servlet.api.version>4.0.4</servlet.api.version>
+        <servlet-api.version>4.0.4</servlet-api.version>
         <!--kotlin版本-->
         <kotlin.version>1.7.10</kotlin.version>
     </properties>
@@ -509,7 +509,7 @@
             <dependency>
                 <groupId>jakarta.servlet</groupId>
                 <artifactId>jakarta.servlet-api</artifactId>
-                <version>${servlet.api.version}</version>
+                <version>${servlet-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
