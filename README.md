@@ -149,23 +149,6 @@ elasticsearch:
   cluster-name: elasticsearch-node
 ```
 
-#### 开启APR模式
-##### 代码引入
-```java
-public class AuthApplication implements WebServerFactoryCustomizer<WebServerFactory> {
-    @Override
-    public void customize(WebServerFactory factory) {
-        TomcatServletWebServerFactory containerFactory = (TomcatServletWebServerFactory) factory;
-        containerFactory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
-    }
-}
-```
-
-##### VM options配置
-```shell script
--Djava.library.path=./lib
-```
-
 #### 高版本JDK兼容
 ##### VM options配置
 ```shell script
