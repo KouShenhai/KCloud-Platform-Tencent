@@ -61,20 +61,22 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 - 服务消费：Spring Cloud OpenFeign & HttpClient
 - 负载均衡：Spring Cloud Loadbalancer
 - 服务熔断&降级&限流：Resilience4j
-- 服务监控：Spring Boot Admin、Prometheus
+- 服务监控：Spring Boot Admin & Prometheus
 - 配置中心：Apollo
 - 消息队列：RocketMQ
 - 链路跟踪：SkyWalking
-- 数据库：MySQL 
-- 数据缓存：Redis
-- 工作流：Flowable
 - 日志中心：EFK
-- 持久层框架：Mybatis Plus
-- JSON 序列化：Jackson
-- 文件服务：Local/Alibaba Cloud OSS/FastDFS/Minio
+- 数据缓存：Redis
+- 数据分析：MongoDB
+- 对象存储：Local & Alibaba Cloud OSS & FastDFS & Minio
 - 服务部署：Docker-Compose
 - 持续交付：Jenkins
 - 服务发布：金丝雀发布
+- 持久层框架：Mybatis Plus
+- JSON 序列化：Jackson
+- 数据库：MySQL 
+- 工作流：Flowable
+
 
 #### 项目结构
 ~~~
