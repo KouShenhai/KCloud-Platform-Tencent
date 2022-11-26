@@ -79,14 +79,14 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 #### 项目结构
 ~~~
 ├── laokou-common
-        └── laokou-common-mybatis-plus      --- 对象映射组件
-        └── laokou-common-bom               --- 依赖版本库
         └── laokou-common-swagger           --- 文档组件
         └── laokou-common-core              --- 公共组件
+        └── laokou-common-bom               --- 依赖版本库
+        └── laokou-common-mybatis-plus      --- 对象映射组件
 ├── laokou-cloud
-        └── laokou-register                 --- 服务注册&发现
         └── laokou-gateway                  --- API网关
         └── laokou-monitor                  --- 服务监控
+        └── laokou-register                 --- 服务注册&发现
 ├── laokou-service
         └── laokou-generator                --- 模板模块
         └── laokou-admin                    --- 后台管理模块
