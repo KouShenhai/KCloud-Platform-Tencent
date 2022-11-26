@@ -35,7 +35,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 主机监控  
 
 ### 系统架构
-![](doc/image/老寇云平台架构图.png)
+![](doc/image/老寇云平台架构图-官方.png)
 
 ### 技术体系
 
