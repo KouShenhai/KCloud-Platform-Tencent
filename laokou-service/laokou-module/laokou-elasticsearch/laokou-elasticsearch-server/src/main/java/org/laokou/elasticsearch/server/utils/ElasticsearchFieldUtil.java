@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class ElasticsearchFieldUtil {
 
-    public static final String RESOURCE_INDEX = "laokou_resource";
+    private static final String RESOURCE_INDEX = "laokou_resource";
 
     private static final Map<String,Class<?>> CLASS_MAP = new HashMap<>(16);
 
@@ -35,6 +35,6 @@ public class ElasticsearchFieldUtil {
     }
 
     public static Class<?> getClazz(final String indexName) {
-        return CLASS_MAP.getOrDefault(indexName,Object.class);
+        return CLASS_MAP.get(indexName);
     }
 }

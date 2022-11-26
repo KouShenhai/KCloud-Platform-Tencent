@@ -547,6 +547,11 @@
                 <artifactId>laokou-log-client</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-mongodb-client</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
