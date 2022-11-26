@@ -64,7 +64,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 - 服务监控：Spring Boot Admin、Prometheus
 - 配置中心：Apollo
 - 消息队列：RocketMQ
-- 链路跟踪：Skywalking
+- 链路跟踪：SkyWalking
 - 数据库：MySQL 
 - 数据缓存：Redis
 - 工作流：Flowable
@@ -79,27 +79,28 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 #### 项目结构
 ~~~
 ├── laokou-common
-        └── laokou-common-bom               --- 依赖版本库
-        └── laokou-common-core              --- 公共组件
         └── laokou-common-mybatis-plus      --- 对象映射组件
+        └── laokou-common-bom               --- 依赖版本库
         └── laokou-common-swagger           --- 文档组件
+        └── laokou-common-core              --- 公共组件
 ├── laokou-cloud
+        └── laokou-register                 --- 服务注册&发现
         └── laokou-gateway                  --- API网关
         └── laokou-monitor                  --- 服务监控
-        └── laokou-register                 --- 服务注册&发现
 ├── laokou-service
+        └── laokou-generator                --- 模板模块
         └── laokou-admin                    --- 后台管理模块
         └── laokou-auth                     --- 认证授权模块
-        └── laokou-generator                --- 模板模块
         └── laokou-modlule
-                └── laokou-sms              --- 短信模块 
-                └── laokou-log              --- 日志模块 
-                └── laokou-email            --- 邮件模块
-                └── laokou-oss              --- 对象存储模块    
-                └── laokou-redis            --- 缓存模块     
-                └── laokou-xxl-job          --- 工作模块   
+                └── laokou-elasticsearch    --- 搜索模块  
                 └── laokou-rocketmq         --- 消息模块    
-                └── laokou-elasticsearch    --- 搜索模块     
+                └── laokou-xxl-job          --- 工作模块 
+                └── laokou-redis            --- 缓存模块       
+                └── laokou-email            --- 邮件模块    
+                └── laokou-sms              --- 短信模块  
+                └── laokou-log              --- 日志模块  
+                └── laokou-flowable         --- 工作流程模块    
+                └── laokou-oss              --- 对象存储模块       
                 └── laokou-im               --- 即时通讯模块     
 ~~~
 

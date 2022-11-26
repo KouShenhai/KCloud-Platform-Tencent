@@ -20,5 +20,6 @@
         <module>laokou-elasticsearch</module>
         <module>laokou-redis</module>
         <module>laokou-rocketmq</module>
+        <module>laokou-flowable</module>
     </modules>
 </project>

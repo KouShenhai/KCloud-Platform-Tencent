@@ -537,6 +537,16 @@
                 <version>${kotlin.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-flowable-client</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.laokou</groupId>
+                <artifactId>laokou-log-client</artifactId>
+                <version>${laokou.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
