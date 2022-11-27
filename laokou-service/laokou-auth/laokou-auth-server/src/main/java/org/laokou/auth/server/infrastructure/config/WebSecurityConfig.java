@@ -65,7 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()
                 .addFilterBefore(validateInfoFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors().and().csrf().disable()
+                .cors().disable()
+                .csrf().disable()
                 .formLogin()
                 .disable()
                 .authorizeRequests()
