@@ -34,7 +34,10 @@ public class CustomTokenStore {
 
     @Bean
     public TokenStore tokenStore() {
-        return new RedisTokenStore(lettuceConnectionFactory);
+        // 与业务库区分
+        lettuceConnectionFactory.setDatabase(1);
+        RedisTokenStore redisTokenStore = new RedisTokenStore(lettuceConnectionFactory);
+        return redisTokenStore;
     }
 
 }

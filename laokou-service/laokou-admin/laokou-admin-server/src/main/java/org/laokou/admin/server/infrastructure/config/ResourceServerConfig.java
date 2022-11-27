@@ -42,7 +42,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.tokenStore(tokenStore);
+        // 无状态
+        resources.stateless(true).tokenStore(tokenStore);
         //token不存在或错误时，异常处理
         resources.authenticationEntryPoint(new SecurityAuthenticationEntryPoint())
                 .accessDeniedHandler(new AuthExceptionHandler());
@@ -52,9 +53,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
-                .cors().and().csrf().disable()
-                .formLogin()
-                .disable()
+                .cors().disable()
+                .csrf().disable()
+                .formLogin().disable()
                 .authorizeRequests()
                 .antMatchers("/druid/**"
                         ,"/webjars/**"

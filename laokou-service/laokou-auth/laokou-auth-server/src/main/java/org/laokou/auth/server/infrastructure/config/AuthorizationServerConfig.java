@@ -83,6 +83,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         services.setClientDetailsService(clientDetailsService);
         // 支持令牌刷新
         services.setSupportRefreshToken(true);
+        services.setReuseRefreshToken(true);
         // 存储令牌策略
         services.setTokenStore(tokenStore);
         return services;
