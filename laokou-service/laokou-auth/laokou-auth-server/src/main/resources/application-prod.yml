@@ -35,7 +35,6 @@ spring:
         instance:
           service-base-url: http://192.168.62.137:${server.port}
   redis:
-    database: 0
     host: 124.222.196.51
     port: 6379
     password: ENC(AHdloD6Rp4bu9SYZJbO7bcwErNCQm43R1b4zh6x4B10=)

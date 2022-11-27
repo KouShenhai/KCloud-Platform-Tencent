@@ -139,8 +139,6 @@ spring:
       password: 123456
   # redis
   redis:
-    #数据库索引
-    database: 0
     #主机
     host: 127.0.0.1
     #端口

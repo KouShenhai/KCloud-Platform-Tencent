@@ -36,7 +36,6 @@ spring:
         instance:
           service-base-url: http://192.168.62.1:${server.port}
   redis:
-    database: 0
     host: 192.168.62.128
     port: 6379
     timeout: 6000ms #连接超时时长（毫秒）
