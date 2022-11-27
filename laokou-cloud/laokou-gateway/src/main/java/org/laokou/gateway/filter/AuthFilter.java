@@ -168,18 +168,14 @@ public class AuthFilter implements GlobalFilter,Ordered {
      * @param data
      * @return
      */
-    private Mono<Void> response(ServerWebExchange exchange,Object data){
+    public static Mono<Void> response(ServerWebExchange exchange,Object data){
         DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(JacksonUtil.toJsonStr(data).getBytes(StandardCharsets.UTF_8));
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
         exchange.getResponse().setStatusCode(HttpStatus.OK);
         return exchange.getResponse().writeWith(Flux.just(buffer));
     }
 
-    private ServerHttpRequestDecorator decorate(
-            ServerWebExchange exchange,
-            HttpHeaders headers,
-            CachedBodyOutputMessage outputMessage
-    ) {
+    private ServerHttpRequestDecorator decorate(ServerWebExchange exchange, HttpHeaders headers, CachedBodyOutputMessage outputMessage) {
         return new ServerHttpRequestDecorator(exchange.getRequest()) {
             @Override
             public HttpHeaders getHeaders() {

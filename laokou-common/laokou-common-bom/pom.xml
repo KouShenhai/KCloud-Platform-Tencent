@@ -79,8 +79,6 @@
         <oracle.version>11.2.0.3</oracle.version>
         <!--freemarker模板引擎依赖-->
         <freemarker.version>2.3.31</freemarker.version>
-        <!--transmittable-thread-local版本-->
-        <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
         <!--oshi版本-->
         <oshi.version>5.8.0</oshi.version>
         <!-- elasticsearch版本-->
@@ -250,11 +248,6 @@
                 <groupId>com.ctrip.framework.apollo</groupId>
                 <artifactId>apollo-client</artifactId>
                 <version>${apollo-client.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>transmittable-thread-local</artifactId>
-                <version>${transmittable-thread-local.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.laokou</groupId>
