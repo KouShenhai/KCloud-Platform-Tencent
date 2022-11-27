@@ -16,7 +16,8 @@
 package org.laokou.gateway.filter;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.http.HttpUtil;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.exception.ErrorCode;
@@ -64,7 +65,8 @@ import java.util.function.Function;
  */
 @Component
 @Slf4j
-@Data
+@Setter
+@Getter
 @ConfigurationProperties(prefix = "gateway")
 public class AuthFilter implements GlobalFilter,Ordered {
 
@@ -83,7 +85,6 @@ public class AuthFilter implements GlobalFilter,Ordered {
 
     @Override
     public Mono filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        // 放行uris
         // 获取request对象
         ServerHttpRequest request = exchange.getRequest();
         // 获取uri

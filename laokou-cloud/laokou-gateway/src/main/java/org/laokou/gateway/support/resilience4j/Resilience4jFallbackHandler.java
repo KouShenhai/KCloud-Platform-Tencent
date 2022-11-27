@@ -17,6 +17,7 @@ package org.laokou.gateway.support.resilience4j;
 import cn.hutool.http.HttpStatus;
 import org.laokou.common.core.utils.HttpResultUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.gateway.constant.GatewayConstant;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -38,6 +39,6 @@ public class Resilience4jFallbackHandler implements HandlerFunction<ServerRespon
         optionalUris.ifPresent((uri) -> log.error("网关执行请求：{}失败，resilience4j服务降级处理",uri));
         return ServerResponse.status(HttpStatus.HTTP_OK)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(new HttpResultUtil<Boolean>().error("服务已被降级熔断")));
+                .body(BodyInserters.fromValue(new HttpResultUtil<Boolean>().error(GatewayConstant.FALLBACK_MSG)));
     }
 }
