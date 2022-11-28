@@ -15,7 +15,7 @@
  */
 package org.laokou.auth.server.infrastructure.exception;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.auth.client.exception.CustomExceptionHandler;
+import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
 import org.laokou.auth.client.exception.CustomHttpResult;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -73,7 +73,7 @@ public class CustomWebResponseExceptionTranslator implements WebResponseExceptio
     private ResponseEntity<OAuth2Exception> handleOauth2Exception(OAuth2Exception e) {
         int status = e.getHttpErrorCode();
         String code = e.getOAuth2ErrorCode();
-        String message = CustomExceptionHandler.getMsg(code,e.getMessage());
+        String message = CustomAuthExceptionHandler.getMsg(code,e.getMessage());
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CACHE_CONTROL, "no-store");
         headers.set(HttpHeaders.PRAGMA, "no-cache");

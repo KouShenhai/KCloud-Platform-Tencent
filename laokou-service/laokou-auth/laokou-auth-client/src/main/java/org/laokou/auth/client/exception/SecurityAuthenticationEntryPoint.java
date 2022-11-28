@@ -35,6 +35,6 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         log.error("错误信息：{}",authException.getMessage());
-        CustomExceptionHandler.handleException(response,"" + ErrorCode.AUTHORIZATION_INVALID, MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
+        CustomAuthExceptionHandler.handleException(response,"" + ErrorCode.AUTHORIZATION_INVALID, MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
     }
 }

@@ -30,7 +30,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author Kou Shenhai
  */
-public class CustomExceptionHandler {
+public class CustomAuthExceptionHandler {
 
     public static void handleException(HttpServletResponse response, String code, String message) throws IOException {
         response.setStatus(HttpStatus.HTTP_OK);

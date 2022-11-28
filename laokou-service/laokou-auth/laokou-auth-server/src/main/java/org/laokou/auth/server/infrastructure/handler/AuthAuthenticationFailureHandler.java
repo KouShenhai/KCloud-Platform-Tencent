@@ -16,7 +16,7 @@
 package org.laokou.auth.server.infrastructure.handler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.auth.client.exception.CustomExceptionHandler;
+import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -35,6 +35,6 @@ public class AuthAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)  {
         log.error("错误信息：{}",e.getMessage());
-        CustomExceptionHandler.handleException(response, OAuth2Exception.ERROR,e.getMessage());
+        CustomAuthExceptionHandler.handleException(response, OAuth2Exception.ERROR,e.getMessage());
     }
 }
