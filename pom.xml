@@ -96,6 +96,7 @@
             <id>dev</id>
             <properties>
                 <profile.active>dev</profile.active>
+                <mybatis-plus.log-impl>org.apache.ibatis.logging.stdout.StdOutImpl</mybatis-plus.log-impl>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -106,6 +107,7 @@
             <id>test</id>
             <properties>
                 <profile.active>test</profile.active>
+                <mybatis-plus.log-impl>org.apache.ibatis.logging.stdout.StdOutImpl</mybatis-plus.log-impl>
             </properties>
         </profile>
         <!--正式环境-->
@@ -113,6 +115,7 @@
             <id>prod</id>
             <properties>
                 <profile.active>prod</profile.active>
+                <mybatis-plus.log-impl>org.apache.ibatis.logging.nologging.NoLoggingImpl</mybatis-plus.log-impl>
             </properties>
         </profile>
     </profiles>

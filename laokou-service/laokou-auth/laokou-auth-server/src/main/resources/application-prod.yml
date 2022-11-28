@@ -84,10 +84,3 @@ spring:
 logging:
   file:
     name: /opt/logs/${spring.application.name}/error.log
-
-#mybatis
-mybatis-plus:
-  mapper-locations: classpath:/mapper/**/*.xml
-  configuration:
-    cache-enabled: false
-    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl

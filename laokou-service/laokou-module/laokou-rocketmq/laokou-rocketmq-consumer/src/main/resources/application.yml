@@ -18,3 +18,11 @@ feign:
       default:
         connectTimeout: 10000 # 连接时间
         readTimeout: 15000 # 超时时间
+
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  #实体类扫描，多个package用头号或分号分隔
+  type-aliases-package: org.laokou.rocketmq.consumer.entity
+  configuration:
+    log-impl: @mybatis-plus.log-impl@

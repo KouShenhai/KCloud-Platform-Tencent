@@ -26,6 +26,13 @@ management:
     health:
       show-details: always
 
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  configuration:
+    cache-enabled: false
+    log-impl: @mybatis-plus.log-impl@
+
 feign:
   httpclient:
     enabled: true # 支持HttpClient的开关
