@@ -18,7 +18,7 @@ package org.laokou.oss.server.enums;
 /**
  * @author Kou Shenhai
  */
-public enum CloudTypeEnum {
+public enum StorageTypeEnum {
     /**
      * 本地
      */
@@ -34,6 +34,16 @@ public enum CloudTypeEnum {
     /**
      * Minio
      */
-    MINIO
+    MINIO;
+
+    public static StorageTypeEnum getType(Integer type) {
+        StorageTypeEnum[] values = StorageTypeEnum.values();
+        for (StorageTypeEnum value : values) {
+            if (value.ordinal() == type) {
+                return value;
+            }
+        }
+        return null;
+    }
 
 }

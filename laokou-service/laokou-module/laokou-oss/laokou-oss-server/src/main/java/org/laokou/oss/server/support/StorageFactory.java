@@ -20,7 +20,7 @@ import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.RedisKeyUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.oss.client.vo.CloudStorageVO;
-import org.laokou.oss.server.enums.CloudTypeEnum;
+import org.laokou.oss.server.enums.StorageTypeEnum;
 import org.laokou.oss.server.service.SysOssService;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,7 @@ public class StorageFactory {
 
     private final RedisUtil redisUtil;
 
-   public AbstractStorageService build(){
+   public StorageService build(){
        String ossConfigKey = RedisKeyUtil.getOssConfigKey();
        Object object = redisUtil.get(ossConfigKey);
        String ossConfig;
@@ -49,20 +49,13 @@ public class StorageFactory {
            ossConfig = object.toString();
        }
        CloudStorageVO vo = JacksonUtil.toBean(ossConfig, CloudStorageVO.class);
-       assert vo != null;
-       if (CloudTypeEnum.ALIYUN.ordinal() == vo.getType()){
-           return new AliyunStorageService(vo);
-       }
-       if (CloudTypeEnum.LOCAL.ordinal() == vo.getType()){
-           return new LocalStorageService(vo);
-       }
-       if (CloudTypeEnum.FASTDFS.ordinal() == vo.getType()){
-           return new FastdfsStorageService(vo);
-       }
-       if (CloudTypeEnum.MINIO.ordinal() == vo.getType()) {
-           return new MinioStorageService(vo);
-       }
-       throw new CustomException("请检查OSS相关配置");
+       StorageTypeEnum typeEnum = StorageTypeEnum.getType(vo.getType());
+       return switch (typeEnum) {
+           case ALIYUN -> new AliyunStorageService(vo);
+           case LOCAL -> new LocalStorageService(vo);
+           case FASTDFS -> new FastdfsStorageService(vo);
+           case MINIO -> new MinioStorageService(vo);
+       };
    }
 
 }

@@ -16,33 +16,13 @@
 package org.laokou.oss.server.support;
 
 import org.laokou.oss.client.vo.CloudStorageVO;
-
-import java.io.InputStream;
-
 /**
  * @author  Kou Shenhai
  */
-public abstract class AbstractStorageService {
+public abstract class AbstractStorageService implements StorageService{
     /**
      * 配置文件
      */
     protected CloudStorageVO cloudStorageVO;
-
-    /**
-     * 按10M分片
-     */
-    protected static final Long CHUNK_SIZE = 10L * 1024 * 1024;
-
-    protected static final String SEPARATOR = "/";
-
-    /**
-     * 上传文件
-     * @param inputStream 文件流
-     * @param fileName 文件名称
-     * @param fileSize 文件大小
-     * @return
-     * @throws Exception
-     */
-    public abstract String upload(InputStream inputStream,String fileName,Long fileSize) throws Exception;
 
 }
