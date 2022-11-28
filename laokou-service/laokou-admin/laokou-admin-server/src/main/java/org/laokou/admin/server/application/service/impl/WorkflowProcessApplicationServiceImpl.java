@@ -45,14 +45,12 @@ import org.laokou.redis.utils.RedisUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.ResourceAuditLogDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadPoolExecutor;
-
 /**
  * @author Kou Shenhai
  */
@@ -64,7 +62,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
     private final RepositoryService repositoryService;
     private final RuntimeService runtimeService;
     private final TaskService taskService;
-    private final ThreadPoolExecutor adminThreadPool;
+    private final ThreadPoolTaskExecutor adminThreadPoolTaskExecutor;
     private final WorkflowTaskApplicationService workflowTaskApplicationService;
     private final RocketmqApiFeignClient rocketmqApiFeignClient;
     private final WorkFlowUtil workFlowUtil;
@@ -166,7 +164,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         }
         String username = UserUtil.getUsername();
         Long userId = UserUtil.getUserId();
-        adminThreadPool.execute(() -> saveAuditLog(resourceId,status,auditStatus,comment, username,userId));
+        adminThreadPoolTaskExecutor.execute(() -> saveAuditLog(resourceId,status,auditStatus,comment, username,userId));
         return auditFlag;
     }
 

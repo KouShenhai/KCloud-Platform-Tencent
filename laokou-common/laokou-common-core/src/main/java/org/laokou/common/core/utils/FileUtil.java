@@ -19,13 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.laokou.common.core.constant.Constant;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.channels.FileChannel;
 import java.util.*;
-import java.util.concurrent.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 /**
@@ -33,8 +30,6 @@ import java.util.zip.ZipOutputStream;
  */
 @Slf4j
 public class FileUtil extends FileUtils {
-
-    public static final String RW = "rw";
 
     /**
      * 定义允许上传的文件扩展名
@@ -63,39 +58,6 @@ public class FileUtil extends FileUtils {
      */
     public static String getFileSuffix(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
-    }
-
-    /**
-     * nio上传文件
-     * @param rootPath 根目录
-     * @param directoryPath 文件相对目录
-     * @param inputStream 文件流
-     * @param fileName 文件名
-     * @param fileSize 文件大小
-     * @param chunkSize 文件分片
-     */
-    @SneakyThrows
-    public static void nioRandomFileChannelUpload(final String rootPath, final String directoryPath, final String fileName, final InputStream inputStream, final Long fileSize, final Long chunkSize, ThreadPoolExecutor executorService) throws IOException {
-        //读通道
-        try (FileChannel inChannel = ((FileInputStream)inputStream).getChannel()) {
-            log.info("文件传输开始...");
-            //新建目录
-            final File newFile = uploadBefore(rootPath,directoryPath,fileName);
-            //需要分多少个片
-            final long chunkCount = (fileSize / chunkSize) + (fileSize % chunkSize == 0 ? 0 : 1);
-            //同步工具，允许1或N个线程等待其他线程完成执行
-            final CountDownLatch latch = new CountDownLatch((int) chunkCount);
-            //position 指针 > 读取或写入的位置
-            for (long index = 0, position = 0, finalEndSize = position + chunkSize ; index < chunkCount; index++,position = index * chunkSize) {
-                //指定位置
-                final Long finalPosition = position;
-                //读通道
-                executorService.execute(new RandomFileChannelRun(finalPosition,finalEndSize, fileSize, newFile, inChannel,latch));
-            }
-            // 等待其他线程
-            latch.await();
-            log.info("文件传输结束...");
-        }
     }
 
     /**
@@ -137,7 +99,7 @@ public class FileUtil extends FileUtils {
      * @param directoryPath 文件相对目录
      * @param fileName 文件名
      */
-    private static File uploadBefore(String rootPath,String directoryPath,String fileName) throws IOException {
+    public static File uploadBefore(String rootPath,String directoryPath,String fileName) throws IOException {
         File directoryFile = new File(rootPath + directoryPath);
         if (!directoryFile.exists()){
             directoryFile.mkdirs();
@@ -899,55 +861,5 @@ public class FileUtil extends FileUtils {
             p = p + Constant.FORWARD_SLASH;
         }
         return p;
-    }
-
-    private static class RandomFileChannelRun extends Thread {
-        // 写通道
-        private final File newFile;
-        // 读通道
-        private final FileChannel srcChannel;
-        // 读取或写入的位置
-        private final long position;
-        // 结束位置
-        private long endSize;
-        // 计数器
-        private final CountDownLatch latch;
-        // 文件大小
-        private final Long fileSize;
-
-        RandomFileChannelRun(final Long position,final Long endSize,final Long fileSize,final File newFile, final FileChannel srcChannel,final CountDownLatch latch) {
-            this.newFile = newFile;
-            this.srcChannel = srcChannel;
-            this.fileSize = fileSize;
-            this.latch = latch;
-            this.endSize = endSize;
-            this.position = position;
-        }
-
-        @SneakyThrows
-        @Override
-        public void run() {
-            //结束位置
-            if (endSize > fileSize) {
-                endSize = fileSize;
-            }
-            try (
-                    // 随机文件读取
-                    RandomAccessFile accessFile = new RandomAccessFile(newFile, RW);
-                    // 写通道
-                    FileChannel newChannel = accessFile.getChannel()
-            ) {
-                // 标记位置
-                newChannel.position(position);
-                // 零拷贝
-                // transferFrom 与 transferTo 区别
-                // transferTo 最多拷贝2gb，和源文件大小保持一致
-                // transferFrom 每个线程拷贝20MB
-                srcChannel.transferTo(position, endSize, newChannel);
-            } finally {
-                // 减一，当为0时，线程就会执行
-                latch.countDown();
-            }
-        }
     }
 }

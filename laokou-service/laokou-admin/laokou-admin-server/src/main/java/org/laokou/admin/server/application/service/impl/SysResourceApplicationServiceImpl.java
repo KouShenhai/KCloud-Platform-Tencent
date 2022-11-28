@@ -46,12 +46,12 @@ import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.ResourceSyncDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 /**
  * @author Kou Shenhai
@@ -73,7 +73,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
 
     private final SysResourceAuditLogService sysResourceAuditLogService;
 
-    private final ThreadPoolExecutor adminThreadPool;
+    private final ThreadPoolTaskExecutor adminThreadPoolTaskExecutor;
 
     private final RocketmqApiFeignClient rocketmqApiFeignClient;
 
@@ -163,7 +163,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         final String ym = entry.getKey();
                         final List<ResourceIndex> resourceDataList = entry.getValue();
                         //同步数据
-                        adminThreadPool.execute(() -> {
+                        adminThreadPoolTaskExecutor.execute(() -> {
                             try {
                                 RocketmqDTO dto = new RocketmqDTO();
                                 final String indexName = resourceIndex + "_" + ym;
@@ -209,7 +209,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             final String resourceIndexAlias = RESOURCE_KEY;
             final List<String> resourceYmPartitionList = sysResourceService.getResourceYmPartitionList(code);
             for (String ym : resourceYmPartitionList) {
-                adminThreadPool.execute(() -> {
+                adminThreadPoolTaskExecutor.execute(() -> {
                     try {
                         final CreateIndexModel model = new CreateIndexModel();
                         final String indexName = resourceIndex + "_" + ym;

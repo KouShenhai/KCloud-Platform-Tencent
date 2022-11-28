@@ -34,6 +34,7 @@ import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceI
 import org.laokou.auth.server.infrastructure.exception.CustomOauth2Exception;
 import org.laokou.common.core.utils.*;
 import org.laokou.redis.utils.RedisUtil;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -46,7 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 官方不再维护，过期类无法替换
@@ -64,7 +64,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private final TokenStore tokenStore;
     private final RedisUtil redisUtil;
     private final AuthLogUtil authLogUtil;
-    private final ThreadPoolExecutor authThreadPool;
+    private final ThreadPoolTaskExecutor authThreadPoolTaskExecutor;
 
     @SneakyThrows
     @Override
@@ -73,19 +73,19 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
-            authThreadPool.execute(() -> {
+            authThreadPoolTaskExecutor.execute(() -> {
                 authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             });
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         if(!PasswordUtil.matches(password, userDetail.getPassword())) {
-            authThreadPool.execute(() -> {
+            authThreadPoolTaskExecutor.execute(() -> {
                 authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             });
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
-            authThreadPool.execute(() -> {
+            authThreadPoolTaskExecutor.execute(() -> {
                 authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
             });
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_DISABLE,MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
@@ -94,19 +94,19 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 .thenApplyAsync(deptIds -> {
                     userDetail.setDeptIds(deptIds);
                     return userDetail;
-                }, authThreadPool);
+                }, authThreadPoolTaskExecutor);
         CompletableFuture<UserDetail> c2 = CompletableFuture.supplyAsync(() -> sysMenuService.getPermissionsList(userDetail))
                 .thenApplyAsync(permissionList -> {
                     userDetail.setPermissionList(permissionList);
                     return userDetail;
-                }, authThreadPool);
+                }, authThreadPoolTaskExecutor);
         // 等待所有任务都完成
         CompletableFuture.allOf(c1,c2).join();
         if (CollectionUtils.isEmpty(userDetail.getPermissionList())) {
             authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
             throw new CustomOauth2Exception("" + ErrorCode.NOT_PERMISSIONS,MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
         }
-        authThreadPool.execute(() -> {
+        authThreadPoolTaskExecutor.execute(() -> {
             // 登录成功
             authLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
         });

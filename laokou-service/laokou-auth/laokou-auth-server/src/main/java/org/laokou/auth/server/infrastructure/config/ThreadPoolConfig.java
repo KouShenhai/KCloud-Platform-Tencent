@@ -15,15 +15,10 @@
  */
 
 package org.laokou.auth.server.infrastructure.config;
-
-import cn.hutool.core.thread.ThreadUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.concurrent.LinkedBlockingQueue;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author Kou Shenhai
  */
@@ -31,16 +26,21 @@ import java.util.concurrent.TimeUnit;
 public class ThreadPoolConfig {
 
     @Bean
-    public ThreadPoolExecutor authThreadPool() {
-        return new ThreadPoolExecutor(
-                8,
-                16,
-                60,
-                TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(512),
-                ThreadUtil.newNamedThreadFactory("laokou-auth-service",true),
-                new ThreadPoolExecutor.CallerRunsPolicy()
-        );
+    public ThreadPoolTaskExecutor authThreadPoolTaskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        // 核心线程数
+        taskExecutor.setCorePoolSize(8);
+        // 最大线程数
+        taskExecutor.setMaxPoolSize(16);
+        // 队列大小，默认LinkedBlockingQueue
+        taskExecutor.setQueueCapacity(200);
+        // 线程最大空闲时间
+        taskExecutor.setKeepAliveSeconds(300);
+        // 拒绝策略，默认ThreadPoolExecutor.AbortPolicy()
+        taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        // 线程名称前缀
+        taskExecutor.setThreadNamePrefix("laokou-auth-service-");
+        return taskExecutor;
     }
 
 }
