@@ -94,4 +94,11 @@ public interface SysResourceApplicationService {
      */
     List<SysResourceAuditLogVO> queryAuditLogList(Long resourceId);
 
+    /**
+     * 创建索引
+     * @param code
+     * @return
+     */
+    Boolean createResourceIndex(String code);
+
 }

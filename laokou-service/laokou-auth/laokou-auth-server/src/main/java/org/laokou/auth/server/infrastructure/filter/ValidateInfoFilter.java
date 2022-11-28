@@ -25,8 +25,6 @@ import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.StringUtil;
-import org.laokou.common.core.utils.ThreadUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -36,6 +34,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author Kou Shenhai
@@ -54,14 +53,13 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
 
     private final static String GRANT_TYPE = AuthConstant.PASSWORD;
 
-    @Autowired
-    private SysCaptchaService sysCaptchaService;
+    private final SysCaptchaService sysCaptchaService;
 
-    @Autowired
-    private AuthAuthenticationFailureHandler authAuthenticationFailureHandler;
+    private final AuthAuthenticationFailureHandler authAuthenticationFailureHandler;
 
-    @Autowired
-    private AuthLogUtil authLogUtil;
+    private final AuthLogUtil authLogUtil;
+
+    private final ThreadPoolExecutor authThreadPool;
 
     @SneakyThrows
     @Override
@@ -99,7 +97,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
         }
         boolean validate = sysCaptchaService.validate(uuid, captcha);
         if (!validate) {
-            ThreadUtil.executorService.execute(() -> authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request));
+            authThreadPool.execute(() -> authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request));
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
         }
     }

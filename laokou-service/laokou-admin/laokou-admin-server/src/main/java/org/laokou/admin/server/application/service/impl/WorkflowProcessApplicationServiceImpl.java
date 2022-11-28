@@ -17,6 +17,7 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.application.service.WorkflowProcessApplicationService;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
@@ -40,47 +41,34 @@ import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.RedisKeyUtil;
 import org.laokou.common.core.utils.StringUtil;
-import org.laokou.common.core.utils.ThreadUtil;
 import org.laokou.redis.utils.RedisUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.ResourceAuditLogDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * @author Kou Shenhai
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApplicationService {
-
-    @Autowired
-    private RepositoryService repositoryService;
-
-    @Autowired
-    private RuntimeService runtimeService;
-
-    @Autowired
-    private TaskService taskService;
-
     private static final String PROCESS_KEY = "Process_88888888";
-
-    @Autowired
-    private WorkflowTaskApplicationService workflowTaskApplicationService;
-
-    @Autowired
-    private RocketmqApiFeignClient rocketmqApiFeignClient;
-
-    @Autowired
-    private WorkFlowUtil workFlowUtil;
-
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RepositoryService repositoryService;
+    private final RuntimeService runtimeService;
+    private final TaskService taskService;
+    private final ThreadPoolExecutor adminThreadPool;
+    private final WorkflowTaskApplicationService workflowTaskApplicationService;
+    private final RocketmqApiFeignClient rocketmqApiFeignClient;
+    private final WorkFlowUtil workFlowUtil;
+    private final RedisUtil redisUtil;
 
     @Override
     public StartProcessVO startResourceProcess(String processKey, String businessKey, String instanceName) {
@@ -178,7 +166,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
         }
         String username = UserUtil.getUsername();
         Long userId = UserUtil.getUserId();
-        ThreadUtil.executorService.execute(() -> saveAuditLog(resourceId,status,auditStatus,comment, username,userId));
+        adminThreadPool.execute(() -> saveAuditLog(resourceId,status,auditStatus,comment, username,userId));
         return auditFlag;
     }
 

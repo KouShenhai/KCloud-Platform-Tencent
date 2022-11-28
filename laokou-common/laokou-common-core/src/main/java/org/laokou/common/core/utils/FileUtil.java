@@ -74,15 +74,13 @@ public class FileUtil extends FileUtils {
      * @param fileSize 文件大小
      * @param chunkSize 文件分片
      */
-    public static void nioRandomFileChannelUpload(final String rootPath,final String directoryPath,final String fileName,final InputStream inputStream,final Long fileSize,final Long chunkSize) {
+    @SneakyThrows
+    public static void nioRandomFileChannelUpload(final String rootPath, final String directoryPath, final String fileName, final InputStream inputStream, final Long fileSize, final Long chunkSize, ThreadPoolExecutor executorService) throws IOException {
         //读通道
-        FileChannel inChannel = null;
-        try {
+        try (FileChannel inChannel = ((FileInputStream)inputStream).getChannel()) {
             log.info("文件传输开始...");
             //新建目录
             final File newFile = uploadBefore(rootPath,directoryPath,fileName);
-            //文件通道
-            inChannel = ((FileInputStream)inputStream).getChannel();
             //需要分多少个片
             final long chunkCount = (fileSize / chunkSize) + (fileSize % chunkSize == 0 ? 0 : 1);
             //同步工具，允许1或N个线程等待其他线程完成执行
@@ -92,19 +90,11 @@ public class FileUtil extends FileUtils {
                 //指定位置
                 final Long finalPosition = position;
                 //读通道
-                ThreadUtil.executorService.execute(new RandomFileChannelRun(finalPosition,finalEndSize, fileSize, newFile, inChannel,latch));
+                executorService.execute(new RandomFileChannelRun(finalPosition,finalEndSize, fileSize, newFile, inChannel,latch));
             }
-            //关闭线程池
+            // 等待其他线程
+            latch.await();
             log.info("文件传输结束...");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                //关闭通道
-                closeStream(inputStream,inChannel);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -912,17 +902,17 @@ public class FileUtil extends FileUtils {
     }
 
     private static class RandomFileChannelRun extends Thread {
-        //写通道
+        // 写通道
         private final File newFile;
-        //读通道
+        // 读通道
         private final FileChannel srcChannel;
-        //读取或写入的位置
+        // 读取或写入的位置
         private final long position;
-        //结束位置
+        // 结束位置
         private long endSize;
-        //计数器
+        // 计数器
         private final CountDownLatch latch;
-        //文件大小
+        // 文件大小
         private final Long fileSize;
 
         RandomFileChannelRun(final Long position,final Long endSize,final Long fileSize,final File newFile, final FileChannel srcChannel,final CountDownLatch latch) {
@@ -937,27 +927,27 @@ public class FileUtil extends FileUtils {
         @SneakyThrows
         @Override
         public void run() {
-            // 等待其他线程
-            latch.await();
             //结束位置
             if (endSize > fileSize) {
                 endSize = fileSize;
             }
-            // 随机文件读取
-            RandomAccessFile accessFile = new RandomAccessFile(newFile, RW);
-            // 写通道
-            FileChannel newChannel = accessFile.getChannel();
-            // 标记位置
-            newChannel.position(position);
-            // 零拷贝
-            // transferFrom 与 transferTo 区别
-            // transferTo 最多拷贝2gb，和源文件大小保持一致
-            // transferFrom 每个线程拷贝20MB
-            srcChannel.transferTo(position,endSize,newChannel);
-            // 关闭流
-            closeStream(accessFile,newChannel);
-            // 减一，当为0时，线程就会执行
-            latch.countDown();
+            try (
+                    // 随机文件读取
+                    RandomAccessFile accessFile = new RandomAccessFile(newFile, RW);
+                    // 写通道
+                    FileChannel newChannel = accessFile.getChannel()
+            ) {
+                // 标记位置
+                newChannel.position(position);
+                // 零拷贝
+                // transferFrom 与 transferTo 区别
+                // transferTo 最多拷贝2gb，和源文件大小保持一致
+                // transferFrom 每个线程拷贝20MB
+                srcChannel.transferTo(position, endSize, newChannel);
+            } finally {
+                // 减一，当为0时，线程就会执行
+                latch.countDown();
+            }
         }
     }
 }

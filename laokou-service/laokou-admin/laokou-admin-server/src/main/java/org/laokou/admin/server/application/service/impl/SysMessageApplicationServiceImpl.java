@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDO;
@@ -35,28 +36,28 @@ import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.common.core.utils.ThreadUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.MsgDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * @author Kou Shenhai
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SysMessageApplicationServiceImpl implements SysMessageApplicationService {
 
-    @Autowired
-    private SysMessageService sysMessageService;
+    private final SysMessageService sysMessageService;
 
-    @Autowired
-    private SysMessageDetailService sysMessageDetailService;
+    private final SysMessageDetailService sysMessageDetailService;
 
-    @Autowired
-    private RocketmqApiFeignClient rocketmqApiFeignClient;
+    private final RocketmqApiFeignClient rocketmqApiFeignClient;
+
+    private final ThreadPoolExecutor adminThreadPool;
 
     @Override
     public Boolean insertMessage(MessageDTO dto) {
@@ -82,7 +83,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
             sysMessageDetailService.saveBatch(detailDOList);
         }
         // 发送消息
-        ThreadUtil.executorService.execute(() -> sendMessage(dto.getReceiver(),messageDO.getUsername()));
+        adminThreadPool.execute(() -> sendMessage(dto.getReceiver(),messageDO.getUsername()));
         return true;
     }
 

@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package org.laokou.common.core.utils;
+package org.laokou.admin.server.infrastructure.config;
+
+import cn.hutool.core.thread.ThreadUtil;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -23,16 +27,20 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Kou Shenhai
  */
-public class ThreadUtil {
+@Configuration
+public class ThreadPoolConfig {
 
-    public static final ThreadPoolExecutor executorService = new ThreadPoolExecutor(
-            8,
-            16,
-            60,
-            TimeUnit.SECONDS,
-            new LinkedBlockingQueue<>(512),
-            cn.hutool.core.thread.ThreadUtil.newNamedThreadFactory("laokou-service",true),
-            new ThreadPoolExecutor.CallerRunsPolicy()
-    );
+    @Bean
+    public ThreadPoolExecutor adminThreadPool() {
+        return new ThreadPoolExecutor(
+                8,
+                16,
+                60,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(512),
+                ThreadUtil.newNamedThreadFactory("laokou-admin-service",true),
+                new ThreadPoolExecutor.CallerRunsPolicy()
+        );
+    }
 
 }

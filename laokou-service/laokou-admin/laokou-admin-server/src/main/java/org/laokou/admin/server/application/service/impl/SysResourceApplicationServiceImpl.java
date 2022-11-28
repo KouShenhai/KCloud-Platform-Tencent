@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
 import org.laokou.admin.server.application.service.WorkflowProcessApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
@@ -26,7 +27,6 @@ import org.laokou.admin.server.domain.sys.repository.service.SysResourceAuditLog
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceService;
 import org.laokou.admin.client.enums.ChannelTypeEnum;
 import org.laokou.admin.client.enums.MessageTypeEnum;
-import org.laokou.admin.server.infrastructure.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.admin.client.index.ResourceIndex;
 import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;
 import org.laokou.admin.server.infrastructure.utils.WorkFlowUtil;
@@ -40,20 +40,18 @@ import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.common.core.utils.FileUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.common.core.utils.ThreadUtil;
 import org.laokou.oss.client.vo.UploadVO;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.ResourceSyncDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 /**
  * @author Kou Shenhai
@@ -62,29 +60,22 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SysResourceApplicationServiceImpl implements SysResourceApplicationService {
-
-    @Autowired
-    private SysResourceService sysResourceService;
-
     private static final String RESOURCE_KEY = "laokou_resource";
 
     private static final String PROCESS_KEY = "Process_88888888";
 
-    @Autowired
-    private WorkflowProcessApplicationService workflowProcessApplicationService;
+    private final WorkflowProcessApplicationService workflowProcessApplicationService;
 
-    @Autowired
-    private WorkFlowUtil workFlowUtil;
+    private final SysResourceService sysResourceService;
+    private final WorkFlowUtil workFlowUtil;
 
-    @Autowired
-    private SysResourceAuditLogService sysResourceAuditLogService;
+    private final SysResourceAuditLogService sysResourceAuditLogService;
 
-    @Autowired
-    private ElasticsearchApiFeignClient elasticsearchApiFeignClient;
+    private final ThreadPoolExecutor adminThreadPool;
 
-    @Autowired
-    private RocketmqApiFeignClient rocketmqApiFeignClient;
+    private final RocketmqApiFeignClient rocketmqApiFeignClient;
 
     @Override
     public IPage<SysResourceVO> queryResourcePage(SysResourceQo qo) {
@@ -159,31 +150,9 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             //总数
             final Long resourceTotal = sysResourceService.getResourceTotal(code);
             if (resourceTotal > 0) {
-                beforeSync();
+                beforeSyncAsync();
                 //创建索引 - 时间分区
                 final String resourceIndex = RESOURCE_KEY + "_" + code;
-                final String resourceIndexAlias = RESOURCE_KEY;
-                final List<String> resourceYmPartitionList = sysResourceService.getResourceYmPartitionList(code);
-                CountDownLatch countDownLatch = new CountDownLatch(resourceYmPartitionList.size());
-                for (String ym : resourceYmPartitionList) {
-                    ThreadUtil.executorService.execute(() -> {
-                        try {
-                            countDownLatch.await();
-                            final CreateIndexModel model = new CreateIndexModel();
-                            final String indexName = resourceIndex + "_" + ym;
-                            model.setIndexName(indexName);
-                            model.setIndexAlias(resourceIndexAlias);
-                            elasticsearchApiFeignClient.create(model);
-                        } catch (final FeignException e) {
-                            log.error("错误信息：{}",e.getMessage());
-                        } catch (InterruptedException e) {
-                            log.error("错误信息：{}",e.getMessage());
-                            throw new RuntimeException(e);
-                        } finally {
-                            countDownLatch.countDown();
-                        }
-                    });
-                }
                 //同步数据 - 异步
                 final int chunkSize = 500;
                 int pageIndex = 0;
@@ -194,7 +163,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         final String ym = entry.getKey();
                         final List<ResourceIndex> resourceDataList = entry.getValue();
                         //同步数据
-                        ThreadUtil.executorService.execute(() -> {
+                        adminThreadPool.execute(() -> {
                             try {
                                 RocketmqDTO dto = new RocketmqDTO();
                                 final String indexName = resourceIndex + "_" + ym;
@@ -211,7 +180,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                     }
                     pageIndex += chunkSize;
                 }
-                afterSync();
+                afterSyncAsync();
             }
         return true;
     }
@@ -221,12 +190,49 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         return sysResourceAuditLogService.getAuditLogList(resourceId);
     }
 
-    private void beforeSync() {
-        log.info("开始同步数据...");
+    private void beforeCreateIndex() {
+        log.info("开始索引创建...");
     }
 
-    private void afterSync() {
-        log.info("结束同步数据...");
+    private void afterCreateIndex() {
+        log.info("结束索引创建...");
+    }
+
+    @Override
+    public Boolean createResourceIndex(String code) {
+        // 总数
+        final Long resourceTotal = sysResourceService.getResourceTotal(code);
+        if (resourceTotal > 0) {
+            beforeCreateIndex();
+            //创建索引 - 时间分区
+            final String resourceIndex = RESOURCE_KEY + "_" + code;
+            final String resourceIndexAlias = RESOURCE_KEY;
+            final List<String> resourceYmPartitionList = sysResourceService.getResourceYmPartitionList(code);
+            for (String ym : resourceYmPartitionList) {
+                adminThreadPool.execute(() -> {
+                    try {
+                        final CreateIndexModel model = new CreateIndexModel();
+                        final String indexName = resourceIndex + "_" + ym;
+                        model.setIndexName(indexName);
+                        model.setIndexAlias(resourceIndexAlias);
+                        // 用独立的类
+                        // 写入rocketmq
+                    } catch (final FeignException e) {
+                        log.error("错误信息：{}", e.getMessage());
+                    }
+                });
+            }
+            afterCreateIndex();
+        }
+        return true;
+    }
+
+    private void beforeSyncAsync() {
+        log.info("开始异步同步数据...");
+    }
+
+    private void afterSyncAsync() {
+        log.info("结束异步同步数据...");
     }
 
 }
