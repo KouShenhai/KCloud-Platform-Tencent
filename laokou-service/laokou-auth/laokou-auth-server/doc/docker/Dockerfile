@@ -8,8 +8,7 @@ EXPOSE 10000
 ENTRYPOINT java -Xms256m -Xmx512m --add-opens \
                                   java.base/java.lang=ALL-UNNAMED \
                                 -Ddruid.filters=mergeStat -Ddruid.useGlobalDataSourceStat=true \
-                                -Djasypt.encryptor.password=koushenhai5201314wumeihua \
                                 -Djava.awt.headless=true \
                                 -Denv=DEV \
                                 -Dapollo.configService=http://124.222.196.51:8080 -jar \
-                                app.jar --spring.profiles.active=prod > app.log
+                                app.jar > app.log
