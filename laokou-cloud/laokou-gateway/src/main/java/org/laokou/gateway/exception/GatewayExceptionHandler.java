@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.gateway.constant.GatewayConstant;
-import org.laokou.gateway.filter.AuthFilter;
+import org.laokou.gateway.utils.ResponseUtil;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
@@ -43,7 +43,7 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler, Ordere
 		} else {
 			result = result.error(ErrorCode.SERVICE_MAINTENANCE,GatewayConstant.OTHER_MSG);
 		}
-		return AuthFilter.response(exchange,result);
+		return ResponseUtil.response(exchange,result);
 	}
 
 	@Override

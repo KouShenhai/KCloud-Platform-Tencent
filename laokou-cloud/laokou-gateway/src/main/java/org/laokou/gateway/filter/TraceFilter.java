@@ -16,6 +16,7 @@
 
 package org.laokou.gateway.filter;
 
+import org.laokou.gateway.utils.ResponseUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -32,6 +33,9 @@ public class TraceFilter implements GlobalFilter,Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // EFK收集
+        if (false) {
+            ResponseUtil.response(exchange,null);
+        }
         return chain.filter(exchange);
     }
 

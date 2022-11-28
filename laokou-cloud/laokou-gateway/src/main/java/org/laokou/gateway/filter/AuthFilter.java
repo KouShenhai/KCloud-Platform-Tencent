@@ -23,9 +23,9 @@ import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.password.PasswordUtil;
 import org.laokou.common.core.utils.HttpResultUtil;
-import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.gateway.constant.GatewayConstant;
+import org.laokou.gateway.utils.ResponseUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -36,7 +36,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -51,7 +50,6 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -102,7 +100,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         // 获取token
         String token = getToken(request);
         if (StringUtil.isEmpty(token)) {
-            return response(exchange, new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED, GatewayConstant.UNAUTHORIZED_MSG));
+            return ResponseUtil.response(exchange, new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED, GatewayConstant.UNAUTHORIZED_MSG));
         }
         ServerHttpRequest build = exchange.getRequest().mutate()
                 .header(Constant.AUTHORIZATION_HEAD, token).build();
@@ -161,19 +159,6 @@ public class AuthFilter implements GlobalFilter,Ordered {
             }
             return Mono.just(HttpUtil.toParams(inParamsMap, Charset.defaultCharset(), true));
         };
-    }
-
-    /**
-     * 前端响应
-     * @param exchange
-     * @param data
-     * @return
-     */
-    public static Mono<Void> response(ServerWebExchange exchange,Object data){
-        DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(JacksonUtil.toJsonStr(data).getBytes(StandardCharsets.UTF_8));
-        exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-        exchange.getResponse().setStatusCode(HttpStatus.OK);
-        return exchange.getResponse().writeWith(Flux.just(buffer));
     }
 
     private ServerHttpRequestDecorator decorate(ServerWebExchange exchange, HttpHeaders headers, CachedBodyOutputMessage outputMessage) {
