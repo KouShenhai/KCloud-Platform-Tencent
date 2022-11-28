@@ -30,7 +30,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class LocalLock extends AbstractLock<Lock> {
 
     @Override
-    public Lock getLock(LockType type,String key) {
+    public Lock getLock(LockType type, String key) {
         return switch (type) {
             case LOCK -> new ReentrantLock();
             case FAIR -> new ReentrantLock(true);
@@ -71,5 +71,4 @@ public class LocalLock extends AbstractLock<Lock> {
             }
         }
     }
-
 }

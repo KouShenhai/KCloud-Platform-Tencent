@@ -29,7 +29,7 @@ public class LockFactory {
     @Autowired
     private RedisUtil redisUtil;
 
-    public AbstractLock build(LockScope scope) {
+    public Locks build(LockScope scope) {
         return switch (scope) {
             case DISTRIBUTED_LOCK -> new RedissonLock(redisUtil);
             case STANDALONE_LOCK -> new LocalLock();

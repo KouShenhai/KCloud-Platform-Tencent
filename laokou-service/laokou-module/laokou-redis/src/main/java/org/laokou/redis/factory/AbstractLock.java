@@ -20,7 +20,17 @@ import org.laokou.redis.enums.LockType;
 /**
  * @author Kou Shenhai
  */
-public abstract class AbstractLock<T> {
+public abstract class AbstractLock<T> implements Locks{
+
+    @Override
+    public Boolean tryLock(LockType type, String key, long expire, long timeout) throws InterruptedException {
+        return tryLock(getLock(type,key),expire,timeout);
+    }
+
+    @Override
+    public void unlock(LockType type, String key) {
+        unlock(getLock(type,key));
+    }
 
     /**
      * 获取锁

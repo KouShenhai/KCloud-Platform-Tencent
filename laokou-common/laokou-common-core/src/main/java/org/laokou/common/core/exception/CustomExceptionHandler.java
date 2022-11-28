@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Component
 public class CustomExceptionHandler {
 	/**
+	 *
 	 * 处理自定义异常
 	 */
 	@ExceptionHandler({CustomException.class})

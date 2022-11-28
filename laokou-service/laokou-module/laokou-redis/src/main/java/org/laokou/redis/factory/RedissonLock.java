@@ -26,7 +26,7 @@ import org.redisson.api.RLock;
  */
 @RequiredArgsConstructor
 @Slf4j
-public class RedissonLock extends AbstractLock<RLock>{
+public class RedissonLock extends AbstractLock<RLock> {
 
     private final RedisUtil redisUtil;
 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 package org.laokou.redis.aspect;
+import lombok.RequiredArgsConstructor;
 import org.laokou.redis.annotation.Lock4j;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -25,19 +25,18 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.laokou.redis.enums.LockScope;
 import org.laokou.redis.enums.LockType;
-import org.laokou.redis.factory.AbstractLock;
+import org.laokou.redis.factory.Locks;
 import org.laokou.redis.factory.LockFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
-
 /**
  * @author Kou Shenhai
  */
 @Component
 @Aspect
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LockAspect {
 
     private final LockFactory factory;
@@ -67,18 +66,17 @@ public class LockAspect {
         long timeout = lock4j.timeout();
         final LockType type = lock4j.type();
         final LockScope scope = lock4j.scope();
-        final AbstractLock abstractLock = factory.build(scope);
+        Locks locks = factory.build(scope);
         // 设置锁的自动过期时间，则执行业务的时间一定要小于锁的自动过期时间，否则就会报错
-        final Object lock = abstractLock.getLock(type, key);
         try {
-            if (abstractLock.tryLock(lock,expire,timeout)) {
+            if (locks.tryLock(type,key,expire,timeout)) {
                 joinPoint.proceed();
             }
         } catch (Throwable throwable) {
             log.error("异常信息：{}",throwable.getMessage());
         } finally {
             //释放锁
-            abstractLock.unlock(lock);
+            locks.unlock(type,key);
         }
     }
 
