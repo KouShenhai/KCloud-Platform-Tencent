@@ -77,3 +77,11 @@ fdfs:
   connect-timeout: 6000
   so-timeout: 600000
   tracker-list: 124.222.196.51:22122
+
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  #实体类扫描，多个package用头号或分号分隔
+  type-aliases-package: org.laokou.oss.server.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

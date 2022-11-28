@@ -33,11 +33,3 @@ management:
   endpoint:
     health:
       show-details: always
-
-#mybatis
-mybatis-plus:
-  mapper-locations: classpath:/mapper/**/*.xml
-  #实体类扫描，多个package用头号或分号分隔
-  type-aliases-package: org.laokou.oss.server.entity
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
