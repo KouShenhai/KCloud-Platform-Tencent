@@ -52,7 +52,7 @@ public class SysOauthApiController {
 
     @PostMapping(value = "/insert")
     @ApiOperation("系统认证>新增")
-    @OperateLog(module = "系统授权",name = "认证新增")
+    @OperateLog(module = "系统认证",name = "认证新增")
     @PreAuthorize("hasAuthority('sys:oauth:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody SysOauthDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysOauthApplicationService.insertOauth(dto));
@@ -60,7 +60,7 @@ public class SysOauthApiController {
 
     @PutMapping(value = "/update")
     @ApiOperation("系统认证>修改")
-    @OperateLog(module = "系统授权",name = "认证修改")
+    @OperateLog(module = "系统认证",name = "认证修改")
     @PreAuthorize("hasAuthority('sys:oauth:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysOauthDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysOauthApplicationService.updateOauth(dto));
@@ -68,7 +68,7 @@ public class SysOauthApiController {
 
     @DeleteMapping(value = "/delete")
     @ApiOperation("系统认证>删除")
-    @OperateLog(module = "系统授权",name = "认证删除")
+    @OperateLog(module = "系统认证",name = "认证删除")
     @PreAuthorize("hasAuthority('sys:oauth:delete')")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResultUtil<Boolean>().ok(sysOauthApplicationService.deleteOauth(id));
