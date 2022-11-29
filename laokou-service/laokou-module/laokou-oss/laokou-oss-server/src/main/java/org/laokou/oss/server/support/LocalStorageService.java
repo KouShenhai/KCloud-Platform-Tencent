@@ -84,10 +84,8 @@ public class LocalStorageService extends AbstractStorageService {
             final CountDownLatch latch = new CountDownLatch((int) chunkCount);
             //position 指针 > 读取或写入的位置
             for (long index = 0, position = 0, finalEndSize = position + chunkSize ; index < chunkCount; index++,position = index * chunkSize) {
-                //指定位置
-                final Long finalPosition = position;
                 //读通道
-                OSS_THREAD_POOL_TASK_EXECUTOR.execute(new RandomFileChannelRun(finalPosition,finalEndSize, fileSize, newFile, inChannel,latch));
+                OSS_THREAD_POOL_TASK_EXECUTOR.execute(new RandomFileChannelRun(position,finalEndSize, fileSize, newFile, inChannel,latch));
             }
             // 等待其他线程
             latch.await();
@@ -136,7 +134,7 @@ public class LocalStorageService extends AbstractStorageService {
                 // 零拷贝
                 // transferFrom 与 transferTo 区别
                 // transferTo 最多拷贝2gb，和源文件大小保持一致
-                // transferFrom 每个线程拷贝20MB
+                // transferFrom 每个线程拷贝1MB
                 srcChannel.transferTo(position, endSize, newChannel);
             } finally {
                 // 减一，当为0时，线程就会执行

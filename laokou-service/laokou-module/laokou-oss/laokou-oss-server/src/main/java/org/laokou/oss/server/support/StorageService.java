@@ -6,11 +6,13 @@ import java.io.InputStream;
 public interface StorageService {
 
     /**
-     * 按10M分片
+     * 按1M分片
      */
-    Long CHUNK_SIZE = 10L * 1024 * 1024;
+    Long CHUNK_SIZE = 1L * 1024 * 1024;
 
     String SEPARATOR = "/";
+
+    String ROD = "-";
 
     /**
      * 上传文件
