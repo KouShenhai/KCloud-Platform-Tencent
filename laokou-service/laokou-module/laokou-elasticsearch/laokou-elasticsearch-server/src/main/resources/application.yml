@@ -3,7 +3,7 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   application:
-    name: laokou-elasticsearch
+    name: @pom.parent.artifactId@
   profiles:
     active: @profile.active@
 

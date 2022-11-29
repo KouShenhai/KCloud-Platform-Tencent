@@ -7,7 +7,7 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   application:
-    name: laokou-im
+    name: @pom.parent.artifactId@
   servlet:
     multipart:
       enabled: true
