@@ -1,0 +1,11 @@
+jasypt:
+  encryptor:
+    password: koushenhai5201314wumeihua
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  application:
+    name: @pom.parent.artifactId@
+  profiles:
+    active: @profile.active@

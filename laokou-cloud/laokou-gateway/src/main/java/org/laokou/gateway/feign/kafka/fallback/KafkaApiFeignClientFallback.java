@@ -13,17 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.constant;
+package org.laokou.gateway.feign.kafka.fallback;
+import org.laokou.gateway.feign.kafka.KafkaApiFeignClient;
+import org.laokou.kafka.client.dto.KafkaDTO;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 服务降级
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2020/9/5 0005 上午 12:12
  */
-public interface ServiceConstant {
+@Slf4j
+@AllArgsConstructor
+public class KafkaApiFeignClientFallback implements KafkaApiFeignClient {
 
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_ROCKETMQ = "laokou-rocketmq";
-    String LAOKOU_IM = "laokou-im";
-    String LAOKOU_KAFKA = "laokou-kafka";
+    private final Throwable throwable;
 
+    @Override
+    public void sendAsyncMessage(String topic, KafkaDTO dto) {
+        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+    }
 }

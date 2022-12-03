@@ -13,17 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.constant;
+package org.laokou.kafka.client.dto;
+
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/3/4 0004 下午 6:44
  */
-public interface ServiceConstant {
+@Data
+public class KafkaDTO implements Serializable {
 
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_ROCKETMQ = "laokou-rocketmq";
-    String LAOKOU_IM = "laokou-im";
-    String LAOKOU_KAFKA = "laokou-kafka";
+    private String data;
 
 }

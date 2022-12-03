@@ -42,8 +42,4 @@ public interface GatewayConstant {
      */
     String PASSWORD = "password";
 
-    /**
-     * 请求链topic
-     */
-    String LAOKOU_REQUEST_TRACE_TOPIC = "laokou_request_trace_topic";
 }

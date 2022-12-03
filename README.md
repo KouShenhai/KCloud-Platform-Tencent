@@ -100,6 +100,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
                 └── laokou-log              --- 日志模块  
                 └── laokou-email            --- 邮件模块  
                 └── laokou-redis            --- 缓存模块  
+                └── laokou-kafka            --- 消息模块  
                 └── laokou-xxl-job          --- 工作模块  
                 └── laokou-mongodb          --- 报表模块  
                 └── laokou-rocketmq         --- 消息模块  

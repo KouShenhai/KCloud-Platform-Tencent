@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.constant;
-
+package org.laokou.kafka.client.constant;
 /**
+ * 队列常量值
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2020/9/18 0018 上午 7:07
  */
-public interface ServiceConstant {
+public interface KafkaConstant {
 
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_ROCKETMQ = "laokou-rocketmq";
-    String LAOKOU_IM = "laokou-im";
-    String LAOKOU_KAFKA = "laokou-kafka";
-
+    /**
+     * 请求链topic
+     */
+    String LAOKOU_REQUEST_TRACE_TOPIC = "laokou-request-trace-topic";
 }

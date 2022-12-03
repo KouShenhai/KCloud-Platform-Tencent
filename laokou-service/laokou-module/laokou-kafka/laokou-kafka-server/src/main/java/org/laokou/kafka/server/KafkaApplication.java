@@ -13,17 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.constant;
+package org.laokou.kafka.server;
+
+import org.laokou.common.swagger.config.CorsConfig;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Kou Shenhai
  */
-public interface ServiceConstant {
+@SpringBootApplication(scanBasePackages = {"org.laokou.kafka.server","org.laokou.common.swagger", "org.laokou.common.core"})
+@EnableDiscoveryClient
+@Import({CorsConfig.class})
+public class KafkaApplication {
 
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_ROCKETMQ = "laokou-rocketmq";
-    String LAOKOU_IM = "laokou-im";
-    String LAOKOU_KAFKA = "laokou-kafka";
+    public static void main(String[] args) {
+        SpringApplication.run(KafkaApplication.class, args);
+    }
 
 }
