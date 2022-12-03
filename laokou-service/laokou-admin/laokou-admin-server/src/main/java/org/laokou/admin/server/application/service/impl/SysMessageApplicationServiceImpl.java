@@ -39,9 +39,9 @@ import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.MsgDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import java.util.*;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author Kou Shenhai
@@ -57,7 +57,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
 
     private final RocketmqApiFeignClient rocketmqApiFeignClient;
 
-    private final ThreadPoolExecutor adminThreadPool;
+    private final ThreadPoolTaskExecutor adminThreadPoolTaskExecutor;
 
     @Override
     public Boolean insertMessage(MessageDTO dto) {
@@ -83,7 +83,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
             sysMessageDetailService.saveBatch(detailDOList);
         }
         // 发送消息
-        adminThreadPool.execute(() -> sendMessage(dto.getReceiver(),messageDO.getUsername()));
+        adminThreadPoolTaskExecutor.execute(() -> sendMessage(dto.getReceiver(),messageDO.getUsername()));
         return true;
     }
 
