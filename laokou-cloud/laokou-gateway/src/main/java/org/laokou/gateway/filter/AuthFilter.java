@@ -70,19 +70,13 @@ public class AuthFilter implements GlobalFilter,Ordered {
 
     private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
-    private static final String OAUTH_URI = "/oauth/token";
-
-    private static final String USERNAME = "username";
-
-    private static final String PASSWORD = "password";
-
     /**
      * 不拦截的urls
      */
     private List<String> uris;
 
     @Override
-    public Mono filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 获取request对象
         ServerHttpRequest request = exchange.getRequest();
         // 获取uri
@@ -94,11 +88,11 @@ public class AuthFilter implements GlobalFilter,Ordered {
         }
         // 表单提交
         MediaType mediaType = request.getHeaders().getContentType();
-        if (ANT_PATH_MATCHER.match(OAUTH_URI,requestUri) && MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
+        if (ANT_PATH_MATCHER.match(GatewayConstant.OAUTH_URI,requestUri) && MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
             return authDecode(exchange,chain);
         }
         // 获取token
-        String token = getToken(request);
+        String token = ResponseUtil.getToken(request);
         if (StringUtil.isEmpty(token)) {
             return ResponseUtil.response(exchange, new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED, GatewayConstant.UNAUTHORIZED_MSG));
         }
@@ -139,16 +133,16 @@ public class AuthFilter implements GlobalFilter,Ordered {
         return s -> {
             // 获取请求密码并解密
             Map<String, String> inParamsMap = HttpUtil.decodeParamMap((String) s, CharsetUtil.CHARSET_UTF_8);
-            if (inParamsMap.containsKey(PASSWORD) && inParamsMap.containsKey(USERNAME)) {
+            if (inParamsMap.containsKey(GatewayConstant.PASSWORD) && inParamsMap.containsKey(GatewayConstant.USERNAME)) {
                 try {
-                    String password = inParamsMap.get(PASSWORD);
-                    String username = inParamsMap.get(USERNAME);
+                    String password = inParamsMap.get(GatewayConstant.PASSWORD);
+                    String username = inParamsMap.get(GatewayConstant.USERNAME);
                     // 返回修改后报文字符
                     if (StringUtil.isNotEmpty(password)) {
-                        inParamsMap.put(PASSWORD, PasswordUtil.decode(password));
+                        inParamsMap.put(GatewayConstant.PASSWORD, PasswordUtil.decode(password));
                     }
                     if (StringUtil.isNotEmpty(username)) {
-                        inParamsMap.put(USERNAME, PasswordUtil.decode(username));
+                        inParamsMap.put(GatewayConstant.USERNAME, PasswordUtil.decode(username));
                     }
                 } catch (Exception e) {
                     log.error("错误信息：{}",e.getMessage());
@@ -195,21 +189,6 @@ public class AuthFilter implements GlobalFilter,Ordered {
             }
         }
         return false;
-    }
-
-    /**
-     * 获取token
-     * @param request
-     */
-    private String getToken(ServerHttpRequest request){
-        //从header中获取token
-        String token = request.getHeaders().getFirst(Constant.AUTHORIZATION_HEAD);
-        //如果header中不存在Authorization，则从参数中获取Authorization
-        if(StringUtil.isEmpty(token)){
-            token = request.getQueryParams().getFirst(Constant.AUTHORIZATION_HEAD);
-        }
-        assert token != null;
-        return token.trim();
     }
 
 }

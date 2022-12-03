@@ -15,11 +15,15 @@
  */
 
 package org.laokou.gateway.filter;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.laokou.gateway.constant.GatewayConstant;
+import org.laokou.gateway.support.kafka.KafkaSender;
 import org.laokou.gateway.utils.ResponseUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -29,14 +33,29 @@ import reactor.core.publisher.Mono;
  * @author Kou Shenhai
  */
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class TraceFilter implements GlobalFilter,Ordered {
+
+    private final KafkaSender kafkaSender;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        // EFK收集
-        if (false) {
-            ResponseUtil.response(exchange,null);
-        }
-        return chain.filter(exchange);
+        return Mono.fromRunnable(
+                () -> {
+                    ServerHttpRequest request = exchange.getRequest();
+                    String userId = ResponseUtil.getUserId(request);
+                    String username = ResponseUtil.getUsername(request);
+                    System.out.println(userId);
+                    System.out.println(username);
+                    // EFK收集
+                    try {
+                        kafkaSender.sendAsyncMessage(GatewayConstant.LAOKOU_REQUEST_TRACE_TOPIC, userId);
+                    } catch (Exception e) {
+                        log.error("消息发送失败，失败消息：{}",e.getMessage());
+                    }
+                }
+        ).then(chain.filter(exchange));
     }
 
     @Override

@@ -16,10 +16,14 @@
 
 package org.laokou.gateway.utils;
 
+import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.core.utils.StringUtil;
+import org.laokou.gateway.constant.GatewayConstant;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -42,6 +46,52 @@ public class ResponseUtil {
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
         exchange.getResponse().setStatusCode(HttpStatus.OK);
         return exchange.getResponse().writeWith(Flux.just(buffer));
+    }
+
+    /**
+     * 获取token
+     * @param request
+     */
+    public static String getToken(ServerHttpRequest request){
+        //从header中获取token
+        String token = request.getHeaders().getFirst(Constant.AUTHORIZATION_HEAD);
+        //如果header中不存在Authorization，则从参数中获取Authorization
+        if(StringUtil.isEmpty(token)){
+            token = request.getQueryParams().getFirst(Constant.AUTHORIZATION_HEAD);
+        }
+        assert token != null;
+        return token.trim();
+    }
+
+    /**
+     * 获取userId
+     * @param request
+     */
+    public static String getUserId(ServerHttpRequest request){
+        //从header中获取userId
+        String userId = request.getHeaders().getFirst(GatewayConstant.USER_ID);
+        //如果header中不存在userId，则从参数中获取userId
+        if(StringUtil.isEmpty(userId)){
+            userId = request.getQueryParams().getFirst(GatewayConstant.USER_ID);
+        }
+        assert userId != null;
+        return userId.trim();
+    }
+
+
+    /**
+     * 获取username
+     * @param request
+     */
+    public static String getUsername(ServerHttpRequest request){
+        //从header中获取username
+        String username = request.getHeaders().getFirst(GatewayConstant.USERNAME);
+        //如果header中不存在username，则从参数中获取username
+        if(StringUtil.isEmpty(username)){
+            username = request.getQueryParams().getFirst(GatewayConstant.USERNAME);
+        }
+        assert username != null;
+        return username.trim();
     }
 
 }
