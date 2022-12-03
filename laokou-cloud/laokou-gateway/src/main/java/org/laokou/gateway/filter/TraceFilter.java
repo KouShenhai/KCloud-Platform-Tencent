@@ -17,9 +17,7 @@
 package org.laokou.gateway.filter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.gateway.constant.GatewayConstant;
 import org.laokou.gateway.support.kafka.KafkaSender;
-import org.laokou.gateway.utils.ResponseUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -44,13 +42,11 @@ public class TraceFilter implements GlobalFilter,Ordered {
         return Mono.fromRunnable(
                 () -> {
                     ServerHttpRequest request = exchange.getRequest();
-                    String userId = ResponseUtil.getUserId(request);
-                    String username = ResponseUtil.getUsername(request);
-                    System.out.println(userId);
-                    System.out.println(username);
+                    //String userId = ResponseUtil.getUserId(request);
+                    //String username = ResponseUtil.getUsername(request);
                     // EFK收集
                     try {
-                        kafkaSender.sendAsyncMessage(GatewayConstant.LAOKOU_REQUEST_TRACE_TOPIC, userId);
+                        //kafkaSender.sendAsyncMessage(GatewayConstant.LAOKOU_REQUEST_TRACE_TOPIC, userId);
                     } catch (Exception e) {
                         log.error("消息发送失败，失败消息：{}",e.getMessage());
                     }

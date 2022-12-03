@@ -59,8 +59,7 @@ public class ResponseUtil {
         if(StringUtil.isEmpty(token)){
             token = request.getQueryParams().getFirst(Constant.AUTHORIZATION_HEAD);
         }
-        assert token != null;
-        return token.trim();
+        return token == null ? "" : token.trim();
     }
 
     /**
@@ -74,8 +73,7 @@ public class ResponseUtil {
         if(StringUtil.isEmpty(userId)){
             userId = request.getQueryParams().getFirst(GatewayConstant.USER_ID);
         }
-        assert userId != null;
-        return userId.trim();
+        return userId == null ? "" : userId.trim();
     }
 
 
@@ -90,8 +88,7 @@ public class ResponseUtil {
         if(StringUtil.isEmpty(username)){
             username = request.getQueryParams().getFirst(GatewayConstant.USERNAME);
         }
-        assert username != null;
-        return username.trim();
+        return username == null ? "" : username.trim();
     }
 
 }
