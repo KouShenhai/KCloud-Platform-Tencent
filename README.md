@@ -50,6 +50,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 | Redis             | 6.0.6    |
 | Elasticsearch     | 7.6.2    |
 | RocketMQ          | 5.0.0    |
+| Kafka             | 2.8.1    |
 
 > Spring 全家桶版本对应关系，详见：[版本说明](https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)
 
@@ -63,7 +64,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 - 服务熔断&降级&限流：Resilience4j
 - 服务监控：Spring Boot Admin & Prometheus
 - 配置中心：Apollo
-- 消息队列：RocketMQ
+- 消息队列：RocketMQ & Kafka
 - 链路跟踪：SkyWalking
 - 日志中心：EFK
 - 数据缓存：Redis
@@ -120,6 +121,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 [centos7 安装jenkins](https://kcloud.blog.csdn.net/article/details/112171878)  
 [centos7 安装nacos](https://kcloud.blog.csdn.net/article/details/82589017)  
 [centos7 安装elasticsearch7.6.2](https://kcloud.blog.csdn.net/article/details/123123229)  
+[centos7 安装kafka](https://kcloud.blog.csdn.net/article/details/123771040)
 
 #### 安装包
 [百度网盘](https://pan.baidu.com/s/1swrV9ffJnmz4S0mfkuBbIw) 提取码：1111
