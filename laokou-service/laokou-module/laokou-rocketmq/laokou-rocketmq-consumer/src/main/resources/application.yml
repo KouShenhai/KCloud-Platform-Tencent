@@ -6,7 +6,7 @@ spring:
   profiles:
     active: @profile.active@
   application:
-    name: laokou-rocketmq-consumer
+    name: @artifactId@
 
 feign:
   httpclient:

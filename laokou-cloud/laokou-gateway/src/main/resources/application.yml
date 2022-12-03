@@ -1,6 +1,6 @@
 spring:
   application:
-    name: laokou-gateway
+    name: @artifactId@
   profiles:
     active: @profile.active@
   main:

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: laokou-register
+    name: @artifactId@
   security:
     user:
       name: root

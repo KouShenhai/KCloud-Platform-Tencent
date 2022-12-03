@@ -6,6 +6,6 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   application:
-    name: laokou-rocketmq
+    name: @pom.parent.artifactId@
   profiles:
     active: @profile.active@
