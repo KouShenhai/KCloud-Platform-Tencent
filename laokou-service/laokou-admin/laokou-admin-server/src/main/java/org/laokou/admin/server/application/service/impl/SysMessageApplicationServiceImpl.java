@@ -61,6 +61,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
 
     @Override
     public Boolean insertMessage(MessageDTO dto) {
+        // TODO im接入数据库
         SysMessageDO messageDO = ConvertUtil.sourceToTarget(dto, SysMessageDO.class);
         messageDO.setCreateDate(new Date());
         messageDO.setCreator(UserUtil.getUserId());
