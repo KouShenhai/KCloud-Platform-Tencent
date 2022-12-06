@@ -114,7 +114,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         return Ordered.LOWEST_PRECEDENCE;
     }
 
-    private Mono authDecode(ServerWebExchange exchange, GatewayFilterChain chain) {
+    private Mono<Void> authDecode(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerRequest serverRequest = ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders());
         Mono modifiedBody = serverRequest.bodyToMono(String.class).flatMap(decrypt());
         BodyInserter<Mono, ReactiveHttpOutputMessage> bodyInserter = BodyInserters.fromPublisher(modifiedBody, String.class);
