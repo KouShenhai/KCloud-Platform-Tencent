@@ -36,7 +36,7 @@ public class ImServiceImpl implements ImService {
     @Override
     public void pusMessage(PushMsgDTO dto) throws IOException {
         for (String s : dto.getReceiver()) {
-            webSocketServer.sendMessages(String.format("%s发来一条消息", dto.getSender()), Long.valueOf(s));
+            webSocketServer.sendMessages(dto.getMsg(), Long.valueOf(s));
         }
     }
 }

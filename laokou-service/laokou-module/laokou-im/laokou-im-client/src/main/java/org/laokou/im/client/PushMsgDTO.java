@@ -33,9 +33,4 @@ public class PushMsgDTO {
 
     private String msg;
 
-    /**
-     * 发送者
-     */
-    private String sender;
-
 }

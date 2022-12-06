@@ -22,7 +22,6 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.im.client.PushMsgDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.laokou.rocketmq.client.dto.MsgDTO;
 import org.laokou.rocketmq.consumer.feign.im.ImApiFeignClient;
 import org.springframework.stereotype.Component;
 
@@ -38,11 +37,7 @@ public class MessageNoticeConsumer implements RocketMQListener<String> {
 
     @Override
     public void onMessage(String message) {
-        final MsgDTO dto = JacksonUtil.toBean(message, MsgDTO.class);
-        PushMsgDTO pushMsgDTO = new PushMsgDTO();
-        pushMsgDTO.setSender(dto.getSender());
-        pushMsgDTO.setMsg(String.format("%s发来一条消息", dto.getSender()));
-        pushMsgDTO.setReceiver(dto.getReceiver());
-        imApiFeignClient.push(pushMsgDTO);
+        final PushMsgDTO dto = JacksonUtil.toBean(message, PushMsgDTO.class);
+        imApiFeignClient.push(dto);
     }
 }

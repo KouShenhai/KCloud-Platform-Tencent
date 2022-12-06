@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.admin.client.dto.PushMsgDTO;
 import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDO;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDetailDO;
@@ -37,7 +38,6 @@ import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.laokou.rocketmq.client.dto.MsgDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,6 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
 
     @Override
     public Boolean insertMessage(MessageDTO dto) {
-        // TODO im接入数据库
         SysMessageDO messageDO = ConvertUtil.sourceToTarget(dto, SysMessageDO.class);
         messageDO.setCreateDate(new Date());
         messageDO.setCreator(UserUtil.getUserId());
@@ -90,11 +89,12 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
 
     private void sendMessage(Set<String> receiver,String sender) {
         try {
-            MsgDTO msgDTO = new MsgDTO();
-            msgDTO.setSender(sender);
-            msgDTO.setReceiver(receiver);
+
+            PushMsgDTO pushMsgDTO = new PushMsgDTO();
+            pushMsgDTO.setReceiver(receiver);
+            pushMsgDTO.setMsg(String.format("%s发来一条消息", sender));
             RocketmqDTO dto = new RocketmqDTO();
-            dto.setData(JacksonUtil.toJsonStr(msgDTO));
+            dto.setData(JacksonUtil.toJsonStr(pushMsgDTO));
             rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC,dto);
         } catch (FeignException e) {
             log.error("错误消息：{}",e.getMessage());
