@@ -19,9 +19,9 @@ package org.laokou.admin.server.interfaces.controller;
  * @version 1.0
  * @date 2022/7/6 0006 下午 5:59
  */
-//@RestController
-//@Api(value = "流程定义API",protocols = "http",tags = "流程定义API")
-//@RequestMapping("/workflow/definition/api")
+@RestController
+@Api(value = "流程定义API",protocols = "http",tags = "流程定义API")
+@RequestMapping("/workflow/definition/api")
 //public class WorkflowDefinitionApiController {
 //
 //    @Autowired
