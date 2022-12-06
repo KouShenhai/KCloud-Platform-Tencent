@@ -14,29 +14,27 @@
  * limitations under the License.
  */
 
-package org.laokou.im.server.service.impl;
+package org.laokou.rocketmq.client.dto;
 
-import org.laokou.im.client.PushMsgDTO;
-import org.laokou.im.server.config.WebSocketServer;
-import org.laokou.im.server.service.ImService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import lombok.Data;
 
-import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author Kou Shenhai
  */
-@Service
-public class ImServiceImpl implements ImService {
+@Data
+public class MsgDTO {
 
-    @Autowired
-    private WebSocketServer webSocketServer;
+    /**
+     * 接收者
+     */
+    private Set<String> receiver;
 
-    @Override
-    public void pusMessage(PushMsgDTO dto) throws IOException {
-        for (String receiver : dto.getReceiver()) {
-            webSocketServer.sendMessages(dto.getMsg(), receiver);
-        }
-    }
+    private String title;
+
+    private String content;
+
+    private Integer sendChannel;
+
 }

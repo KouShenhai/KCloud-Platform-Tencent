@@ -25,7 +25,7 @@ import org.laokou.admin.server.application.service.WorkflowProcessApplicationSer
 import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceAuditLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceService;
-import org.laokou.admin.client.enums.ChannelTypeEnum;
+import org.laokou.rocketmq.client.enums.ChannelTypeEnum;
 import org.laokou.admin.client.enums.MessageTypeEnum;
 import org.laokou.admin.client.index.ResourceIndex;
 import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;

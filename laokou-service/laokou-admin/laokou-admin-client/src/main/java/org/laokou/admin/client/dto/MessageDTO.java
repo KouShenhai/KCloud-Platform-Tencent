@@ -26,9 +26,14 @@ import java.util.Set;
 public class MessageDTO {
 
     /**
-     * 接收者
+     * 平台-接收者
      */
-    private Set<String> receiver;
+    private Set<String> platformReceiver;
+
+    /**
+     * 邮件-接收者
+     */
+    private Set<String> emailReceiver;
 
     @NotBlank(message = "请输入标题")
     private String title;
@@ -36,11 +41,10 @@ public class MessageDTO {
     @NotBlank(message = "请输入内容")
     private String content;
 
-    @NotNull(message = "发送渠道不为空")
-    private Integer sendChannel;
-
     /**
      * 0通知 1提醒
      */
+    @NotNull(message = "请选择消息类型")
     private Integer type;
+
 }

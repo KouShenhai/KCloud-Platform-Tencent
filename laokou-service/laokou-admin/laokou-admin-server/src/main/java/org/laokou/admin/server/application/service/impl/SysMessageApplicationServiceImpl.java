@@ -20,7 +20,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.admin.client.dto.PushMsgDTO;
+import org.laokou.admin.client.dto.MsgDTO;
+import org.laokou.admin.client.enums.ChannelTypeEnum;
 import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDO;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDetailDO;
@@ -42,7 +43,6 @@ import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import java.util.*;
-
 /**
  * @author Kou Shenhai
  */
@@ -66,8 +66,9 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
         messageDO.setCreator(UserUtil.getUserId());
         messageDO.setUsername(UserUtil.getUsername());
         messageDO.setDeptId(UserUtil.getDeptId());
+        messageDO.setSendChannel(getSendChannel(dto));
         sysMessageService.save(messageDO);
-        Set<String> receiver = dto.getReceiver();
+        Set<String> receiver = dto.getPlatformReceiver();
         Iterator<String> iterator = receiver.iterator();
         List<SysMessageDetailDO> detailDOList = new ArrayList<>(receiver.size());
         while (iterator.hasNext()) {
@@ -82,19 +83,45 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
         if (CollectionUtils.isNotEmpty(detailDOList)) {
             sysMessageDetailService.saveBatch(detailDOList);
         }
-        // 发送消息
-        adminThreadPoolTaskExecutor.execute(() -> sendMessage(dto.getReceiver(),messageDO.getUsername()));
+        String content = dto.getContent();
+        String title = dto.getTitle();
+        Set<String> emailReceiver = dto.getEmailReceiver();
+        Set<String> platformReceiver = dto.getPlatformReceiver();
+        // 平台-发送消息
+        if (CollectionUtils.isNotEmpty(platformReceiver)) {
+            String newTitle = String.format("%s发来一条消息", UserUtil.getUsername());
+            adminThreadPoolTaskExecutor.execute(() -> pushMessage(newTitle,"",platformReceiver,ChannelTypeEnum.PLATFORM.ordinal()));
+        }
+        // 微信公众号-发送消息
+        adminThreadPoolTaskExecutor.execute(() -> {});
+        // 邮件-发送消息
+        if (CollectionUtils.isNotEmpty(emailReceiver)) {
+            adminThreadPoolTaskExecutor.execute(() -> pushMessage(title,content,emailReceiver, ChannelTypeEnum.EMAIL.ordinal()));
+        }
         return true;
     }
 
-    private void sendMessage(Set<String> receiver,String sender) {
-        try {
+    private String getSendChannel(MessageDTO dto) {
+        StringBuffer stringBuffer = new StringBuffer();
+        if (CollectionUtils.isNotEmpty(dto.getPlatformReceiver())) {
+            stringBuffer.append(ChannelTypeEnum.PLATFORM.ordinal()).append(",");
+        }
+        if (CollectionUtils.isNotEmpty(dto.getEmailReceiver())) {
+            stringBuffer.append(ChannelTypeEnum.EMAIL.ordinal()).append(",");
+        }
+        String str = stringBuffer.toString();
+        return str.isEmpty() ? "" : str.substring(0,str.length() - 1);
+    }
 
-            PushMsgDTO pushMsgDTO = new PushMsgDTO();
-            pushMsgDTO.setReceiver(receiver);
-            pushMsgDTO.setMsg(String.format("%s发来一条消息", sender));
+    private void pushMessage(String title,String content,Set<String> receiver,Integer sendChannel) {
+        try {
+            MsgDTO msgDTO = new MsgDTO();
+            msgDTO.setTitle(title);
+            msgDTO.setReceiver(receiver);
+            msgDTO.setContent(content);
+            msgDTO.setSendChannel(sendChannel);
             RocketmqDTO dto = new RocketmqDTO();
-            dto.setData(JacksonUtil.toJsonStr(pushMsgDTO));
+            dto.setData(JacksonUtil.toJsonStr(msgDTO));
             rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_NOTICE_MESSAGE_TOPIC,dto);
         } catch (FeignException e) {
             log.error("错误消息：{}",e.getMessage());

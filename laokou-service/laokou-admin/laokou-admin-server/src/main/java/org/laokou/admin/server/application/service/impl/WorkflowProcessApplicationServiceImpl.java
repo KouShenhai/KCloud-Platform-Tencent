@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.application.service.WorkflowProcessApplicationService;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
-import org.laokou.admin.client.enums.ChannelTypeEnum;
+import org.laokou.rocketmq.client.enums.ChannelTypeEnum;
 import org.laokou.admin.client.enums.MessageTypeEnum;
 import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;
 import org.laokou.admin.server.infrastructure.utils.WorkFlowUtil;

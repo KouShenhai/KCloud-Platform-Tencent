@@ -38,7 +38,7 @@ public class SysMessageDO extends BaseDO {
 
     private String content;
 
-    private Integer sendChannel;
+    private String sendChannel;
 
     private Long deptId;
 

@@ -28,7 +28,7 @@ public enum ChannelTypeEnum {
     /**
      * 微信公众号
      */
-    WXMP,
+    WX_MP,
     /**
      * 邮件
      */

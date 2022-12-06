@@ -51,14 +51,14 @@ public class WebSocketServer {
     /**
      * 接收userId
      */
-    private Long userId;
+    private String userId;
     /**
      * 连接成功后回调方法
      * @param session
      * @param userId
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("userId")Long userId) {
+    public void onOpen(Session session, @PathParam("userId")String userId) {
         this.session = session;
         //先设置在添加
         this.userId = userId;
@@ -82,26 +82,24 @@ public class WebSocketServer {
     /**
      * 收到客户端消息后调用
      * @param message
-     * @param session
      * @throws IOException
      */
     @OnMessage
-    public void onMessage(String message,Session session) throws IOException {
+    public void onMessage(String message) throws IOException {
         log.info("收到来自：{}",this.userId,"的消息:{}",message);
         if(StringUtil.isNotEmpty(message)) {
             JsonNode node = JacksonUtil.readTree(message);
             log.info("接到数据：{}",message);
-            final Long userId = node.get(USER_KEY).asLong();
+            final String userId = node.get(USER_KEY).asText();
             sendMessages(message,userId);
         }
     }
     /**
      * 发生错误时调用
-     * @param session
      * @param throwable
      */
     @OnError
-    public void onError(Session session, @NotNull Throwable throwable){
+    public void onError(@NotNull Throwable throwable){
         log.error("发生错误：{}",throwable.getMessage());
         throwable.printStackTrace();
     }
@@ -119,15 +117,15 @@ public class WebSocketServer {
      * @param userId
      * @throws IOException
      */
-    public synchronized void sendMessages(String message,Long userId)throws IOException{
+    public synchronized void sendMessages(String message,String userId)throws IOException{
         for (WebSocketServer webSocketServer : webSocketServerCopyOnWriteArraySet){
-                if (userId == null) {
-                    log.info("推送消息给:{},推送内容：{}" , webSocketServer.userId, message);
-                    webSocketServer.sendMessage(message);
-                } else if (userId.equals(webSocketServer.userId)) {
-                    log.info("推送消息给:{},推送内容：{}" , webSocketServer.userId, message);
-                    webSocketServer.sendMessage(message);
-                }
+            if (StringUtil.isEmpty(userId)) {
+                log.info("推送消息给:{},推送内容：{}" , webSocketServer.userId, message);
+                webSocketServer.sendMessage(message);
+            } else if (userId.equals(webSocketServer.userId)) {
+                log.info("推送消息给:{},推送内容：{}" , webSocketServer.userId, message);
+                webSocketServer.sendMessage(message);
+            }
         }
     }
     /**
