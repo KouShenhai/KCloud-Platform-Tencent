@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.feign.kafka;
+package org.laokou.admin.server.infrastructure.feign.rocketmq;
 
-import org.laokou.admin.server.infrastructure.feign.kafka.factory.RocketmqApiFeignClientFallbackFactory;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.dto.RocketmqDTO;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.factory.RocketmqApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
-import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;

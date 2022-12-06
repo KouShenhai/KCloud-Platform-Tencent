@@ -14,43 +14,12 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.application.service;
-import org.laokou.admin.client.dto.AuditDTO;
-import org.laokou.admin.client.dto.ClaimDTO;
-import org.laokou.admin.client.dto.UnClaimDTO;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 /**
  * @author Kou Shenhai
  */
 public interface WorkflowTaskApplicationService {
-
-    /**
-     * 审批任务
-     * @param dto
-     * @return
-     */
-    Boolean auditTask(AuditDTO dto);
-
-    /**
-     * 签收任务
-     * @param dto
-     * @return
-     */
-    Boolean claimTask(ClaimDTO dto);
-
-    /**
-     * 取消签收任务
-     * @param dto
-     * @return
-     */
-    Boolean unClaimTask(UnClaimDTO dto);
-
-    /**
-     * 删除任务
-     * @param taskId
-     * @return
-     */
-    Boolean deleteTask(String taskId);
 
     /**
      * 任务流程图

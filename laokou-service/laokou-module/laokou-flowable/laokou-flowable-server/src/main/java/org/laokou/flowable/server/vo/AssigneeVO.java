@@ -29,5 +29,6 @@ import lombok.NoArgsConstructor;
 public class AssigneeVO {
 
     private String assignee;
+    private String instanceId;
 
 }

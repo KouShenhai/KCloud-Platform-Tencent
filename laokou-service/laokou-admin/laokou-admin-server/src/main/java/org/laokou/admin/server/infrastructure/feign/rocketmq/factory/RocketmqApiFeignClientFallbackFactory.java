@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.client.enums;
+package org.laokou.admin.server.infrastructure.feign.rocketmq.factory;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.fallback.RocketmqApiFeignClientFallback;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
 
 /**
+ * 回调工厂
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2020/9/5 0005 上午 12:12
  */
+@Component
+public class RocketmqApiFeignClientFallbackFactory implements FallbackFactory<RocketmqApiFeignClientFallback> {
 
-public enum ChannelTypeEnum {
-
-    /**
-     * 平台
-     */
-    PLATFORM,
-    /**
-     * 微信公众号
-     */
-    WX_MP,
-    /**
-     * 邮件
-     */
-    EMAIL
+    @Override
+    public RocketmqApiFeignClientFallback create(Throwable throwable) {
+        return new RocketmqApiFeignClientFallback(throwable);
+    }
 }

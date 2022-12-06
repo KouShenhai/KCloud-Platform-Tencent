@@ -14,27 +14,17 @@
  * limitations under the License.
  */
 
-package org.laokou.admin.client.dto;
+package org.laokou.rocketmq.client.dto;
 
 import lombok.Data;
 
-import java.util.Set;
+import java.io.Serializable;
 
 /**
  * @author Kou Shenhai
  */
 @Data
-public class MsgDTO {
-
-    /**
-     * 接收者
-     */
-    private Set<String> receiver;
-
-    private String title;
-
-    private String content;
-
-    private Integer sendChannel;
-
+public class SyncResourceDTO implements Serializable {
+    private String data;
+    private String indexName;
 }

@@ -23,9 +23,6 @@ import org.laokou.admin.server.infrastructure.feign.flowable.vo.DefinitionVO;
 import org.laokou.admin.server.infrastructure.feign.flowable.vo.PageVO;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * 服务降级
  * @author Kou Shenhai
@@ -52,7 +49,7 @@ public class WorkDefinitionApiFeignClientFallback implements WorkDefinitionApiFe
     }
 
     @Override
-    public void diagram(String definitionId, HttpServletResponse response) {
+    public void diagram(String definitionId) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
     }
 

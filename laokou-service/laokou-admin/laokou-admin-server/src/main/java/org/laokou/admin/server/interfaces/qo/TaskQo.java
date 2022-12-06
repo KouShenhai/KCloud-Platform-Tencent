@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.server.interfaces.qo;
 import lombok.Data;
+import org.laokou.common.mybatisplus.entity.BasePage;
 
 /**
  * @author Kou Shenhai
@@ -22,11 +23,7 @@ import lombok.Data;
  * @date 2022/7/7 0007 下午 5:40
  */
 @Data
-public class TaskQo {
-
-    private Integer pageNum;
-
-    private Integer pageSize;
+public class TaskQo extends BasePage {
 
     private String processName;
 

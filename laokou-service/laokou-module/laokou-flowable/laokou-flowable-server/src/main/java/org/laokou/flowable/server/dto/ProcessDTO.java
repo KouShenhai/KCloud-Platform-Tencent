@@ -25,7 +25,7 @@ import lombok.Data;
 public class ProcessDTO {
 
     private String processKey;
-    private String instanceId;
-    private String instanceName;
+    private String businessKey;
+    private String businessName;
 
 }

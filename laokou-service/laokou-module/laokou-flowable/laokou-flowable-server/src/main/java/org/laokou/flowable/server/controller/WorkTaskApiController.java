@@ -43,19 +43,19 @@ public class WorkTaskApiController {
     private final WorkTaskService workTaskService;
 
     @PostMapping(value = "/query")
-    @ApiOperation(value = "流程任务>查询任务")
+    @ApiOperation(value = "流程任务>任务查询")
     public HttpResultUtil<PageVO<TaskVO>> query(@RequestBody TaskDTO dto) {
         return new HttpResultUtil<PageVO<TaskVO>>().ok(workTaskService.queryTaskPage(dto));
     }
 
     @PostMapping(value = "/audit")
-    @ApiOperation(value = "流程任务>审批任务")
+    @ApiOperation(value = "流程任务>任务审批")
     public HttpResultUtil<AssigneeVO> audit(@RequestBody AuditDTO dto) {
         return new HttpResultUtil<AssigneeVO>().ok(workTaskService.auditTask(dto));
     }
 
     @PostMapping(value = "/start")
-    @ApiOperation(value = "流程任务>开始任务")
+    @ApiOperation(value = "流程任务>任务开始")
     public HttpResultUtil<AssigneeVO> start(@RequestBody ProcessDTO dto) {
         return new HttpResultUtil<AssigneeVO>().ok(workTaskService.startTask(dto));
     }

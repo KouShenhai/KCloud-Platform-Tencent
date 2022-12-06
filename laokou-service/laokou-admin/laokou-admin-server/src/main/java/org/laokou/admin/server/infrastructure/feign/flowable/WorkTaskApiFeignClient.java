@@ -15,25 +15,22 @@
  */
 package org.laokou.admin.server.infrastructure.feign.flowable;
 
-import org.laokou.admin.client.dto.AuditDTO;
-import org.laokou.admin.client.vo.TaskVO;
+import org.laokou.admin.server.infrastructure.feign.flowable.dto.AuditDTO;
 import org.laokou.admin.server.infrastructure.feign.flowable.dto.ProcessDTO;
 import org.laokou.admin.server.infrastructure.feign.flowable.dto.TaskDTO;
 import org.laokou.admin.server.infrastructure.feign.flowable.factory.WorkTaskApiFeignClientFallbackFactory;
 import org.laokou.admin.server.infrastructure.feign.flowable.vo.AssigneeVO;
 import org.laokou.admin.server.infrastructure.feign.flowable.vo.PageVO;
+import org.laokou.admin.server.infrastructure.feign.flowable.vo.TaskVO;
 import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author Kou Shenhai
  */
-@FeignClient(name = ServiceConstant.LAOKOU_FLOWABLE,path = "/work/task/api", fallback = WorkTaskApiFeignClientFallbackFactory.class)
+@FeignClient(contextId = "workTask",name = ServiceConstant.LAOKOU_FLOWABLE,path = "/work/task/api", fallback = WorkTaskApiFeignClientFallbackFactory.class)
 @Service
 public interface WorkTaskApiFeignClient {
 
@@ -64,8 +61,7 @@ public interface WorkTaskApiFeignClient {
     /**
      * 流程图
      * @param processInstanceId
-     * @param response
      */
     @GetMapping(value = "/diagram")
-    void diagram(@RequestParam("processInstanceId")String processInstanceId, HttpServletResponse response);
+    void diagram(@RequestParam("processInstanceId")String processInstanceId);
 }

@@ -20,8 +20,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.admin.client.dto.MsgDTO;
-import org.laokou.admin.client.enums.ChannelTypeEnum;
 import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDO;
 import org.laokou.admin.server.domain.sys.entity.SysMessageDetailDO;
@@ -29,7 +27,11 @@ import org.laokou.admin.server.domain.sys.repository.service.SysMessageDetailSer
 import org.laokou.admin.server.domain.sys.repository.service.SysMessageService;
 import org.laokou.admin.server.infrastructure.annotation.DataFilter;
 import org.laokou.admin.client.dto.MessageDTO;
-import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.constant.RocketmqConstant;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.dto.MsgDTO;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.dto.RocketmqDTO;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.enums.ChannelTypeEnum;
 import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
@@ -38,8 +40,6 @@ import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -93,7 +93,9 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
             adminThreadPoolTaskExecutor.execute(() -> pushMessage(newTitle,"",platformReceiver,ChannelTypeEnum.PLATFORM.ordinal()));
         }
         // 微信公众号-发送消息
-        adminThreadPoolTaskExecutor.execute(() -> {});
+        if (false) {
+            adminThreadPoolTaskExecutor.execute(() -> {});
+        }
         // 邮件-发送消息
         if (CollectionUtils.isNotEmpty(emailReceiver)) {
             adminThreadPoolTaskExecutor.execute(() -> pushMessage(title,content,emailReceiver, ChannelTypeEnum.EMAIL.ordinal()));

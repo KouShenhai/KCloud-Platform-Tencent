@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.feign.kafka.fallback;
+package org.laokou.admin.server.infrastructure.feign.rocketmq.fallback;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;
-import org.laokou.rocketmq.client.dto.RocketmqDTO;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.dto.RocketmqDTO;
 
 /**
  * 服务降级

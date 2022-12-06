@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.laokou.rocketmq.client.dto;
+package org.laokou.admin.server.infrastructure.feign.rocketmq.dto;
 
 import lombok.Data;
 
@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @author Kou Shenhai
  */
 @Data
-public class ResourceSyncDTO implements Serializable {
+public class SyncResourceDTO implements Serializable {
     private String data;
     private String indexName;
 }

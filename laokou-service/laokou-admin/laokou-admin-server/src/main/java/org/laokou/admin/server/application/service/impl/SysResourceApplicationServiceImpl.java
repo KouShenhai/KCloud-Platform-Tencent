@@ -15,42 +15,48 @@
  */
 package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.laokou.admin.client.dto.MessageDTO;
+import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
-import org.laokou.admin.server.application.service.WorkflowProcessApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceAuditLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceService;
-import org.laokou.rocketmq.client.enums.ChannelTypeEnum;
+import org.laokou.admin.server.infrastructure.feign.flowable.WorkTaskApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.flowable.dto.AuditDTO;
+import org.laokou.admin.server.infrastructure.feign.flowable.dto.ProcessDTO;
+import org.laokou.admin.server.infrastructure.feign.flowable.dto.TaskDTO;
+import org.laokou.admin.server.infrastructure.feign.flowable.vo.AssigneeVO;
+import org.laokou.admin.server.infrastructure.feign.flowable.vo.PageVO;
+import org.laokou.admin.server.infrastructure.feign.flowable.vo.TaskVO;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.constant.RocketmqConstant;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.dto.SyncResourceDTO;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.dto.RocketmqDTO;
+import org.laokou.admin.server.interfaces.qo.TaskQo;
+import org.laokou.common.core.constant.Constant;
+import org.laokou.common.core.utils.*;
 import org.laokou.admin.client.enums.MessageTypeEnum;
 import org.laokou.admin.client.index.ResourceIndex;
-import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
 import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
-import org.laokou.admin.client.vo.StartProcessVO;
 import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.utils.ConvertUtil;
-import org.laokou.common.core.utils.FileUtil;
-import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.oss.client.vo.UploadVO;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.model.CreateIndexModel;
-import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.laokou.rocketmq.client.dto.ResourceSyncDTO;
-import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 /**
  * @author Kou Shenhai
@@ -67,16 +73,14 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
 
     private static final Integer INIT_STATUS = 0;
 
-    private final WorkflowProcessApplicationService workflowProcessApplicationService;
-
     private final SysResourceService sysResourceService;
-    private final WorkFlowUtil workFlowUtil;
-
     private final SysResourceAuditLogService sysResourceAuditLogService;
 
     private final ThreadPoolTaskExecutor adminThreadPoolTaskExecutor;
 
     private final RocketmqApiFeignClient rocketmqApiFeignClient;
+    private final SysMessageApplicationService sysMessageApplicationService;
+    private final WorkTaskApiFeignClient workTaskApiFeignClient;
 
     @Override
     public IPage<SysResourceVO> queryResourcePage(SysResourceQo qo) {
@@ -101,13 +105,25 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         return sysResourceService.updateById(sysResourceDO);
     }
 
-    private String startWork(Long id,String name) {
-        StartProcessVO startProcessVO = workflowProcessApplicationService.startResourceProcess(PROCESS_KEY,id.toString(),name);
-        String definitionId = startProcessVO.getDefinitionId();
-        String instanceId = startProcessVO.getInstanceId();
-        String auditUser = workFlowUtil.getAuditUser(definitionId, instanceId);
-        workFlowUtil.sendAuditMsg(auditUser, MessageTypeEnum.REMIND.ordinal(), ChannelTypeEnum.PLATFORM.ordinal(),id,name);
-        return instanceId;
+    private String startWork(Long businessKey,String businessName) {
+        try {
+            ProcessDTO dto = new ProcessDTO();
+            dto.setBusinessKey(businessKey.toString());
+            dto.setBusinessName(businessName);
+            dto.setProcessKey(PROCESS_KEY);
+            HttpResultUtil<AssigneeVO> result = workTaskApiFeignClient.start(dto);
+            if (!result.success()) {
+                return null;
+            }
+            AssigneeVO vo = result.getData();
+            String instanceId = vo.getInstanceId();
+            String assignee = vo.getAssignee();
+            insertMessage(assignee,MessageTypeEnum.REMIND.ordinal(),businessKey,businessName);
+            return instanceId;
+        } catch (Exception e) {
+            log.error("报错信息：{}",e.getMessage());
+        }
+        return null;
     }
 
     @Override
@@ -169,7 +185,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                                 RocketmqDTO dto = new RocketmqDTO();
                                 final String indexName = resourceIndex + "_" + ym;
                                 final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
-                                final ResourceSyncDTO model = new ResourceSyncDTO();
+                                final SyncResourceDTO model = new SyncResourceDTO();
                                 model.setIndexName(indexName);
                                 model.setData(jsonDataList);
                                 dto.setData(JacksonUtil.toJsonStr(model));
@@ -228,6 +244,92 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         return true;
     }
 
+    @Override
+    public Boolean auditResourceTask(AuditDTO dto) {
+        try {
+            HttpResultUtil<AssigneeVO> result = workTaskApiFeignClient.audit(dto);
+            if (!result.success()) {
+                return false;
+            }
+            // 发送消息
+            AssigneeVO vo = result.getData();
+            String assignee = vo.getAssignee();
+            String instanceId = vo.getInstanceId();
+            Map<String, Object> values = dto.getValues();
+            String instanceName = dto.getInstanceName();
+            String businessKey = dto.getBusinessKey();
+            int auditStatus = Integer.parseInt(values.get("auditStatus").toString());
+            int status;
+            //1 审核中 2 审批拒绝 3审核通过
+            if (null != assignee) {
+                //审批中
+                status = 1;
+                insertMessage(assignee, MessageTypeEnum.REMIND.ordinal(),Long.valueOf(businessKey),instanceName);
+            } else {
+                //0拒绝 1同意
+                if (0 == auditStatus) {
+                    //审批拒绝
+                    status = 2;
+                } else {
+                    //审批通过
+                    status = 3;
+                }
+            }
+            // 修改状态
+            LambdaUpdateWrapper<SysResourceDO> updateWrapper = Wrappers.lambdaUpdate(SysResourceDO.class)
+                    .set(SysResourceDO::getStatus, status)
+                    .eq(SysResourceDO::getProcessInstanceId, instanceId)
+                    .eq(SysResourceDO::getDelFlag, Constant.NO);
+            sysResourceService.update(updateWrapper);
+            // 审核日志入队列
+
+        } catch (Exception e) {
+            log.error("错误信息：{}",e.getMessage());
+        }
+        return true;
+    }
+
+//    private void saveAuditLog(Long resourceId,int status,int auditStatus,String comment,String username,Long userId) {
+//        try {
+//            ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
+//            auditLogDTO.setResourceId(resourceId);
+//            auditLogDTO.setStatus(status);
+//            auditLogDTO.setAuditStatus(auditStatus);
+//            auditLogDTO.setAuditDate(new Date());
+//            auditLogDTO.setAuditName(username);
+//            auditLogDTO.setCreator(userId);
+//            auditLogDTO.setComment(comment);
+//            RocketmqDTO rocketmqDTO = new RocketmqDTO();
+//            rocketmqDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
+//            rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_AUDIT_RESOURCE_TOPIC, rocketmqDTO);
+//        } catch (FeignException e) {
+//            log.error("错误信息：{}",e.getMessage());
+//        }
+//    }
+
+    @Override
+    public IPage<TaskVO> queryResourceTask(TaskQo qo) {
+        IPage<TaskVO> page = new Page<>();
+        try {
+            TaskDTO dto = new TaskDTO();
+            dto.setPageNum(qo.getPageNum());
+            dto.setPageSize(qo.getPageSize());
+            dto.setUsername(UserUtil.getUsername());
+            dto.setUserId(UserUtil.getUserId());
+            dto.setProcessName(qo.getProcessName());
+            HttpResultUtil<PageVO<TaskVO>> result = workTaskApiFeignClient.query(dto);
+            if (!result.success()) {
+                return page;
+            }
+            page.setRecords(result.getData().getRecords());
+            page.setSize(dto.getPageSize());
+            page.setCurrent(dto.getPageNum());
+        } catch (Exception e) {
+            log.error("报错信息：{}",e.getMessage());
+        }
+        return page;
+    }
+
     private void beforeSyncAsync() {
         log.info("开始异步同步数据...");
     }
@@ -235,5 +337,18 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     private void afterSyncAsync() {
         log.info("结束异步同步数据...");
     }
+
+   private void insertMessage(String assignee, Integer type,Long id,String name) {
+        String title = "资源审批提醒";
+        String content = String.format("编号为%s，名称为%s的资源需要审批，请及时查看并处理",id,name);
+        Set<String> set = new HashSet<>(1);
+        set.add(assignee);
+        MessageDTO dto = new MessageDTO();
+        dto.setContent(content);
+        dto.setTitle(title);
+        dto.setPlatformReceiver(set);
+        dto.setType(type);
+        sysMessageApplicationService.insertMessage(dto);
+   }
 
 }

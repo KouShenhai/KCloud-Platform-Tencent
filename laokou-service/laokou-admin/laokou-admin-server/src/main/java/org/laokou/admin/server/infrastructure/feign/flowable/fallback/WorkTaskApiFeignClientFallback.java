@@ -17,13 +17,13 @@ package org.laokou.admin.server.infrastructure.feign.flowable.fallback;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.admin.client.dto.AuditDTO;
-import org.laokou.admin.client.vo.TaskVO;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkTaskApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.flowable.dto.AuditDTO;
 import org.laokou.admin.server.infrastructure.feign.flowable.dto.ProcessDTO;
 import org.laokou.admin.server.infrastructure.feign.flowable.dto.TaskDTO;
 import org.laokou.admin.server.infrastructure.feign.flowable.vo.AssigneeVO;
 import org.laokou.admin.server.infrastructure.feign.flowable.vo.PageVO;
+import org.laokou.admin.server.infrastructure.feign.flowable.vo.TaskVO;
 import org.laokou.common.core.utils.HttpResultUtil;
 import javax.servlet.http.HttpServletResponse;
 
@@ -58,7 +58,7 @@ public class WorkTaskApiFeignClientFallback implements WorkTaskApiFeignClient {
     }
 
     @Override
-    public void diagram(String processInstanceId, HttpServletResponse response) {
+    public void diagram(String processInstanceId) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
     }
 

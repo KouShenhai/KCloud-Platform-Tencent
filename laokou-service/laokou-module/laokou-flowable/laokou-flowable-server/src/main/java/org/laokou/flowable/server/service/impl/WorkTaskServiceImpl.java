@@ -93,14 +93,14 @@ public class WorkTaskServiceImpl implements WorkTaskService {
         }
         String assignee = taskUtil.getAssignee(definitionId, instanceId);
         log.info("当前审核人：{}",assignee.isEmpty() ? "无" : assignee);
-        return new AssigneeVO(assignee);
+        return new AssigneeVO(assignee,instanceId);
     }
 
     @Override
     public AssigneeVO startTask(ProcessDTO dto) {
         String processKey = dto.getProcessKey();
-        String instanceId = dto.getInstanceId();
-        String instanceName = dto.getInstanceName();
+        String businessKey = dto.getBusinessKey();
+        String businessName = dto.getBusinessName();
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionKey(processKey)
                 .latestVersion()
@@ -111,15 +111,16 @@ public class WorkTaskServiceImpl implements WorkTaskService {
         if (processDefinition.isSuspended()) {
             throw new CustomException("流程已被挂起，请先激活流程");
         }
-        final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey,instanceId);
+        final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey,businessKey);
         if (processInstance == null) {
             throw new CustomException("流程不存在");
         }
-        runtimeService.setProcessInstanceName(instanceId,instanceName);
         String definitionId = processDefinition.getId();
+        String instanceId = processInstance.getId();
+        runtimeService.setProcessInstanceName(businessKey,businessName);
         String assignee = taskUtil.getAssignee(definitionId, instanceId);
         log.info("当前审核人：{}",assignee.isEmpty() ? "无" : assignee);
-        return new AssigneeVO(assignee);
+        return new AssigneeVO(assignee,instanceId);
     }
 
     @Override

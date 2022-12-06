@@ -9,14 +9,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
  * @author Kou Shenhai
  */
-@FeignClient(name = ServiceConstant.LAOKOU_FLOWABLE,path = "/work/definition/api", fallback = WorkTaskApiFeignClientFallbackFactory.class)
+@FeignClient(contextId = "workDefinition",name = ServiceConstant.LAOKOU_FLOWABLE,path = "/work/definition/api", fallback = WorkTaskApiFeignClientFallbackFactory.class)
 @Service
 public interface WorkDefinitionApiFeignClient {
 
@@ -41,10 +39,9 @@ public interface WorkDefinitionApiFeignClient {
     /**
      * 流程图
      * @param definitionId
-     * @param response
      */
     @GetMapping(value = "/diagram")
-    void diagram(@RequestParam("definitionId")String definitionId, HttpServletResponse response);
+    void diagram(@RequestParam("definitionId")String definitionId);
 
     /**
      * 删除流程

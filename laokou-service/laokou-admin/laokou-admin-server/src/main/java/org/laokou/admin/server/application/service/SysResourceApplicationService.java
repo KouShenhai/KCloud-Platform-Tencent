@@ -16,9 +16,12 @@
 package org.laokou.admin.server.application.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysResourceDTO;
+import org.laokou.admin.server.infrastructure.feign.flowable.dto.AuditDTO;
+import org.laokou.admin.server.infrastructure.feign.flowable.vo.TaskVO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysResourceAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
+import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.oss.client.vo.UploadVO;
 
 import java.io.IOException;
@@ -100,5 +103,19 @@ public interface SysResourceApplicationService {
      * @return
      */
     Boolean createResourceIndex(String code);
+
+    /**
+     * 资源审批
+     * @param dto
+     * @return
+     */
+    Boolean auditResourceTask(AuditDTO dto);
+
+    /**
+     * 任务列表
+     * @param qo
+     * @return
+     */
+    IPage<TaskVO> queryResourceTask(TaskQo qo);
 
 }

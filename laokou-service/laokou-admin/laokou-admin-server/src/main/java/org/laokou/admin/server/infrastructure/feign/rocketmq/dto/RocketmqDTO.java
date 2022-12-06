@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.client.dto;
+package org.laokou.admin.server.infrastructure.feign.rocketmq.dto;
+
 import lombok.Data;
+
+import java.io.Serializable;
+
 /**
  * @author Kou Shenhai
  * @version 1.0
- * @date 2022/7/7 0007 下午 4:05
+ * @date 2022/3/4 0004 下午 6:44
  */
 @Data
-public class ClaimDTO {
-    /** 任务id */
-    private String taskId;
+public class RocketmqDTO implements Serializable {
+
+    private String data;
 
 }

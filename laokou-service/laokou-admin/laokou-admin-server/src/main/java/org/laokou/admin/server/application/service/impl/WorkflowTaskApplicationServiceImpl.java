@@ -14,98 +14,20 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.application.service.impl;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
-import org.laokou.admin.client.enums.FlowCommentEnum;
-import org.laokou.admin.client.dto.AuditDTO;
-import org.laokou.admin.client.dto.ClaimDTO;
-import org.laokou.admin.client.dto.UnClaimDTO;
-import org.laokou.auth.client.utils.UserUtil;
-import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.utils.FileUtil;
-
-import org.apache.commons.collections.MapUtils;
-import org.flowable.bpmn.model.BpmnModel;
-import org.flowable.engine.*;
-import org.flowable.engine.history.HistoricActivityInstance;
-import org.flowable.engine.history.HistoricProcessInstance;
-import org.flowable.engine.runtime.ProcessInstance;
-import org.flowable.image.ProcessDiagramGenerator;
-import org.flowable.task.api.DelegationState;
-import org.flowable.task.api.Task;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
  * @author Kou Shenhai
  */
 @Service
+@RequiredArgsConstructor
 public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicationService {
 
-    @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    private RuntimeService runtimeService;
-
-    @Autowired
-    private HistoryService historyService;
-
-    @Autowired
-    private RepositoryService repositoryService;
-
-    @Qualifier("processEngine")
-    @Autowired
-    private ProcessEngine processEngine;
-
     @Override
-    public Boolean auditTask(AuditDTO dto) {
-        Task task = taskService.createTaskQuery().taskId(dto.getTaskId()).singleResult();
-        if (null == task) {
-            throw new CustomException("任务不存在");
-        }
-        if (DelegationState.PENDING.equals(task.getDelegationState())) {
-            taskService.addComment(dto.getTaskId(),dto.getInstanceId(), FlowCommentEnum.DELEGATE.getType(),dto.getComment());
-            //委派
-            taskService.resolveTask(dto.getTaskId(),dto.getValues());
-        } else {
-            taskService.addComment(dto.getTaskId(),dto.getInstanceId(), FlowCommentEnum.NORMAL.getType(),dto.getComment());
-            if (MapUtils.isNotEmpty(dto.getValues())) {
-                taskService.complete(dto.getTaskId(),dto.getValues());
-            } else {
-                taskService.complete(dto.getTaskId());
-            }
-        }
-        return true;
+    public void diagramProcess(String processInstanceId, HttpServletResponse response) {
+
     }
 
-    @Override
-    public Boolean claimTask(ClaimDTO dto) {
-        final Task task = taskService.createTaskQuery()
-                .taskId(dto.getTaskId())
-                .singleResult();
-        if (null == task) {
-            throw new CustomException("任务不存在");
-        }
-        taskService.claim(dto.getTaskId(), UserUtil.getUserId().toString());
-        return true;
-    }
-
-    @Override
-    public Boolean unClaimTask(UnClaimDTO dto) {
-        taskService.unclaim(dto.getTaskId());
-        return true;
-    }
-
-    @Override
-    public Boolean deleteTask(String taskId) {
-        taskService.deleteTask(taskId);
-        return true;
-    }
 }

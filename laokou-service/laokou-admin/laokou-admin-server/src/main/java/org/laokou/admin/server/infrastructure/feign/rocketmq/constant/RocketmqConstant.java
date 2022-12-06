@@ -13,17 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.client.dto;
-import lombok.Data;
+package org.laokou.admin.server.infrastructure.feign.rocketmq.constant;
 /**
+ * 队列常量值
  * @author Kou Shenhai
  * @version 1.0
- * @date 2022/7/7 0007 下午 4:05
+ * @date 2020/9/18 0018 上午 7:07
  */
-@Data
-public class UnClaimDTO {
+public interface RocketmqConstant {
 
-    /** 任务id */
-    private String taskId;
+    /**
+     * 操作日志消息
+     */
+    String LAOKOU_OPERATE_LOG_TOPIC = "laokou-operate-log-topic";
+
+    /**
+     * 资源同步消息
+     */
+    String LAOKOU_SYNC_RESOURCE_TOPIC = "laokou-sync-resource-topic";
+
+    /**
+     * 通知消息
+     */
+    String LAOKOU_NOTICE_MESSAGE_TOPIC = "laokou-notice-message-topic";
 
 }

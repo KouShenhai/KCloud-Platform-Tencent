@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * <p>
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,53 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.client.dto;
+
+package org.laokou.admin.server.infrastructure.feign.rocketmq.dto;
+
 import lombok.Data;
-import java.util.Map;
+
+import java.util.Set;
+
 /**
  * @author Kou Shenhai
  */
 @Data
-public class AuditDTO {
+public class MsgDTO {
 
     /**
-     * 任务id
+     * 接收者
      */
-    private String taskId;
+    private Set<String> receiver;
 
-    /**
-     * 任务名称
-     */
-    private String taskName;
+    private String title;
 
-    /**
-     * 任务意见
-     */
-    private String comment;
+    private String content;
 
-    /**
-     * 流程实例id
-     */
-    private String instanceId;
-
-    /**
-     * 业务key
-     */
-    private String businessKey;
-
-    /**
-     * 实例名称
-     */
-    private String instanceName;
-
-    /**
-     * 实例id
-     */
-    private String definitionId;
-
-    /**
-     * 流程变量
-     */
-    private Map<String,Object> values;
+    private Integer sendChannel;
 
 }
