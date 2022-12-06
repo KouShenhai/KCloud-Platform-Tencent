@@ -180,7 +180,7 @@ public class WorkflowProcessApplicationServiceImpl implements WorkflowProcessApp
             auditLogDTO.setComment(comment);
             RocketmqDTO rocketmqDTO = new RocketmqDTO();
             rocketmqDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
-            rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_RESOURCE_AUDIT_TOPIC, rocketmqDTO);
+            rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_AUDIT_RESOURCE_TOPIC, rocketmqDTO);
         } catch (FeignException e) {
             log.error("错误信息：{}",e.getMessage());
         }

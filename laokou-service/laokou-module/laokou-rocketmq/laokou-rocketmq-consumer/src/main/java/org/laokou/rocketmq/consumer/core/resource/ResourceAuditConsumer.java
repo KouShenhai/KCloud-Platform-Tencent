@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author Kou Shenhai
  */
-@RocketMQMessageListener(consumerGroup = "laokou-consumer-group-3", topic = RocketmqConstant.LAOKOU_RESOURCE_AUDIT_TOPIC)
+@RocketMQMessageListener(consumerGroup = "laokou-consumer-group-3", topic = RocketmqConstant.LAOKOU_AUDIT_RESOURCE_TOPIC)
 @Component
 @RequiredArgsConstructor
 public class ResourceAuditConsumer implements RocketMQListener<String> {

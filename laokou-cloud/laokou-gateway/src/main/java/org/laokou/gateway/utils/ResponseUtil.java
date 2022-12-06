@@ -68,10 +68,10 @@ public class ResponseUtil {
      */
     public static String getUserId(ServerHttpRequest request){
         //从header中获取userId
-        String userId = request.getHeaders().getFirst(GatewayConstant.USER_ID);
+        String userId = request.getHeaders().getFirst(GatewayConstant.REQUEST_USER_ID);
         //如果header中不存在userId，则从参数中获取userId
         if(StringUtil.isEmpty(userId)){
-            userId = request.getQueryParams().getFirst(GatewayConstant.USER_ID);
+            userId = request.getQueryParams().getFirst(GatewayConstant.REQUEST_USER_ID);
         }
         return userId == null ? "" : userId.trim();
     }
@@ -83,10 +83,10 @@ public class ResponseUtil {
      */
     public static String getUsername(ServerHttpRequest request){
         //从header中获取username
-        String username = request.getHeaders().getFirst(GatewayConstant.USERNAME);
+        String username = request.getHeaders().getFirst(GatewayConstant.REQUEST_USERNAME);
         //如果header中不存在username，则从参数中获取username
         if(StringUtil.isEmpty(username)){
-            username = request.getQueryParams().getFirst(GatewayConstant.USERNAME);
+            username = request.getQueryParams().getFirst(GatewayConstant.REQUEST_USERNAME);
         }
         return username == null ? "" : username.trim();
     }

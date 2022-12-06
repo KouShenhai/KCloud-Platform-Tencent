@@ -95,7 +95,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
             pushMsgDTO.setMsg(String.format("%s发来一条消息", sender));
             RocketmqDTO dto = new RocketmqDTO();
             dto.setData(JacksonUtil.toJsonStr(pushMsgDTO));
-            rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC,dto);
+            rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_NOTICE_MESSAGE_TOPIC,dto);
         } catch (FeignException e) {
             log.error("错误消息：{}",e.getMessage());
         }

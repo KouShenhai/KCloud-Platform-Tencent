@@ -172,7 +172,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                                 model.setIndexName(indexName);
                                 model.setData(jsonDataList);
                                 dto.setData(JacksonUtil.toJsonStr(model));
-                                rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_RESOURCE_SYNC_TOPIC,dto);
+                                rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_SYNC_RESOURCE_TOPIC,dto);
                             } catch (final FeignException e) {
                                 log.error("错误信息：{}",e.getMessage());
                             }
