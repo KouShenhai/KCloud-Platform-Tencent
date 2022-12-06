@@ -66,7 +66,7 @@
 //    @OperateLog(module = "音频管理",name = "音频同步")
 //    @PreAuthorize("hasAuthority('sys:resource:audio:sync')")
 //    public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
-//        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncAsyncBatchResource(code));
+//        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
 //    }
 //
 //    @PostMapping("/upload")

@@ -82,7 +82,7 @@
 //    @OperateLog(module = "视频管理",name = "视频同步")
 //    @PreAuthorize("hasAuthority('sys:resource:video:sync')")
 //    public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
-//        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncAsyncBatchResource(code));
+//        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
 //    }
 //
 //    @GetMapping(value = "/detail")

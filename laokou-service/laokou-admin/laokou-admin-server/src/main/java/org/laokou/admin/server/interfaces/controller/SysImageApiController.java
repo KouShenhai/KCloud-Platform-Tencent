@@ -74,7 +74,7 @@
 //    @OperateLog(module = "图片管理",name = "图片同步")
 //    @PreAuthorize("hasAuthority('sys:resource:image:sync')")
 //    public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
-//        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncAsyncBatchResource(code));
+//        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
 //    }
 //
 //    @PostMapping("/query")

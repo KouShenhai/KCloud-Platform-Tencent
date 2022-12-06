@@ -29,7 +29,6 @@ import org.laokou.admin.client.enums.ChannelTypeEnum;
 import org.laokou.admin.client.enums.MessageTypeEnum;
 import org.laokou.admin.client.index.ResourceIndex;
 import org.laokou.admin.server.infrastructure.feign.kafka.RocketmqApiFeignClient;
-import org.laokou.admin.server.infrastructure.utils.WorkFlowUtil;
 import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.StartProcessVO;
@@ -148,7 +147,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public Boolean syncAsyncBatchResource(String code) {
+    public Boolean syncResourceIndex(String code) {
             //总数
             final Long resourceTotal = sysResourceService.getResourceTotal(code);
             if (resourceTotal > 0) {

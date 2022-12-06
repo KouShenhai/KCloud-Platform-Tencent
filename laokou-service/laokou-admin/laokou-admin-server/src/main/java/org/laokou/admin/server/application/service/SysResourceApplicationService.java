@@ -85,7 +85,7 @@ public interface SysResourceApplicationService {
      * @return
      * @throws InterruptedException
      */
-    Boolean syncAsyncBatchResource(String code) throws InterruptedException;
+    Boolean syncResourceIndex(String code) throws InterruptedException;
 
     /**
      * 查询资源审核日志列表
