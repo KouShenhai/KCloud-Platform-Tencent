@@ -62,10 +62,6 @@
 			<artifactId>jasypt-spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.flowable</groupId>
-			<artifactId>flowable-spring-boot-starter-process</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.github.oshi</groupId>
 			<artifactId>oshi-core</artifactId>
 		</dependency>

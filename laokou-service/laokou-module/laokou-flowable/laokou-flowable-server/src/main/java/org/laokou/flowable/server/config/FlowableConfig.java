@@ -13,24 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.client.enums;
+package org.laokou.flowable.server.config;
+
+import org.flowable.spring.SpringProcessEngineConfiguration;
+import org.flowable.spring.boot.EngineConfigurationConfigurer;
+import org.springframework.context.annotation.Configuration;
+
 /**
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/7/7 0007 上午 9:55
  */
-public enum  FlowCommentEnum {
-    /**
-     * 正常
-     */
-    NORMAL("1"),
-    /**
-     * 委派
-     */
-    DELEGATE("4");
-    private final String type;
-    FlowCommentEnum(String type) {
-        this.type = type;
-    }
-    public String getType() {
-        return type;
+@Configuration
+public class FlowableConfig implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
+    @Override
+    public void configure(SpringProcessEngineConfiguration engineConfiguration) {
+        engineConfiguration.setActivityFontName("宋体");
+        engineConfiguration.setLabelFontName("宋体");
+        engineConfiguration.setAnnotationFontName("宋体");
     }
 }

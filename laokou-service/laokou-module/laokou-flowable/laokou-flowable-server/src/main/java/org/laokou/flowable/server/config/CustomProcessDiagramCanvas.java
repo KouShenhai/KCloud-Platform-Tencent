@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.config;
+package org.laokou.flowable.server.config;
 import org.flowable.bpmn.model.AssociationDirection;
 import org.flowable.bpmn.model.GraphicInfo;
 import org.flowable.image.impl.DefaultProcessDiagramCanvas;

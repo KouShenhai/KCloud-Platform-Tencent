@@ -66,6 +66,8 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
 
     private static final String PROCESS_KEY = "Process_88888888";
 
+    private static final Integer INIT_STATUS = 0;
+
     private final WorkflowProcessApplicationService workflowProcessApplicationService;
 
     private final SysResourceService sysResourceService;
@@ -93,7 +95,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
         sysResourceDO.setCreator(UserUtil.getUserId());
         sysResourceDO.setAuthor(UserUtil.getUsername());
-        sysResourceDO.setStatus(0);
+        sysResourceDO.setStatus(INIT_STATUS);
         sysResourceService.save(sysResourceDO);
         String instanceId = startWork(sysResourceDO.getId(), sysResourceDO.getTitle());
         sysResourceDO.setProcessInstanceId(instanceId);
@@ -113,7 +115,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     public Boolean updateResource(SysResourceDTO dto) {
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
         sysResourceDO.setEditor(UserUtil.getUserId());
-        sysResourceDO.setStatus(0);
+        sysResourceDO.setStatus(INIT_STATUS);
         String instanceId = startWork(sysResourceDO.getId(), dto.getTitle());
         sysResourceDO.setProcessInstanceId(instanceId);
         return sysResourceService.updateById(sysResourceDO);

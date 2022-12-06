@@ -16,7 +16,6 @@
 package org.laokou.admin.server.application.service.impl;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
 import org.laokou.admin.client.enums.FlowCommentEnum;
-import org.laokou.admin.server.infrastructure.config.CustomProcessDiagramGenerator;
 import org.laokou.admin.client.dto.AuditDTO;
 import org.laokou.admin.client.dto.ClaimDTO;
 import org.laokou.admin.client.dto.UnClaimDTO;
@@ -42,8 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+
 /**
  * @author Kou Shenhai
  */
@@ -110,60 +108,4 @@ public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicati
         taskService.deleteTask(taskId);
         return true;
     }
-
-    @Override
-    public void diagramProcess(String processInstanceId, HttpServletResponse response) throws IOException {
-        final InputStream inputStream = getInputStream(processInstanceId);
-        final BufferedImage image = ImageIO.read(inputStream);
-        response.setContentType("image/png");
-        final ServletOutputStream outputStream = response.getOutputStream();
-        if (null != image) {
-            ImageIO.write(image,"png",outputStream);
-        }
-        outputStream.flush();
-        FileUtil.closeStream(inputStream,outputStream);
-    }
-
-    private InputStream getInputStream(String processInstanceId) {
-        String processDefinitionId;
-        //获取当前的流程实例
-        final ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
-                .processInstanceId(processInstanceId)
-                .singleResult();
-        //如果流程已结束，则得到结束节点
-        if (null == processInstance) {
-            final HistoricProcessInstance hpi = historyService.createHistoricProcessInstanceQuery()
-                    .processInstanceId(processInstanceId).singleResult();
-            processDefinitionId = hpi.getProcessDefinitionId();
-        } else {
-            //没有结束，获取当前活动节点
-            //根据流程实例id获取当前处于ActivityId集合
-            final ProcessInstance pi = runtimeService.createProcessInstanceQuery()
-                    .processInstanceId(processInstanceId).singleResult();
-            processDefinitionId = pi.getProcessDefinitionId();
-        }
-        //获取活动节点
-        final List<HistoricActivityInstance> highLightedFlowList = historyService.createHistoricActivityInstanceQuery()
-                .processInstanceId(processInstanceId).orderByHistoricActivityInstanceStartTime().asc().list();
-        List<String> highLightedFlows = new ArrayList<>(5);
-        List<String> highLightedNodes = new ArrayList<>(5);
-        //高亮线
-        for (HistoricActivityInstance temActivityInstance : highLightedFlowList) {
-            if ("sequenceFlow".equals(temActivityInstance.getActivityType())) {
-                //高亮线
-                highLightedFlows.add(temActivityInstance.getActivityId());
-            } else {
-                //高亮节点
-                highLightedNodes.add(temActivityInstance.getActivityId());
-            }
-        }
-        //获取流程图
-        final BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
-        final ProcessEngineConfiguration configuration = processEngine.getProcessEngineConfiguration();
-        //获取自定义图片生成器
-        ProcessDiagramGenerator diagramGenerator = new CustomProcessDiagramGenerator();
-        return diagramGenerator.generateDiagram(bpmnModel, "png", highLightedNodes, highLightedFlows, configuration.getActivityFontName(),
-                configuration.getLabelFontName(), configuration.getAnnotationFontName(), configuration.getClassLoader(), 1.0, true);
-    }
-
 }

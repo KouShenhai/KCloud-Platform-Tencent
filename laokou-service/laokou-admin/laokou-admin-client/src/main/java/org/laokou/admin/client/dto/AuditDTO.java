@@ -42,10 +42,19 @@ public class AuditDTO {
      */
     private String instanceId;
 
+    /**
+     * 业务key
+     */
     private String businessKey;
 
+    /**
+     * 实例名称
+     */
     private String instanceName;
 
+    /**
+     * 实例id
+     */
     private String definitionId;
 
     /**

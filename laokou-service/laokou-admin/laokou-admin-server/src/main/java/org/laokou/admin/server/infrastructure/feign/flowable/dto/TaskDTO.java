@@ -13,23 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.config;
-
-import org.flowable.spring.SpringProcessEngineConfiguration;
-import org.flowable.spring.boot.EngineConfigurationConfigurer;
-import org.springframework.context.annotation.Configuration;
-
+package org.laokou.admin.server.infrastructure.feign.flowable.dto;
+import lombok.Data;
 /**
  * @author Kou Shenhai
  * @version 1.0
- * @date 2022/7/7 0007 上午 9:55
+ * @date 2022/7/7 0007 下午 5:40
  */
-@Configuration
-public class FlowableConfig implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
-    @Override
-    public void configure(SpringProcessEngineConfiguration engineConfiguration) {
-        engineConfiguration.setActivityFontName("宋体");
-        engineConfiguration.setLabelFontName("宋体");
-        engineConfiguration.setAnnotationFontName("宋体");
-    }
+@Data
+public class TaskDTO {
+
+    private Integer pageNum;
+
+    private Integer pageSize;
+
+    private String processName;
+
+    private Long userId;
+
+    private String username;
+
+    private String processKey;
+
 }

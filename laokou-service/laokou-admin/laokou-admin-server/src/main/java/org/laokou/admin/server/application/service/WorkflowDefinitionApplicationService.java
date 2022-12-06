@@ -16,7 +16,6 @@
 package org.laokou.admin.server.application.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.interfaces.qo.DefinitionQo;
-import org.laokou.admin.client.vo.DefinitionVO;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;

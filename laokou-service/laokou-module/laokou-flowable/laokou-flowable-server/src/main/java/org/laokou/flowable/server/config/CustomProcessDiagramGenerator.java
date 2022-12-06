@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.config;
+package org.laokou.flowable.server.config;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.flowable.bpmn.model.Process;
@@ -21,6 +22,7 @@ import org.flowable.bpmn.model.*;
 import org.flowable.image.impl.DefaultProcessDiagramCanvas;
 import org.flowable.image.impl.DefaultProcessDiagramGenerator;
 import org.laokou.common.core.utils.BigDecimalUtil;
+
 import java.util.Iterator;
 import java.util.List;
 /**

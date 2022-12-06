@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>laokou-flowable-client</module>
+        <module>laokou-flowable-server</module>
     </modules>
 
     <properties>
