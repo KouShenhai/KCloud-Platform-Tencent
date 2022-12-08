@@ -15,6 +15,7 @@
  */
 package org.laokou.elasticsearch.server.utils;
 import cn.hutool.core.collection.CollectionUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.elasticsearch.action.ActionListener;
@@ -63,7 +64,6 @@ import org.laokou.elasticsearch.client.dto.AggregationDTO;
 import org.laokou.elasticsearch.client.dto.SearchDTO;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import java.io.IOException;
@@ -76,10 +76,10 @@ import java.util.*;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ElasticsearchUtil {
 
-    @Autowired
-    private RestHighLevelClient restHighLevelClient;
+    private final RestHighLevelClient restHighLevelClient;
 
     private static final String PRIMARY_KEY_NAME = "id";
 
