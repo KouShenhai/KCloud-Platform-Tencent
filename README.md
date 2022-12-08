@@ -309,7 +309,7 @@ KCloud-Platform-Official 开源软件遵循 [Apache 2.0 协议](https://www.apac
 ### 致谢
 [Spring官网](https://spring.io)  
 [人人社区](https://www.renren.io)  
-[若依社区](https://www.ruoyi.vip)
+[若依社区](https://www.ruoyi.vip)  
 
 ### 联系
 博客：[https://kcloud.blog.csdn.net](https://kcloud.blog.csdn.net)  
