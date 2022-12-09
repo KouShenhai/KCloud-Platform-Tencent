@@ -22,6 +22,7 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.log.client.dto.OperateLogDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
+import org.laokou.rocketmq.consumer.feign.log.LogApiFeignClient;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,12 +33,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OperateLogConsumer implements RocketMQListener<String> {
 
-    private final SysOperateLogService sysOperateLogService;
+    private final LogApiFeignClient logApiFeignClient;
 
     @Override
     public void onMessage(String message) {
         final OperateLogDTO operateLogDTO = JacksonUtil.toBean(message, OperateLogDTO.class);
-        sysOperateLogService.insertOperateLog(operateLogDTO);
+        logApiFeignClient.operate(operateLogDTO);
     }
 
 }

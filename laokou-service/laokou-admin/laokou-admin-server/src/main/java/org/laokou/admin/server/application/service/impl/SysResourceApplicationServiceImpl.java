@@ -170,7 +170,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                                 syncResourceDTO.setIndexName(indexName);
                                 syncResourceDTO.setData(jsonDataList);
                                 syncResourceDTO.setData(JacksonUtil.toJsonStr(syncResourceDTO));
-                                rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_SYNC_RESOURCE_TOPIC,dto);
+                                rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_SYNC_INDEX_TOPIC,dto);
                             } catch (final FeignException e) {
                                 log.error("错误信息：{}",e.getMessage());
                             }
@@ -209,12 +209,11 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             for (String ym : resourceYmPartitionList) {
                 adminThreadPoolTaskExecutor.execute(() -> {
                     try {
-                        final CreateIndexDTO model = new CreateIndexDTO();
+                        final CreateIndexDTO dto = new CreateIndexDTO();
                         final String indexName = resourceIndex + "_" + ym;
-                        model.setIndexName(indexName);
-                        model.setIndexAlias(resourceIndexAlias);
-                        // 用独立的类
-                        // 写入rocketmq
+                        dto.setIndexName(indexName);
+                        dto.setIndexAlias(resourceIndexAlias);
+
                     } catch (final FeignException e) {
                         log.error("错误信息：{}", e.getMessage());
                     }

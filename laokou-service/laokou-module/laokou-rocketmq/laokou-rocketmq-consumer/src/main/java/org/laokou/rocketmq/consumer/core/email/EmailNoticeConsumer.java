@@ -14,37 +14,30 @@
  * limitations under the License.
  */
 
-package org.laokou.rocketmq.consumer.core.im;
+package org.laokou.rocketmq.consumer.core.email;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.im.client.PushMsgDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.MsgDTO;
 import org.laokou.rocketmq.client.enums.ChannelTypeEnum;
-import org.laokou.rocketmq.consumer.feign.im.ImApiFeignClient;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Kou Shenhai
  */
-@RocketMQMessageListener(consumerGroup = "laokou-consumer-group-4", topic = RocketmqConstant.LAOKOU_NOTICE_MESSAGE_TOPIC)
+@RocketMQMessageListener(consumerGroup = "laokou-consumer-group-6", topic = RocketmqConstant.LAOKOU_NOTICE_MESSAGE_TOPIC)
 @Component
 @RequiredArgsConstructor
-public class ImConsumer implements RocketMQListener<String> {
-
-    private final ImApiFeignClient imApiFeignClient;
+public class EmailNoticeConsumer implements RocketMQListener<String> {
 
     @Override
     public void onMessage(String message) {
         final MsgDTO dto = JacksonUtil.toBean(message, MsgDTO.class);
-        if (ChannelTypeEnum.PLATFORM.ordinal() == dto.getSendChannel()) {
-            PushMsgDTO pushMsgDTO = new PushMsgDTO();
-            pushMsgDTO.setReceiver(dto.getReceiver());
-            pushMsgDTO.setMsg(dto.getTitle());
-            imApiFeignClient.push(pushMsgDTO);
+        if (ChannelTypeEnum.EMAIL.ordinal() == dto.getSendChannel()) {
+            System.out.println("发送邮件");
         }
     }
 }

@@ -20,9 +20,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.log.client.dto.LoginLogDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.laokou.rocketmq.client.dto.LoginLogDTO;
-import org.laokou.rocketmq.consumer.service.SysLoginLogService;
+import org.laokou.rocketmq.consumer.feign.log.LogApiFeignClient;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,11 +33,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class LoginLogConsumer implements RocketMQListener<String> {
 
-    private final SysLoginLogService sysLoginLogService;
+    private final LogApiFeignClient logApiFeignClient;
 
     @Override
     public void onMessage(String message) {
         final LoginLogDTO loginLogDTO = JacksonUtil.toBean(message, LoginLogDTO.class);
-        sysLoginLogService.insertLoginLog(loginLogDTO);
+        logApiFeignClient.login(loginLogDTO);
     }
 }
