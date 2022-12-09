@@ -19,7 +19,7 @@ import org.laokou.common.core.utils.HttpResultUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.form.SearchForm;
-import org.laokou.elasticsearch.client.model.CreateIndexModel;
+import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import java.util.Map;
 /**
@@ -35,7 +35,7 @@ public class ElasticsearchApiFeignClientFallback implements ElasticsearchApiFeig
     private final Throwable throwable;
 
     @Override
-    public void create(CreateIndexModel model) {
+    public void create(CreateIndexDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
     }
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.elasticsearch.client.model;
+package org.laokou.elasticsearch.client.dto;
 
 import lombok.Data;
 
@@ -23,7 +23,7 @@ import java.io.Serializable;
  * @author Kou Shenhai
  */
 @Data
-public class CreateIndexModel implements Serializable {
+public class CreateIndexDTO implements Serializable {
 
     private String indexName;
     private String indexAlias;

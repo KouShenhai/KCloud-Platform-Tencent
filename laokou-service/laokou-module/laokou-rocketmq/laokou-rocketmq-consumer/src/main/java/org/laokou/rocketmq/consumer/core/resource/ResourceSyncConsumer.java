@@ -21,7 +21,7 @@ import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.elasticsearch.client.model.ElasticsearchModel;
+import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.SyncResourceDTO;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
@@ -40,7 +40,7 @@ public class ResourceSyncConsumer implements RocketMQListener<String> {
     @Override
     public void onMessage(String message) {
         SyncResourceDTO syncResourceDTO = JacksonUtil.toBean(message, SyncResourceDTO.class);
-        ElasticsearchModel model = ConvertUtil.sourceToTarget(syncResourceDTO, ElasticsearchModel.class);
-        elasticsearchApiFeignClient.syncAsyncBatch(model);
+        ElasticsearchDTO dto = ConvertUtil.sourceToTarget(syncResourceDTO, ElasticsearchDTO.class);
+        elasticsearchApiFeignClient.syncAsyncBatch(dto);
     }
 }

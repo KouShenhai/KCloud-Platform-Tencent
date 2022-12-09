@@ -51,7 +51,7 @@ import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.oss.client.vo.UploadVO;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.elasticsearch.client.model.CreateIndexModel;
+import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -228,7 +228,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             for (String ym : resourceYmPartitionList) {
                 adminThreadPoolTaskExecutor.execute(() -> {
                     try {
-                        final CreateIndexModel model = new CreateIndexModel();
+                        final CreateIndexDTO model = new CreateIndexDTO();
                         final String indexName = resourceIndex + "_" + ym;
                         model.setIndexName(indexName);
                         model.setIndexAlias(resourceIndexAlias);

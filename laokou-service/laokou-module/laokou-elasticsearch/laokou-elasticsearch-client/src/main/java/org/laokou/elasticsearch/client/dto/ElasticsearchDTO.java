@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.elasticsearch.client.model;
+package org.laokou.elasticsearch.client.dto;
 
 import lombok.Data;
 
@@ -26,7 +26,7 @@ import java.io.Serializable;
  * @date 2021/11/1 0001 下午 12:45
  */
 @Data
-public class ElasticsearchModel implements Serializable {
+public class ElasticsearchDTO implements Serializable {
     private String data;
     private String indexName;
     private String indexAlias;

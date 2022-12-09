@@ -17,10 +17,9 @@ package org.laokou.rocketmq.consumer.feign.elasticsearch.fallback;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.elasticsearch.client.model.ElasticsearchModel;
+import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
 
-import java.util.Map;
 /**
  * 服务降级
  * @author Kou Shenhai
@@ -34,7 +33,7 @@ public class ElasticsearchApiFeignClientFallback implements ElasticsearchApiFeig
     private final Throwable throwable;
 
     @Override
-    public void syncAsyncBatch(ElasticsearchModel model) {
+    public void syncAsyncBatch(ElasticsearchDTO model) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
     }
 

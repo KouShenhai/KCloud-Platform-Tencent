@@ -16,8 +16,8 @@
 package org.laokou.elasticsearch.server.controller;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
-import org.laokou.elasticsearch.client.model.CreateIndexModel;
-import org.laokou.elasticsearch.client.model.ElasticsearchModel;
+import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
+import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import org.laokou.elasticsearch.server.utils.ElasticsearchFieldUtil;
 import org.laokou.elasticsearch.server.utils.ElasticsearchUtil;
@@ -46,7 +46,7 @@ public class ElasticsearchApiController {
 
     @PostMapping("/create")
     @ApiOperation("索引管理>创建")
-    public void create(@RequestBody final CreateIndexModel model) throws IOException {
+    public void create(@RequestBody final CreateIndexDTO model) throws IOException {
         String indexName = model.getIndexName();
         String indexAlias = model.getIndexAlias();
         Class<?> clazz = ElasticsearchFieldUtil.getClazz(indexAlias);
@@ -55,7 +55,7 @@ public class ElasticsearchApiController {
 
     @PostMapping("/sync")
     @ApiOperation("索引管理>同步")
-    public void sync(@RequestBody final ElasticsearchModel model) throws IOException {
+    public void sync(@RequestBody final ElasticsearchDTO model) throws IOException {
         String id = model.getId();
         String indexName = model.getIndexName();
         String indexAlias = model.getIndexAlias();
@@ -66,7 +66,7 @@ public class ElasticsearchApiController {
 
     @PostMapping("/syncAsyncBatch")
     @ApiOperation("索引管理>批量异步同步")
-    public void syncAsyncBatch(@RequestBody final ElasticsearchModel model) {
+    public void syncAsyncBatch(@RequestBody final ElasticsearchDTO model) {
         String indexName = model.getIndexName();
         String jsonDataList = model.getData();
         elasticsearchUtil.syncAsyncBatchIndex(indexName,jsonDataList);
@@ -74,7 +74,7 @@ public class ElasticsearchApiController {
 
     @PostMapping("/syncBatch")
     @ApiOperation("索引管理>批量同步")
-    public void syncBatch(@RequestBody final ElasticsearchModel model) throws IOException {
+    public void syncBatch(@RequestBody final ElasticsearchDTO model) throws IOException {
         String indexName = model.getIndexName();
         String jsonDataList = model.getData();
         elasticsearchUtil.syncBatchIndex(indexName,jsonDataList);
@@ -92,7 +92,7 @@ public class ElasticsearchApiController {
 
     @PutMapping("/updateBatch")
     @ApiOperation("索引管理>批量修改")
-    public void updateBatch(@RequestBody final ElasticsearchModel model) throws IOException {
+    public void updateBatch(@RequestBody final ElasticsearchDTO model) throws IOException {
         String indexName = model.getIndexName();
         String indexAlias = model.getIndexAlias();
         String jsonDataList = model.getData();
@@ -102,7 +102,7 @@ public class ElasticsearchApiController {
 
     @PutMapping("/update")
     @ApiOperation("索引管理>修改")
-    public void update(@RequestBody final ElasticsearchModel model) {
+    public void update(@RequestBody final ElasticsearchDTO model) {
         String id = model.getId();
         String indexName = model.getIndexName();
         String paramJson = model.getData();
