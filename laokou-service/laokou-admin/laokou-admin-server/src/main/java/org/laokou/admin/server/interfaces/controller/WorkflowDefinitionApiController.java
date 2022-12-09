@@ -50,7 +50,7 @@ public class WorkflowDefinitionApiController {
     @OperateLog(module = "流程定义",name = "流程新增",type = DataTypeEnum.FILE)
     @PreAuthorize("hasAuthority('workflow:definition:insert')")
     public HttpResultUtil<Boolean> insert(@RequestParam("name")String name, @RequestPart("file") MultipartFile file) throws IOException {
-        return new HttpResultUtil<Boolean>().ok(workflowDefinitionApplicationService.importFile(name, file.getInputStream()));
+        return new HttpResultUtil<Boolean>().ok(workflowDefinitionApplicationService.insertDefinition(name, file.getInputStream()));
     }
 
     @PostMapping("/query")
@@ -62,9 +62,9 @@ public class WorkflowDefinitionApiController {
 
     @GetMapping("/image")
     @ApiOperation("流程定义>图片")
-    @PreAuthorize("hasAuthority('workflow:definition:image')")
+    @PreAuthorize("hasAuthority('workflow:definition:diagram')")
     public void image(@RequestParam("definitionId")String definitionId, HttpServletResponse response) {
-        workflowDefinitionApplicationService.imageProcess(definitionId,response);
+        workflowDefinitionApplicationService.diagramDefinition(definitionId,response);
     }
 
     @DeleteMapping("/delete")
@@ -74,7 +74,7 @@ public class WorkflowDefinitionApiController {
     public HttpResultUtil<Boolean> delete(@RequestParam("deploymentId")String deploymentId) {
         return new HttpResultUtil<Boolean>().ok(workflowDefinitionApplicationService.deleteDefinition(deploymentId));
     }
-      // 改的地方很多，有时间再改
+
     @PutMapping("/suspend")
     @ApiOperation("流程定义>挂起")
     @OperateLog(module = "流程定义",name = "流程挂起")
