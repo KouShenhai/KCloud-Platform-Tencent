@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.consumer.service.impl;
+package org.laokou.log.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.laokou.rocketmq.consumer.entity.SysResourceAuditLogDO;
-import org.laokou.rocketmq.consumer.mapper.SysResourceAuditLogMapper;
-import org.laokou.rocketmq.consumer.service.SysResourceAuditLogService;
+import org.laokou.log.server.entity.SysResourceAuditLogDO;
+import org.laokou.log.server.mapper.SysResourceAuditLogMapper;
+import org.laokou.log.server.service.SysResourceAuditLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**

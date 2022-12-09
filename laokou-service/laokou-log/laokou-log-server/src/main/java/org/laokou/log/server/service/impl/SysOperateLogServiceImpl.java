@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.consumer.service.impl;
-
+package org.laokou.log.server.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.laokou.common.core.utils.ConvertUtil;
-import org.laokou.rocketmq.client.dto.LoginLogDTO;
-import org.laokou.rocketmq.consumer.entity.SysLoginLogDO;
-import org.laokou.rocketmq.consumer.mapper.SysLoginLogMapper;
-import org.laokou.rocketmq.consumer.service.SysLoginLogService;
+import org.laokou.log.client.dto.OperateLogDTO;
+import org.laokou.log.server.entity.SysOperateLogDO;
+import org.laokou.log.server.mapper.SysOperateLogMapper;
+import org.laokou.log.server.service.SysOperateLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLoginLogDO> implements SysLoginLogService {
+public class SysOperateLogServiceImpl extends ServiceImpl<SysOperateLogMapper, SysOperateLogDO> implements SysOperateLogService {
 
     @Override
-    public void insertLoginLog(LoginLogDTO dto) {
-        SysLoginLogDO logDO = ConvertUtil.sourceToTarget(dto, SysLoginLogDO.class);
+    public void insertOperateLog(OperateLogDTO dto) {
+        SysOperateLogDO logDO = ConvertUtil.sourceToTarget(dto, SysOperateLogDO.class);
         baseMapper.insert(logDO);
     }
 }

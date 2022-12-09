@@ -13,33 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.consumer.entity;
+package org.laokou.log.server.service;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.laokou.common.mybatisplus.entity.BaseDO;
 
-import java.util.Date;
+import com.baomidou.mybatisplus.extension.service.IService;
+import org.laokou.log.client.dto.LoginLogDTO;
+import org.laokou.log.server.entity.SysLoginLogDO;
 
 /**
  * @author Kou Shenhai
- * @version 1.0
- * @date 2022/8/26 0026 下午 5:31
  */
-@Data
-@TableName("boot_sys_resource_audit_log")
-@EqualsAndHashCode(callSuper=true)
-public class SysResourceAuditLogDO extends BaseDO {
-
-    private Long resourceId;
-
-    private String auditName;
-
-    private Date auditDate;
-
-    private Integer auditStatus;
-
-    private String comment;
-
+public interface SysLoginLogService extends IService<SysLoginLogDO> {
+    /**
+     * 新增登录日志
+     * @param dto
+     */
+    void insertLoginLog(LoginLogDTO dto);
 }

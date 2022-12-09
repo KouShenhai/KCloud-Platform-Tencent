@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.consumer.service;
+package org.laokou.log.server.mapper;
 
-
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.laokou.rocketmq.client.dto.OperateLogDTO;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 import org.laokou.rocketmq.consumer.entity.SysOperateLogDO;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Kou Shenhai
  */
-public interface SysOperateLogService extends IService<SysOperateLogDO> {
-    /**
-     * 新增登录日志
-     * @param dto
-     */
-    void insertOperateLog(OperateLogDTO dto);
+@Mapper
+@Repository
+public interface SysOperateLogMapper extends BaseMapper<SysOperateLogDO> {
+
+
 }

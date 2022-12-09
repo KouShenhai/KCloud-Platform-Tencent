@@ -13,19 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.consumer.mapper;
+package org.laokou.log.server.entity;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
-import org.laokou.rocketmq.consumer.entity.SysOperateLogDO;
-import org.springframework.stereotype.Repository;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.laokou.common.mybatisplus.entity.BaseDO;
+
+import java.util.Date;
 
 /**
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/8/26 0026 下午 5:31
  */
-@Mapper
-@Repository
-public interface SysOperateLogMapper extends BaseMapper<SysOperateLogDO> {
+@Data
+@TableName("boot_sys_resource_audit_log")
+@EqualsAndHashCode(callSuper=true)
+public class SysResourceAuditLogDO extends BaseDO {
 
+    private Long resourceId;
+
+    private String auditName;
+
+    private Date auditDate;
+
+    private Integer auditStatus;
+
+    private String comment;
 
 }

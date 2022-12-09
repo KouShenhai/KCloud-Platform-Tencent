@@ -104,6 +104,7 @@ public class OperateLogAspect {
             dto.setRequestAddress(AddressUtil.getRealAddress(ip));
             dto.setOperator(UserUtil.getUsername());
             dto.setCreator(UserUtil.getUserId());
+            dto.setDeptId(UserUtil.getDeptId());
             if (null != e) {
                 dto.setRequestStatus(ResultStatusEnum.FAIL.ordinal());
                 dto.setErrorMsg(e.getMessage());

@@ -13,20 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.consumer.service;
+package org.laokou.log.server.service.impl;
 
-
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.rocketmq.client.dto.LoginLogDTO;
 import org.laokou.rocketmq.consumer.entity.SysLoginLogDO;
+import org.laokou.rocketmq.consumer.mapper.SysLoginLogMapper;
+import org.laokou.log.server.service.SysLoginLogService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kou Shenhai
  */
-public interface SysLoginLogService extends IService<SysLoginLogDO> {
-    /**
-     * 新增登录日志
-     * @param dto
-     */
-    void insertLoginLog(LoginLogDTO dto);
+@Service
+@Transactional(rollbackFor = Exception.class)
+public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLoginLogDO> implements SysLoginLogService {
+
+    @Override
+    public void insertLoginLog(LoginLogDTO dto) {
+        SysLoginLogDO logDO = ConvertUtil.sourceToTarget(dto, SysLoginLogDO.class);
+        baseMapper.insert(logDO);
+    }
 }

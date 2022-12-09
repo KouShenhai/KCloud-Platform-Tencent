@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.client.dto;
+package org.laokou.log.client.dto;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
@@ -91,5 +91,10 @@ public class OperateLogDTO implements Serializable {
      * 方法名称
      */
     private String methodName;
+
+    /**
+     * 部门id
+     */
+    private Long deptId;
 
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.consumer.entity;
+package org.laokou.log.server.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -24,33 +24,49 @@ import org.laokou.common.mybatisplus.entity.BaseDO;
  * @author Kou Shenhai
  */
 @Data
-@TableName("boot_sys_login_log")
+@TableName("boot_sys_operate_log")
 @EqualsAndHashCode(callSuper=true)
-public class SysLoginLogDO extends BaseDO {
+public class SysOperateLogDO extends BaseDO {
 
     /**
-     * 登录用户
+     * 模块名称，如：系统菜单
      */
-    private String loginName;
+    private String module;
 
     /**
-     * ip地址
+     * 操作名称
+     */
+    private String operation;
+
+    /**
+     * 请求URI
+     */
+    private String requestUri;
+
+    /**
+     * 请求方式
+     */
+    private String requestMethod;
+
+    /**
+     * 请求参数
+     */
+    private String requestParams;
+
+    /**
+     * 浏览器版本
+     */
+    private String userAgent;
+
+    /**
+     * IP地址
      */
     private String requestIp;
-    /**
-     * 操作地点
-     */
-     private String requestAddress;
 
     /**
-     * 浏览器
+     * 归属地
      */
-    private String browser;
-
-    /**
-     * 操作系统
-     */
-    private String os;
+    private String requestAddress;
 
     /**
      * 状态  0：成功   1：失败
@@ -58,9 +74,20 @@ public class SysLoginLogDO extends BaseDO {
     private Integer requestStatus;
 
     /**
-     * 提示信息
+     * 操作人
      */
-    private String msg;
+    private String operator;
 
+    /**
+     * 错误信息
+     */
+    private String errorMsg;
+
+    /**
+     * 方法名称
+     */
+    private String methodName;
+
+    private Long deptId;
 
 }

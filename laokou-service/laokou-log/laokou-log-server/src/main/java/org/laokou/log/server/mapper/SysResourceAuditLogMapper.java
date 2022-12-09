@@ -13,47 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.client.dto;
-import lombok.Data;
+package org.laokou.log.server.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.laokou.log.server.entity.SysResourceAuditLogDO;
+import org.springframework.stereotype.Repository;
 /**
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/8/26 0026 下午 5:33
  */
-@Data
-public class LoginLogDTO {
-
-    /**
-     * 登录用户
-     */
-    private String loginName;
-
-    /**
-     * ip地址
-     */
-    private String requestIp;
-    /**
-     * 操作地点
-     */
-    private String requestAddress;
-
-    /**
-     * 浏览器
-     */
-    private String browser;
-
-    /**
-     * 操作系统
-     */
-    private String os;
-
-    /**
-     * 状态  0：成功   1：失败
-     */
-    private Integer requestStatus;
-
-    /**
-     * 提示信息
-     */
-    private String msg;
+@Mapper
+@Repository
+public interface SysResourceAuditLogMapper extends BaseMapper<SysResourceAuditLogDO> {
 
 }

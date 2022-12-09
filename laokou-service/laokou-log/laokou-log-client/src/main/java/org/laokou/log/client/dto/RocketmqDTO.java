@@ -13,37 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.consumer.entity;
+package org.laokou.log.client.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.laokou.common.mybatisplus.entity.BaseDO;
+
+import java.io.Serializable;
 
 /**
  * @author Kou Shenhai
  * @version 1.0
- * @date 2022/8/19 0019 下午 3:51
+ * @date 2022/3/4 0004 下午 6:44
  */
 @Data
-@TableName("boot_sys_resource")
-@EqualsAndHashCode(callSuper=true)
-public class SysResourceDO extends BaseDO {
+public class RocketmqDTO implements Serializable {
 
-    private String title;
-    private String author;
-    private String uri;
-    /**
-     * 0待审核  1审核中 2审批拒绝 3审批通过
-     */
-    private Integer status;
-    private String code;
-    private String remark;
-    private String tags;
-    /**
-     * 流程id
-     */
-    private String processInstanceId;
-    private String md5;
+    private String data;
 
 }

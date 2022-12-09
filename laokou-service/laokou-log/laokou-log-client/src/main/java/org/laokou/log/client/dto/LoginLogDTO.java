@@ -13,18 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.consumer.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
-import org.laokou.rocketmq.consumer.entity.SysLoginLogDO;
-import org.springframework.stereotype.Repository;
+package org.laokou.log.client.dto;
+import lombok.Data;
 
 /**
  * @author Kou Shenhai
  */
-@Repository
-@Mapper
-public interface SysLoginLogMapper extends BaseMapper<SysLoginLogDO> {
+@Data
+public class LoginLogDTO {
+
+    /**
+     * 登录用户
+     */
+    private String loginName;
+
+    /**
+     * ip地址
+     */
+    private String requestIp;
+    /**
+     * 操作地点
+     */
+    private String requestAddress;
+
+    /**
+     * 浏览器
+     */
+    private String browser;
+
+    /**
+     * 操作系统
+     */
+    private String os;
+
+    /**
+     * 状态  0：成功   1：失败
+     */
+    private Integer requestStatus;
+
+    /**
+     * 提示信息
+     */
+    private String msg;
 
 }

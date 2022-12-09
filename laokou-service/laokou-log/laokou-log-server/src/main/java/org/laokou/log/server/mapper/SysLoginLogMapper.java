@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.rocketmq.consumer.mapper;
+package org.laokou.log.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.laokou.rocketmq.consumer.entity.SysResourceAuditLogDO;
+import org.laokou.log.server.entity.SysLoginLogDO;
+import org.laokou.rocketmq.consumer.entity.SysLoginLogDO;
 import org.springframework.stereotype.Repository;
+
 /**
  * @author Kou Shenhai
- * @version 1.0
- * @date 2022/8/26 0026 下午 5:33
  */
-@Mapper
 @Repository
-public interface SysResourceAuditLogMapper extends BaseMapper<SysResourceAuditLogDO> {
+@Mapper
+public interface SysLoginLogMapper extends BaseMapper<SysLoginLogDO> {
 
 }
