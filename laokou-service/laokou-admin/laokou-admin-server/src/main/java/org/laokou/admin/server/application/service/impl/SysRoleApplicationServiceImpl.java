@@ -35,7 +35,6 @@ import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -44,8 +43,8 @@ import java.util.List;
  * @author Kou Shenhai
  */
 @Service
-@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class SysRoleApplicationServiceImpl implements SysRoleApplicationService {
 
     private final SysRoleService sysRoleService;

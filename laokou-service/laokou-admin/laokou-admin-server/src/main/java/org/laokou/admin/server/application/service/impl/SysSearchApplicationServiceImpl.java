@@ -24,7 +24,6 @@ import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
@@ -34,8 +33,8 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class SysSearchApplicationServiceImpl implements SysSearchApplicationService {
 
     private final ElasticsearchApiFeignClient elasticsearchApiFeignClient;

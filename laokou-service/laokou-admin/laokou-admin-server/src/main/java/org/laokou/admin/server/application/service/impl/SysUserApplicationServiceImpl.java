@@ -39,7 +39,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.laokou.common.core.password.PasswordUtil;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -48,8 +47,8 @@ import java.util.List;
  * @author Kou Shenhai
  */
 @Service
-@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class SysUserApplicationServiceImpl implements SysUserApplicationService {
 
     private final SysUserService sysUserService;

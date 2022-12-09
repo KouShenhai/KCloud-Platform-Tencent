@@ -30,7 +30,6 @@ import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -39,8 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2022/8/11 0011 上午 9:47
  */
 @Service
-@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class SysOauthApplicationServiceImpl implements SysOauthApplicationService {
 
     private final SysOauthService sysOauthService;
