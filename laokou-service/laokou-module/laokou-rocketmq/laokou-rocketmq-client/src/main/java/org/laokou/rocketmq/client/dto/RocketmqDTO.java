@@ -15,30 +15,18 @@
  */
 package org.laokou.rocketmq.client.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/3/4 0004 下午 6:44
  */
 @Data
-public class ResourceAuditLogDTO implements Serializable {
-    private Long resourceId;
+public class RocketmqDTO implements Serializable {
 
-    private String auditName;
-
-    private Date auditDate;
-
-    private Integer auditStatus;
-
-    private String comment;
-
-    private Integer status;
-
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long creator;
+    private String data;
 
 }

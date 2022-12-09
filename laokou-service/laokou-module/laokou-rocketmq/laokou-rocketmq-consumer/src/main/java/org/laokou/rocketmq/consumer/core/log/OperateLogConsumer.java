@@ -20,9 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.log.client.dto.OperateLogDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.laokou.rocketmq.client.dto.OperateLogDTO;
-import org.laokou.rocketmq.consumer.service.SysOperateLogService;
 import org.springframework.stereotype.Component;
 
 /**

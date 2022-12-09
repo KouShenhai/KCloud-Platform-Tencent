@@ -21,7 +21,7 @@
 //import org.apache.rocketmq.spring.core.RocketMQListener;
 //import org.laokou.common.core.utils.JacksonUtil;
 //import org.laokou.rocketmq.client.constant.RocketmqConstant;
-//import org.laokou.rocketmq.client.dto.ResourceAuditLogDTO;
+//import org.laokou.log.client.dto.ResourceAuditLogDTO;
 //import org.laokou.rocketmq.consumer.entity.SysResourceAuditLogDO;
 //import org.laokou.rocketmq.consumer.entity.SysResourceDO;
 //import org.laokou.rocketmq.consumer.service.SysResourceAuditLogService;
