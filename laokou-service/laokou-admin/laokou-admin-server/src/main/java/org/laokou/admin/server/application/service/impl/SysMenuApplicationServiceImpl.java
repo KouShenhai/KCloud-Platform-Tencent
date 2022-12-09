@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysMenuApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysMenuDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysMenuService;
@@ -29,20 +30,22 @@ import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.common.core.utils.RedisKeyUtil;
 import org.laokou.common.core.utils.TreeUtil;
 import org.laokou.redis.utils.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 /**
  * @author Kou Shenhai
  */
 @Service
+@RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
 public class SysMenuApplicationServiceImpl implements SysMenuApplicationService {
 
-    @Autowired
-    private SysMenuService sysMenuService;
+    private final SysMenuService sysMenuService;
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
     @Override
     public SysMenuVO getMenuList() {

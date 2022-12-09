@@ -16,6 +16,7 @@
 
 package org.laokou.rocketmq.consumer.core.im;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -48,7 +49,7 @@ public class PlatformNoticeConsumer implements RocketMQListener<String> {
                 pushMsgDTO.setReceiver(dto.getReceiver());
                 pushMsgDTO.setMsg(dto.getTitle());
                 imApiFeignClient.push(pushMsgDTO);
-            } catch (Exception e) {
+            } catch (FeignException e) {
                 log.error("错误信息：{}",e.getMessage());
             }
         }

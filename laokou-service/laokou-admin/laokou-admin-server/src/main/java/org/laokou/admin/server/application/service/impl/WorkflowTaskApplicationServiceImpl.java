@@ -14,20 +14,44 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.application.service.impl;
+import feign.Response;
 import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
+import org.laokou.admin.server.infrastructure.feign.flowable.WorkTaskApiFeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * @author Kou Shenhai
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
 public class WorkflowTaskApplicationServiceImpl implements WorkflowTaskApplicationService {
+
+    private final WorkTaskApiFeignClient workTaskApiFeignClient;
 
     @Override
     public void diagramProcess(String processInstanceId, HttpServletResponse response) {
-
+        try (
+                Response result = workTaskApiFeignClient.diagram(processInstanceId);
+                InputStream inputStream = result.body().asInputStream();
+                OutputStream outputStream = response.getOutputStream();
+        ) {
+            byte[] bytes = new byte[inputStream.available()];
+            int len;
+            while ((len = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, len);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

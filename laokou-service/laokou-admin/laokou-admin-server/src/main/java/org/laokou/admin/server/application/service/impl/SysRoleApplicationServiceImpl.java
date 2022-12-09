@@ -17,6 +17,7 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysRoleApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysRoleDO;
 import org.laokou.admin.server.domain.sys.entity.SysRoleDeptDO;
@@ -33,8 +34,9 @@ import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.ConvertUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,16 +44,15 @@ import java.util.List;
  * @author Kou Shenhai
  */
 @Service
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+@RequiredArgsConstructor
 public class SysRoleApplicationServiceImpl implements SysRoleApplicationService {
 
-    @Autowired
-    private SysRoleService sysRoleService;
+    private final SysRoleService sysRoleService;
 
-    @Autowired
-    private SysRoleMenuService sysRoleMenuService;
+    private final SysRoleMenuService sysRoleMenuService;
 
-    @Autowired
-    private SysRoleDeptService sysRoleDeptService;
+    private final SysRoleDeptService sysRoleDeptService;
 
     @Override
     @DataFilter(tableAlias = "boot_sys_role")

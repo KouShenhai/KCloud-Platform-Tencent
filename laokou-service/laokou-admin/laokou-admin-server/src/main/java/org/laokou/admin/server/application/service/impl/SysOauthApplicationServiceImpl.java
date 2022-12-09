@@ -17,6 +17,7 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysOauthApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysOauthService;
@@ -28,18 +29,21 @@ import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.ConvertUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Kou Shenhai
  * @version 1.0
  * @date 2022/8/11 0011 上午 9:47
  */
 @Service
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+@RequiredArgsConstructor
 public class SysOauthApplicationServiceImpl implements SysOauthApplicationService {
 
-    @Autowired
-    private SysOauthService sysOauthService;
+    private final SysOauthService sysOauthService;
 
     @Override
     @DataFilter(tableAlias = "boot_sys_oauth_client_details")

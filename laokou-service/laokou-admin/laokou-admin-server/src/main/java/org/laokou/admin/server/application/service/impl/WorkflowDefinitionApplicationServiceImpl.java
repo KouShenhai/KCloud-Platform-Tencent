@@ -16,6 +16,8 @@
 package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import feign.FeignException;
+import feign.Response;
 import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.WorkflowDefinitionApplicationService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +29,14 @@ import org.laokou.flowable.client.dto.DefinitionDTO;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -37,6 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
 public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinitionApplicationService {
 
     private final WorkDefinitionApiFeignClient workDefinitionApiFeignClient;
@@ -48,7 +57,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
             if (!result.success()) {
                 throw new CustomException(result.getCode(), result.getMsg());
             }
-        } catch (Exception e) {
+        } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
         }
         return true;
@@ -71,7 +80,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
             }
             page.setRecords(result.getData().getRecords());
             page.setTotal(result.getData().getTotal());
-        } catch (Exception e) {
+        } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
         }
         return page;
@@ -79,7 +88,19 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
 
     @Override
     public void diagramDefinition(String definitionId, HttpServletResponse response) {
-
+        try (
+                Response result = workDefinitionApiFeignClient.diagram(definitionId);
+                InputStream inputStream = result.body().asInputStream();
+                OutputStream outputStream = response.getOutputStream();
+        ) {
+            byte[] bytes = new byte[inputStream.available()];
+            int len;
+            while ((len = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, len);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -89,7 +110,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
             if (!result.success()) {
                 throw new CustomException(result.getCode(), result.getMsg());
             }
-        } catch (Exception e) {
+        } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
         }
         return true;
@@ -102,7 +123,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
             if (!result.success()) {
                 throw new CustomException(result.getCode(), result.getMsg());
             }
-        } catch (Exception e) {
+        } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
         }
         return true;
@@ -115,7 +136,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
             if (!result.success()) {
                 throw new CustomException(result.getCode(), result.getMsg());
             }
-        } catch (Exception e) {
+        } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
         }
         return true;

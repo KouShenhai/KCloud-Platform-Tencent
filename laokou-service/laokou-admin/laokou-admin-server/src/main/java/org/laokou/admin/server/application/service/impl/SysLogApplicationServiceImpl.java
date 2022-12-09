@@ -16,6 +16,7 @@
 package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysLogApplicationService;
 import org.laokou.admin.server.domain.sys.repository.service.SysLoginLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysOperateLogService;
@@ -27,21 +28,20 @@ import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kou Shenhai
  */
 @Service
+@RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
 public class SysLogApplicationServiceImpl implements SysLogApplicationService {
 
-    @Autowired
-    private SysOperateLogService sysOperateLogService;
+    private final SysOperateLogService sysOperateLogService;
 
-    @Autowired
-    private SysLoginLogService sysLoginLogService;
-
-    @Autowired
-    private SysUserService sysUserService;
+    private final SysLoginLogService sysLoginLogService;
 
     @Override
     @DataFilter(tableAlias = "boot_sys_operate_log")

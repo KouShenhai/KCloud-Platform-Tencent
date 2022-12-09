@@ -1,4 +1,5 @@
 package org.laokou.admin.server.infrastructure.feign.flowable;
+import feign.Response;
 import org.laokou.admin.server.infrastructure.feign.flowable.factory.WorkTaskApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.common.core.utils.HttpResultUtil;
@@ -41,9 +42,10 @@ public interface WorkDefinitionApiFeignClient {
     /**
      * 流程图
      * @param definitionId
+     * @return
      */
     @GetMapping(value = "/diagram")
-    void diagram(@RequestParam("definitionId")String definitionId);
+    Response diagram(@RequestParam("definitionId")String definitionId);
 
     /**
      * 删除流程

@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysDeptApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysDeptDO;
 import org.laokou.admin.server.domain.sys.entity.SysUserDO;
@@ -30,8 +31,10 @@ import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.common.core.utils.RedisKeyUtil;
 import org.laokou.common.core.utils.TreeUtil;
 import org.laokou.redis.utils.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 /**
  * @author Kou Shenhai
@@ -39,16 +42,15 @@ import java.util.List;
  * @date 2022/7/26 0026 下午 4:30
  */
 @Service
+@RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
 public class SysDeptApplicationServiceImpl implements SysDeptApplicationService {
 
-    @Autowired
-    private SysDeptService sysDeptService;
+    private final SysDeptService sysDeptService;
 
-    @Autowired
-    private SysUserService sysUserService;
+    private final SysUserService sysUserService;
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
     @Override
     public SysDeptVO getDeptList() {

@@ -16,6 +16,7 @@
 
 package org.laokou.rocketmq.consumer.core.elasticsearch;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -45,7 +46,7 @@ public class SyncIndexConsumer implements RocketMQListener<String> {
             SyncIndexDTO syncIndexDTO = JacksonUtil.toBean(message, SyncIndexDTO.class);
             ElasticsearchDTO dto = ConvertUtil.sourceToTarget(syncIndexDTO, ElasticsearchDTO.class);
             elasticsearchApiFeignClient.syncAsyncBatch(dto);
-        } catch (Exception e) {
+        } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
         }
     }

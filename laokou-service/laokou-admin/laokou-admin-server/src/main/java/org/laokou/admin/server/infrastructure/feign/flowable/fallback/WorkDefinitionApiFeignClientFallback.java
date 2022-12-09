@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.server.infrastructure.feign.flowable.fallback;
 
+import feign.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkDefinitionApiFeignClient;
@@ -49,8 +50,9 @@ public class WorkDefinitionApiFeignClientFallback implements WorkDefinitionApiFe
     }
 
     @Override
-    public void diagram(String definitionId) {
+    public Response diagram(String definitionId) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+        return Response.builder().build();
     }
 
     @Override

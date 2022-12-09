@@ -16,14 +16,17 @@
 package org.laokou.admin.server.application.service.impl;
 
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.application.service.SysSearchApplicationService;
 import org.laokou.admin.server.infrastructure.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Map;
 
 /**
@@ -31,10 +34,11 @@ import java.util.Map;
  */
 @Service
 @Slf4j
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+@RequiredArgsConstructor
 public class SysSearchApplicationServiceImpl implements SysSearchApplicationService {
 
-    @Autowired
-    private ElasticsearchApiFeignClient elasticsearchApiFeignClient;
+    private final ElasticsearchApiFeignClient elasticsearchApiFeignClient;
 
     @Override
     public SearchVO<Map<String,Object>> searchResource(SearchForm form) {

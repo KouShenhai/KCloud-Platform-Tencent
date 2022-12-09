@@ -16,6 +16,7 @@
 
 package org.laokou.rocketmq.consumer.core.log;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -42,7 +43,7 @@ public class LoginLogConsumer implements RocketMQListener<String> {
         try {
             final LoginLogDTO loginLogDTO = JacksonUtil.toBean(message, LoginLogDTO.class);
             logApiFeignClient.login(loginLogDTO);
-        } catch (Exception e) {
+        } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
         }
     }

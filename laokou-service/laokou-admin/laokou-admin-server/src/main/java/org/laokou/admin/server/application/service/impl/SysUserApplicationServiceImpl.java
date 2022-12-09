@@ -17,6 +17,7 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.client.vo.UserInfoVO;
 import org.laokou.admin.server.application.service.SysUserApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysUserDO;
@@ -37,8 +38,9 @@ import org.laokou.auth.client.user.UserDetail;
 import org.apache.commons.collections.CollectionUtils;
 import org.laokou.common.core.password.PasswordUtil;
 import org.laokou.common.core.utils.ConvertUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,16 +48,15 @@ import java.util.List;
  * @author Kou Shenhai
  */
 @Service
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
+@RequiredArgsConstructor
 public class SysUserApplicationServiceImpl implements SysUserApplicationService {
 
-    @Autowired
-    private SysUserService sysUserService;
+    private final SysUserService sysUserService;
 
-    @Autowired
-    private SysRoleService sysRoleService;
+    private final SysRoleService sysRoleService;
 
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private final SysUserRoleService sysUserRoleService;
 
     @Override
     public Boolean updateUser(SysUserDTO dto) {

@@ -56,6 +56,8 @@ import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.SyncIndexDTO;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import java.io.InputStream;
 import java.util.*;
@@ -68,6 +70,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
 public class SysResourceApplicationServiceImpl implements SysResourceApplicationService {
     private static final String RESOURCE_KEY = "laokou_resource";
 
@@ -213,7 +216,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         final String indexName = resourceIndex + "_" + ym;
                         dto.setIndexName(indexName);
                         dto.setIndexAlias(resourceIndexAlias);
-
                     } catch (final FeignException e) {
                         log.error("错误信息：{}", e.getMessage());
                     }
@@ -267,7 +269,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             sysResourceService.update(updateWrapper);
             // 审核日志入队列
             adminThreadPoolTaskExecutor.execute(() -> saveAuditLog(businessId,auditStatus,comment,username,userId));
-        } catch (Exception e) {
+        } catch (FeignException e) {
             log.error("错误信息：{}",e.getMessage());
         }
         return true;
@@ -303,13 +305,13 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             dto.setProcessName(qo.getProcessName());
             HttpResultUtil<PageVO<TaskVO>> result = workTaskApiFeignClient.query(dto);
             if (!result.success()) {
-                return page;
+                throw new CustomException(result.getCode(),result.getMsg());
             }
             page.setRecords(result.getData().getRecords());
             page.setSize(dto.getPageSize());
             page.setCurrent(dto.getPageNum());
             page.setTotal(result.getData().getTotal());
-        } catch (Exception e) {
+        } catch (FeignException e) {
             log.error("报错信息：{}",e.getMessage());
         }
         return page;
@@ -350,14 +352,14 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             dto.setProcessKey(PROCESS_KEY);
             HttpResultUtil<AssigneeVO> result = workTaskApiFeignClient.start(dto);
             if (!result.success()) {
-                return null;
+                throw new CustomException(result.getCode(),result.getMsg());
             }
             AssigneeVO vo = result.getData();
             String instanceId = vo.getInstanceId();
             String assignee = vo.getAssignee();
             insertMessage(assignee,MessageTypeEnum.REMIND.ordinal(),businessKey,businessName);
             return instanceId;
-        } catch (Exception e) {
+        } catch (FeignException e) {
             log.error("报错信息：{}",e.getMessage());
         }
         return null;

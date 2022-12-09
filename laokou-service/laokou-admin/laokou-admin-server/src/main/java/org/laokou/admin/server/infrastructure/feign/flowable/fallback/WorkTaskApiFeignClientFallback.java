@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.server.infrastructure.feign.flowable.fallback;
 
+import feign.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkTaskApiFeignClient;
@@ -56,8 +57,9 @@ public class WorkTaskApiFeignClientFallback implements WorkTaskApiFeignClient {
     }
 
     @Override
-    public void diagram(String processInstanceId) {
+    public Response diagram(String processInstanceId) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+        return Response.builder().build();
     }
 
 }
