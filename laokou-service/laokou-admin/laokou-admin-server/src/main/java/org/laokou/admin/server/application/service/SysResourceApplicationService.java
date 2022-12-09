@@ -17,7 +17,7 @@ package org.laokou.admin.server.application.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
-import org.laokou.admin.client.vo.SysResourceAuditLogVO;
+import org.laokou.admin.client.vo.SysAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.flowable.client.dto.AuditDTO;
@@ -92,10 +92,10 @@ public interface SysResourceApplicationService {
 
     /**
      * 查询资源审核日志列表
-     * @param resourceId
+     * @param businessId
      * @return
      */
-    List<SysResourceAuditLogVO> queryAuditLogList(Long resourceId);
+    List<SysAuditLogVO> queryAuditLogList(Long businessId);
 
     /**
      * 创建索引

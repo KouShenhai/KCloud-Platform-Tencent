@@ -25,7 +25,7 @@ import java.util.Date;
  * @date 2022/8/26 0026 下午 5:41
  */
 @Data
-public class SysResourceAuditLogVO {
+public class SysAuditLogVO {
 
     private Long id;
     private String auditName;

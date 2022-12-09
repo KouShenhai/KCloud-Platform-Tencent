@@ -13,23 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.domain.sys.repository.service;
+package org.laokou.admin.server.domain.sys.repository.mapper;
 
 import java.util.*;
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.laokou.admin.server.domain.sys.entity.SysResourceAuditLogDO;
-import org.laokou.admin.client.vo.SysResourceAuditLogVO;
+
+import org.laokou.admin.client.vo.SysAuditLogVO;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Kou Shenhai
  * @version 1.0
- * @date 2022/8/26 0026 下午 5:35
+ * @date 2022/8/26 0026 下午 5:33
  */
-public interface SysResourceAuditLogService extends IService<SysResourceAuditLogDO> {
+@Mapper
+@Repository
+public interface SysAuditLogMapper {
+
     /**
-     * 分页查询资源审核日志
-     * @param resourceId
+     * 查询资源审核日志
+     * @param businessId
+     * @param type
      * @return
      */
-    List<SysResourceAuditLogVO> getAuditLogList(Long resourceId);
+    List<SysAuditLogVO> getAuditLogList(@Param("businessId") Long businessId,@Param("type")Integer type);
+
 }

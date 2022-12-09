@@ -25,7 +25,7 @@ import org.laokou.admin.client.dto.MessageDTO;
 import org.laokou.admin.server.application.service.SysMessageApplicationService;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
 import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
-import org.laokou.admin.server.domain.sys.repository.service.SysResourceAuditLogService;
+import org.laokou.admin.server.domain.sys.repository.service.SysAuditLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceService;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkTaskApiFeignClient;
 import org.laokou.admin.server.interfaces.qo.TaskQo;
@@ -36,7 +36,7 @@ import org.laokou.admin.client.index.ResourceIndex;
 import org.laokou.admin.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
 import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
-import org.laokou.admin.client.vo.SysResourceAuditLogVO;
+import org.laokou.admin.client.vo.SysAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.exception.CustomException;
@@ -76,7 +76,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     private static final Integer INIT_STATUS = 0;
 
     private final SysResourceService sysResourceService;
-    private final SysResourceAuditLogService sysResourceAuditLogService;
+    private final SysAuditLogService sysAuditLogService;
 
     private final ThreadPoolTaskExecutor adminThreadPoolTaskExecutor;
 
@@ -184,8 +184,8 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public List<SysResourceAuditLogVO> queryAuditLogList(Long resourceId) {
-        return sysResourceAuditLogService.getAuditLogList(resourceId);
+    public List<SysAuditLogVO> queryAuditLogList(Long businessId) {
+        return sysAuditLogService.getAuditLogList(businessId,AuditTypeEnum.RESOURCE.ordinal());
     }
 
     private void beforeCreateIndex() {

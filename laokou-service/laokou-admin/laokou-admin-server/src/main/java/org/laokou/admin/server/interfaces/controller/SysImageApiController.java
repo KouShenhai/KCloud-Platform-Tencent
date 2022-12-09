@@ -19,7 +19,7 @@ import org.laokou.admin.server.application.service.SysResourceApplicationService
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
 import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
-import org.laokou.admin.client.vo.SysResourceAuditLogVO;
+import org.laokou.admin.client.vo.SysAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.HttpResultUtil;
@@ -122,8 +122,8 @@ public class SysImageApiController {
     @GetMapping("/auditLog")
     @ApiOperation("图片管理>审批日志")
     @PreAuthorize("hasAuthority('sys:resource:image:auditLog')")
-    public HttpResultUtil<List<SysResourceAuditLogVO>> auditLog(@RequestParam("resourceId") Long resourceId) {
-        return new HttpResultUtil<List<SysResourceAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(resourceId));
+    public HttpResultUtil<List<SysAuditLogVO>> auditLog(@RequestParam("businessId") Long businessId) {
+        return new HttpResultUtil<List<SysAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(businessId));
     }
 
 }

@@ -15,11 +15,10 @@
  */
 package org.laokou.admin.server.domain.sys.repository.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.laokou.admin.server.domain.sys.entity.SysResourceAuditLogDO;
-import org.laokou.admin.server.domain.sys.repository.mapper.SysResourceAuditLogMapper;
-import org.laokou.admin.server.domain.sys.repository.service.SysResourceAuditLogService;
-import org.laokou.admin.client.vo.SysResourceAuditLogVO;
+import lombok.RequiredArgsConstructor;
+import org.laokou.admin.server.domain.sys.repository.mapper.SysAuditLogMapper;
+import org.laokou.admin.server.domain.sys.repository.service.SysAuditLogService;
+import org.laokou.admin.client.vo.SysAuditLogVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
@@ -30,9 +29,13 @@ import java.util.*;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class SysResourceAuditLogServiceImpl extends ServiceImpl<SysResourceAuditLogMapper, SysResourceAuditLogDO> implements SysResourceAuditLogService {
+@RequiredArgsConstructor
+public class SysAuditLogServiceImpl implements SysAuditLogService {
+
+    private final SysAuditLogMapper sysAuditLogMapper;
+
     @Override
-    public List<SysResourceAuditLogVO> getAuditLogList(Long resourceId) {
-        return this.baseMapper.getAuditLogList(resourceId);
+    public List<SysAuditLogVO> getAuditLogList(Long businessId,Integer type) {
+        return this.sysAuditLogMapper.getAuditLogList(businessId,type);
     }
 }
