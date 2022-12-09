@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package org.laokou.flowable.server.dto;
+package org.laokou.flowable.client.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * @author Kou Shenhai
  */
 @Data
-public class ProcessDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class PageVO<T> {
 
-    private String processKey;
-    private String businessKey;
-    private String businessName;
-
+    private List<T> records;
+    private Long total;
 }

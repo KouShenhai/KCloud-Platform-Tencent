@@ -18,15 +18,13 @@ package org.laokou.admin.server.infrastructure.feign.flowable.fallback;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkTaskApiFeignClient;
-import org.laokou.admin.server.infrastructure.feign.flowable.dto.AuditDTO;
-import org.laokou.admin.server.infrastructure.feign.flowable.dto.ProcessDTO;
-import org.laokou.admin.server.infrastructure.feign.flowable.dto.TaskDTO;
-import org.laokou.admin.server.infrastructure.feign.flowable.vo.AssigneeVO;
-import org.laokou.admin.server.infrastructure.feign.flowable.vo.PageVO;
-import org.laokou.admin.server.infrastructure.feign.flowable.vo.TaskVO;
 import org.laokou.common.core.utils.HttpResultUtil;
-import javax.servlet.http.HttpServletResponse;
-
+import org.laokou.flowable.client.dto.AuditDTO;
+import org.laokou.flowable.client.dto.ProcessDTO;
+import org.laokou.flowable.client.dto.TaskDTO;
+import org.laokou.flowable.client.vo.AssigneeVO;
+import org.laokou.flowable.client.vo.PageVO;
+import org.laokou.flowable.client.vo.TaskVO;
 /**
  * 服务降级
  * @author Kou Shenhai

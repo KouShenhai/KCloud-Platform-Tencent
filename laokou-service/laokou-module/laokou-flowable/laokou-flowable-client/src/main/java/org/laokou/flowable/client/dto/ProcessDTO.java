@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package org.laokou.admin.server.infrastructure.feign.flowable.vo;
+package org.laokou.flowable.client.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author Kou Shenhai
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class AssigneeVO {
+public class ProcessDTO {
 
-    private String assignee;
-    private String instanceId;
+    private String processKey;
+    private String businessKey;
+    private String businessName;
 
 }

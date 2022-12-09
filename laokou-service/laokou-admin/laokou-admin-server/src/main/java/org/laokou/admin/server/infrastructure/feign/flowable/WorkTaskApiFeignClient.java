@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.feign.flowable;
-
-import org.laokou.admin.server.infrastructure.feign.flowable.dto.AuditDTO;
-import org.laokou.admin.server.infrastructure.feign.flowable.dto.ProcessDTO;
-import org.laokou.admin.server.infrastructure.feign.flowable.dto.TaskDTO;
 import org.laokou.admin.server.infrastructure.feign.flowable.factory.WorkTaskApiFeignClientFallbackFactory;
-import org.laokou.admin.server.infrastructure.feign.flowable.vo.AssigneeVO;
-import org.laokou.admin.server.infrastructure.feign.flowable.vo.PageVO;
-import org.laokou.admin.server.infrastructure.feign.flowable.vo.TaskVO;
 import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.flowable.client.dto.AuditDTO;
+import org.laokou.flowable.client.dto.ProcessDTO;
+import org.laokou.flowable.client.dto.TaskDTO;
+import org.laokou.flowable.client.vo.AssigneeVO;
+import org.laokou.flowable.client.vo.PageVO;
+import org.laokou.flowable.client.vo.TaskVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;

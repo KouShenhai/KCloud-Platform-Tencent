@@ -20,10 +20,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
-import org.laokou.admin.server.infrastructure.feign.flowable.dto.AuditDTO;
-import org.laokou.admin.server.infrastructure.feign.flowable.vo.TaskVO;
 import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.flowable.client.dto.AuditDTO;
+import org.laokou.flowable.client.vo.TaskVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

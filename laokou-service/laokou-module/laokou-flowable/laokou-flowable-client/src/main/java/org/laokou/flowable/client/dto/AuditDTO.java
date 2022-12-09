@@ -13,26 +13,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.server.infrastructure.feign.flowable.dto;
+package org.laokou.flowable.client.dto;
+
 import lombok.Data;
+
+import java.util.Map;
+
 /**
  * @author Kou Shenhai
- * @version 1.0
- * @date 2022/7/7 0007 下午 5:40
  */
 @Data
-public class TaskDTO {
+public class AuditDTO {
 
-    private Integer pageNum;
+    /**
+     * 任务id
+     */
+    private String taskId;
 
-    private Integer pageSize;
+    /**
+     * 任务名称
+     */
+    private String taskName;
 
-    private String processName;
+    /**
+     * 任务意见
+     */
+    private String comment;
 
-    private Long userId;
+    /**
+     * 流程实例id
+     */
+    private String instanceId;
 
-    private String username;
+    /**
+     * 业务key
+     */
+    private String businessKey;
 
-    private String processKey;
+    /**
+     * 实例名称
+     */
+    private String instanceName;
+
+    /**
+     * 实例id
+     */
+    private String definitionId;
+
+    /**
+     * 流程变量
+     */
+    private Map<String,Object> values;
 
 }

@@ -11,6 +11,14 @@
     <groupId>org.laokou</groupId>
     <artifactId>laokou-flowable-client</artifactId>
 
+
+    <dependencies>
+        <dependency>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-common-core</artifactId>
+        </dependency>
+    </dependencies>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

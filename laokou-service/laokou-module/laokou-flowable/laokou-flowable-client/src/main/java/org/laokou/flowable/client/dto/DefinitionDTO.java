@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.laokou.flowable.server.dto;
+package org.laokou.flowable.client.dto;
 
 import lombok.Data;
 

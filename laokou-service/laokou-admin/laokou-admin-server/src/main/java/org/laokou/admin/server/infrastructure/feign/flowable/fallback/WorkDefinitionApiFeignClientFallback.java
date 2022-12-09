@@ -18,10 +18,10 @@ package org.laokou.admin.server.infrastructure.feign.flowable.fallback;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkDefinitionApiFeignClient;
-import org.laokou.admin.server.infrastructure.feign.flowable.dto.DefinitionDTO;
-import org.laokou.admin.server.infrastructure.feign.flowable.vo.DefinitionVO;
-import org.laokou.admin.server.infrastructure.feign.flowable.vo.PageVO;
 import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.flowable.client.dto.DefinitionDTO;
+import org.laokou.flowable.client.vo.DefinitionVO;
+import org.laokou.flowable.client.vo.PageVO;
 import org.springframework.web.multipart.MultipartFile;
 /**
  * 服务降级
