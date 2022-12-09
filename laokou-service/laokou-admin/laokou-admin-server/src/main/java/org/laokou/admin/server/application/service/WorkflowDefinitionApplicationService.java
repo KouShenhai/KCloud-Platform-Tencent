@@ -16,9 +16,11 @@
 package org.laokou.admin.server.application.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.interfaces.qo.DefinitionQo;
-
+import org.laokou.flowable.client.vo.DefinitionVO;
+import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -27,12 +29,12 @@ import java.io.InputStream;
 public interface WorkflowDefinitionApplicationService {
 
     /**
-     * 导入流程文件
+     * 新增流程文件
      * @param name
      * @param in
      * @return
      */
-    Boolean importFile(String name, InputStream in);
+    Boolean insertDefinition(String name, InputStream in);
 
     /**
      * 分页查询流程
@@ -42,11 +44,11 @@ public interface WorkflowDefinitionApplicationService {
     IPage<DefinitionVO> queryDefinitionPage(DefinitionQo qo);
 
     /**
-     * 查询流程图
+     * 查看流程图
      * @param definitionId
      * @param response
      */
-    void imageProcess(String definitionId, HttpServletResponse response);
+    void diagramDefinition(String definitionId, HttpServletResponse response);
 
     /**
      * 删除流程
@@ -68,4 +70,48 @@ public interface WorkflowDefinitionApplicationService {
      * @return
      */
     Boolean activateDefinition(String definitionId);
+
+
+//    /**
+//     * 导入流程文件
+//     * @param name
+//     * @param in
+//     * @return
+//     */
+//    Boolean importFile(String name, InputStream in);
+//
+//    /**
+//     * 分页查询流程
+//     * @param qo
+//     * @return
+//     */
+//    IPage<DefinitionVO> queryDefinitionPage(DefinitionQo qo);
+//
+//    /**
+//     * 查询流程图
+//     * @param definitionId
+//     * @param response
+//     */
+//    void imageProcess(String definitionId, HttpServletResponse response);
+//
+//    /**
+//     * 删除流程
+//     * @param deploymentId
+//     * @return
+//     */
+//    Boolean deleteDefinition(String deploymentId);
+//
+//    /**
+//     * 挂起流程
+//     * @param definitionId
+//     * @return
+//     */
+//    Boolean suspendDefinition(String definitionId);
+//
+//    /**
+//     * 激活流程
+//     * @param definitionId
+//     * @return
+//     */
+//    Boolean activateDefinition(String definitionId);
 }

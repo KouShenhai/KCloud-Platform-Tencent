@@ -1,52 +1,69 @@
-///**
-// * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
-// * <p>
-// * Licensed under the Apache License, Version 2.0 (the "License");
-// * you may not use this file except in compliance with the License.
-// * You may obtain a copy of the License at
-// * <p>
-// *   http://www.apache.org/licenses/LICENSE-2.0
-// * <p>
-// * Unless required by applicable law or agreed to in writing, software
-// * distributed under the License is distributed on an "AS IS" BASIS,
-// * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// * See the License for the specific language governing permissions and
-// * limitations under the License.
-// */
-//package org.laokou.admin.server.application.service.impl;
-//import com.baomidou.mybatisplus.core.metadata.IPage;
-//import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-//import org.laokou.admin.server.application.service.WorkflowDefinitionApplicationService;
-//import org.laokou.admin.server.interfaces.qo.DefinitionQo;
-//
-//import lombok.extern.slf4j.Slf4j;
-//import org.flowable.bpmn.model.BpmnModel;
-//import org.flowable.engine.RepositoryService;
-//import org.flowable.engine.repository.DeploymentBuilder;
-//import org.flowable.engine.repository.ProcessDefinition;
-//import org.flowable.engine.repository.ProcessDefinitionQuery;
-//import org.flowable.image.impl.DefaultProcessDiagramGenerator;
-//import org.laokou.common.core.exception.CustomException;
-//import org.laokou.common.core.utils.StringUtil;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//import javax.imageio.ImageIO;
-//import javax.servlet.ServletOutputStream;
-//import javax.servlet.http.HttpServletResponse;
-//import java.awt.image.BufferedImage;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.util.ArrayList;
-//import java.util.Collections;
-//import java.util.List;
-///**
-// * @author Kou Shenhai
-// * @version 1.0
-// * @date 2022/7/6 0006 下午 6:11
-// */
-//@Service
-//@Slf4j
-//public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinitionApplicationService {
+/**
+ * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.laokou.admin.server.application.service.impl;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.RequiredArgsConstructor;
+import org.laokou.admin.server.application.service.WorkflowDefinitionApplicationService;
+import lombok.extern.slf4j.Slf4j;
+import org.laokou.admin.server.interfaces.qo.DefinitionQo;
+import org.laokou.flowable.client.vo.DefinitionVO;
+import org.springframework.stereotype.Service;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+
+/**
+ * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/7/6 0006 下午 6:11
+ */
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinitionApplicationService {
+
+
+    @Override
+    public Boolean insertDefinition(String name, InputStream in) {
+        return null;
+    }
+
+    @Override
+    public IPage<DefinitionVO> queryDefinitionPage(DefinitionQo qo) {
+        return null;
+    }
+
+    @Override
+    public void diagramDefinition(String definitionId, HttpServletResponse response) {
+
+    }
+
+    @Override
+    public Boolean deleteDefinition(String deploymentId) {
+        return null;
+    }
+
+    @Override
+    public Boolean suspendDefinition(String definitionId) {
+        return null;
+    }
+
+    @Override
+    public Boolean activateDefinition(String definitionId) {
+        return null;
+    }
 //
 //    @Autowired
 //    private RepositoryService repositoryService;
@@ -150,5 +167,5 @@
 //        }
 //        return true;
 //    }
-//
-//}
+
+}

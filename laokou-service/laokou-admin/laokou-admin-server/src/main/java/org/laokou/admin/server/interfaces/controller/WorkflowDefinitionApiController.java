@@ -27,8 +27,10 @@ import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Kou Shenhai

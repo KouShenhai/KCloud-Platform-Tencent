@@ -3,12 +3,12 @@ import org.laokou.admin.server.infrastructure.feign.flowable.factory.WorkTaskApi
 import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.flowable.client.dto.DefinitionDTO;
+import org.laokou.flowable.client.dto.FileDTO;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 /**
@@ -20,13 +20,12 @@ public interface WorkDefinitionApiFeignClient {
 
     /**
      * 新增流程
-     * @param name
-     * @param file
+     * @param dto
      * @return
      * @throws IOException
      */
     @PostMapping(value = "/insert")
-    HttpResultUtil<Boolean> insert(@RequestParam("name")String name, @RequestPart("file") MultipartFile file);
+    HttpResultUtil<Boolean> insert(@RequestBody FileDTO dto);
 
     /**
      * 查询流程
