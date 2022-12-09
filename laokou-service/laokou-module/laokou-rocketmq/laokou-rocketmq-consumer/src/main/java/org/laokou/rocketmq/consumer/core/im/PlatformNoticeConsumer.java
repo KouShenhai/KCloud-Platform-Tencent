@@ -17,6 +17,7 @@
 package org.laokou.rocketmq.consumer.core.im;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.JacksonUtil;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Component;
 @RocketMQMessageListener(consumerGroup = "laokou-consumer-group-4", topic = RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC)
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class PlatformNoticeConsumer implements RocketMQListener<String> {
 
     private final ImApiFeignClient imApiFeignClient;
@@ -41,10 +43,14 @@ public class PlatformNoticeConsumer implements RocketMQListener<String> {
     public void onMessage(String message) {
         final MsgDTO dto = JacksonUtil.toBean(message, MsgDTO.class);
         if (ChannelTypeEnum.PLATFORM.ordinal() == dto.getSendChannel()) {
-            PushMsgDTO pushMsgDTO = new PushMsgDTO();
-            pushMsgDTO.setReceiver(dto.getReceiver());
-            pushMsgDTO.setMsg(dto.getTitle());
-            imApiFeignClient.push(pushMsgDTO);
+            try {
+                PushMsgDTO pushMsgDTO = new PushMsgDTO();
+                pushMsgDTO.setReceiver(dto.getReceiver());
+                pushMsgDTO.setMsg(dto.getTitle());
+                imApiFeignClient.push(pushMsgDTO);
+            } catch (Exception e) {
+                log.error("错误信息：{}",e.getMessage());
+            }
         }
     }
 }

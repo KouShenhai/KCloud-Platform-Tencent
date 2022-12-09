@@ -17,6 +17,7 @@
 package org.laokou.rocketmq.consumer.core.elasticsearch;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.ConvertUtil;
@@ -33,14 +34,19 @@ import org.springframework.stereotype.Component;
 @RocketMQMessageListener(consumerGroup = "laokou-consumer-group-5", topic = RocketmqConstant.LAOKOU_SYNC_INDEX_TOPIC)
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class SyncIndexConsumer implements RocketMQListener<String> {
 
     private final ElasticsearchApiFeignClient elasticsearchApiFeignClient;
 
     @Override
     public void onMessage(String message) {
-        SyncIndexDTO syncIndexDTO = JacksonUtil.toBean(message, SyncIndexDTO.class);
-        ElasticsearchDTO dto = ConvertUtil.sourceToTarget(syncIndexDTO, ElasticsearchDTO.class);
-        elasticsearchApiFeignClient.syncAsyncBatch(dto);
+        try {
+            SyncIndexDTO syncIndexDTO = JacksonUtil.toBean(message, SyncIndexDTO.class);
+            ElasticsearchDTO dto = ConvertUtil.sourceToTarget(syncIndexDTO, ElasticsearchDTO.class);
+            elasticsearchApiFeignClient.syncAsyncBatch(dto);
+        } catch (Exception e) {
+            log.error("错误信息:{}",e.getMessage());
+        }
     }
 }

@@ -17,6 +17,7 @@
 package org.laokou.rocketmq.consumer.core.log;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.JacksonUtil;
@@ -31,14 +32,19 @@ import org.springframework.stereotype.Component;
 @RocketMQMessageListener(consumerGroup = "laokou-consumer-group-2", topic = RocketmqConstant.LAOKOU_OPERATE_LOG_TOPIC)
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class OperateLogConsumer implements RocketMQListener<String> {
 
     private final LogApiFeignClient logApiFeignClient;
 
     @Override
     public void onMessage(String message) {
-        final OperateLogDTO operateLogDTO = JacksonUtil.toBean(message, OperateLogDTO.class);
-        logApiFeignClient.operate(operateLogDTO);
+        try {
+            final OperateLogDTO operateLogDTO = JacksonUtil.toBean(message, OperateLogDTO.class);
+            logApiFeignClient.operate(operateLogDTO);
+        } catch (Exception e) {
+            log.error("错误信息:{}",e.getMessage());
+        }
     }
 
 }
