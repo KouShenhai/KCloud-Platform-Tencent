@@ -16,7 +16,7 @@
 package org.laokou.auth.server.infrastructure.feign.rocketmq;
 import org.laokou.auth.server.infrastructure.feign.rocketmq.factory.RocketmqApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
-import org.laokou.rocketmq.client.dto.RocketmqDTO;
+import org.laokou.log.client.dto.RocketmqDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
