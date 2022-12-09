@@ -308,6 +308,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             page.setRecords(result.getData().getRecords());
             page.setSize(dto.getPageSize());
             page.setCurrent(dto.getPageNum());
+            page.setTotal(result.getData().getTotal());
         } catch (Exception e) {
             log.error("报错信息：{}",e.getMessage());
         }

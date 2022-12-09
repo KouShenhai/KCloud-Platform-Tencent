@@ -70,6 +70,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
                 throw new CustomException(result.getCode(), result.getMsg());
             }
             page.setRecords(result.getData().getRecords());
+            page.setTotal(result.getData().getTotal());
         } catch (Exception e) {
             log.error("错误信息:{}",e.getMessage());
         }
