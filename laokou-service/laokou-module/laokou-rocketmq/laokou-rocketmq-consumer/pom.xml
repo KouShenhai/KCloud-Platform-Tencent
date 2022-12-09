@@ -30,24 +30,6 @@
             <artifactId>laokou-rocketmq-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.laokou</groupId>
-            <artifactId>laokou-auth-client</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.laokou</groupId>
-                    <artifactId>laokou-common-swagger</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.laokou</groupId>
-                    <artifactId>laokou-redis</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.security.oauth.boot</groupId>
-                    <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
         </dependency>

@@ -366,9 +366,9 @@ PARTITION BY RANGE ( UNIX_TIMESTAMP(`create_date`))
  PARTITION lk202210 VALUES LESS THAN (1664553600) ENGINE = InnoDB,
  PARTITION lk202211 VALUES LESS THAN (1667232000) ENGINE = InnoDB,
  PARTITION lk202212 VALUES LESS THAN (1669824000) ENGINE = InnoDB);
- CREATE TABLE `boot_sys_resource_audit_log` (
+CREATE TABLE `boot_sys_audit_log` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `resource_id` bigint(20) DEFAULT NULL COMMENT '资源id',
+  `business_id` bigint(20) DEFAULT NULL COMMENT '资源id',
   `audit_name` varchar(50) DEFAULT NULL COMMENT '审批人',
   `audit_date` datetime DEFAULT NULL COMMENT '审批时间',
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -378,6 +378,7 @@ PARTITION BY RANGE ( UNIX_TIMESTAMP(`create_date`))
   `del_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1已删除 0未删除',
   `audit_status` tinyint(1) DEFAULT NULL COMMENT '0审批驳回 1审批通过',
   `comment` varchar(200) DEFAULT NULL COMMENT '审批意见',
+  `type` tinyint(1) DEFAULT '0' COMMENT '0 资源',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='资源审批日志';
 INSERT INTO `boot_sys_resource` (`id`, `title`, `author`, `uri`, `status`, `code`, `create_date`, `update_date`, `remark`, `creator`, `editor`, `del_flag`, `tags`, `md5`, `process_instance_id`) VALUES ('1429355654328815617', '大籽 - 白月光与朱砂痣.mp3', 'admin', 'http://175.178.69.253:81/upload/node4/f906b6a282564c559632a1beeb449f5f.mp3', '3', 'audio', '2021-10-21 13:05:09', '2022-08-26 10:43:30', '《白月光与朱砂痣》是由大籽、嘿人李逵演唱的歌曲，收录于2021年1月1日发行的《白月光与朱砂痣》专辑。', '1341620898007281665', '1341620898007281665', '0', '大籽', 'b683aa12313835fb780d10866c00942b', '1296a870-24e4-11ed-b537-525400cf57fe');

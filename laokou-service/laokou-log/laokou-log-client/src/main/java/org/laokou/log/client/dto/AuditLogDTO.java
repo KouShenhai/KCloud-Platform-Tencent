@@ -13,26 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.server.entity;
-
-import com.baomidou.mybatisplus.annotation.TableName;
+package org.laokou.log.client.dto;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.laokou.common.mybatisplus.entity.BaseDO;
-
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author Kou Shenhai
- * @version 1.0
- * @date 2022/8/26 0026 下午 5:31
  */
 @Data
-@TableName("boot_sys_resource_audit_log")
-@EqualsAndHashCode(callSuper=true)
-public class SysResourceAuditLogDO extends BaseDO {
-
-    private Long resourceId;
+public class AuditLogDTO implements Serializable {
+    private Long businessId;
 
     private String auditName;
 
@@ -41,5 +32,9 @@ public class SysResourceAuditLogDO extends BaseDO {
     private Integer auditStatus;
 
     private String comment;
+
+    private Long creator;
+
+    private Integer type;
 
 }

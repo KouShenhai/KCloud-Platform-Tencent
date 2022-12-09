@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.client.dto;
-import lombok.Data;
-import java.io.Serializable;
-import java.util.Date;
+package org.laokou.rocketmq.consumer.feign.log.factory;
+import org.laokou.rocketmq.consumer.feign.log.fallback.LogApiFeignClientFallback;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
 
 /**
+ * 回调工厂
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2020/9/5 0005 上午 12:12
  */
-@Data
-public class ResourceAuditLogDTO implements Serializable {
-    private Long resourceId;
+@Component
+public class LogApiFeignClientFallbackFactory implements FallbackFactory<LogApiFeignClientFallback> {
 
-    private String auditName;
-
-    private Date auditDate;
-
-    private Integer auditStatus;
-
-    private String comment;
-
-    private Long creator;
-
+    @Override
+    public LogApiFeignClientFallback create(Throwable throwable) {
+        return new LogApiFeignClientFallback(throwable);
+    }
 }

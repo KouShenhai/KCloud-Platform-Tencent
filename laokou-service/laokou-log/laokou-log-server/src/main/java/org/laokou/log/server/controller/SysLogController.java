@@ -17,11 +17,12 @@
 package org.laokou.log.server.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.laokou.log.client.dto.AuditLogDTO;
 import org.laokou.log.client.dto.LoginLogDTO;
 import org.laokou.log.client.dto.OperateLogDTO;
 import org.laokou.log.server.service.SysLoginLogService;
 import org.laokou.log.server.service.SysOperateLogService;
-import org.laokou.log.server.service.SysResourceAuditLogService;
+import org.laokou.log.server.service.SysAuditLogService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class SysLogController {
 
     private final SysLoginLogService sysLoginLogService;
 
-    private final SysResourceAuditLogService sysResourceAuditLogService;
+    private final SysAuditLogService sysAuditLogService;
 
     @PostMapping("/login")
     public void login(@RequestBody LoginLogDTO dto) {
@@ -51,8 +52,8 @@ public class SysLogController {
         sysOperateLogService.insertOperateLog(dto);
     }
 
-    @PostMapping("/resource/audit")
-    public void resourceAudit() {
+    @PostMapping("/audit")
+    public void audit(@RequestBody AuditLogDTO dto) {
 
     }
 

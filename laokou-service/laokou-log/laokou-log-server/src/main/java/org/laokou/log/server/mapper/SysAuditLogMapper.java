@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.server.service;
+package org.laokou.log.server.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.laokou.log.server.entity.SysResourceAuditLogDO;
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.laokou.log.server.entity.SysAuditLogDO;
+import org.springframework.stereotype.Repository;
 /**
  * @author Kou Shenhai
  * @version 1.0
- * @date 2022/8/26 0026 下午 5:35
+ * @date 2022/8/26 0026 下午 5:33
  */
-public interface SysResourceAuditLogService extends IService<SysResourceAuditLogDO> {
+@Mapper
+@Repository
+public interface SysAuditLogMapper extends BaseMapper<SysAuditLogDO> {
+
 }

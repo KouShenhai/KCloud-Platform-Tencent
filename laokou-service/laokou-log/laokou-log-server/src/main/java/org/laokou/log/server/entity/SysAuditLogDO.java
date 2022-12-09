@@ -13,19 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.constant;
+package org.laokou.log.server.entity;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.laokou.common.mybatisplus.entity.BaseDO;
+
+import java.util.Date;
 
 /**
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/8/26 0026 下午 5:31
  */
-public interface ServiceConstant {
+@Data
+@TableName("boot_sys_audit_log")
+@EqualsAndHashCode(callSuper=true)
+public class SysAuditLogDO extends BaseDO {
 
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_ROCKETMQ = "laokou-rocketmq";
-    String LAOKOU_IM = "laokou-im";
-    String LAOKOU_KAFKA = "laokou-kafka";
-    String LAOKOU_FLOWABLE = "laokou-flowable";
-    String LAOKOU_LOG = "laokou-log";
+    private Long businessId;
+
+    private String auditName;
+
+    private Date auditDate;
+
+    private Integer auditStatus;
+
+    private String comment;
 
 }

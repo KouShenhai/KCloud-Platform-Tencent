@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.constant;
+package org.laokou.log.server.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.laokou.log.server.entity.SysAuditLogDO;
+import org.laokou.log.server.mapper.SysAuditLogMapper;
+import org.laokou.log.server.service.SysAuditLogService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Kou Shenhai
+ * @version 1.0
+ * @date 2022/8/26 0026 下午 5:35
  */
-public interface ServiceConstant {
-
-    String LAOKOU_AUTH = "laokou-auth";
-    String LAOKOU_ELASTICSEARCH = "laokou-elasticsearch";
-    String LAOKOU_ROCKETMQ = "laokou-rocketmq";
-    String LAOKOU_IM = "laokou-im";
-    String LAOKOU_KAFKA = "laokou-kafka";
-    String LAOKOU_FLOWABLE = "laokou-flowable";
-    String LAOKOU_LOG = "laokou-log";
+@Service
+@Transactional(rollbackFor = Exception.class)
+public class SysAuditLogServiceImpl extends ServiceImpl<SysAuditLogMapper, SysAuditLogDO> implements SysAuditLogService {
 
 }

@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.log.server.service.impl;
+package org.laokou.log.server.service;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.laokou.log.server.entity.SysResourceAuditLogDO;
-import org.laokou.log.server.mapper.SysResourceAuditLogMapper;
-import org.laokou.log.server.service.SysResourceAuditLogService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.baomidou.mybatisplus.extension.service.IService;
+import org.laokou.log.server.entity.SysAuditLogDO;
+
 /**
  * @author Kou Shenhai
  * @version 1.0
  * @date 2022/8/26 0026 下午 5:35
  */
-@Service
-@Transactional(rollbackFor = Exception.class)
-public class SysResourceAuditLogServiceImpl extends ServiceImpl<SysResourceAuditLogMapper, SysResourceAuditLogDO> implements SysResourceAuditLogService {
-
+public interface SysAuditLogService extends IService<SysAuditLogDO> {
 }

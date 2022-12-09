@@ -46,7 +46,8 @@ import org.laokou.flowable.client.dto.TaskDTO;
 import org.laokou.flowable.client.vo.AssigneeVO;
 import org.laokou.flowable.client.vo.PageVO;
 import org.laokou.flowable.client.vo.TaskVO;
-import org.laokou.log.client.dto.ResourceAuditLogDTO;
+import org.laokou.log.client.dto.AuditLogDTO;
+import org.laokou.log.client.dto.enums.AuditTypeEnum;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.laokou.oss.client.vo.UploadVO;
 import lombok.extern.slf4j.Slf4j;
@@ -275,16 +276,17 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
 
     private void saveAuditLog(Long resourceId,int auditStatus,String comment,String username,Long userId) {
         try {
-            ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
-            auditLogDTO.setResourceId(resourceId);
+            AuditLogDTO auditLogDTO = new AuditLogDTO();
+            auditLogDTO.setBusinessId(resourceId);
             auditLogDTO.setAuditStatus(auditStatus);
             auditLogDTO.setAuditDate(new Date());
             auditLogDTO.setAuditName(username);
             auditLogDTO.setCreator(userId);
             auditLogDTO.setComment(comment);
+            auditLogDTO.setType(AuditTypeEnum.RESOURCE.ordinal());
             RocketmqDTO rocketmqDTO = new RocketmqDTO();
             rocketmqDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
-            rocketmqApiFeignClient.sendOneMessage(RocketmqConstant.LAOKOU_AUDIT_RESOURCE_TOPIC, rocketmqDTO);
+            rocketmqApiFeignClient.sendOneMessage(RocketmqConstant.LAOKOU_AUDIT_LOG_TOPIC, rocketmqDTO);
         } catch (FeignException e) {
             log.error("错误信息：{}",e.getMessage());
         }
