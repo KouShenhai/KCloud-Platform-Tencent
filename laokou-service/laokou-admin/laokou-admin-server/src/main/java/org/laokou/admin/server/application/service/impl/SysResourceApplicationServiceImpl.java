@@ -46,6 +46,7 @@ import org.laokou.flowable.client.dto.TaskDTO;
 import org.laokou.flowable.client.vo.AssigneeVO;
 import org.laokou.flowable.client.vo.PageVO;
 import org.laokou.flowable.client.vo.TaskVO;
+import org.laokou.log.client.dto.ResourceAuditLogDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.laokou.oss.client.vo.UploadVO;
 import lombok.extern.slf4j.Slf4j;
@@ -237,13 +238,17 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             Map<String, Object> values = dto.getValues();
             String instanceName = dto.getInstanceName();
             String businessKey = dto.getBusinessKey();
+            Long resourceId = Long.valueOf(businessKey);
+            String comment = dto.getComment();
+            String username = UserUtil.getUsername();
+            Long userId = UserUtil.getUserId();
             int auditStatus = Integer.parseInt(values.get("auditStatus").toString());
             int status;
             //1 审核中 2 审批拒绝 3审核通过
             if (null != assignee) {
                 //审批中
                 status = 1;
-                insertMessage(assignee, MessageTypeEnum.REMIND.ordinal(),Long.valueOf(businessKey),instanceName);
+                insertMessage(assignee, MessageTypeEnum.REMIND.ordinal(),resourceId,instanceName);
             } else {
                 //0拒绝 1同意
                 if (0 == auditStatus) {
@@ -261,30 +266,29 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                     .eq(SysResourceDO::getDelFlag, Constant.NO);
             sysResourceService.update(updateWrapper);
             // 审核日志入队列
-
+            adminThreadPoolTaskExecutor.execute(() -> saveAuditLog(resourceId,auditStatus,comment,username,userId));
         } catch (Exception e) {
             log.error("错误信息：{}",e.getMessage());
         }
         return true;
     }
 
-//    private void saveAuditLog(Long resourceId,int status,int auditStatus,String comment,String username,Long userId) {
-//        try {
-//            ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
-//            auditLogDTO.setResourceId(resourceId);
-//            auditLogDTO.setStatus(status);
-//            auditLogDTO.setAuditStatus(auditStatus);
-//            auditLogDTO.setAuditDate(new Date());
-//            auditLogDTO.setAuditName(username);
-//            auditLogDTO.setCreator(userId);
-//            auditLogDTO.setComment(comment);
-//            RocketmqDTO rocketmqDTO = new RocketmqDTO();
-//            rocketmqDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
-//            rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_AUDIT_RESOURCE_TOPIC, rocketmqDTO);
-//        } catch (FeignException e) {
-//            log.error("错误信息：{}",e.getMessage());
-//        }
-//    }
+    private void saveAuditLog(Long resourceId,int auditStatus,String comment,String username,Long userId) {
+        try {
+            ResourceAuditLogDTO auditLogDTO = new ResourceAuditLogDTO();
+            auditLogDTO.setResourceId(resourceId);
+            auditLogDTO.setAuditStatus(auditStatus);
+            auditLogDTO.setAuditDate(new Date());
+            auditLogDTO.setAuditName(username);
+            auditLogDTO.setCreator(userId);
+            auditLogDTO.setComment(comment);
+            RocketmqDTO rocketmqDTO = new RocketmqDTO();
+            rocketmqDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
+            rocketmqApiFeignClient.sendOneMessage(RocketmqConstant.LAOKOU_AUDIT_RESOURCE_TOPIC, rocketmqDTO);
+        } catch (FeignException e) {
+            log.error("错误信息：{}",e.getMessage());
+        }
+    }
 
     @Override
     public IPage<TaskVO> queryResourceTask(TaskQo qo) {

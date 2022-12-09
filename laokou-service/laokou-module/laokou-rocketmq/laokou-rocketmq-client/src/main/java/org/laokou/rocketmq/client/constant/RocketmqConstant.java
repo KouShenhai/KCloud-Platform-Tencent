@@ -23,28 +23,33 @@ package org.laokou.rocketmq.client.constant;
 public interface RocketmqConstant {
 
     /**
-     * 操作日志消息
+     * 操作日志
      */
     String LAOKOU_OPERATE_LOG_TOPIC = "laokou-operate-log-topic";
 
     /**
-     * 登录日志消息
+     * 登录日志
      */
     String LAOKOU_LOGIN_LOG_TOPIC = "laokou-login-log-topic";
 
     /**
-     * 资源审批消息
+     * 审批日志
      */
-    String LAOKOU_AUDIT_RESOURCE_TOPIC = "laokou-audit-resource-topic";
+    String LAOKOU_AUDIT_LOG_TOPIC = "laokou-audit-log-topic";
 
     /**
-     * 资源同步消息
+     * 同步索引
      */
-    String LAOKOU_SYNC_RESOURCE_TOPIC = "laokou-sync-resource-topic";
+    String LAOKOU_SYNC_INDEX_TOPIC = "laokou-sync-index-topic";
 
     /**
-     * 通知消息
+     * 创建索引
      */
-    String LAOKOU_NOTICE_MESSAGE_TOPIC = "laokou-notice-message-topic";
+    String LAOKOU_CREATE_INDEX_TOPIC = "laokou-create-index-topic";
+
+    /**
+     * 消息通知
+     */
+    String LAOKOU_MESSAGE_NOTICE_TOPIC = "laokou-message-notice-topic";
 
 }
