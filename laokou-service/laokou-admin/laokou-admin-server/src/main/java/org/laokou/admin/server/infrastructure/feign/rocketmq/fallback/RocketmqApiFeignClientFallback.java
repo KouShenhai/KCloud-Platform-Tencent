@@ -18,7 +18,7 @@ package org.laokou.admin.server.infrastructure.feign.rocketmq.fallback;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
-import org.laokou.admin.server.infrastructure.feign.rocketmq.dto.RocketmqDTO;
+import org.laokou.rocketmq.client.dto.RocketmqDTO;
 
 /**
  * 服务降级

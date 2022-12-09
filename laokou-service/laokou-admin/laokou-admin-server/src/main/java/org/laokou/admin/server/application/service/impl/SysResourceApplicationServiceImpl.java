@@ -28,9 +28,6 @@ import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceAuditLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceService;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkTaskApiFeignClient;
-import org.laokou.admin.server.infrastructure.feign.rocketmq.constant.RocketmqConstant;
-import org.laokou.admin.server.infrastructure.feign.rocketmq.dto.SyncResourceDTO;
-import org.laokou.admin.server.infrastructure.feign.rocketmq.dto.RocketmqDTO;
 import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.*;
@@ -52,6 +49,9 @@ import org.laokou.flowable.client.vo.TaskVO;
 import org.laokou.oss.client.vo.UploadVO;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
+import org.laokou.rocketmq.client.constant.RocketmqConstant;
+import org.laokou.rocketmq.client.dto.RocketmqDTO;
+import org.laokou.rocketmq.client.dto.SyncResourceDTO;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -100,30 +100,9 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         sysResourceDO.setAuthor(UserUtil.getUsername());
         sysResourceDO.setStatus(INIT_STATUS);
         sysResourceService.save(sysResourceDO);
-        String instanceId = startWork(sysResourceDO.getId(), sysResourceDO.getTitle());
+        String instanceId = startTask(sysResourceDO.getId(), sysResourceDO.getTitle());
         sysResourceDO.setProcessInstanceId(instanceId);
         return sysResourceService.updateById(sysResourceDO);
-    }
-
-    private String startWork(Long businessKey,String businessName) {
-        try {
-            ProcessDTO dto = new ProcessDTO();
-            dto.setBusinessKey(businessKey.toString());
-            dto.setBusinessName(businessName);
-            dto.setProcessKey(PROCESS_KEY);
-            HttpResultUtil<AssigneeVO> result = workTaskApiFeignClient.start(dto);
-            if (!result.success()) {
-                return null;
-            }
-            AssigneeVO vo = result.getData();
-            String instanceId = vo.getInstanceId();
-            String assignee = vo.getAssignee();
-            insertMessage(assignee,MessageTypeEnum.REMIND.ordinal(),businessKey,businessName);
-            return instanceId;
-        } catch (Exception e) {
-            log.error("报错信息：{}",e.getMessage());
-        }
-        return null;
     }
 
     @Override
@@ -131,7 +110,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         SysResourceDO sysResourceDO = ConvertUtil.sourceToTarget(dto, SysResourceDO.class);
         sysResourceDO.setEditor(UserUtil.getUserId());
         sysResourceDO.setStatus(INIT_STATUS);
-        String instanceId = startWork(sysResourceDO.getId(), dto.getTitle());
+        String instanceId = startTask(sysResourceDO.getId(), dto.getTitle());
         sysResourceDO.setProcessInstanceId(instanceId);
         return sysResourceService.updateById(sysResourceDO);
     }
@@ -185,10 +164,10 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                                 RocketmqDTO dto = new RocketmqDTO();
                                 final String indexName = resourceIndex + "_" + ym;
                                 final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
-                                final SyncResourceDTO model = new SyncResourceDTO();
-                                model.setIndexName(indexName);
-                                model.setData(jsonDataList);
-                                dto.setData(JacksonUtil.toJsonStr(model));
+                                final SyncResourceDTO syncResourceDTO = new SyncResourceDTO();
+                                syncResourceDTO.setIndexName(indexName);
+                                syncResourceDTO.setData(jsonDataList);
+                                syncResourceDTO.setData(JacksonUtil.toJsonStr(syncResourceDTO));
                                 rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_SYNC_RESOURCE_TOPIC,dto);
                             } catch (final FeignException e) {
                                 log.error("错误信息：{}",e.getMessage());
@@ -350,5 +329,32 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         dto.setType(type);
         sysMessageApplicationService.insertMessage(dto);
    }
+
+    /**
+     * 开始任务
+     * @param businessKey
+     * @param businessName
+     * @return
+     */
+    private String startTask(Long businessKey,String businessName) {
+        try {
+            ProcessDTO dto = new ProcessDTO();
+            dto.setBusinessKey(businessKey.toString());
+            dto.setBusinessName(businessName);
+            dto.setProcessKey(PROCESS_KEY);
+            HttpResultUtil<AssigneeVO> result = workTaskApiFeignClient.start(dto);
+            if (!result.success()) {
+                return null;
+            }
+            AssigneeVO vo = result.getData();
+            String instanceId = vo.getInstanceId();
+            String assignee = vo.getAssignee();
+            insertMessage(assignee,MessageTypeEnum.REMIND.ordinal(),businessKey,businessName);
+            return instanceId;
+        } catch (Exception e) {
+            log.error("报错信息：{}",e.getMessage());
+        }
+        return null;
+    }
 
 }
