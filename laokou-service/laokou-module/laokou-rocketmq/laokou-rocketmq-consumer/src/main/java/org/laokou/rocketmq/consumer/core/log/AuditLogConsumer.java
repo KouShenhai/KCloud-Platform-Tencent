@@ -14,33 +14,31 @@
  * limitations under the License.
  */
 
-package org.laokou.rocketmq.consumer.core.resource;
+package org.laokou.rocketmq.consumer.core.log;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
+import org.laokou.log.client.dto.AuditLogDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.laokou.rocketmq.client.dto.SyncResourceDTO;
-import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
+import org.laokou.rocketmq.consumer.feign.log.LogApiFeignClient;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Kou Shenhai
  */
-@RocketMQMessageListener(consumerGroup = "laokou-consumer-group-5", topic = RocketmqConstant.LAOKOU_SYNC_RESOURCE_TOPIC)
+@RocketMQMessageListener(consumerGroup = "laokou-consumer-group-3", topic = RocketmqConstant.LAOKOU_AUDIT_LOG_TOPIC)
 @Component
 @RequiredArgsConstructor
-public class ResourceSyncConsumer implements RocketMQListener<String> {
+public class AuditLogConsumer implements RocketMQListener<String> {
 
-    private final ElasticsearchApiFeignClient elasticsearchApiFeignClient;
+    private final LogApiFeignClient logApiFeignClient;
 
     @Override
     public void onMessage(String message) {
-        SyncResourceDTO syncResourceDTO = JacksonUtil.toBean(message, SyncResourceDTO.class);
-        ElasticsearchDTO dto = ConvertUtil.sourceToTarget(syncResourceDTO, ElasticsearchDTO.class);
-        elasticsearchApiFeignClient.syncAsyncBatch(dto);
+        final AuditLogDTO auditLogDTO = JacksonUtil.toBean(message, AuditLogDTO.class);
+        logApiFeignClient.audit(auditLogDTO);
     }
+
 }

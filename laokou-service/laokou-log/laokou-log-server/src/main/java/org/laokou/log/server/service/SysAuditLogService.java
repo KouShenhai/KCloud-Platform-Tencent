@@ -16,6 +16,7 @@
 package org.laokou.log.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.laokou.log.client.dto.AuditLogDTO;
 import org.laokou.log.server.entity.SysAuditLogDO;
 
 /**
@@ -24,4 +25,9 @@ import org.laokou.log.server.entity.SysAuditLogDO;
  * @date 2022/8/26 0026 下午 5:35
  */
 public interface SysAuditLogService extends IService<SysAuditLogDO> {
+    /**
+     * 新增审批日志
+     * @param dto
+     */
+    void insertAuditLog(AuditLogDTO dto);
 }

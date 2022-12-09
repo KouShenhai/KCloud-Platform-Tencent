@@ -54,7 +54,7 @@ public class SysLogController {
 
     @PostMapping("/audit")
     public void audit(@RequestBody AuditLogDTO dto) {
-
+        sysAuditLogService.insertAuditLog(dto);
     }
 
 }

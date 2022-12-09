@@ -16,6 +16,8 @@
 package org.laokou.log.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.laokou.common.core.utils.ConvertUtil;
+import org.laokou.log.client.dto.AuditLogDTO;
 import org.laokou.log.server.entity.SysAuditLogDO;
 import org.laokou.log.server.mapper.SysAuditLogMapper;
 import org.laokou.log.server.service.SysAuditLogService;
@@ -29,5 +31,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class SysAuditLogServiceImpl extends ServiceImpl<SysAuditLogMapper, SysAuditLogDO> implements SysAuditLogService {
+
+    @Override
+    public void insertAuditLog(AuditLogDTO dto) {
+        SysAuditLogDO auditDO = ConvertUtil.sourceToTarget(dto, SysAuditLogDO.class);
+        baseMapper.insert(auditDO);
+    }
 
 }

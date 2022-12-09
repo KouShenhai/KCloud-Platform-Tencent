@@ -15,13 +15,17 @@
  */
 package org.laokou.log.server;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author Kou Shenhai
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"org.laokou.common.core","org.laokou.log","org.laokou.common.mybatisplus","org.laokou.common"})
+@EnableDiscoveryClient
+@EnableEncryptableProperties
 public class LogApplication {
 
     public static void main(String[] args) {

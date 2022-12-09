@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @author Kou Shenhai
  */
 @Data
-public class SyncResourceDTO implements Serializable {
+public class SyncIndexDTO implements Serializable {
     private String data;
     private String indexName;
 }

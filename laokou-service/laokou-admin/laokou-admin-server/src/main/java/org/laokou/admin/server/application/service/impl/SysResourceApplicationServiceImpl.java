@@ -53,7 +53,7 @@ import org.laokou.oss.client.vo.UploadVO;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.laokou.rocketmq.client.dto.SyncResourceDTO;
+import org.laokou.rocketmq.client.dto.SyncIndexDTO;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -166,10 +166,10 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                                 RocketmqDTO dto = new RocketmqDTO();
                                 final String indexName = resourceIndex + "_" + ym;
                                 final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
-                                final SyncResourceDTO syncResourceDTO = new SyncResourceDTO();
-                                syncResourceDTO.setIndexName(indexName);
-                                syncResourceDTO.setData(jsonDataList);
-                                syncResourceDTO.setData(JacksonUtil.toJsonStr(syncResourceDTO));
+                                final SyncIndexDTO syncIndexDTO = new SyncIndexDTO();
+                                syncIndexDTO.setIndexName(indexName);
+                                syncIndexDTO.setData(jsonDataList);
+                                syncIndexDTO.setData(JacksonUtil.toJsonStr(syncIndexDTO));
                                 rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_SYNC_INDEX_TOPIC,dto);
                             } catch (final FeignException e) {
                                 log.error("错误信息：{}",e.getMessage());
