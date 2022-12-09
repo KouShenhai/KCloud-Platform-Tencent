@@ -27,7 +27,6 @@ import org.flowable.image.impl.DefaultProcessDiagramGenerator;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.flowable.client.dto.DefinitionDTO;
-import org.laokou.flowable.client.dto.FileDTO;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
 import org.laokou.flowable.server.service.WorkDefinitionService;
@@ -58,9 +57,7 @@ public class WorkDefinitionServiceImpl implements WorkDefinitionService {
     private static final String BPMN_FILE_SUFFIX = ".bpmn";
 
     @Override
-    public Boolean insertDefinition(FileDTO dto) {
-        String name = dto.getName();
-        InputStream in = dto.getIn();
+    public Boolean insertDefinition(String name, InputStream in) {
         String processName = name + BPMN_FILE_SUFFIX;
         DeploymentBuilder deploymentBuilder = repositoryService.createDeployment()
                 .name(processName)

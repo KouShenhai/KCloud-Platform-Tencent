@@ -31,10 +31,10 @@ public interface WorkflowDefinitionApplicationService {
     /**
      * 新增流程文件
      * @param name
-     * @param in
+     * @param file
      * @return
      */
-    Boolean insertDefinition(String name, InputStream in);
+    Boolean insertDefinition(String name, MultipartFile file);
 
     /**
      * 分页查询流程

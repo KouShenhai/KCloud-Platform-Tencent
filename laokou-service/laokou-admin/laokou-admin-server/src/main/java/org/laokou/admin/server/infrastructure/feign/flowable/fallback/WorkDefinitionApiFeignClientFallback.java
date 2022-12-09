@@ -20,9 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkDefinitionApiFeignClient;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.flowable.client.dto.DefinitionDTO;
-import org.laokou.flowable.client.dto.FileDTO;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * 服务降级
  * @author Kou Shenhai
@@ -35,9 +36,8 @@ public class WorkDefinitionApiFeignClientFallback implements WorkDefinitionApiFe
 
     private final Throwable throwable;
 
-
     @Override
-    public HttpResultUtil<Boolean> insert(FileDTO dto) {
+    public HttpResultUtil<Boolean> insert(String name, MultipartFile file) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
         return new HttpResultUtil<>();
     }

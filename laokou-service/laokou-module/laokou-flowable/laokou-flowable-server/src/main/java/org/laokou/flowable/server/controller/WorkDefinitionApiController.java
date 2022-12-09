@@ -20,12 +20,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.flowable.client.dto.DefinitionDTO;
-import org.laokou.flowable.client.dto.FileDTO;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
 import org.laokou.flowable.server.service.WorkDefinitionService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * @author Kou Shenhai
  */
@@ -38,8 +41,8 @@ public class WorkDefinitionApiController {
 
     @PostMapping(value = "/insert")
     @ApiOperation(value = "流程定义>新增流程")
-    public HttpResultUtil<Boolean> insert(@RequestBody FileDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(workDefinitionService.insertDefinition(dto));
+    public HttpResultUtil<Boolean> insert(@RequestParam("name")String name, @RequestPart("file") MultipartFile file) throws IOException {
+        return new HttpResultUtil<Boolean>().ok(workDefinitionService.insertDefinition(name,file.getInputStream()));
     }
 
     @PostMapping(value = "/query")

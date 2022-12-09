@@ -24,13 +24,11 @@ import org.laokou.admin.server.interfaces.qo.DefinitionQo;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.flowable.client.dto.DefinitionDTO;
-import org.laokou.flowable.client.dto.FileDTO;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-
 /**
  * @author Kou Shenhai
  * @version 1.0
@@ -44,12 +42,9 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     private final WorkDefinitionApiFeignClient workDefinitionApiFeignClient;
 
     @Override
-    public Boolean insertDefinition(String name, InputStream in) {
+    public Boolean insertDefinition(String name, MultipartFile file) {
         try {
-            FileDTO dto = new FileDTO();
-            dto.setName(name);
-            dto.setIn(in);
-            HttpResultUtil<Boolean> result = workDefinitionApiFeignClient.insert(dto);
+            HttpResultUtil<Boolean> result = workDefinitionApiFeignClient.insert(name,file);
             if (!result.success()) {
                 throw new CustomException(result.getCode(), result.getMsg());
             }
