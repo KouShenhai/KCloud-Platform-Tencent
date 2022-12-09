@@ -88,19 +88,40 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
 
     @Override
     public Boolean deleteDefinition(String deploymentId) {
-        workDefinitionApiFeignClient.delete(deploymentId);
+        try {
+            HttpResultUtil<Boolean> result = workDefinitionApiFeignClient.delete(deploymentId);
+            if (!result.success()) {
+                throw new CustomException(result.getCode(), result.getMsg());
+            }
+        } catch (Exception e) {
+            log.error("错误信息:{}",e.getMessage());
+        }
         return true;
     }
 
     @Override
     public Boolean suspendDefinition(String definitionId) {
-        workDefinitionApiFeignClient.suspend(definitionId);
+        try {
+            HttpResultUtil<Boolean> result = workDefinitionApiFeignClient.suspend(definitionId);
+            if (!result.success()) {
+                throw new CustomException(result.getCode(), result.getMsg());
+            }
+        } catch (Exception e) {
+            log.error("错误信息:{}",e.getMessage());
+        }
         return true;
     }
 
     @Override
     public Boolean activateDefinition(String definitionId) {
-        workDefinitionApiFeignClient.activate(definitionId);
+        try {
+            HttpResultUtil<Boolean> result = workDefinitionApiFeignClient.activate(definitionId);
+            if (!result.success()) {
+                throw new CustomException(result.getCode(), result.getMsg());
+            }
+        } catch (Exception e) {
+            log.error("错误信息:{}",e.getMessage());
+        }
         return true;
     }
 
