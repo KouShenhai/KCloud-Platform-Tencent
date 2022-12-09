@@ -17,9 +17,9 @@ package org.laokou.log.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.laokou.common.core.utils.ConvertUtil;
-import org.laokou.rocketmq.client.dto.LoginLogDTO;
-import org.laokou.rocketmq.consumer.entity.SysLoginLogDO;
-import org.laokou.rocketmq.consumer.mapper.SysLoginLogMapper;
+import org.laokou.log.client.dto.LoginLogDTO;
+import org.laokou.log.server.entity.SysLoginLogDO;
+import org.laokou.log.server.mapper.SysLoginLogMapper;
 import org.laokou.log.server.service.SysLoginLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

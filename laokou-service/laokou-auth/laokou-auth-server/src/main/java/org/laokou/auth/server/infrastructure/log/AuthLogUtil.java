@@ -23,9 +23,9 @@ import org.laokou.auth.server.infrastructure.feign.rocketmq.RocketmqApiFeignClie
 import org.laokou.common.core.utils.AddressUtil;
 import org.laokou.common.core.utils.IpUtil;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.log.client.dto.LoginLogDTO;
+import org.laokou.log.client.dto.RocketmqDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.laokou.rocketmq.client.dto.LoginLogDTO;
-import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

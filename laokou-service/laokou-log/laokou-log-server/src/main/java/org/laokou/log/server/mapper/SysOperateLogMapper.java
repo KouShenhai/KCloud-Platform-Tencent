@@ -17,7 +17,7 @@ package org.laokou.log.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.laokou.rocketmq.consumer.entity.SysOperateLogDO;
+import org.laokou.log.server.entity.SysOperateLogDO;
 import org.springframework.stereotype.Repository;
 
 /**
