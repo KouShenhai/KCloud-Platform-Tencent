@@ -238,7 +238,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             Map<String, Object> values = dto.getValues();
             String instanceName = dto.getInstanceName();
             String businessKey = dto.getBusinessKey();
-            Long resourceId = Long.valueOf(businessKey);
+            Long businessId = Long.valueOf(businessKey);
             String comment = dto.getComment();
             String username = UserUtil.getUsername();
             Long userId = UserUtil.getUserId();
@@ -248,7 +248,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             if (null != assignee) {
                 //审批中
                 status = 1;
-                insertMessage(assignee, MessageTypeEnum.REMIND.ordinal(),resourceId,instanceName);
+                insertMessage(assignee, MessageTypeEnum.REMIND.ordinal(),businessId,instanceName);
             } else {
                 //0拒绝 1同意
                 if (0 == auditStatus) {
@@ -266,17 +266,17 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                     .eq(SysResourceDO::getDelFlag, Constant.NO);
             sysResourceService.update(updateWrapper);
             // 审核日志入队列
-            adminThreadPoolTaskExecutor.execute(() -> saveAuditLog(resourceId,auditStatus,comment,username,userId));
+            adminThreadPoolTaskExecutor.execute(() -> saveAuditLog(businessId,auditStatus,comment,username,userId));
         } catch (Exception e) {
             log.error("错误信息：{}",e.getMessage());
         }
         return true;
     }
 
-    private void saveAuditLog(Long resourceId,int auditStatus,String comment,String username,Long userId) {
+    private void saveAuditLog(Long businessId,int auditStatus,String comment,String username,Long userId) {
         try {
             AuditLogDTO auditLogDTO = new AuditLogDTO();
-            auditLogDTO.setBusinessId(resourceId);
+            auditLogDTO.setBusinessId(businessId);
             auditLogDTO.setAuditStatus(auditStatus);
             auditLogDTO.setAuditDate(new Date());
             auditLogDTO.setAuditName(username);
