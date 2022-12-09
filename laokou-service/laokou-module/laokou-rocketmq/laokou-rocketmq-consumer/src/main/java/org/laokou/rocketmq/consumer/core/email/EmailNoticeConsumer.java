@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author Kou Shenhai
  */
-@RocketMQMessageListener(consumerGroup = "laokou-consumer-group-6", topic = RocketmqConstant.LAOKOU_NOTICE_MESSAGE_TOPIC)
+@RocketMQMessageListener(consumerGroup = "laokou-consumer-group-6", topic = RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC)
 @Component
 @RequiredArgsConstructor
 public class EmailNoticeConsumer implements RocketMQListener<String> {
