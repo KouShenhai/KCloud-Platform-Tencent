@@ -1,7 +1,7 @@
 package org.laokou.flowable.server.service;
-import org.laokou.flowable.server.dto.DefinitionDTO;
-import org.laokou.flowable.server.vo.DefinitionVO;
-import org.laokou.flowable.server.vo.PageVO;
+import org.laokou.flowable.client.dto.DefinitionDTO;
+import org.laokou.flowable.client.vo.DefinitionVO;
+import org.laokou.flowable.client.vo.PageVO;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;

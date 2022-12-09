@@ -26,10 +26,10 @@ import org.flowable.engine.repository.ProcessDefinitionQuery;
 import org.flowable.image.impl.DefaultProcessDiagramGenerator;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.StringUtil;
-import org.laokou.flowable.server.dto.DefinitionDTO;
+import org.laokou.flowable.client.dto.DefinitionDTO;
+import org.laokou.flowable.client.vo.DefinitionVO;
+import org.laokou.flowable.client.vo.PageVO;
 import org.laokou.flowable.server.service.WorkDefinitionService;
-import org.laokou.flowable.server.vo.DefinitionVO;
-import org.laokou.flowable.server.vo.PageVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

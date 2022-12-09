@@ -1,11 +1,10 @@
 package org.laokou.flowable.server.service;
-
-import org.laokou.flowable.server.dto.AuditDTO;
-import org.laokou.flowable.server.dto.ProcessDTO;
-import org.laokou.flowable.server.dto.TaskDTO;
-import org.laokou.flowable.server.vo.AssigneeVO;
-import org.laokou.flowable.server.vo.PageVO;
-import org.laokou.flowable.server.vo.TaskVO;
+import org.laokou.flowable.client.dto.AuditDTO;
+import org.laokou.flowable.client.dto.ProcessDTO;
+import org.laokou.flowable.client.dto.TaskDTO;
+import org.laokou.flowable.client.vo.AssigneeVO;
+import org.laokou.flowable.client.vo.PageVO;
+import org.laokou.flowable.client.vo.TaskVO;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
