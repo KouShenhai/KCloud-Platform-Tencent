@@ -58,14 +58,11 @@ public class RocketmqSender {
             }
         });
     }
-
     @PostMapping("/sendOne/{topic}")
     @ApiOperation("rocketmq消息>单向发送")
     public void sendOneMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto) {
-        /**
-         * 单向发送，只负责发送消息，不会触发回调函数，即发送消息请求不等待
-         * 适用于耗时短，但对可靠性不高的场景，如日志收集
-         */
+         // 单向发送，只负责发送消息，不会触发回调函数，即发送消息请求不等待
+         // 适用于耗时短，但对可靠性不高的场景，如日志收集
         rocketMQTemplate.sendOneWay(topic,dto.getData());
     }
 

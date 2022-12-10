@@ -25,6 +25,8 @@ import org.laokou.admin.client.vo.SysOperateLogVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author Kou Shenhai
  */
@@ -34,5 +36,10 @@ public class SysOperateLogServiceImpl extends ServiceImpl<SysOperateLogMapper, S
     @Override
     public IPage<SysOperateLogVO> getOperateLogList(IPage<SysOperateLogVO> page, SysOperateLogQo qo) {
         return this.baseMapper.getOperateLogList(page,qo);
+    }
+
+    @Override
+    public List<SysOperateLogVO> getOperateLogList(SysOperateLogQo qo) {
+        return this.baseMapper.getOperateLogList(qo);
     }
 }

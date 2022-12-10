@@ -97,6 +97,8 @@
         <servlet-api.version>4.0.4</servlet-api.version>
         <!--kotlin版本-->
         <kotlin.version>1.7.10</kotlin.version>
+        <!--easyexcel版本-->
+        <easyexcel.version>3.1.2</easyexcel.version>
     </properties>
 
     <!-- 定义全局jar版本,模块使用需要再次引入但不用写版本号 -->
@@ -564,6 +566,11 @@
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-log-server</artifactId>
                 <version>${laokou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

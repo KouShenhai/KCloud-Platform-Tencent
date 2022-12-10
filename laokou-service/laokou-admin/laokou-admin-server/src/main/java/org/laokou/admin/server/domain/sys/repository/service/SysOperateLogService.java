@@ -21,6 +21,8 @@ import org.laokou.admin.server.domain.sys.entity.SysOperateLogDO;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 
+import java.util.List;
+
 /**
  * @author Kou Shenhai
  */
@@ -34,4 +36,10 @@ public interface SysOperateLogService extends IService<SysOperateLogDO> {
      */
     IPage<SysOperateLogVO> getOperateLogList(IPage<SysOperateLogVO> page, SysOperateLogQo qo);
 
+    /**
+     * 查询操作日志
+     * @param qo
+     * @return
+     */
+    List<SysOperateLogVO> getOperateLogList(SysOperateLogQo qo);
 }

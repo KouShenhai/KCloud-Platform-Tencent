@@ -17,6 +17,7 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
+import org.laokou.admin.client.excel.SysOperateLogExcel;
 import org.laokou.admin.server.application.service.SysLogApplicationService;
 import org.laokou.admin.server.domain.sys.repository.service.SysLoginLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysOperateLogService;
@@ -25,8 +26,13 @@ import org.laokou.admin.server.interfaces.qo.LoginLogQo;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
+import org.laokou.common.core.utils.ConvertUtil;
+import org.laokou.common.core.utils.ExcelUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Kou Shenhai
@@ -45,6 +51,11 @@ public class SysLogApplicationServiceImpl implements SysLogApplicationService {
     public IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQo qo) {
         IPage<SysOperateLogVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysOperateLogService.getOperateLogList(page,qo);
+    }
+
+    @Override
+    public void exportOperateLog(SysOperateLogQo qo, HttpServletResponse response) throws IOException {
+        ExcelUtil.export(response,"", ConvertUtil.sourceToTarget(sysOperateLogService.getOperateLogList(qo),SysOperateLogExcel.class), SysOperateLogExcel.class);
     }
 
     @Override

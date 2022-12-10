@@ -21,6 +21,9 @@ import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * @author Kou Shenhai
  */
@@ -32,6 +35,14 @@ public interface SysLogApplicationService {
      * @return
      */
     IPage<SysOperateLogVO> queryOperateLogPage(SysOperateLogQo qo);
+
+    /**
+     * 导出全部
+     * @param qo
+     * @param response
+     * @throws IOException
+     */
+    void exportOperateLog(SysOperateLogQo qo, HttpServletResponse response) throws IOException;
 
     /**
      * 分页查询登录日志

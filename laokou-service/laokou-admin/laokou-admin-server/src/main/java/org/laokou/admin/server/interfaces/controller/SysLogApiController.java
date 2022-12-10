@@ -16,6 +16,7 @@
 package org.laokou.admin.server.interfaces.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysLogApplicationService;
 import org.laokou.admin.server.interfaces.qo.LoginLogQo;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
@@ -24,9 +25,11 @@ import org.laokou.admin.client.vo.SysOperateLogVO;
 import org.laokou.common.core.utils.HttpResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * 系统日志控制器
  * @author Kou Shenhai
@@ -34,16 +37,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(value = "系统日志API",protocols = "http",tags = "系统日志API")
 @RequestMapping("/sys/log/api")
+@RequiredArgsConstructor
 public class SysLogApiController {
 
-    @Autowired
-    private SysLogApplicationService sysLogApplicationService;
+    private final SysLogApplicationService sysLogApplicationService;
 
     @PostMapping(value = "/operate/query")
     @ApiOperation("系统日志>操作日志>查询")
     @PreAuthorize("hasAuthority('sys:log:operate:query')")
     public HttpResultUtil<IPage<SysOperateLogVO>> queryOperateLog(@RequestBody SysOperateLogQo qo) {
         return new HttpResultUtil<IPage<SysOperateLogVO>>().ok(sysLogApplicationService.queryOperateLogPage(qo));
+    }
+
+    @PostMapping(value = "/operate/export")
+    @ApiOperation("系统日志>操作日志>导出")
+    public void exportOperateLog(@RequestBody SysOperateLogQo qo, HttpServletResponse response) throws IOException {
+        sysLogApplicationService.exportOperateLog(qo,response);
     }
 
     @PostMapping(value = "/login/query")

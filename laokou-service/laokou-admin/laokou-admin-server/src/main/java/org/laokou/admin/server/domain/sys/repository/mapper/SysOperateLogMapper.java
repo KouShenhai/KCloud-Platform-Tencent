@@ -24,6 +24,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author Kou Shenhai
  */
@@ -38,5 +40,12 @@ public interface SysOperateLogMapper extends BaseMapper<SysOperateLogDO> {
      * @return
      */
     IPage<SysOperateLogVO> getOperateLogList(IPage<SysOperateLogVO> page, @Param("qo") SysOperateLogQo qo);
+
+    /**
+     * 查询操作日志
+     * @param qo
+     * @return
+     */
+    List<SysOperateLogVO> getOperateLogList(@Param("qo") SysOperateLogQo qo);
 
 }
