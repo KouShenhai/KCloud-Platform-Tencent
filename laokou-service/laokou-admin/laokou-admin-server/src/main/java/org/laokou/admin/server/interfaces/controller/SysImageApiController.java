@@ -27,6 +27,8 @@ import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.laokou.redis.annotation.Lock4j;
+import org.laokou.redis.enums.LockScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -67,9 +69,10 @@ public class SysImageApiController {
     }
 
     @PostMapping("/sync")
-    @ApiOperation("图片管理>同步")
+    @ApiOperation("图片管理>同步索引")
     @OperateLog(module = "图片管理",name = "索引同步")
     @PreAuthorize("hasAuthority('sys:resource:image:sync')")
+    @Lock4j(key = "image_sync_lock", scope = LockScope.DISTRIBUTED_LOCK)
     public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
     }
@@ -78,6 +81,7 @@ public class SysImageApiController {
     @ApiOperation("图片管理>创建索引")
     @OperateLog(module = "图片管理",name = "创建索引")
     @PreAuthorize("hasAuthority('sys:resource:image:create')")
+    @Lock4j(key = "image_create_lock", scope = LockScope.DISTRIBUTED_LOCK)
     public HttpResultUtil<Boolean> create(@RequestParam("code") String code) throws InterruptedException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.createResourceIndex(code));
     }

@@ -206,10 +206,13 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             for (String ym : resourceYmPartitionList) {
                 adminThreadPoolTaskExecutor.execute(() -> {
                     try {
+                        RocketmqDTO rocketmqDTO = new RocketmqDTO();
                         final CreateIndexDTO dto = new CreateIndexDTO();
                         final String indexName = resourceIndex + "_" + ym;
                         dto.setIndexName(indexName);
                         dto.setIndexAlias(resourceIndexAlias);
+                        rocketmqDTO.setData(JacksonUtil.toJsonStr(dto));
+                        rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_CREATE_INDEX_TOPIC,rocketmqDTO);
                     } catch (final FeignException e) {
                         log.error("错误信息：{}", e.getMessage());
                     }

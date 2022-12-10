@@ -15,6 +15,8 @@
  */
 package org.laokou.elasticsearch.client.index;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import org.laokou.elasticsearch.client.annotation.ElasticsearchFieldInfo;
 
@@ -27,6 +29,7 @@ import java.io.Serializable;
 public class ResourceIndex implements Serializable {
 
     @ElasticsearchFieldInfo(type = "long")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     @ElasticsearchFieldInfo(type = "text",participle = 3)

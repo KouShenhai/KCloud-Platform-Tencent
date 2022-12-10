@@ -16,6 +16,7 @@
 package org.laokou.rocketmq.consumer.feign.elasticsearch;
 
 import org.laokou.common.core.constant.ServiceConstant;
+import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
 import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.factory.ElasticsearchApiFeignClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -35,5 +36,12 @@ public interface ElasticsearchApiFeignClient {
      */
     @PostMapping("/api/syncAsyncBatch")
     void syncAsyncBatch(@RequestBody final ElasticsearchDTO model);
+
+    /**
+     * 创建索引
+     * @param model
+     */
+    @PostMapping("/api/create")
+    void create(@RequestBody final CreateIndexDTO model);
 
 }
