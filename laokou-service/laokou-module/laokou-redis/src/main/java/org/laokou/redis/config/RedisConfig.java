@@ -47,15 +47,15 @@ public class RedisConfig {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(factory);
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = getJsonRedisSerializer();
-        //String序列化
+        // string序列化
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        //key
+        // key
         redisTemplate.setKeySerializer(stringRedisSerializer);
-        //value
+        // value
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-        //hash-key
+        // hash-key
         redisTemplate.setHashKeySerializer(stringRedisSerializer);
-        //hash-value
+        // hash-value
         redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
@@ -72,7 +72,7 @@ public class RedisConfig {
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = getJsonRedisSerializer();
         // 配置序列化（解决乱码的问题）
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                //设置缓存失效时间
+                // 设置缓存失效时间
                 .entryTtl(Duration.ofHours(1))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
@@ -83,7 +83,7 @@ public class RedisConfig {
     }
 
     private Jackson2JsonRedisSerializer getJsonRedisSerializer() {
-        //Json序列化配置
+        // Json序列化配置
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper objectMapper = CustomJsonJacksonCodec.getObjectMapper();
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);

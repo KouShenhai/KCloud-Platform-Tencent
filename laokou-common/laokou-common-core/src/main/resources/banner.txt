@@ -1,3 +1,4 @@
+${AnsiColor.BRIGHT_RED}
                ███                      █                ███                    ▒██                                       ▒██    ▒██    █             █           ███
  █   ▒▓  ░███▒   █                      █         █████░   █             █      █░                                ▓██▓    █░     █░                                 █
  █  ▒█  ░█▒ ░█   █                      █         █   ▓█   █             █      █                                ▒█  █▒   █      █                                  █
@@ -8,6 +9,14 @@
  █  █▓  █▒       █    █   █  █   █  █   █         █        █    █▒  █    █      █    █   █   █     █ █ █         █░  ░█   █      █      █    █░       █    █▒  █    █
  █   █░ ░█▒ ░▓   █░   █▓ ▓█  █▒ ▓█  █▓ ▓█         █        █░   █░ ▓█    █░     █    █▓ ▓█   █     █ █ █         ▒█  █▒   █      █      █    ▓█  ▓    █    █░ ▓█    █░
  █   ▒█  ▒███▒   ▒██   ███   ▒██▒█   ██▓█         █        ▒██  ▒██▒█    ▒██    █     ███    █     █ █ █          ▓██▓    █      █    █████   ▓██▒  █████  ▒██▒█    ▒██
-${spring-boot.formatted-version}
+${AnsiColor.DEFAULT}
+作者：老寇
+csdn：https://kcloud.blog.csdn.net
+gitee：https://gitee.com/laokouyun
+github：https://github.com/KouShenhai
+
+操作系统：${os.name}
+JDK版本：${java.version}
+SpringBoot版本：${spring-boot.formatted-version}
 
 老寇云平台正在启动中......
