@@ -241,7 +241,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             int auditStatus = Integer.parseInt(values.get("auditStatus").toString());
             int status;
             //1 审核中 2 审批拒绝 3审核通过
-            if (null != assignee) {
+            if (StringUtil.isNotEmpty(assignee)) {
                 //审批中
                 status = 1;
                 insertMessage(assignee, MessageTypeEnum.REMIND.ordinal(),businessId,instanceName);

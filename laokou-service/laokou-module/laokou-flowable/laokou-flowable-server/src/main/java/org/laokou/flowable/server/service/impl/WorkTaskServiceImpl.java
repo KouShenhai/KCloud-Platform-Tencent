@@ -117,7 +117,7 @@ public class WorkTaskServiceImpl implements WorkTaskService {
         }
         String definitionId = processDefinition.getId();
         String instanceId = processInstance.getId();
-        runtimeService.setProcessInstanceName(businessKey,businessName);
+        runtimeService.setProcessInstanceName(instanceId,businessName);
         String assignee = taskUtil.getAssignee(definitionId, instanceId);
         log.info("当前审核人：{}",assignee.isEmpty() ? "无" : assignee);
         return new AssigneeVO(assignee,instanceId);
@@ -181,41 +181,41 @@ public class WorkTaskServiceImpl implements WorkTaskService {
 
     private InputStream getInputStream(String processInstanceId) {
         String processDefinitionId;
-        //获取当前的流程实例
+        // 获取当前的流程实例
         final ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
                 .processInstanceId(processInstanceId)
                 .singleResult();
-        //如果流程已结束，则得到结束节点
+        // 如果流程已结束，则得到结束节点
         if (null == processInstance) {
             final HistoricProcessInstance hpi = historyService.createHistoricProcessInstanceQuery()
                     .processInstanceId(processInstanceId).singleResult();
             processDefinitionId = hpi.getProcessDefinitionId();
         } else {
-            //没有结束，获取当前活动节点
-            //根据流程实例id获取当前处于ActivityId集合
+            // 没有结束，获取当前活动节点
+            // 根据流程实例id获取当前处于ActivityId集合
             final ProcessInstance pi = runtimeService.createProcessInstanceQuery()
                     .processInstanceId(processInstanceId).singleResult();
             processDefinitionId = pi.getProcessDefinitionId();
         }
-        //获取活动节点
+        // 获取活动节点
         final List<HistoricActivityInstance> highLightedFlowList = historyService.createHistoricActivityInstanceQuery()
                 .processInstanceId(processInstanceId).orderByHistoricActivityInstanceStartTime().asc().list();
         List<String> highLightedFlows = new ArrayList<>(5);
         List<String> highLightedNodes = new ArrayList<>(5);
-        //高亮线
+        // 高亮线
         for (HistoricActivityInstance temActivityInstance : highLightedFlowList) {
             if ("sequenceFlow".equals(temActivityInstance.getActivityType())) {
-                //高亮线
+                // 高亮线
                 highLightedFlows.add(temActivityInstance.getActivityId());
             } else {
-                //高亮节点
+                // 高亮节点
                 highLightedNodes.add(temActivityInstance.getActivityId());
             }
         }
-        //获取流程图
+        // 获取流程图
         final BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
         final ProcessEngineConfiguration configuration = processEngine.getProcessEngineConfiguration();
-        //获取自定义图片生成器
+        // 获取自定义图片生成器
         ProcessDiagramGenerator diagramGenerator = new CustomProcessDiagramGenerator();
         return diagramGenerator.generateDiagram(bpmnModel, "png", highLightedNodes, highLightedFlows, configuration.getActivityFontName(),
                 configuration.getLabelFontName(), configuration.getAnnotationFontName(), configuration.getClassLoader(), 1.0, true);

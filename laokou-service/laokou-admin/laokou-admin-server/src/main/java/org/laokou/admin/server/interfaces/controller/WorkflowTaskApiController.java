@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.laokou.admin.server.interfaces.qo.TaskQo;
@@ -51,6 +52,13 @@ public class WorkflowTaskApiController {
     @PreAuthorize("hasAuthority('workflow:task:resource:audit')")
     public HttpResultUtil<Boolean> auditResource(@RequestBody AuditDTO dto) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.auditResourceTask(dto));
+    }
+
+    @GetMapping(value = "/resource/detail")
+    @ApiOperation(value = "流程任务>资源详情")
+    @PreAuthorize("hasAuthority('workflow:task:resource:detail')")
+    public HttpResultUtil<SysResourceVO> detailResource(@RequestParam("id") Long id) {
+        return new HttpResultUtil<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
     }
 
 }
