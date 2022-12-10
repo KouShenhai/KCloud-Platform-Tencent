@@ -72,16 +72,11 @@ import java.util.stream.Collectors;
 @Transactional(rollbackFor = Exception.class)
 public class SysResourceApplicationServiceImpl implements SysResourceApplicationService {
     private static final String RESOURCE_KEY = "laokou_resource";
-
     private static final String PROCESS_KEY = "Process_88888888";
-
     private static final Integer INIT_STATUS = 0;
-
     private final SysResourceService sysResourceService;
     private final SysAuditLogService sysAuditLogService;
-
     private final ThreadPoolTaskExecutor adminThreadPoolTaskExecutor;
-
     private final RocketmqApiFeignClient rocketmqApiFeignClient;
     private final SysMessageApplicationService sysMessageApplicationService;
     private final WorkTaskApiFeignClient workTaskApiFeignClient;
