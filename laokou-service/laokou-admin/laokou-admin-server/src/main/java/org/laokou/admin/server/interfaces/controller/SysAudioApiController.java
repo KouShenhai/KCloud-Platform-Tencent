@@ -59,11 +59,19 @@ public class SysAudioApiController {
     }
 
     @PostMapping("/sync")
-    @ApiOperation("音频管理>同步")
-    @OperateLog(module = "音频管理",name = "音频同步")
+    @ApiOperation("音频管理>同步索引")
+    @OperateLog(module = "音频管理",name = "同步索引")
     @PreAuthorize("hasAuthority('sys:resource:audio:sync')")
     public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
+    }
+
+    @PostMapping("/create")
+    @ApiOperation("音频管理>创建索引")
+    @OperateLog(module = "音频管理",name = "创建索引")
+    @PreAuthorize("hasAuthority('sys:resource:audio:create')")
+    public HttpResultUtil<Boolean> create(@RequestParam("code") String code) throws InterruptedException {
+        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.createResourceIndex(code));
     }
 
     @PostMapping("/upload")

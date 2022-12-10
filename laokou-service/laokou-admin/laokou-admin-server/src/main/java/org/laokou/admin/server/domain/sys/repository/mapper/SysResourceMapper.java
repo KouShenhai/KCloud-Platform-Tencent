@@ -18,11 +18,11 @@ package org.laokou.admin.server.domain.sys.repository.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
-import org.laokou.admin.client.index.ResourceIndex;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.laokou.elasticsearch.client.index.ResourceIndex;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

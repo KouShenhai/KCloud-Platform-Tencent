@@ -32,7 +32,6 @@ import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.*;
 import org.laokou.admin.client.enums.MessageTypeEnum;
-import org.laokou.admin.client.index.ResourceIndex;
 import org.laokou.admin.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
 import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
@@ -40,6 +39,7 @@ import org.laokou.admin.client.vo.SysAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.exception.CustomException;
+import org.laokou.elasticsearch.client.index.ResourceIndex;
 import org.laokou.flowable.client.dto.AuditDTO;
 import org.laokou.flowable.client.dto.ProcessDTO;
 import org.laokou.flowable.client.dto.TaskDTO;
@@ -166,7 +166,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                                 final SyncIndexDTO syncIndexDTO = new SyncIndexDTO();
                                 syncIndexDTO.setIndexName(indexName);
                                 syncIndexDTO.setData(jsonDataList);
-                                syncIndexDTO.setData(JacksonUtil.toJsonStr(syncIndexDTO));
+                                dto.setData(JacksonUtil.toJsonStr(syncIndexDTO));
                                 rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_SYNC_INDEX_TOPIC,dto);
                             } catch (final FeignException e) {
                                 log.error("错误信息：{}",e.getMessage());

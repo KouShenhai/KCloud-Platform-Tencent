@@ -76,10 +76,18 @@ public class SysVideoApiController {
 
     @PostMapping("/sync")
     @ApiOperation("视频管理>同步")
-    @OperateLog(module = "视频管理",name = "视频同步")
+    @OperateLog(module = "视频管理",name = "索引同步")
     @PreAuthorize("hasAuthority('sys:resource:video:sync')")
     public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
+    }
+
+    @PostMapping("/create")
+    @ApiOperation("视频管理>创建索引")
+    @OperateLog(module = "视频管理",name = "创建索引")
+    @PreAuthorize("hasAuthority('sys:resource:video:create')")
+    public HttpResultUtil<Boolean> create(@RequestParam("code") String code) throws InterruptedException {
+        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.createResourceIndex(code));
     }
 
     @GetMapping(value = "/detail")
