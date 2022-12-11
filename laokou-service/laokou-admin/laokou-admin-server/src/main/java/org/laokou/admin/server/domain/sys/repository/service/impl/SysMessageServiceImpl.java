@@ -43,8 +43,8 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     }
 
     @Override
-    public IPage<SysMessageVO> getUnReadList(IPage<SysMessageVO> page, Long userId) {
-        return this.baseMapper.getUnReadList(page,userId);
+    public IPage<SysMessageVO> getUnReadList(IPage<SysMessageVO> page,Integer type, Long userId) {
+        return this.baseMapper.getUnReadList(page,type,userId);
     }
 
     @Override

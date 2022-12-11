@@ -51,9 +51,10 @@ public interface SysMessageMapper extends BaseMapper<SysMessageDO> {
      * 分页查询未读消息
      * @param page
      * @param userId
+     * @param type
      * @return
      */
-    IPage<SysMessageVO> getUnReadList(IPage<SysMessageVO> page, @Param("userId") Long userId);
+    IPage<SysMessageVO> getUnReadList(IPage<SysMessageVO> page,@Param("type")Integer type, @Param("userId") Long userId);
 
     /**
      * 消息读取

@@ -30,4 +30,5 @@ public class SysMessageQo extends BasePage {
 
     private String username;
     private String title;
+    private Integer type;
 }

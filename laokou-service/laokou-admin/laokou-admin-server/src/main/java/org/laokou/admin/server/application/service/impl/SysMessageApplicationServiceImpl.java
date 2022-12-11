@@ -155,7 +155,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     public IPage<SysMessageVO> getUnReadList(SysMessageQo qo) {
         IPage<SysMessageVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         final Long userId = UserUtil.getUserId();
-        return sysMessageService.getUnReadList(page,userId);
+        return sysMessageService.getUnReadList(page,qo.getType(),userId);
     }
 
     @Override

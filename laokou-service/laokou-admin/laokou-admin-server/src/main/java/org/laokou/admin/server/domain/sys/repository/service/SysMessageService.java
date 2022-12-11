@@ -46,9 +46,10 @@ public interface SysMessageService extends IService<SysMessageDO> {
      * 分页查询未读消息
      * @param page
      * @param userId
+     * @param type
      * @return
      */
-    IPage<SysMessageVO> getUnReadList(IPage<SysMessageVO> page, Long userId);
+    IPage<SysMessageVO> getUnReadList(IPage<SysMessageVO> page,Integer type, Long userId);
 
     /**
      * 消息读取
