@@ -20,5 +20,8 @@ package org.laokou.log.client.dto.enums;
  * @author Kou Shenhai
  */
 public enum AuditTypeEnum {
+    /**
+     * 资源
+     */
     RESOURCE
 }
