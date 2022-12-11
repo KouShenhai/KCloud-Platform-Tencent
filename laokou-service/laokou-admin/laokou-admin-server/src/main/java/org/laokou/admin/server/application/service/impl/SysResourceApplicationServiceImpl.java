@@ -228,7 +228,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         try {
             HttpResultUtil<AssigneeVO> result = workTaskApiFeignClient.audit(dto);
             if (!result.success()) {
-                return false;
+                throw new CustomException(result.getCode(),result.getMsg());
             }
             // 发送消息
             AssigneeVO vo = result.getData();
@@ -268,6 +268,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             adminThreadPoolTaskExecutor.execute(() -> saveAuditLog(businessId,auditStatus,comment,username,userId));
         } catch (FeignException e) {
             log.error("错误信息：{}",e.getMessage());
+            throw new CustomException("未启动流程，请联系管理员");
         }
         return true;
     }
@@ -358,8 +359,8 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             return instanceId;
         } catch (FeignException e) {
             log.error("报错信息：{}",e.getMessage());
+            throw new CustomException("未启动流程，请联系管理员");
         }
-        return null;
     }
 
 }
