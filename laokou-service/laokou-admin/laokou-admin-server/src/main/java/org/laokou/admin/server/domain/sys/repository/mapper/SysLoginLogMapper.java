@@ -18,11 +18,13 @@ package org.laokou.admin.server.domain.sys.repository.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.laokou.admin.server.domain.sys.entity.SysLoginLogDO;
-import org.laokou.admin.server.interfaces.qo.LoginLogQo;
+import org.laokou.admin.server.interfaces.qo.SysLoginLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author Kou Shenhai
@@ -37,6 +39,12 @@ public interface SysLoginLogMapper extends BaseMapper<SysLoginLogDO> {
      * @param qo
      * @return
      */
-    IPage<SysLoginLogVO> getLoginLogList(IPage<SysLoginLogVO> page, @Param("qo") LoginLogQo qo);
+    IPage<SysLoginLogVO> getLoginLogList(IPage<SysLoginLogVO> page, @Param("qo") SysLoginLogQo qo);
 
+    /**
+     * 查询登录日志
+     * @param qo
+     * @return
+     */
+    List<SysLoginLogVO> getLoginLogList(@Param("qo") SysLoginLogQo qo);
 }

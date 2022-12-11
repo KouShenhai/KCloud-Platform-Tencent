@@ -16,7 +16,7 @@
 package org.laokou.admin.server.application.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.laokou.admin.server.interfaces.qo.LoginLogQo;
+import org.laokou.admin.server.interfaces.qo.SysLoginLogQo;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
@@ -45,9 +45,17 @@ public interface SysLogApplicationService {
     void exportOperateLog(SysOperateLogQo qo, HttpServletResponse response) throws IOException;
 
     /**
+     * 导出全部
+     * @param qo
+     * @param response
+     * @throws IOException
+     */
+    void exportLoginLog(SysLoginLogQo qo, HttpServletResponse response) throws IOException;
+
+    /**
      * 分页查询登录日志
      * @param qo
      * @return
      */
-    IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQo qo);
+    IPage<SysLoginLogVO> queryLoginLogPage(SysLoginLogQo qo);
 }

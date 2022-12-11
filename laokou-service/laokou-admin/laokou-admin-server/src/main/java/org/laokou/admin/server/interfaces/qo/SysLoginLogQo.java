@@ -23,7 +23,7 @@ import org.laokou.common.mybatisplus.entity.BasePage;
  */
 @Data
 @EqualsAndHashCode(callSuper=true)
-public class LoginLogQo extends BasePage {
+public class SysLoginLogQo extends BasePage {
 
     private String loginName;
 

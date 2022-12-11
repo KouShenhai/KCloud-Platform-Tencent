@@ -17,12 +17,13 @@ package org.laokou.admin.server.application.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
+import org.laokou.admin.client.excel.SysLoginLogExcel;
 import org.laokou.admin.client.excel.SysOperateLogExcel;
 import org.laokou.admin.server.application.service.SysLogApplicationService;
 import org.laokou.admin.server.domain.sys.repository.service.SysLoginLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysOperateLogService;
 import org.laokou.admin.server.infrastructure.annotation.DataFilter;
-import org.laokou.admin.server.interfaces.qo.LoginLogQo;
+import org.laokou.admin.server.interfaces.qo.SysLoginLogQo;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
@@ -59,7 +60,12 @@ public class SysLogApplicationServiceImpl implements SysLogApplicationService {
     }
 
     @Override
-    public IPage<SysLoginLogVO> queryLoginLogPage(LoginLogQo qo) {
+    public void exportLoginLog(SysLoginLogQo qo, HttpServletResponse response) throws IOException {
+        ExcelUtil.export(response,"", ConvertUtil.sourceToTarget(sysLoginLogService.getLoginLogList(qo),SysLoginLogExcel.class), SysLoginLogExcel.class);
+    }
+
+    @Override
+    public IPage<SysLoginLogVO> queryLoginLogPage(SysLoginLogQo qo) {
         IPage<SysLoginLogVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysLoginLogService.getLoginLogList(page,qo);
     }

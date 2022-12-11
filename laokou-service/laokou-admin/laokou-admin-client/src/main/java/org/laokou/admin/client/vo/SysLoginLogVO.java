@@ -29,16 +29,16 @@ public class SysLoginLogVO {
     private String loginName;
 
     /**
-     * ip地址
+     * IP地址
      */
     private String requestIp;
     /**
-     * 操作地点
+     * 归属地
      */
     private String requestAddress;
 
     /**
-     * 浏览器
+     * 浏览器版本
      */
     private String browser;
 

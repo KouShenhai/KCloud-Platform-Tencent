@@ -18,7 +18,8 @@ package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysLogApplicationService;
-import org.laokou.admin.server.interfaces.qo.LoginLogQo;
+import org.laokou.admin.server.infrastructure.annotation.OperateLog;
+import org.laokou.admin.server.interfaces.qo.SysLoginLogQo;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
@@ -51,6 +52,8 @@ public class SysLogApiController {
 
     @PostMapping(value = "/operate/export")
     @ApiOperation("系统日志>操作日志>导出")
+    @OperateLog(module = "操作日志",name = "日志导出")
+    @PreAuthorize("hasAuthority('sys:log:operate:export')")
     public void exportOperateLog(@RequestBody SysOperateLogQo qo, HttpServletResponse response) throws IOException {
         sysLogApplicationService.exportOperateLog(qo,response);
     }
@@ -58,8 +61,16 @@ public class SysLogApiController {
     @PostMapping(value = "/login/query")
     @ApiOperation("系统日志>登录日志>查询")
     @PreAuthorize("hasAuthority('sys:log:login:query')")
-    public HttpResultUtil<IPage<SysLoginLogVO>> queryLoginLog(@RequestBody LoginLogQo qo) {
+    public HttpResultUtil<IPage<SysLoginLogVO>> queryLoginLog(@RequestBody SysLoginLogQo qo) {
         return new HttpResultUtil<IPage<SysLoginLogVO>>().ok(sysLogApplicationService.queryLoginLogPage(qo));
+    }
+
+    @PostMapping(value = "/login/export")
+    @ApiOperation("系统日志>登录日志>导出")
+    @OperateLog(module = "登录日志",name = "日志导出")
+    @PreAuthorize("hasAuthority('sys:log:login:export')")
+    public void exportLoginLog(@RequestBody SysLoginLogQo qo, HttpServletResponse response) throws IOException {
+        sysLogApplicationService.exportLoginLog(qo,response);
     }
 
 }

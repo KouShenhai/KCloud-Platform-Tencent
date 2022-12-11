@@ -20,10 +20,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.laokou.admin.server.domain.sys.entity.SysLoginLogDO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysLoginLogMapper;
 import org.laokou.admin.server.domain.sys.repository.service.SysLoginLogService;
-import org.laokou.admin.server.interfaces.qo.LoginLogQo;
+import org.laokou.admin.server.interfaces.qo.SysLoginLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author Kou Shenhai
@@ -32,7 +34,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = Exception.class)
 public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLoginLogDO> implements SysLoginLogService {
     @Override
-    public IPage<SysLoginLogVO> getLoginLogList(IPage<SysLoginLogVO> page, LoginLogQo qo) {
+    public IPage<SysLoginLogVO> getLoginLogList(IPage<SysLoginLogVO> page, SysLoginLogQo qo) {
         return this.baseMapper.getLoginLogList(page,qo);
+    }
+
+    @Override
+    public List<SysLoginLogVO> getLoginLogList(SysLoginLogQo qo) {
+        return this.baseMapper.getLoginLogList(qo);
     }
 }
