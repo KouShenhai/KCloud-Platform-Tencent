@@ -91,13 +91,13 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
         └── laokou-monitor                  --- 服务监控  
         └── laokou-register                 --- 服务注册&发现  
 ├── laokou-service  
+        └── laokou-log                      --- 日志模块  
         └── laokou-generator                --- 模板模块  
         └── laokou-auth                     --- 认证授权模块  
         └── laokou-admin                    --- 后台管理模块  
         └── laokou-report                   --- 数据分析模块  
         └── laokou-modlule  
                 └── laokou-sms              --- 短信模块  
-                └── laokou-log              --- 日志模块  
                 └── laokou-email            --- 邮件模块  
                 └── laokou-redis            --- 缓存模块  
                 └── laokou-kafka            --- 消息模块  
