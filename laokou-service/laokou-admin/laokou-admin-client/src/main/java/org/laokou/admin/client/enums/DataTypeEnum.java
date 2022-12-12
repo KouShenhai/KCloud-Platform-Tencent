@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.enums;
+package org.laokou.admin.client.enums;
 
 /**
  * @author Kou Shenhai

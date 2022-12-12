@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.WorkflowDefinitionApplicationService;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.laokou.admin.server.interfaces.qo.DefinitionQo;
-import org.laokou.common.core.enums.DataTypeEnum;
+import org.laokou.admin.client.enums.DataTypeEnum;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -57,7 +57,6 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
-import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.elasticsearch.client.constant.EsConstant;
@@ -453,7 +452,8 @@ public class ElasticsearchUtil {
     public void deleteAsyncIndex(String indexName) {
         boolean indexExists = isIndexExists(indexName);
         if (!indexExists) {
-            throw new CustomException("索引不存在，请创建索引");
+            log.error("索引不存在，请创建索引");
+            return;
         }
         DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(indexName);
         deleteIndexRequest.indicesOptions(IndicesOptions.LENIENT_EXPAND_OPEN);
@@ -536,7 +536,8 @@ public class ElasticsearchUtil {
     public void createAsyncIndex(String indexName,String indexAlias, Class<?> clazz) throws IOException {
         boolean indexExists = isIndexExists(indexName);
         if (indexExists) {
-            throw new CustomException("索引已存在，请删除索引");
+            log.error("索引已存在，请删除索引");
+            return;
         }
         CreateIndexRequest createIndexRequest = getCreateIndexRequest(indexName, indexAlias, FieldMappingUtil.getFieldInfo(clazz));
         // 异步方式创建索引

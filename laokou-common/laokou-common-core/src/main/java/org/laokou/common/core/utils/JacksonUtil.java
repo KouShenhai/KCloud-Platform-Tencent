@@ -30,6 +30,8 @@ import java.util.*;
 @UtilityClass
 public class JacksonUtil {
 
+    public static final String EMPTY_JSON = "{}";
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**

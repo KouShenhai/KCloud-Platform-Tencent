@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.annotation;
-import org.laokou.common.core.enums.DataTypeEnum;
+import org.laokou.admin.client.enums.DataTypeEnum;
 import java.lang.annotation.*;
 /**
  * 自定义操作日志注解

@@ -37,7 +37,7 @@ import java.io.IOException;
  */
 @Component
 @Slf4j
-public class AuthLogUtil {
+public class LoginLogUtil {
 
     @Autowired
     private RocketmqApiFeignClient rocketmqApiFeignClient;

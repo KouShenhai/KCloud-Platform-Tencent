@@ -19,7 +19,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.enums.UserStatusEnum;
 import org.laokou.auth.client.constant.AuthConstant;
-import org.laokou.auth.server.infrastructure.log.AuthLogUtil;
+import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.exception.ErrorCode;
@@ -63,7 +63,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private final SysCaptchaService sysCaptchaService;
     private final TokenStore tokenStore;
     private final RedisUtil redisUtil;
-    private final AuthLogUtil authLogUtil;
+    private final LoginLogUtil loginLogUtil;
     private final ThreadPoolTaskExecutor authThreadPoolTaskExecutor;
 
     @SneakyThrows
@@ -74,19 +74,19 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
             authThreadPoolTaskExecutor.execute(() -> {
-                authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
+                loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             });
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         if(!PasswordUtil.matches(password, userDetail.getPassword())) {
             authThreadPoolTaskExecutor.execute(() -> {
-                authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
+                loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             });
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
             authThreadPoolTaskExecutor.execute(() -> {
-                authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
+                loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
             });
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_DISABLE,MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
         }
@@ -103,12 +103,12 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         // 等待所有任务都完成
         CompletableFuture.allOf(c1,c2).join();
         if (CollectionUtils.isEmpty(userDetail.getPermissionList())) {
-            authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
+            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
             throw new CustomOauth2Exception("" + ErrorCode.NOT_PERMISSIONS,MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
         }
         authThreadPoolTaskExecutor.execute(() -> {
             // 登录成功
-            authLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
+            loginLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
         });
         return userDetail;
     }

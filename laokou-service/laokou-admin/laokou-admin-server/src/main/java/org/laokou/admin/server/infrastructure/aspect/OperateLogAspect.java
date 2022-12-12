@@ -18,7 +18,7 @@ import feign.FeignException;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.laokou.admin.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
 import org.laokou.auth.client.utils.UserUtil;
-import org.laokou.common.core.enums.DataTypeEnum;
+import org.laokou.admin.client.enums.DataTypeEnum;
 import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.utils.*;
 import lombok.extern.slf4j.Slf4j;

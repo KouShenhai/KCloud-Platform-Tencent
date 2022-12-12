@@ -20,7 +20,7 @@ import lombok.SneakyThrows;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.server.infrastructure.handler.AuthAuthenticationFailureHandler;
-import org.laokou.auth.server.infrastructure.log.AuthLogUtil;
+import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
@@ -57,7 +57,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
 
     private final AuthAuthenticationFailureHandler authAuthenticationFailureHandler;
 
-    private final AuthLogUtil authLogUtil;
+    private final LoginLogUtil loginLogUtil;
 
     private final ThreadPoolTaskExecutor authThreadPoolTaskExecutor;
 
@@ -97,7 +97,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
         }
         boolean validate = sysCaptchaService.validate(uuid, captcha);
         if (!validate) {
-            authThreadPoolTaskExecutor.execute(() -> authLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request));
+            authThreadPoolTaskExecutor.execute(() -> loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request));
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
         }
     }

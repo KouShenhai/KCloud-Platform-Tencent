@@ -42,6 +42,8 @@ public class SysLogController {
 
     private final SysAuditLogService sysAuditLogService;
 
+    private final SysEsLogService sysEsLogService;
+
     @PostMapping("/login")
     public void login(@RequestBody LoginLogDTO dto) {
         sysLoginLogService.insertLoginLog(dto);
@@ -55,6 +57,11 @@ public class SysLogController {
     @PostMapping("/audit")
     public void audit(@RequestBody AuditLogDTO dto) {
         sysAuditLogService.insertAuditLog(dto);
+    }
+
+    @PostMapping("/es")
+    public void es(@RequestBody EsLogDTO dto) {
+        sysEsLogService.insertEsLog(dto);
     }
 
 }
