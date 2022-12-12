@@ -21,6 +21,7 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Cancellable;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -57,6 +58,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
+import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.elasticsearch.client.constant.EsConstant;
@@ -133,7 +135,7 @@ public class ElasticsearchUtil {
      * @param clazz        类型
      * @throws IOException
      */
-    public void updateBatchIndex(String indexName, String indexAlias, String jsonDataList, Class clazz) throws IOException {
+    public void updateBatchIndex(String indexName, String indexAlias, String jsonDataList, Class<?> clazz) throws IOException {
         if (syncIndex(indexName, indexAlias, clazz)) {
             return;
         }
@@ -148,7 +150,7 @@ public class ElasticsearchUtil {
      * @return
      * @throws IOException
      */
-    private boolean syncIndex(String indexName,String indexAlias,Class clazz) throws IOException {
+    private boolean syncIndex(String indexName,String indexAlias,Class<?> clazz) throws IOException {
         //创建索引
         if (!isIndexExists(indexName)) {
             return !createIndex(indexName, indexAlias, clazz, false);
@@ -445,6 +447,29 @@ public class ElasticsearchUtil {
         return true;
     }
 
+    public void asyncDeleteIndex(String indexName) {
+        boolean indexExists = isIndexExists(indexName);
+        if (!indexExists) {
+            throw new CustomException("索引不存在，请创建索引");
+        }
+        DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(indexName);
+        deleteIndexRequest.indicesOptions(IndicesOptions.LENIENT_EXPAND_OPEN);
+        ActionListener<AcknowledgedResponse> listener = new ActionListener<AcknowledgedResponse>() {
+            @Override
+            public void onResponse(AcknowledgedResponse acknowledgedResponse) {
+                if (acknowledgedResponse.isAcknowledged()) {
+                    log.info("索引【{}】删除成功", indexName);
+                } else {
+                    log.error("索引【{}】删除失败", indexName);
+                }
+            }
+            @Override
+            public void onFailure(Exception e) {
+                log.error("索引【{}】删除失败，失败信息:{}", indexName, e);
+            }
+        };
+        restHighLevelClient.indices().deleteAsync(deleteIndexRequest,RequestOptions.DEFAULT,listener);
+    }
     /**
      * 批量操作的Request
      * @param indexName 索引名称
@@ -481,7 +506,7 @@ public class ElasticsearchUtil {
      * @return
      * @throws IOException
      */
-    public boolean createIndex(String indexName,String indexAlias,Class clazz,boolean isDel) throws IOException {
+    public boolean createIndex(String indexName,String indexAlias,Class<?> clazz,boolean isDel) throws IOException {
         //删除索引
         if (isDel) {
              if (!deleteIndex(indexName)) {
@@ -499,6 +524,55 @@ public class ElasticsearchUtil {
     }
 
     /**
+     * 异步创建ES索引
+     * @param indexName 索引名称
+     * @param indexAlias 别名
+     * @param clazz  类型
+     * @throws IOException
+     */
+    public void asyncCreateIndex(String indexName,String indexAlias, Class<?> clazz) throws IOException {
+        boolean indexExists = isIndexExists(indexName);
+        if (indexExists) {
+            throw new CustomException("索引已存在，请删除索引");
+        }
+        CreateIndexRequest createIndexRequest = getCreateIndexRequest(indexName, indexAlias, FieldMappingUtil.getFieldInfo(clazz));
+        // 异步方式创建索引
+        ActionListener<CreateIndexResponse> listener = new ActionListener<>() {
+            @Override
+            public void onResponse(CreateIndexResponse createIndexResponse) {
+                boolean acknowledged = createIndexResponse.isAcknowledged();
+                if (acknowledged) {
+                    log.info("索引【{}】创建成功", indexName);
+                } else {
+                    log.error("索引【{}】创建失败", indexName);
+                }
+            }
+            @Override
+            public void onFailure(Exception e) {
+                log.error("索引【{}】创建失败，错误信息:{}", indexName, e);
+            }
+        };
+        // 异步执行
+        restHighLevelClient.indices().createAsync(createIndexRequest, RequestOptions.DEFAULT, listener);
+    }
+
+    private CreateIndexRequest getCreateIndexRequest(String indexName, String indexAlias, List<FieldMapping> fieldMappingList) throws IOException {
+        //封装es索引的mapping
+        XContentBuilder mapping = packEsMapping(fieldMappingList, null);
+        mapping.endObject().endObject();
+        mapping.close();
+        //进行索引的创建
+        CreateIndexRequest createIndexRequest = new CreateIndexRequest(indexName);
+        //配置分词器
+        XContentBuilder settings = packSettingMapping();
+        XContentBuilder aliases = packEsAliases(indexAlias);
+        createIndexRequest.settings(settings);
+        createIndexRequest.mapping(mapping);
+        createIndexRequest.aliases(aliases);
+        return createIndexRequest;
+    }
+
+    /**
      * 数据同步到ES
      *
      * @param id        主键
@@ -506,7 +580,7 @@ public class ElasticsearchUtil {
      * @param jsonData  json数据
      * @param clazz     类型
      */
-    public void syncIndex(String id, String indexName, String indexAlias, String jsonData, Class clazz) throws IOException {
+    public void syncIndex(String id, String indexName, String indexAlias, String jsonData, Class<?> clazz) throws IOException {
         //创建索引
         if (syncIndex(indexName, indexAlias, clazz)) {
             return;
@@ -552,17 +626,7 @@ public class ElasticsearchUtil {
      */
     private boolean createIndexAndCreateMapping(String indexName,String indexAlias, List<FieldMapping> fieldMappingList) throws IOException {
         //封装es索引的mapping
-        XContentBuilder mapping = packEsMapping(fieldMappingList, null);
-        mapping.endObject().endObject();
-        mapping.close();
-        //进行索引的创建
-        CreateIndexRequest createIndexRequest = new CreateIndexRequest(indexName);
-        //配置分词器
-        XContentBuilder settings = packSettingMapping();
-        XContentBuilder aliases = packEsAliases(indexAlias);
-        createIndexRequest.settings(settings);
-        createIndexRequest.mapping(mapping);
-        createIndexRequest.aliases(aliases);
+        CreateIndexRequest createIndexRequest = getCreateIndexRequest(indexName, indexAlias, fieldMappingList);
         //同步方式创建索引
         CreateIndexResponse createIndexResponse = restHighLevelClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
         boolean acknowledged = createIndexResponse.isAcknowledged();

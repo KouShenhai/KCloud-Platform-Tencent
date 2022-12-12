@@ -53,6 +53,15 @@ public class ElasticsearchApiController {
         elasticsearchUtil.createIndex(indexName,indexAlias,clazz,true);
     }
 
+    @PostMapping("/asyncCreate")
+    @ApiOperation("索引管理>异步创建")
+    public void asyncCreate(@RequestBody final CreateIndexDTO model) throws IOException {
+        String indexName = model.getIndexName();
+        String indexAlias = model.getIndexAlias();
+        Class<?> clazz = ElasticsearchFieldUtil.getClazz(indexAlias);
+        elasticsearchUtil.asyncCreateIndex(indexName,indexAlias,clazz);
+    }
+
     @PostMapping("/sync")
     @ApiOperation("索引管理>同步")
     public void sync(@RequestBody final ElasticsearchDTO model) throws IOException {
@@ -119,6 +128,12 @@ public class ElasticsearchApiController {
     @ApiOperation("索引管理>删除")
     public void delete(@RequestParam("indexName")final String indexName,@RequestParam("id")final String id) {
         elasticsearchUtil.deleteIndex(indexName,id);
+    }
+
+    @DeleteMapping("/asyncDelete")
+    @ApiOperation("索引管理>异步删除")
+    public void delete(@RequestParam("indexName")final String indexName) {
+        elasticsearchUtil.asyncDeleteIndex(indexName);
     }
 
     @DeleteMapping("/deleteAll")
