@@ -18,7 +18,6 @@ import org.laokou.admin.server.infrastructure.feign.elasticsearch.factory.Elasti
 import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
-import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -30,13 +29,6 @@ import java.util.Map;
 @FeignClient(name = ServiceConstant.LAOKOU_ELASTICSEARCH, fallbackFactory = ElasticsearchApiFeignClientFallbackFactory.class)
 @Service
 public interface ElasticsearchApiFeignClient {
-
-    /**
-     * 创建索引
-     * @param dto
-     */
-    @PostMapping("/api/create")
-    void create(@RequestBody final CreateIndexDTO dto);
 
     /**
      * 高亮搜索

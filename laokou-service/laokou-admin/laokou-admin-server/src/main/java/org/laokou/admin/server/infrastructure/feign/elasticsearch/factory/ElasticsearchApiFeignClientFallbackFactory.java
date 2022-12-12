@@ -31,4 +31,5 @@ public class ElasticsearchApiFeignClientFallbackFactory implements FallbackFacto
     public ElasticsearchApiFeignClientFallback create(Throwable throwable) {
         return new ElasticsearchApiFeignClientFallback(throwable);
     }
+
 }

@@ -21,7 +21,6 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Cancellable;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -340,8 +339,8 @@ public class ElasticsearchUtil {
      */
     public String getIndexById(String indexName,String id) {
         //判断索引是否存在
-        boolean result = isIndexExists(indexName);
-        if (!result) {
+        boolean isIndexExists = isIndexExists(indexName);
+        if (!isIndexExists) {
             return "";
         }
         GetRequest getRequest = new GetRequest(indexName, id);
@@ -364,8 +363,8 @@ public class ElasticsearchUtil {
      */
     public void deleteAllIndex(String indexName) {
         //判断索引是否存在
-        boolean result = isIndexExists(indexName);
-        if (!result) {
+        boolean isIndexExists = isIndexExists(indexName);
+        if (!isIndexExists) {
             log.error("索引【{}】不存在，删除失败",indexName);
             return;
         }
@@ -430,8 +429,8 @@ public class ElasticsearchUtil {
      */
     public boolean deleteIndex(String indexName) throws IOException {
         //判断索引是否存在
-        boolean result = isIndexExists(indexName);
-        if (!result) {
+        boolean isIndexExists = isIndexExists(indexName);
+        if (!isIndexExists) {
             log.error("索引【{}】不存在，删除失败",indexName);
             return true;
         }
@@ -447,7 +446,11 @@ public class ElasticsearchUtil {
         return true;
     }
 
-    public void asyncDeleteIndex(String indexName) {
+    /**
+     * 异步删除索引
+     * @param indexName 索引名称
+     */
+    public void deleteAsyncIndex(String indexName) {
         boolean indexExists = isIndexExists(indexName);
         if (!indexExists) {
             throw new CustomException("索引不存在，请创建索引");
@@ -530,7 +533,7 @@ public class ElasticsearchUtil {
      * @param clazz  类型
      * @throws IOException
      */
-    public void asyncCreateIndex(String indexName,String indexAlias, Class<?> clazz) throws IOException {
+    public void createAsyncIndex(String indexName,String indexAlias, Class<?> clazz) throws IOException {
         boolean indexExists = isIndexExists(indexName);
         if (indexExists) {
             throw new CustomException("索引已存在，请删除索引");

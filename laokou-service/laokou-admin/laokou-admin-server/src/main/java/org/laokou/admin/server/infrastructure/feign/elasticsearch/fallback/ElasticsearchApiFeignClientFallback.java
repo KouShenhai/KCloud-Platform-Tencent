@@ -19,7 +19,6 @@ import org.laokou.common.core.utils.HttpResultUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.form.SearchForm;
-import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import java.util.Map;
 /**
@@ -33,11 +32,6 @@ import java.util.Map;
 public class ElasticsearchApiFeignClientFallback implements ElasticsearchApiFeignClient {
 
     private final Throwable throwable;
-
-    @Override
-    public void create(CreateIndexDTO dto) {
-        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-    }
 
     @Override
     public HttpResultUtil<SearchVO<Map<String,Object>>> highlightSearch(SearchForm searchForm) {

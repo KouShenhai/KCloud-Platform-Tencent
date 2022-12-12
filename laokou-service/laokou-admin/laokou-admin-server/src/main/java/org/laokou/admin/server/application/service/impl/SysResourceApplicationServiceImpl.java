@@ -212,7 +212,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         dto.setIndexName(indexName);
                         dto.setIndexAlias(resourceIndexAlias);
                         rocketmqDTO.setData(JacksonUtil.toJsonStr(dto));
-                        rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_CREATE_INDEX_TOPIC,rocketmqDTO);
+                        rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_CREATE_INDEX_TOPIC, rocketmqDTO);
                     } catch (final FeignException e) {
                         log.error("错误信息：{}", e.getMessage());
                     }
@@ -221,6 +221,40 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             afterCreateIndex();
         }
         return true;
+    }
+
+    @Override
+    public Boolean deleteResourceIndex(String code) {
+        // 总数
+        final Long resourceTotal = sysResourceService.getResourceTotal(code);
+        if (resourceTotal > 0) {
+            beforeDeleteIndex();
+            //创建索引 - 时间分区
+            final String resourceIndex = RESOURCE_KEY + "_" + code;
+            final List<String> resourceYmPartitionList = sysResourceService.getResourceYmPartitionList(code);
+            for (String ym : resourceYmPartitionList) {
+                adminThreadPoolTaskExecutor.execute(() -> {
+                    try {
+                        RocketmqDTO rocketmqDTO = new RocketmqDTO();
+                        final String indexName = resourceIndex + "_" + ym;
+                        rocketmqDTO.setData(indexName);
+                        rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_DELETE_INDEX_TOPIC, rocketmqDTO);
+                    } catch (final FeignException e) {
+                        log.error("错误信息：{}", e.getMessage());
+                    }
+                });
+            }
+            afterDeleteIndex();
+        }
+        return true;
+    }
+
+    private void beforeDeleteIndex() {
+        log.info("开始索引删除...");
+    }
+
+    private void afterDeleteIndex() {
+        log.info("结束索引删除...");
     }
 
     @Override

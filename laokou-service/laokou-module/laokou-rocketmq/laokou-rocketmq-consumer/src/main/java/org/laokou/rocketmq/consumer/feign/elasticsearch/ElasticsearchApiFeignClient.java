@@ -21,8 +21,11 @@ import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.factory.ElasticsearchApiFeignClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 /**
  * @author Kou Shenhai
  */
@@ -38,10 +41,16 @@ public interface ElasticsearchApiFeignClient {
     void syncAsyncBatch(@RequestBody final ElasticsearchDTO model);
 
     /**
-     * 创建索引
+     * 异步创建索引
      * @param model
      */
-    @PostMapping("/api/create")
-    void create(@RequestBody final CreateIndexDTO model);
+    @PostMapping("/createAsync")
+    void createAsync(@RequestBody final CreateIndexDTO model);
 
+    /**
+     * 异步删除索引
+     * @param indexName
+     */
+    @DeleteMapping("/deleteAsync")
+    void deleteAsync(@RequestParam("indexName")final String indexName);
 }

@@ -68,22 +68,31 @@ public class SysImageApiController {
         return new HttpResultUtil<UploadVO>().ok(sysResourceApplicationService.uploadResource("image",fileName,inputStream,fileSize));
     }
 
-    @PostMapping("/sync")
+    @PostMapping("/syncIndex")
     @ApiOperation("图片管理>同步索引")
     @OperateLog(module = "图片管理",name = "索引同步")
-    @PreAuthorize("hasAuthority('sys:resource:image:sync')")
-    @Lock4j(key = "image_sync_lock", scope = LockScope.DISTRIBUTED_LOCK)
+    @PreAuthorize("hasAuthority('sys:resource:image:syncIndex')")
+    @Lock4j(key = "image_sync_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
     public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
     }
 
-    @PostMapping("/create")
+    @PostMapping("/createIndex")
     @ApiOperation("图片管理>创建索引")
     @OperateLog(module = "图片管理",name = "创建索引")
-    @PreAuthorize("hasAuthority('sys:resource:image:create')")
-    @Lock4j(key = "image_create_lock", scope = LockScope.DISTRIBUTED_LOCK)
-    public HttpResultUtil<Boolean> create(@RequestParam("code") String code) throws InterruptedException {
+    @PreAuthorize("hasAuthority('sys:resource:image:createIndex')")
+    @Lock4j(key = "image_create_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
+    public HttpResultUtil<Boolean> create(@RequestParam("code") String code) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.createResourceIndex(code));
+    }
+
+    @DeleteMapping("/deleteIndex")
+    @ApiOperation("图片管理>创建索引")
+    @OperateLog(module = "图片管理",name = "创建索引")
+    @PreAuthorize("hasAuthority('sys:resource:image:deleteIndex')")
+    @Lock4j(key = "image_delete_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
+    public HttpResultUtil<Boolean> deleteIndex(@RequestParam("code") String code) {
+        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.deleteResourceIndex(code));
     }
 
     @PostMapping("/query")

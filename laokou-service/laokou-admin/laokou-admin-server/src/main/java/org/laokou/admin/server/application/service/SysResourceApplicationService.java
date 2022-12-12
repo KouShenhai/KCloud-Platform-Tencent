@@ -105,6 +105,13 @@ public interface SysResourceApplicationService {
     Boolean createResourceIndex(String code);
 
     /**
+     * 删除索引
+     * @param code
+     * @return
+     */
+    Boolean deleteResourceIndex(String code);
+
+    /**
      * 资源审批
      * @param dto
      * @return

@@ -76,22 +76,31 @@ public class SysVideoApiController {
         return new HttpResultUtil<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
     }
 
-    @PostMapping("/sync")
+    @PostMapping("/syncIndex")
     @ApiOperation("视频管理>同步索引")
     @OperateLog(module = "视频管理",name = "索引同步")
-    @PreAuthorize("hasAuthority('sys:resource:video:sync')")
-    @Lock4j(key = "video_sync_lock",scope = LockScope.DISTRIBUTED_LOCK)
+    @PreAuthorize("hasAuthority('sys:resource:video:syncIndex')")
+    @Lock4j(key = "video_sync_index_lock",scope = LockScope.DISTRIBUTED_LOCK)
     public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
     }
 
-    @PostMapping("/create")
+    @PostMapping("/createIndex")
     @ApiOperation("视频管理>创建索引")
     @OperateLog(module = "视频管理",name = "创建索引")
-    @PreAuthorize("hasAuthority('sys:resource:video:create')")
-    @Lock4j(key = "video_create_lock",scope = LockScope.DISTRIBUTED_LOCK)
-    public HttpResultUtil<Boolean> create(@RequestParam("code") String code) throws InterruptedException {
+    @PreAuthorize("hasAuthority('sys:resource:video:createIndex')")
+    @Lock4j(key = "video_create_index_lock",scope = LockScope.DISTRIBUTED_LOCK)
+    public HttpResultUtil<Boolean> createIndex(@RequestParam("code") String code) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.createResourceIndex(code));
+    }
+
+    @DeleteMapping("/deleteIndex")
+    @ApiOperation("视频管理>创建索引")
+    @OperateLog(module = "视频管理",name = "创建索引")
+    @PreAuthorize("hasAuthority('sys:resource:video:deleteIndex')")
+    @Lock4j(key = "video_delete_index_lock",scope = LockScope.DISTRIBUTED_LOCK)
+    public HttpResultUtil<Boolean> deleteIndex(@RequestParam("code") String code) {
+        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.deleteResourceIndex(code));
     }
 
     @GetMapping(value = "/detail")

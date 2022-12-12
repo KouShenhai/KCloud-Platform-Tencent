@@ -60,22 +60,31 @@ public class SysAudioApiController {
         return new HttpResultUtil<List<SysAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(businessId));
     }
 
-    @PostMapping("/sync")
+    @PostMapping("/syncIndex")
     @ApiOperation("音频管理>同步索引")
     @OperateLog(module = "音频管理",name = "同步索引")
-    @Lock4j(key = "audio_sync_lock", scope = LockScope.DISTRIBUTED_LOCK)
-    @PreAuthorize("hasAuthority('sys:resource:audio:sync')")
-    public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
+    @Lock4j(key = "audio_sync_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
+    @PreAuthorize("hasAuthority('sys:resource:audio:syncIndex')")
+    public HttpResultUtil<Boolean> syncIndex(@RequestParam("code") String code) throws InterruptedException {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
     }
 
-    @PostMapping("/create")
+    @PostMapping("/createIndex")
     @ApiOperation("音频管理>创建索引")
     @OperateLog(module = "音频管理",name = "创建索引")
-    @PreAuthorize("hasAuthority('sys:resource:audio:create')")
-    @Lock4j(key = "audio_create_lock", scope = LockScope.DISTRIBUTED_LOCK)
-    public HttpResultUtil<Boolean> create(@RequestParam("code") String code) throws InterruptedException {
+    @PreAuthorize("hasAuthority('sys:resource:audio:createIndex')")
+    @Lock4j(key = "audio_create_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
+    public HttpResultUtil<Boolean> createIndex(@RequestParam("code") String code) {
         return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.createResourceIndex(code));
+    }
+
+    @DeleteMapping("/deleteIndex")
+    @ApiOperation("音频管理>删除索引")
+    @OperateLog(module = "音频管理",name = "删除索引")
+    @PreAuthorize("hasAuthority('sys:resource:audio:deleteIndex')")
+    @Lock4j(key = "audio_delete_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
+    public HttpResultUtil<Boolean> deleteIndex(@RequestParam("code") String code) {
+        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.deleteResourceIndex(code));
     }
 
     @PostMapping("/upload")

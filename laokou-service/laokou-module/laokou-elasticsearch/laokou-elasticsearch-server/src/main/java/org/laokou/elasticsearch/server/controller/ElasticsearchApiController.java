@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.elasticsearch.server.controller;
+import lombok.RequiredArgsConstructor;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
@@ -25,7 +26,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
@@ -39,10 +39,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @Api(value = "索引管理API",protocols = "http",tags = "索引管理API")
+@RequiredArgsConstructor
 public class ElasticsearchApiController {
 
-    @Autowired
-    private ElasticsearchUtil elasticsearchUtil;
+    private final ElasticsearchUtil elasticsearchUtil;
 
     @PostMapping("/create")
     @ApiOperation("索引管理>创建")
@@ -53,13 +53,13 @@ public class ElasticsearchApiController {
         elasticsearchUtil.createIndex(indexName,indexAlias,clazz,true);
     }
 
-    @PostMapping("/asyncCreate")
+    @PostMapping("/createAsync")
     @ApiOperation("索引管理>异步创建")
-    public void asyncCreate(@RequestBody final CreateIndexDTO model) throws IOException {
+    public void createAsync(@RequestBody final CreateIndexDTO model) throws IOException {
         String indexName = model.getIndexName();
         String indexAlias = model.getIndexAlias();
         Class<?> clazz = ElasticsearchFieldUtil.getClazz(indexAlias);
-        elasticsearchUtil.asyncCreateIndex(indexName,indexAlias,clazz);
+        elasticsearchUtil.createAsyncIndex(indexName,indexAlias,clazz);
     }
 
     @PostMapping("/sync")
@@ -130,10 +130,10 @@ public class ElasticsearchApiController {
         elasticsearchUtil.deleteIndex(indexName,id);
     }
 
-    @DeleteMapping("/asyncDelete")
+    @DeleteMapping("/deleteAsync")
     @ApiOperation("索引管理>异步删除")
-    public void delete(@RequestParam("indexName")final String indexName) {
-        elasticsearchUtil.asyncDeleteIndex(indexName);
+    public void deleteAsync(@RequestParam("indexName")final String indexName) {
+        elasticsearchUtil.deleteAsyncIndex(indexName);
     }
 
     @DeleteMapping("/deleteAll")

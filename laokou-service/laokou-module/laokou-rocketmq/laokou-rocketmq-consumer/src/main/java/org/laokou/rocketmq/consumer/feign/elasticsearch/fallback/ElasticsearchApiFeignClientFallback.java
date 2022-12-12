@@ -39,9 +39,13 @@ public class ElasticsearchApiFeignClientFallback implements ElasticsearchApiFeig
     }
 
     @Override
-    public void create(CreateIndexDTO model) {
+    public void createAsync(CreateIndexDTO model) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
     }
 
+    @Override
+    public void deleteAsync(String indexName) {
+        log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+    }
 
 }
