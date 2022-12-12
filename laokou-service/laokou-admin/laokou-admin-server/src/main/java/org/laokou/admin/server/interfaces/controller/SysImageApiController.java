@@ -88,7 +88,7 @@ public class SysImageApiController {
 
     @DeleteMapping("/deleteIndex")
     @ApiOperation("图片管理>创建索引")
-    @OperateLog(module = "图片管理",name = "创建索引")
+    @OperateLog(module = "图片管理",name = "删除索引")
     @PreAuthorize("hasAuthority('sys:resource:image:deleteIndex')")
     @Lock4j(key = "image_delete_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
     public HttpResultUtil<Boolean> deleteIndex(@RequestParam("code") String code) {

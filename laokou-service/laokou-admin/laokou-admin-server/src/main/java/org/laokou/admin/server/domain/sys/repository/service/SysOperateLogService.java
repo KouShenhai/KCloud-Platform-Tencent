@@ -16,8 +16,6 @@
 package org.laokou.admin.server.domain.sys.repository.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.laokou.admin.server.domain.sys.entity.SysOperateLogDO;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 
@@ -26,7 +24,7 @@ import java.util.List;
 /**
  * @author Kou Shenhai
  */
-public interface SysOperateLogService extends IService<SysOperateLogDO> {
+public interface SysOperateLogService {
 
     /**
      * 分页查询操作日志
@@ -42,4 +40,5 @@ public interface SysOperateLogService extends IService<SysOperateLogDO> {
      * @return
      */
     List<SysOperateLogVO> getOperateLogList(SysOperateLogQo qo);
+
 }

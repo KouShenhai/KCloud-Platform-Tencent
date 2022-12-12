@@ -14,24 +14,19 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.domain.sys.repository.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.laokou.admin.server.domain.sys.entity.SysOperateLogDO;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysOperateLogVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
-
 /**
  * @author Kou Shenhai
  */
 @Mapper
 @Repository
-public interface SysOperateLogMapper extends BaseMapper<SysOperateLogDO> {
+public interface SysOperateLogMapper {
 
     /**
      * 分页查询操作日志

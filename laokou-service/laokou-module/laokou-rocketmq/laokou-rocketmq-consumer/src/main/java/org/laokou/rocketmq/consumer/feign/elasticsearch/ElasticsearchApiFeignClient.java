@@ -44,13 +44,13 @@ public interface ElasticsearchApiFeignClient {
      * 异步创建索引
      * @param model
      */
-    @PostMapping("/createAsync")
+    @PostMapping("/api/createAsync")
     void createAsync(@RequestBody final CreateIndexDTO model);
 
     /**
      * 异步删除索引
      * @param indexName
      */
-    @DeleteMapping("/deleteAsync")
+    @DeleteMapping("/api/deleteAsync")
     void deleteAsync(@RequestParam("indexName")final String indexName);
 }

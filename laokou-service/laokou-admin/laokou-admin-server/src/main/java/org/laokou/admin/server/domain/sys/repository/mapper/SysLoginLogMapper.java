@@ -15,9 +15,7 @@
  */
 package org.laokou.admin.server.domain.sys.repository.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.laokou.admin.server.domain.sys.entity.SysLoginLogDO;
 import org.laokou.admin.server.interfaces.qo.SysLoginLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,7 +29,7 @@ import java.util.List;
  */
 @Repository
 @Mapper
-public interface SysLoginLogMapper extends BaseMapper<SysLoginLogDO> {
+public interface SysLoginLogMapper {
 
     /**
      * 分页查询登录日志

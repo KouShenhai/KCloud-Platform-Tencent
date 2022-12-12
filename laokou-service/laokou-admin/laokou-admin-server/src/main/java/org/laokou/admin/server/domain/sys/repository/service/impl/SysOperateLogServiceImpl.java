@@ -16,8 +16,7 @@
 package org.laokou.admin.server.domain.sys.repository.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.laokou.admin.server.domain.sys.entity.SysOperateLogDO;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysOperateLogMapper;
 import org.laokou.admin.server.domain.sys.repository.service.SysOperateLogService;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
@@ -32,14 +31,17 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class SysOperateLogServiceImpl extends ServiceImpl<SysOperateLogMapper, SysOperateLogDO> implements SysOperateLogService {
+@RequiredArgsConstructor
+public class SysOperateLogServiceImpl implements SysOperateLogService {
+
+    private final SysOperateLogMapper sysOperateLogMapper;
     @Override
     public IPage<SysOperateLogVO> getOperateLogList(IPage<SysOperateLogVO> page, SysOperateLogQo qo) {
-        return this.baseMapper.getOperateLogList(page,qo);
+        return sysOperateLogMapper.getOperateLogList(page,qo);
     }
 
     @Override
     public List<SysOperateLogVO> getOperateLogList(SysOperateLogQo qo) {
-        return this.baseMapper.getOperateLogList(qo);
+        return sysOperateLogMapper.getOperateLogList(qo);
     }
 }

@@ -96,7 +96,7 @@ public class SysVideoApiController {
 
     @DeleteMapping("/deleteIndex")
     @ApiOperation("视频管理>创建索引")
-    @OperateLog(module = "视频管理",name = "创建索引")
+    @OperateLog(module = "视频管理",name = "删除索引")
     @PreAuthorize("hasAuthority('sys:resource:video:deleteIndex')")
     @Lock4j(key = "video_delete_index_lock",scope = LockScope.DISTRIBUTED_LOCK)
     public HttpResultUtil<Boolean> deleteIndex(@RequestParam("code") String code) {

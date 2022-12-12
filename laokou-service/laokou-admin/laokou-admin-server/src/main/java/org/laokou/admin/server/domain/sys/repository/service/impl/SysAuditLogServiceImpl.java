@@ -38,4 +38,5 @@ public class SysAuditLogServiceImpl implements SysAuditLogService {
     public List<SysAuditLogVO> getAuditLogList(Long businessId,Integer type) {
         return this.sysAuditLogMapper.getAuditLogList(businessId,type);
     }
+
 }
