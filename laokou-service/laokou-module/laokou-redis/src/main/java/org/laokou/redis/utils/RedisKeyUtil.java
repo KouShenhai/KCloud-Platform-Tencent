@@ -67,10 +67,18 @@ public final class RedisKeyUtil {
     }
 
     /**
-     * 部门key
+     * 部门Key
      */
     public static String getDeptAllKey() {
         return "sys:dept:all";
+    }
+
+    /**
+     * 消息消费Key
+     * @return
+     */
+    public static String getMessageConsumeKey() {
+        return "sys:message:consume";
     }
 
 }

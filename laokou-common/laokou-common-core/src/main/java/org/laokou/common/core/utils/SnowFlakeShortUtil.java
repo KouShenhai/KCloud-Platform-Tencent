@@ -16,12 +16,16 @@
 package org.laokou.common.core.utils;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.exception.CustomException;
 
 /**
  * @author Kou Shenhai
  */
+@Slf4j
 public class SnowFlakeShortUtil {
+
+    private static SnowFlakeShortUtil instance;
 
     /**
      * 起始的时间戳
@@ -81,6 +85,17 @@ public class SnowFlakeShortUtil {
         return mill;
     }
 
+    public static SnowFlakeShortUtil getInstance() {
+        if (instance == null) {
+            synchronized (SnowFlakeShortUtil.class) {
+                if (instance == null) {
+                    instance = new SnowFlakeShortUtil(1,1);
+                }
+            }
+        }
+        return instance;
+    }
+
     private long getNewTimeStamp() {
         return System.currentTimeMillis();
     }
@@ -136,5 +151,10 @@ public class SnowFlakeShortUtil {
                 | sequence;
     }
 
+    public static void main(String[] args) {
+        SnowFlakeShortUtil snowFlakeUtil = SnowFlakeShortUtil.getInstance();
+        long id = snowFlakeUtil.nextId();
+        log.info("id：{}",id);
+    }
 
 }
