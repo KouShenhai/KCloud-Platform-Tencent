@@ -17,7 +17,7 @@ package org.laokou.oss.server.support;
 import lombok.RequiredArgsConstructor;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.common.core.utils.RedisKeyUtil;
+import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.oss.client.vo.CloudStorageVO;
 import org.laokou.oss.server.enums.StorageTypeEnum;

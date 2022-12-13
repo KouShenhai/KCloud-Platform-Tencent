@@ -37,6 +37,10 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

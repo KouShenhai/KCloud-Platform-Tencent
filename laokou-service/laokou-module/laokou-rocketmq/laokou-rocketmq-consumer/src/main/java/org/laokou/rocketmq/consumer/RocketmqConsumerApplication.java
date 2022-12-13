@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 /**
  * @author Kou Shenhai
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common.core","org.laokou.rocketmq.consumer"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.redis","org.laokou.common.core","org.laokou.rocketmq.consumer"})
 @EnableDiscoveryClient
 @EnableFeignClients
 public class RocketmqConsumerApplication {
