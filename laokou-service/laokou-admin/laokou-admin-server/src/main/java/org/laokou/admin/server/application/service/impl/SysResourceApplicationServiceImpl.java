@@ -167,6 +167,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                                 syncIndexDTO.setIndexName(indexName);
                                 syncIndexDTO.setData(jsonDataList);
                                 dto.setData(JacksonUtil.toJsonStr(syncIndexDTO));
+                                dto.setMsgId(String.valueOf(SnowFlakeShortUtil.getInstance().nextId()));
                                 rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_SYNC_INDEX_TOPIC,dto);
                             } catch (final FeignException e) {
                                 log.error("错误信息：{}",e.getMessage());
@@ -212,6 +213,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         dto.setIndexName(indexName);
                         dto.setIndexAlias(resourceIndexAlias);
                         rocketmqDTO.setData(JacksonUtil.toJsonStr(dto));
+                        rocketmqDTO.setMsgId(String.valueOf(SnowFlakeShortUtil.getInstance().nextId()));
                         rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_CREATE_INDEX_TOPIC, rocketmqDTO);
                     } catch (final FeignException e) {
                         log.error("错误信息：{}", e.getMessage());
@@ -238,6 +240,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         RocketmqDTO rocketmqDTO = new RocketmqDTO();
                         final String indexName = resourceIndex + "_" + ym;
                         rocketmqDTO.setData(indexName);
+                        rocketmqDTO.setMsgId(String.valueOf(SnowFlakeShortUtil.getInstance().nextId()));
                         rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_DELETE_INDEX_TOPIC, rocketmqDTO);
                     } catch (final FeignException e) {
                         log.error("错误信息：{}", e.getMessage());
@@ -319,6 +322,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             auditLogDTO.setType(AuditTypeEnum.RESOURCE.ordinal());
             RocketmqDTO rocketmqDTO = new RocketmqDTO();
             rocketmqDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
+            rocketmqDTO.setMsgId(String.valueOf(SnowFlakeShortUtil.getInstance().nextId()));
             rocketmqApiFeignClient.sendOneMessage(RocketmqConstant.LAOKOU_AUDIT_LOG_TOPIC, rocketmqDTO);
         } catch (FeignException e) {
             log.error("错误信息：{}",e.getMessage());

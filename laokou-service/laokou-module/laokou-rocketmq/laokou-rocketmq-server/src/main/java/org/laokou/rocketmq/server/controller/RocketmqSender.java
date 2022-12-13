@@ -40,14 +40,14 @@ public class RocketmqSender {
     @PostMapping("/send/{topic}")
     @ApiOperation("rocketmq消息>同步发送")
     public void sendMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto) {
-        SendStatus sendStatus = rocketMQTemplate.syncSend(topic, dto.getData()).getSendStatus();
+        SendStatus sendStatus = rocketMQTemplate.syncSend(topic, dto).getSendStatus();
         log.info("消息发送状态：{}",sendStatus.name());
     }
 
     @PostMapping("/sendAsync/{topic}")
     @ApiOperation("rocketmq消息>异步发送")
     public void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto) {
-        rocketMQTemplate.asyncSend(topic, dto.getData(), new SendCallback() {
+        rocketMQTemplate.asyncSend(topic, dto, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("发送成功");
@@ -63,7 +63,7 @@ public class RocketmqSender {
     public void sendOneMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto) {
          // 单向发送，只负责发送消息，不会触发回调函数，即发送消息请求不等待
          // 适用于耗时短，但对可靠性不高的场景，如日志收集
-        rocketMQTemplate.sendOneWay(topic,dto.getData());
+        rocketMQTemplate.sendOneWay(topic,dto);
     }
 
 }

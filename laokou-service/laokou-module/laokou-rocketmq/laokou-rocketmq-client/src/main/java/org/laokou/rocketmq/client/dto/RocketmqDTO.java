@@ -15,8 +15,6 @@
  */
 package org.laokou.rocketmq.client.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,7 +28,7 @@ import java.io.Serializable;
 public class RocketmqDTO implements Serializable {
 
     private String data;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long msgId;
+
+    private String msgId;
 
 }

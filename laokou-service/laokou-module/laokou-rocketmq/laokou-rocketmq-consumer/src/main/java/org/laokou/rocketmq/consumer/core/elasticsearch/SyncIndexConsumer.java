@@ -19,7 +19,6 @@ package org.laokou.rocketmq.consumer.core.elasticsearch;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
@@ -32,9 +31,8 @@ import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.SyncIndexDTO;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
+import org.laokou.rocketmq.consumer.filter.MessageFilter;
 import org.springframework.stereotype.Component;
-
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -47,18 +45,13 @@ import java.util.List;
 public class SyncIndexConsumer implements MessageListenerConcurrently {
 
     private final ElasticsearchApiFeignClient elasticsearchApiFeignClient;
-
+    private final MessageFilter messageFilter;
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> messageExtList, ConsumeConcurrentlyContext context) {
-        if (CollectionUtils.isEmpty(messageExtList)) {
+        String messageBody = messageFilter.getBody(messageExtList);
+        if (messageBody == null) {
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
         }
-        MessageExt messageExt = messageExtList.stream().findFirst().get();
-        // 重试三次不成功则不进行重试
-        if (messageExt.getReconsumeTimes() == RocketmqConstant.RECONSUME_TIMES) {
-            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
-        }
-        String messageBody = new String(messageExt.getBody(), StandardCharsets.UTF_8);
         try {
             SyncIndexDTO syncIndexDTO = JacksonUtil.toBean(messageBody, SyncIndexDTO.class);
             ElasticsearchDTO dto = ConvertUtil.sourceToTarget(syncIndexDTO, ElasticsearchDTO.class);

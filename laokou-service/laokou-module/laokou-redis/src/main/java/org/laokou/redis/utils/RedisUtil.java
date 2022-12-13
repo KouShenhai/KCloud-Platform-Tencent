@@ -117,7 +117,7 @@ public final class RedisUtil {
 
     public void set(String key, Object value, long expire){
         bloomFilter.add(key);
-        bloomFilter.expire(Duration.ofSeconds(expire));
+        bloomFilter.expire(Duration.ofSeconds(expire - 1000));
         redissonClient.getBucket(key).set(value,expire, TimeUnit.SECONDS);
     }
 
@@ -133,6 +133,8 @@ public final class RedisUtil {
     }
 
     public void hSet(String key,String field, Object value,long expire) {
+        bloomFilter.add(key+field);
+        bloomFilter.expire(Duration.ofSeconds(expire - 1000));
         RMap<Object, Object> map = redissonClient.getMap(key);
         map.put(field,value);
         map.expire(Duration.ofSeconds(expire));
@@ -143,6 +145,9 @@ public final class RedisUtil {
     }
 
     public Object hGet(String key,String field) {
+        if (!bloomFilter.contains(key+field)) {
+            return null;
+        }
         return redissonClient.getMap(key).get(field);
     }
 
