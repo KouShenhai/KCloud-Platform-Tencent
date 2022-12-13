@@ -16,10 +16,10 @@
 
 package org.laokou.im.server.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.laokou.im.client.PushMsgDTO;
 import org.laokou.im.server.config.WebSocketServer;
 import org.laokou.im.server.service.ImService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,15 +28,16 @@ import java.io.IOException;
  * @author Kou Shenhai
  */
 @Service
+@RequiredArgsConstructor
 public class ImServiceImpl implements ImService {
 
-    @Autowired
-    private WebSocketServer webSocketServer;
+    private final WebSocketServer webSocketServer;
 
     @Override
-    public void pusMessage(PushMsgDTO dto) throws IOException {
+    public Boolean pusMessage(PushMsgDTO dto) throws IOException {
         for (String receiver : dto.getReceiver()) {
             webSocketServer.sendMessages(dto.getMsg(), receiver);
         }
+        return true;
     }
 }

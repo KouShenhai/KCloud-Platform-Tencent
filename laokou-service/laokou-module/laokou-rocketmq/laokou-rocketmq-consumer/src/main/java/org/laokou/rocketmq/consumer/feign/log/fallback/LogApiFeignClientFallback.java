@@ -17,6 +17,7 @@ package org.laokou.rocketmq.consumer.feign.log.fallback;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.log.client.dto.AuditLogDTO;
 import org.laokou.log.client.dto.LoginLogDTO;
 import org.laokou.log.client.dto.OperateLogDTO;
@@ -35,17 +36,20 @@ public class LogApiFeignClientFallback implements LogApiFeignClient {
     private final Throwable throwable;
 
     @Override
-    public void login(LoginLogDTO dto) {
+    public HttpResultUtil<Boolean> login(LoginLogDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
     }
 
     @Override
-    public void operate(OperateLogDTO dto) {
+    public HttpResultUtil<Boolean> operate(OperateLogDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
     }
 
     @Override
-    public void audit(AuditLogDTO dto) {
+    public HttpResultUtil<Boolean> audit(AuditLogDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
     }
 }

@@ -33,7 +33,7 @@ public class RocketmqApiFeignClientFallback implements RocketmqApiFeignClient {
     private final Throwable throwable;
 
     @Override
-    public void sendAsyncMessage(String topic, RocketmqDTO dto) {
+    public void sendMessage(String topic, RocketmqDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
     }
 

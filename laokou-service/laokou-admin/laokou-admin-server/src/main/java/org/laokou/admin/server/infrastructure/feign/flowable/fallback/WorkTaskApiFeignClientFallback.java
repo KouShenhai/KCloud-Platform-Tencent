@@ -41,19 +41,19 @@ public class WorkTaskApiFeignClientFallback implements WorkTaskApiFeignClient {
     @Override
     public HttpResultUtil<PageVO<TaskVO>> query(TaskDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<>();
+        return new HttpResultUtil<PageVO<TaskVO>>().error("服务调用失败，请联系管理员");
     }
 
     @Override
     public HttpResultUtil<AssigneeVO> audit(AuditDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<>();
+        return new HttpResultUtil<AssigneeVO>().error("服务调用失败，请联系管理员");
     }
 
     @Override
     public HttpResultUtil<AssigneeVO> start(ProcessDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<>();
+        return new HttpResultUtil<AssigneeVO>().error("服务调用失败，请联系管理员");
     }
 
     @Override

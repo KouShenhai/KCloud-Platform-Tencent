@@ -167,7 +167,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                                 syncIndexDTO.setIndexName(indexName);
                                 syncIndexDTO.setData(jsonDataList);
                                 dto.setData(JacksonUtil.toJsonStr(syncIndexDTO));
-                                rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_SYNC_INDEX_TOPIC,dto);
+                                rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_SYNC_INDEX_TOPIC,dto);
                             } catch (final FeignException e) {
                                 log.error("错误信息：{}",e.getMessage());
                             }
@@ -212,7 +212,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         dto.setIndexName(indexName);
                         dto.setIndexAlias(resourceIndexAlias);
                         rocketmqDTO.setData(JacksonUtil.toJsonStr(dto));
-                        rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_CREATE_INDEX_TOPIC, rocketmqDTO);
+                        rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_CREATE_INDEX_TOPIC, rocketmqDTO);
                     } catch (final FeignException e) {
                         log.error("错误信息：{}", e.getMessage());
                     }
@@ -238,7 +238,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                         RocketmqDTO rocketmqDTO = new RocketmqDTO();
                         final String indexName = resourceIndex + "_" + ym;
                         rocketmqDTO.setData(indexName);
-                        rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_DELETE_INDEX_TOPIC, rocketmqDTO);
+                        rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_DELETE_INDEX_TOPIC, rocketmqDTO);
                     } catch (final FeignException e) {
                         log.error("错误信息：{}", e.getMessage());
                     }

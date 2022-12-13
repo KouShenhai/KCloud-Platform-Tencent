@@ -57,4 +57,9 @@ public interface RocketmqConstant {
      */
     String LAOKOU_MESSAGE_NOTICE_TOPIC = "laokou-message-notice-topic";
 
+    /**
+     * 消息重试次数
+     */
+    Integer RECONSUME_TIMES = 3;
+
 }

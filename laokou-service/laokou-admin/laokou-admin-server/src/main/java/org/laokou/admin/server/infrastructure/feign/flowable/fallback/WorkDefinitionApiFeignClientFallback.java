@@ -40,13 +40,13 @@ public class WorkDefinitionApiFeignClientFallback implements WorkDefinitionApiFe
     @Override
     public HttpResultUtil<Boolean> insert(String name, MultipartFile file) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<>();
+        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
     }
 
     @Override
     public HttpResultUtil<PageVO<DefinitionVO>> query(DefinitionDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<>();
+        return new HttpResultUtil<PageVO<DefinitionVO>>().error("服务调用失败，请联系管理员");
     }
 
     @Override
@@ -58,18 +58,18 @@ public class WorkDefinitionApiFeignClientFallback implements WorkDefinitionApiFe
     @Override
     public HttpResultUtil<Boolean> delete(String deploymentId) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<>();
+        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
     }
 
     @Override
     public HttpResultUtil<Boolean> suspend(String definitionId) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<>();
+        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
     }
 
     @Override
     public HttpResultUtil<Boolean> activate(String definitionId) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<>();
+        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
     }
 }

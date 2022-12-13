@@ -18,10 +18,10 @@ package org.laokou.im.server.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.im.client.PushMsgDTO;
 import org.laokou.im.server.service.ImService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,18 +33,17 @@ import java.io.IOException;
  * @author Kou Shenhai
  */
 @RestController
-@AllArgsConstructor
 @Api(value = "即时通讯API",protocols = "http",tags = "即时通讯API")
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ImController {
 
-    @Autowired
-    private ImService imService;
+    private final ImService imService;
 
     @PostMapping("/push")
     @ApiOperation("即时通讯API>消息推送")
-    public void push(@RequestBody PushMsgDTO dto) throws IOException {
-        imService.pusMessage(dto);
+        public HttpResultUtil<Boolean> push(@RequestBody PushMsgDTO dto) throws IOException {
+        return new HttpResultUtil<Boolean>().ok(imService.pusMessage(dto));
     }
 
 }

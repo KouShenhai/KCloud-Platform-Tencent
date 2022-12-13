@@ -17,6 +17,7 @@
 package org.laokou.log.server.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.log.client.dto.AuditLogDTO;
 import org.laokou.log.client.dto.LoginLogDTO;
 import org.laokou.log.client.dto.OperateLogDTO;
@@ -43,18 +44,18 @@ public class SysLogController {
     private final SysAuditLogService sysAuditLogService;
 
     @PostMapping("/login")
-    public void login(@RequestBody LoginLogDTO dto) {
-        sysLoginLogService.insertLoginLog(dto);
+    public HttpResultUtil<Boolean> login(@RequestBody LoginLogDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysLoginLogService.insertLoginLog(dto));
     }
 
     @PostMapping("/operate")
-    public void operate(@RequestBody OperateLogDTO dto) {
-        sysOperateLogService.insertOperateLog(dto);
+    public HttpResultUtil<Boolean> operate(@RequestBody OperateLogDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysOperateLogService.insertOperateLog(dto));
     }
 
     @PostMapping("/audit")
-    public void audit(@RequestBody AuditLogDTO dto) {
-        sysAuditLogService.insertAuditLog(dto);
+    public HttpResultUtil<Boolean> audit(@RequestBody AuditLogDTO dto) {
+        return new HttpResultUtil<Boolean>().ok(sysAuditLogService.insertAuditLog(dto));
     }
 
 }

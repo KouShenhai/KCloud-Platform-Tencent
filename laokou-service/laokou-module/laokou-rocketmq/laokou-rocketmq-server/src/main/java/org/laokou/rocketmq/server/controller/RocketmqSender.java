@@ -21,10 +21,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.web.bind.annotation.*;
-
 /**
  * @author Kou Shenhai
  */
@@ -40,7 +40,8 @@ public class RocketmqSender {
     @PostMapping("/send/{topic}")
     @ApiOperation("rocketmq消息>同步发送")
     public void sendMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto) {
-        rocketMQTemplate.syncSend(topic,dto.getData(),3000);
+        SendStatus sendStatus = rocketMQTemplate.syncSend(topic, dto.getData()).getSendStatus();
+        log.info("消息发送状态：{}",sendStatus.name());
     }
 
     @PostMapping("/sendAsync/{topic}")
@@ -51,7 +52,6 @@ public class RocketmqSender {
             public void onSuccess(SendResult sendResult) {
                 log.info("发送成功");
             }
-
             @Override
             public void onException(Throwable throwable) {
                 log.error("报错信息：{}",throwable.getMessage());

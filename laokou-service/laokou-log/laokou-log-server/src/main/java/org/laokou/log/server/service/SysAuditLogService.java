@@ -28,6 +28,7 @@ public interface SysAuditLogService extends IService<SysAuditLogDO> {
     /**
      * 新增审批日志
      * @param dto
+     * @return
      */
-    void insertAuditLog(AuditLogDTO dto);
+    Boolean insertAuditLog(AuditLogDTO dto);
 }

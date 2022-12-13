@@ -24,6 +24,7 @@ public interface SysOperateLogService extends IService<SysOperateLogDO> {
     /**
      * 新增登录日志
      * @param dto
+     * @return
      */
-    void insertOperateLog(OperateLogDTO dto);
+    Boolean insertOperateLog(OperateLogDTO dto);
 }

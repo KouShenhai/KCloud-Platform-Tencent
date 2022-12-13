@@ -27,6 +27,7 @@ public interface SysLoginLogService extends IService<SysLoginLogDO> {
     /**
      * 新增登录日志
      * @param dto
+     * @return
      */
-    void insertLoginLog(LoginLogDTO dto);
+    Boolean insertLoginLog(LoginLogDTO dto);
 }

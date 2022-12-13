@@ -28,7 +28,8 @@ public interface ImService {
      * 推送消息
      * @param dto
      * @throws IOException
+     * @return
      */
-    void pusMessage(PushMsgDTO dto) throws IOException;
+    Boolean pusMessage(PushMsgDTO dto) throws IOException;
 
 }

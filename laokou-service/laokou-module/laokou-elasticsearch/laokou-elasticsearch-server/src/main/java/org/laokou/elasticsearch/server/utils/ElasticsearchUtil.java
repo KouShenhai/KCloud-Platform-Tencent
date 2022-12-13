@@ -89,27 +89,28 @@ public class ElasticsearchUtil {
 
     /**
      * 批量同步数据到ES
-     *
      * @param indexName    索引名称
      * @param jsonDataList 数据列表
      * @throws IOException
      */
-    public void syncBatchIndex(String indexName, String jsonDataList) throws IOException {
+    public Boolean syncBatchIndex(String indexName, String jsonDataList) throws IOException {
         //判空
         if (StringUtil.isEmpty(jsonDataList)) {
-            return;
+            log.error("数据为空，无法批量同步数据");
+            return false;
         }
         //批量操作Request
         BulkRequest bulkRequest = packBulkIndexRequest(indexName, jsonDataList);
         if (bulkRequest.requests().isEmpty()) {
-            return;
+            log.error("组件的数据为空，无法批量同步数据");
+            return false;
         }
         final BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
         if (bulk.hasFailures()) {
             for (BulkItemResponse item : bulk.getItems()) {
                 log.error("索引[{}],主键[{}]更新操作失败，状态为:[{}],错误信息:{}",indexName,item.getId(),item.status(),item.getFailureMessage());
             }
-            return;
+            return false;
         }
         //记录索引新增与修改数量
         Integer createdCount = 0;
@@ -122,159 +123,29 @@ public class ElasticsearchUtil {
             }
         }
         log.info("索引[{}]批量同步更新成功，共新增[{}]个，修改[{}]个",indexName,createdCount,updatedCount);
+        return true;
     }
 
     /**
      * 批量修改ES
-     *
      * @param indexName    索引名称
      * @param indexAlias   别名
      * @param jsonDataList 数据列表
      * @param clazz        类型
-     * @throws IOException
      */
-    public void updateBatchIndex(String indexName, String indexAlias, String jsonDataList, Class<?> clazz) throws IOException {
-        if (syncIndex(indexName, indexAlias, clazz)) {
-            return;
+    public Boolean updateBatchIndex(String indexName, String indexAlias, String jsonDataList, Class<?> clazz) throws IOException {
+        boolean indexExists = isIndexExists(indexName);
+        if (!indexExists) {
+            createIndex(indexName,indexAlias,clazz);
         }
-        this.updateDataBatch(indexName, jsonDataList);
-    }
-
-    /**
-     * 同步索引
-     * @param indexName 索引名称
-     * @param indexAlias 索引别名
-     * @param clazz 类型
-     * @return
-     * @throws IOException
-     */
-    private boolean syncIndex(String indexName,String indexAlias,Class<?> clazz) throws IOException {
-        //创建索引
-        if (!isIndexExists(indexName)) {
-            return !createIndex(indexName, indexAlias, clazz, false);
-        }
-        return false;
-    }
-
-    /**
-     * ES修改数据
-     *
-     * @param indexName 索引名称
-     * @param id        主键
-     * @param paramJson 参数JSON
-     */
-    public void updateIndex(String indexName, String id, String paramJson) {
-        UpdateRequest updateRequest = new UpdateRequest(indexName, id);
-        //如果修改索引中不存在则进行新增
-        updateRequest.docAsUpsert(true);
-        //立即刷新数据
-        updateRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-        updateRequest.doc(paramJson,XContentType.JSON);
-        try {
-            UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
-            log.info("索引[{}],主键：【{}】操作结果:[{}]",indexName,id,updateResponse.getResult());
-            if (DocWriteResponse.Result.CREATED.equals(updateResponse.getResult())) {
-                //新增
-                log.info("索引：【{}】,主键：【{}】新增成功",indexName,id);
-            } else if (DocWriteResponse.Result.UPDATED.equals(updateResponse.getResult())) {
-                //修改
-                log.info("索引：【{}】，主键：【{}】修改成功",indexName, id);
-            } else if (DocWriteResponse.Result.NOOP.equals(updateResponse.getResult())) {
-                //无变化
-                log.info("索引:[{}],主键:[{}]无变化",indexName, id);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.error("索引：[{}],主键：【{}】，更新异常:[{}]",indexName, id,e);
-        }
-    }
-
-    /**
-     * 删除数据
-     *
-     * @param indexName 索引名称
-     * @param id        主键
-     */
-    public void deleteIndex(String indexName, String id) {
-        DeleteRequest deleteRequest = new DeleteRequest(indexName);
-        deleteRequest.id(id);
-        deleteRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-        try {
-            DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
-            if (DocWriteResponse.Result.NOT_FOUND.equals(deleteResponse.getResult())) {
-                log.error("索引：【{}】，主键：【{}】删除失败",indexName, id);
-            } else {
-                log.info("索引【{}】主键【{}】删除成功",indexName, id);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.error("删除索引【{}】出现异常[{}]",indexName,e);
-        }
-    }
-
-    /**
-     * 批量删除ES
-     *
-     * @param indexName 索引名称
-     * @param ids       id列表
-     */
-    public void deleteBatchIndex(String indexName, List<String> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return;
-        }
-        BulkRequest bulkRequest = packBulkDeleteRequest(indexName, ids);
-        try {
-            BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
-            if (bulk.hasFailures()) {
-                for (BulkItemResponse item : bulk.getItems()) {
-                    log.error("删除索引:[{}],主键：{}失败，信息：{}",indexName,item.getId(),item.getFailureMessage());
-                }
-                return;
-            }
-            //记录索引新增与修改数量
-            Integer deleteCount = 0;
-            for (BulkItemResponse item : bulk.getItems()) {
-                if (DocWriteResponse.Result.DELETED.equals(item.getResponse().getResult())) {
-                    deleteCount++;
-                }
-            }
-            log.info("批量删除索引[{}]成功，共删除[{}]个",indexName,deleteCount);
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.error("删除索引：【{}】出现异常:{}",indexName,e);
-        }
-    }
-
-    /**
-     * 组装删除操作
-     * @param indexName 索引名称
-     * @param ids id列表
-     * @return
-     */
-    private BulkRequest packBulkDeleteRequest(String indexName, List<String> ids) {
-        BulkRequest bulkRequest = new BulkRequest();
-        bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-        ids.forEach(id -> {
-            DeleteRequest deleteRequest = new DeleteRequest(indexName);
-            deleteRequest.id(id);
-            bulkRequest.add(deleteRequest);
-        });
-        return bulkRequest;
-    }
-
-    /**
-     * 批量修改ES
-     * @param indexName 索引名称
-     * @param jsonDataList json数据列表
-     * @return
-     */
-    public boolean updateDataBatch(String indexName, String jsonDataList) {
         //判空
         if (StringUtil.isEmpty(jsonDataList)) {
+            log.error("数据为空，无法批量修改数据");
             return false;
         }
         BulkRequest bulkRequest = packBulkUpdateRequest(indexName, jsonDataList);
         if (bulkRequest.requests().isEmpty()) {
+            log.error("组件的数据为空，无法批量修改数据");
             return false;
         }
         try {
@@ -303,6 +174,118 @@ public class ElasticsearchUtil {
             return false;
         }
         return true;
+    }
+
+    /**
+     * ES修改数据
+     * @param indexName 索引名称
+     * @param id        主键
+     * @param paramJson 参数JSON
+     */
+    public Boolean updateIndex(String indexName, String id, String paramJson) {
+        UpdateRequest updateRequest = new UpdateRequest(indexName, id);
+        //如果修改索引中不存在则进行新增
+        updateRequest.docAsUpsert(true);
+        //立即刷新数据
+        updateRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
+        updateRequest.doc(paramJson,XContentType.JSON);
+        try {
+            UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
+            log.info("索引[{}],主键：【{}】操作结果:[{}]",indexName,id,updateResponse.getResult());
+            if (DocWriteResponse.Result.CREATED.equals(updateResponse.getResult())) {
+                //新增
+                log.info("索引：【{}】,主键：【{}】新增成功",indexName,id);
+            } else if (DocWriteResponse.Result.UPDATED.equals(updateResponse.getResult())) {
+                //修改
+                log.info("索引：【{}】，主键：【{}】修改成功",indexName, id);
+            } else if (DocWriteResponse.Result.NOOP.equals(updateResponse.getResult())) {
+                //无变化
+                log.info("索引:[{}],主键:[{}]无变化",indexName, id);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("索引：[{}],主键：【{}】，更新异常:[{}]",indexName, id,e);
+        }
+        return true;
+    }
+
+    /**
+     * 删除数据
+     * @param indexName 索引名称
+     * @param id        主键
+     */
+    public Boolean deleteIndexById(String indexName, String id) {
+        boolean indexExists = isIndexExists(indexName);
+        if (!indexExists) {
+            log.error("索引【{}】不存在，请创建索引");
+            return false;
+        }
+        DeleteRequest deleteRequest = new DeleteRequest(indexName);
+        deleteRequest.id(id);
+        deleteRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
+        try {
+            DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
+            if (DocWriteResponse.Result.NOT_FOUND.equals(deleteResponse.getResult())) {
+                log.error("索引：【{}】，主键：【{}】删除失败",indexName, id);
+            } else {
+                log.info("索引【{}】主键【{}】删除成功",indexName, id);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("删除索引【{}】出现异常[{}]",indexName,e);
+        }
+        return true;
+    }
+
+    /**
+     * 批量删除ES
+     * @param indexName 索引名称
+     * @param ids       id列表
+     */
+    public Boolean deleteBatchIndex(String indexName, List<String> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            log.error("ids为空，不能批量删除数据");
+            return false;
+        }
+        BulkRequest bulkRequest = packBulkDeleteRequest(indexName, ids);
+        try {
+            BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+            if (bulk.hasFailures()) {
+                for (BulkItemResponse item : bulk.getItems()) {
+                    log.error("删除索引:[{}],主键：{}失败，信息：{}",indexName,item.getId(),item.getFailureMessage());
+                }
+                return false;
+            }
+            //记录索引新增与修改数量
+            Integer deleteCount = 0;
+            for (BulkItemResponse item : bulk.getItems()) {
+                if (DocWriteResponse.Result.DELETED.equals(item.getResponse().getResult())) {
+                    deleteCount++;
+                }
+            }
+            log.info("批量删除索引[{}]成功，共删除[{}]个",indexName,deleteCount);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("删除索引：【{}】出现异常:{}",indexName,e);
+        }
+        return true;
+    }
+
+    /**
+     * 组装删除操作
+     * @param indexName 索引名称
+     * @param ids id列表
+     * @return
+     */
+    private BulkRequest packBulkDeleteRequest(String indexName, List<String> ids) {
+        BulkRequest bulkRequest = new BulkRequest();
+        bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
+        ids.forEach(id -> {
+            DeleteRequest deleteRequest = new DeleteRequest(indexName);
+            deleteRequest.id(id);
+            bulkRequest.add(deleteRequest);
+        });
+        return bulkRequest;
     }
 
     /**
@@ -338,9 +321,10 @@ public class ElasticsearchUtil {
      */
     public String getIndexById(String indexName,String id) {
         //判断索引是否存在
-        boolean isIndexExists = isIndexExists(indexName);
-        if (!isIndexExists) {
-            return "";
+        boolean indexExists = isIndexExists(indexName);
+        if (!indexExists) {
+            log.error("索引【{}】不存在",indexName);
+            return null;
         }
         GetRequest getRequest = new GetRequest(indexName, id);
         try {
@@ -351,21 +335,20 @@ public class ElasticsearchUtil {
         } catch (IOException e) {
             e.printStackTrace();
             log.error("索引【{}】主键[{}]，查询异常：{}",indexName,id,e);
-            return "";
+            return null;
         }
     }
 
     /**
      * 清空索引内容
-     *
      * @param indexName 索引名称
      */
-    public void deleteAllIndex(String indexName) {
+    public Boolean deleteAllIndex(String indexName) {
         //判断索引是否存在
-        boolean isIndexExists = isIndexExists(indexName);
-        if (!isIndexExists) {
+        boolean indexExists = isIndexExists(indexName);
+        if (!indexExists) {
             log.error("索引【{}】不存在，删除失败",indexName);
-            return;
+            return false;
         }
         DeleteRequest deleteRequest = new DeleteRequest(indexName);
         deleteRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -373,29 +356,31 @@ public class ElasticsearchUtil {
             DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
             if (DocWriteResponse.Result.NOT_FOUND.equals(deleteResponse.getResult())) {
                 log.error("索引【{}】删除失败",indexName);
-                return;
+                return false;
             }
             log.info("索引【{}】删除成功",indexName);
         } catch (IOException e) {
             e.printStackTrace();
             log.error("删除索引[{}]，出现异常[{}]",indexName,e);
         }
+        return true;
     }
 
     /**
      * 批量数据保存到ES-异步
-     *
      * @param indexName    索引名称
      * @param jsonDataList 数据列表
      */
     public void syncAsyncBatchIndex(String indexName, String jsonDataList) {
         //判空
         if (StringUtil.isEmpty(jsonDataList)) {
+            log.error("数据为空，无法批量异步同步数据");
             return;
         }
         //批量操作Request
         BulkRequest bulkRequest = packBulkIndexRequest(indexName, jsonDataList);
         if (bulkRequest.requests().isEmpty()) {
+            log.error("组装数据为空，无法批量异步同步数据");
             return;
         }
         //异步执行
@@ -426,12 +411,12 @@ public class ElasticsearchUtil {
      * @return
      * @throws IOException
      */
-    public boolean deleteIndex(String indexName) throws IOException {
+    public Boolean deleteIndex(String indexName) throws IOException {
         //判断索引是否存在
-        boolean isIndexExists = isIndexExists(indexName);
-        if (!isIndexExists) {
+        boolean indexExists = isIndexExists(indexName);
+        if (!indexExists) {
             log.error("索引【{}】不存在，删除失败",indexName);
-            return true;
+            return false;
         }
         //删除操作Request
         DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(indexName);
@@ -452,12 +437,12 @@ public class ElasticsearchUtil {
     public void deleteAsyncIndex(String indexName) {
         boolean indexExists = isIndexExists(indexName);
         if (!indexExists) {
-            log.error("索引不存在，请创建索引");
+            log.error("索引【{}】不存在，请创建索引",indexName);
             return;
         }
         DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(indexName);
         deleteIndexRequest.indicesOptions(IndicesOptions.LENIENT_EXPAND_OPEN);
-        ActionListener<AcknowledgedResponse> listener = new ActionListener<AcknowledgedResponse>() {
+        ActionListener<AcknowledgedResponse> listener = new ActionListener<>() {
             @Override
             public void onResponse(AcknowledgedResponse acknowledgedResponse) {
                 if (acknowledgedResponse.isAcknowledged()) {
@@ -466,6 +451,7 @@ public class ElasticsearchUtil {
                     log.error("索引【{}】删除失败", indexName);
                 }
             }
+
             @Override
             public void onFailure(Exception e) {
                 log.error("索引【{}】删除失败，失败信息:{}", indexName, e);
@@ -505,16 +491,15 @@ public class ElasticsearchUtil {
      * @param indexName 索引名称
      * @param indexAlias 别名
      * @param clazz 类型
-     * @param isDel 是否删除索引 true删除 false不删除
      * @return
      * @throws IOException
      */
-    public boolean createIndex(String indexName,String indexAlias,Class<?> clazz,boolean isDel) throws IOException {
-        //删除索引
-        if (isDel) {
-             if (!deleteIndex(indexName)) {
-                 return false;
-             }
+    public Boolean createIndex(String indexName,String indexAlias,Class<?> clazz) throws IOException {
+        //判断索引是否存在
+        boolean indexExists = isIndexExists(indexName);
+        if (indexExists) {
+            log.error("索引【{}】已存在，创建失败",indexName);
+            return false;
         }
         //创建索引
         boolean createResult = createIndexAndCreateMapping(indexName,indexAlias, FieldMappingUtil.getFieldInfo(clazz));
@@ -536,7 +521,7 @@ public class ElasticsearchUtil {
     public void createAsyncIndex(String indexName,String indexAlias, Class<?> clazz) throws IOException {
         boolean indexExists = isIndexExists(indexName);
         if (indexExists) {
-            log.error("索引已存在，请删除索引");
+            log.error("索引【{}】已存在，请删除索引",indexName);
             return;
         }
         CreateIndexRequest createIndexRequest = getCreateIndexRequest(indexName, indexAlias, FieldMappingUtil.getFieldInfo(clazz));
@@ -578,16 +563,16 @@ public class ElasticsearchUtil {
 
     /**
      * 数据同步到ES
-     *
      * @param id        主键
      * @param indexName 索引名称
      * @param jsonData  json数据
      * @param clazz     类型
      */
-    public void syncIndex(String id, String indexName, String indexAlias, String jsonData, Class<?> clazz) throws IOException {
+    public Boolean syncIndex(String id, String indexName, String indexAlias, String jsonData, Class<?> clazz) throws IOException {
         //创建索引
-        if (syncIndex(indexName, indexAlias, clazz)) {
-            return;
+        boolean indexExists = isIndexExists(indexName);
+        if (!indexExists) {
+            createIndex(indexName,indexAlias,clazz);
         }
         //创建操作Request
         IndexRequest indexRequest = new IndexRequest(indexName);
@@ -603,6 +588,7 @@ public class ElasticsearchUtil {
         } else if (IndexResponse.Result.UPDATED.equals(response.getResult())) {
             log.info("索引【{}】修改成功",indexName);
         }
+        return true;
     }
 
     /**
@@ -610,7 +596,7 @@ public class ElasticsearchUtil {
      * @param indexName 索引名称
      * @return
      */
-    public boolean isIndexExists(String indexName) {
+    public Boolean isIndexExists(String indexName) {
         try {
             GetIndexRequest getIndexRequest = new GetIndexRequest(indexName);
             return restHighLevelClient.indices().exists(getIndexRequest, RequestOptions.DEFAULT);
@@ -628,7 +614,7 @@ public class ElasticsearchUtil {
      * @return
      * @throws IOException
      */
-    private boolean createIndexAndCreateMapping(String indexName,String indexAlias, List<FieldMapping> fieldMappingList) throws IOException {
+    private Boolean createIndexAndCreateMapping(String indexName,String indexAlias, List<FieldMapping> fieldMappingList) throws IOException {
         //封装es索引的mapping
         CreateIndexRequest createIndexRequest = getCreateIndexRequest(indexName, indexAlias, fieldMappingList);
         //同步方式创建索引

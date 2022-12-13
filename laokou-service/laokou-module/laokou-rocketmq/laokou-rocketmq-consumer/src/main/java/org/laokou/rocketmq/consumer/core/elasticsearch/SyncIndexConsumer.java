@@ -19,15 +19,23 @@ package org.laokou.rocketmq.consumer.core.elasticsearch;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
-import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.ConvertUtil;
+import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.SyncIndexDTO;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.springframework.stereotype.Component;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * @author Kou Shenhai
@@ -36,18 +44,32 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class SyncIndexConsumer implements RocketMQListener<String> {
+public class SyncIndexConsumer implements MessageListenerConcurrently {
 
     private final ElasticsearchApiFeignClient elasticsearchApiFeignClient;
 
     @Override
-    public void onMessage(String message) {
+    public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> messageExtList, ConsumeConcurrentlyContext context) {
+        if (CollectionUtils.isEmpty(messageExtList)) {
+            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+        }
+        MessageExt messageExt = messageExtList.stream().findFirst().get();
+        // 重试三次不成功则不进行重试
+        if (messageExt.getReconsumeTimes() == RocketmqConstant.RECONSUME_TIMES) {
+            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+        }
+        String messageBody = new String(messageExt.getBody(), StandardCharsets.UTF_8);
         try {
-            SyncIndexDTO syncIndexDTO = JacksonUtil.toBean(message, SyncIndexDTO.class);
+            SyncIndexDTO syncIndexDTO = JacksonUtil.toBean(messageBody, SyncIndexDTO.class);
             ElasticsearchDTO dto = ConvertUtil.sourceToTarget(syncIndexDTO, ElasticsearchDTO.class);
-            elasticsearchApiFeignClient.syncAsyncBatch(dto);
+            HttpResultUtil<Boolean> result = elasticsearchApiFeignClient.syncBatch(dto);
+            if (!result.success()) {
+                return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+            }
+            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
         } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
+            return ConsumeConcurrentlyStatus.RECONSUME_LATER;
         }
     }
 }

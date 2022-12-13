@@ -127,7 +127,7 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
             msgDTO.setSendChannel(sendChannel);
             RocketmqDTO dto = new RocketmqDTO();
             dto.setData(JacksonUtil.toJsonStr(msgDTO));
-            rocketmqApiFeignClient.sendAsyncMessage(RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC,dto);
+            rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC,dto);
         } catch (FeignException e) {
             log.error("错误消息：{}",e.getMessage());
         }

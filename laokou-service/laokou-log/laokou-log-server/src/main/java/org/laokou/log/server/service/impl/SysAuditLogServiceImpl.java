@@ -33,9 +33,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class SysAuditLogServiceImpl extends ServiceImpl<SysAuditLogMapper, SysAuditLogDO> implements SysAuditLogService {
 
     @Override
-    public void insertAuditLog(AuditLogDTO dto) {
+    public Boolean insertAuditLog(AuditLogDTO dto) {
         SysAuditLogDO auditDO = ConvertUtil.sourceToTarget(dto, SysAuditLogDO.class);
         baseMapper.insert(auditDO);
+        return true;
     }
 
 }

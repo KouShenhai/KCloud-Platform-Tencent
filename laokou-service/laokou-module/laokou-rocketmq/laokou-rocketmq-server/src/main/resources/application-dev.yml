@@ -16,6 +16,10 @@ rocketmq:
   # 生产者
   producer:
     group: laokou-producer-group
+    # 超时时限5s
+    send-message-timeout: 5000
+    # 重试次数3次
+    retry-times-when-send-failed: 3
 logging:
   file:
     name: logs/${spring.application.name}/info.log

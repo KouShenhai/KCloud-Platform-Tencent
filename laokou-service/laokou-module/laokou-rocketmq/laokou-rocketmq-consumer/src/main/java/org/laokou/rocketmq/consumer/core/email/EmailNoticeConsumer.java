@@ -17,13 +17,20 @@
 package org.laokou.rocketmq.consumer.core.email;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
-import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.MsgDTO;
 import org.laokou.rocketmq.client.enums.ChannelTypeEnum;
 import org.springframework.stereotype.Component;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * @author Kou Shenhai
@@ -31,13 +38,24 @@ import org.springframework.stereotype.Component;
 @RocketMQMessageListener(consumerGroup = "laokou-consumer-group-6", topic = RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC)
 @Component
 @RequiredArgsConstructor
-public class EmailNoticeConsumer implements RocketMQListener<String> {
+@Slf4j
+public class EmailNoticeConsumer implements MessageListenerConcurrently {
 
     @Override
-    public void onMessage(String message) {
-        final MsgDTO dto = JacksonUtil.toBean(message, MsgDTO.class);
-        if (ChannelTypeEnum.EMAIL.ordinal() == dto.getSendChannel()) {
-            System.out.println("发送邮件");
+    public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> messageExtList, ConsumeConcurrentlyContext context) {
+        if (CollectionUtils.isEmpty(messageExtList)) {
+            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
         }
+        MessageExt messageExt = messageExtList.stream().findFirst().get();
+        // 重试三次不成功则不进行重试
+        if (messageExt.getReconsumeTimes() == RocketmqConstant.RECONSUME_TIMES) {
+            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+        }
+        String messageBody = new String(messageExt.getBody(), StandardCharsets.UTF_8);
+        final MsgDTO dto = JacksonUtil.toBean(messageBody, MsgDTO.class);
+        if (ChannelTypeEnum.EMAIL.ordinal() == dto.getSendChannel()) {
+            log.info("邮件");
+        }
+        return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
     }
 }

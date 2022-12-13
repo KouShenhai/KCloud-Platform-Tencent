@@ -36,8 +36,8 @@ public interface RocketmqApiFeignClient {
      * @param topic: 主题
      * @param dto:   消息内容（Json格式）
      */
-    @PostMapping("/sendAsync/{topic}")
-    void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto);
+    @PostMapping("/send/{topic}")
+    void sendMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto);
 
     /**
      * 异步发送

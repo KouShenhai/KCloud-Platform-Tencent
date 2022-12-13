@@ -32,8 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLoginLogDO> implements SysLoginLogService {
 
     @Override
-    public void insertLoginLog(LoginLogDTO dto) {
+    public Boolean insertLoginLog(LoginLogDTO dto) {
         SysLoginLogDO logDO = ConvertUtil.sourceToTarget(dto, SysLoginLogDO.class);
         baseMapper.insert(logDO);
+        return true;
     }
 }

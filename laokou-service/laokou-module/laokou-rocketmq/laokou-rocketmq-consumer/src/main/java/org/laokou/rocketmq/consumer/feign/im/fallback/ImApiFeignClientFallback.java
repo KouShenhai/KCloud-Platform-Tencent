@@ -17,6 +17,7 @@ package org.laokou.rocketmq.consumer.feign.im.fallback;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.rocketmq.consumer.feign.im.ImApiFeignClient;
 import org.laokou.im.client.PushMsgDTO;
 
@@ -33,7 +34,8 @@ public class ImApiFeignClientFallback implements ImApiFeignClient {
     private final Throwable throwable;
 
     @Override
-    public void push(PushMsgDTO dto) {
+    public HttpResultUtil<Boolean> push(PushMsgDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
+        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
     }
 }
