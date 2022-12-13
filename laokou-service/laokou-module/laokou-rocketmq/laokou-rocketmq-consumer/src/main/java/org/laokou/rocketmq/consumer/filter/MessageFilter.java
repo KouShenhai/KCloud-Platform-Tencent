@@ -17,7 +17,6 @@
 package org.laokou.rocketmq.consumer.filter;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.redis.utils.RedisKeyUtil;
@@ -25,10 +24,7 @@ import org.laokou.redis.utils.RedisUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.stereotype.Component;
-
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-
 /**
  * @author Kou Shenhai
  */
@@ -38,11 +34,7 @@ public class MessageFilter {
 
     private final RedisUtil redisUtil;
 
-    public String getBody(List<MessageExt> messageExtList) {
-        if (CollectionUtils.isEmpty(messageExtList)) {
-            return null;
-        }
-        MessageExt messageExt = messageExtList.stream().findFirst().get();
+    public String getBody(MessageExt messageExt) {
         // 重试三次不成功则不进行重试
         if (messageExt.getReconsumeTimes() == RocketmqConstant.RECONSUME_TIMES) {
             return null;

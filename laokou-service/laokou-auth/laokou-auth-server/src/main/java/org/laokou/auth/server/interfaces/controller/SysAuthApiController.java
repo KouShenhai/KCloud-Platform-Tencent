@@ -20,10 +20,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.auth.client.constant.AuthConstant;
+import org.laokou.common.core.utils.HttpResultUtil;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 /**
  * 系统认证控制器
  * @author Kou Shenhai
@@ -38,8 +37,8 @@ public class SysAuthApiController {
     @GetMapping("/oauth/captcha")
     @ApiOperation("系统认证>验证码")
     @ApiImplicitParam(name = "uuid",value = "唯一标识",required = true,paramType = "query",dataType = "String")
-    public void captcha(@RequestParam(AuthConstant.UUID)String uuid, HttpServletResponse response) throws IOException {
-        sysAuthApplicationService.captcha(uuid,response);
+    public HttpResultUtil<String> captcha(@RequestParam(AuthConstant.UUID)String uuid) {
+        return new HttpResultUtil<String>().ok(sysAuthApplicationService.captcha(uuid));
     }
 
     @GetMapping("/oauth/logout")

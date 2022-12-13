@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.domain.sys.repository.service.impl;
-import com.google.code.kaptcha.Producer;
+import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.awt.image.BufferedImage;
-
 /**
  * 验证码实现类
  * @author Kou Shenhai
@@ -29,26 +27,21 @@ import java.awt.image.BufferedImage;
  * @date 2020/12/19 0019 下午 7:23
  */
 @Service
+@RequiredArgsConstructor
 public class SysCaptchaServiceImpl implements SysCaptchaService {
-
-    @Autowired
-    private Producer producer;
 
     @Autowired
     private RedisUtil redisUtil;
 
     @Override
-    public BufferedImage createImage(String uuid) {
-        //生成文字验证码
-        String code = producer.createText();
-
+    public Boolean setCode(String uuid,String code) {
         //保存到缓存
         setCache(uuid,code);
-        return producer.createImage(code);
+        return true;
     }
 
     @Override
-    public boolean validate(String uuid, String code) {
+    public Boolean validate(String uuid, String code) {
         //获取验证码
         String captcha = getCache(uuid);
         //效验成功

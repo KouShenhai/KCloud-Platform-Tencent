@@ -45,10 +45,8 @@ public interface SysAuthApplicationService {
     /**
      * 生成验证码
      * @param uuid
-     * @param response
-     * @throws IOException
+     * @return
      */
-    void captcha(String uuid, HttpServletResponse response) throws IOException;
-
+    String captcha(String uuid);
 
 }

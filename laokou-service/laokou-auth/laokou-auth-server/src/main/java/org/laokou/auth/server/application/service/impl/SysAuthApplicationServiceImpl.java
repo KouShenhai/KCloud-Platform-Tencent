@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.application.service.impl;
+import com.wf.captcha.GifCaptcha;
+import com.wf.captcha.base.Captcha;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.collections.CollectionUtils;
@@ -35,20 +37,14 @@ import org.laokou.auth.server.infrastructure.exception.CustomOauth2Exception;
 import org.laokou.common.core.utils.*;
 import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.redis.utils.RedisUtil;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
-
+import java.awt.*;
+import java.util.List;
 /**
  * 官方不再维护，过期类无法替换
  * @author Kou Shenhai
@@ -65,7 +61,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private final TokenStore tokenStore;
     private final RedisUtil redisUtil;
     private final LoginLogUtil loginLogUtil;
-    private final ThreadPoolTaskExecutor authThreadPoolTaskExecutor;
 
     @SneakyThrows
     @Override
@@ -74,43 +69,27 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
-            authThreadPoolTaskExecutor.execute(() -> {
-                loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
-            });
+            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         if(!PasswordUtil.matches(password, userDetail.getPassword())) {
-            authThreadPoolTaskExecutor.execute(() -> {
-                loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
-            });
+            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
-            authThreadPoolTaskExecutor.execute(() -> {
-                loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
-            });
+            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
             throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_DISABLE,MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
         }
-        CompletableFuture<UserDetail> c1 = CompletableFuture.supplyAsync(() -> sysDeptService.getDeptIds(userDetail))
-                .thenApplyAsync(deptIds -> {
-                    userDetail.setDeptIds(deptIds);
-                    return userDetail;
-                }, authThreadPoolTaskExecutor);
-        CompletableFuture<UserDetail> c2 = CompletableFuture.supplyAsync(() -> sysMenuService.getPermissionsList(userDetail))
-                .thenApplyAsync(permissionList -> {
-                    userDetail.setPermissionList(permissionList);
-                    return userDetail;
-                }, authThreadPoolTaskExecutor);
-        // 等待所有任务都完成
-        CompletableFuture.allOf(c1,c2).join();
-        if (CollectionUtils.isEmpty(userDetail.getPermissionList())) {
+        List<String> permissionsList = sysMenuService.getPermissionsList(userDetail);
+        if (CollectionUtils.isEmpty(permissionsList)) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
             throw new CustomOauth2Exception("" + ErrorCode.NOT_PERMISSIONS,MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
         }
-        authThreadPoolTaskExecutor.execute(() -> {
-            // 登录成功
-            loginLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
-        });
+        List<Long> deptIds = sysDeptService.getDeptIds(userDetail);
+        userDetail.setDeptIds(deptIds);
+        userDetail.setPermissionList(permissionsList);
+        // 登录成功
+        loginLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
         return userDetail;
     }
 
@@ -132,16 +111,18 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     }
 
     @Override
-    public void captcha(String uuid, HttpServletResponse response) throws IOException {
+    public String captcha(String uuid) {
         if (StringUtil.isEmpty(uuid)) {
             throw new CustomOauth2Exception("" + ErrorCode.IDENTIFIER_NOT_NULL,MessageUtil.getMessage(ErrorCode.IDENTIFIER_NOT_NULL));
         }
-        BufferedImage image = sysCaptchaService.createImage(uuid);
-        response.setHeader("Cache-Control", "no-store, no-cache");
-        response.setContentType("image/jpeg");
-        ServletOutputStream out = response.getOutputStream();
-        ImageIO.write(image,"jpg",out);
-        out.close();
+        // 三个参数分别为宽、高、位数
+        Captcha captcha = new GifCaptcha(130, 48, 4);
+        // 设置字体，有默认字体，可以不用设置
+        captcha.setFont(new Font("Verdana", Font.PLAIN, 32));
+        // 设置类型，纯数字、纯字母、字母数字混合
+        captcha.setCharType(Captcha.TYPE_DEFAULT);
+        sysCaptchaService.setCode(uuid,captcha.text());
+        return captcha.toBase64();
     }
 
     private static String getToken(HttpServletRequest request){

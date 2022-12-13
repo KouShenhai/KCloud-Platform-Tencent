@@ -18,19 +18,15 @@ package org.laokou.rocketmq.consumer.core.email;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
-import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
+import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.MsgDTO;
 import org.laokou.rocketmq.client.enums.ChannelTypeEnum;
 import org.laokou.rocketmq.consumer.filter.MessageFilter;
 import org.springframework.stereotype.Component;
-import java.util.List;
-
 /**
  * @author Kou Shenhai
  */
@@ -38,18 +34,18 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class EmailNoticeConsumer implements MessageListenerConcurrently {
+public class EmailNoticeConsumer implements RocketMQListener<MessageExt> {
     private final MessageFilter messageFilter;
+
     @Override
-    public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> messageExtList, ConsumeConcurrentlyContext context) {
-        String messageBody = messageFilter.getBody(messageExtList);
+    public void onMessage(MessageExt message) {
+        String messageBody = messageFilter.getBody(message);
         if (messageBody == null) {
-            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+            return;
         }
         final MsgDTO dto = JacksonUtil.toBean(messageBody, MsgDTO.class);
         if (ChannelTypeEnum.EMAIL.ordinal() == dto.getSendChannel()) {
             log.info("邮件");
         }
-        return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
     }
 }

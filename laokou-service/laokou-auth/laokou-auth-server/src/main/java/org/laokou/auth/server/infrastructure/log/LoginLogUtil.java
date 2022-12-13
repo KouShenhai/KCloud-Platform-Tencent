@@ -17,6 +17,7 @@ package org.laokou.auth.server.infrastructure.log;
 
 import eu.bitwalker.useragentutils.UserAgent;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
 import org.laokou.auth.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
@@ -27,7 +28,6 @@ import org.laokou.common.core.utils.SnowFlakeShortUtil;
 import org.laokou.log.client.dto.LoginLogDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,10 +38,10 @@ import java.io.IOException;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class LoginLogUtil {
 
-    @Autowired
-    private RocketmqApiFeignClient rocketmqApiFeignClient;
+    private final RocketmqApiFeignClient rocketmqApiFeignClient;
 
     public void recordLogin(String username,Integer status,String msg,HttpServletRequest request) {
         try {

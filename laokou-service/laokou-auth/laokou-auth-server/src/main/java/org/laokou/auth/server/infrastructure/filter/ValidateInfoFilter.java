@@ -26,7 +26,6 @@ import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.springframework.http.HttpMethod;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
@@ -58,8 +57,6 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
     private final AuthAuthenticationFailureHandler authAuthenticationFailureHandler;
 
     private final LoginLogUtil loginLogUtil;
-
-    private final ThreadPoolTaskExecutor authThreadPoolTaskExecutor;
 
     @SneakyThrows
     @Override
@@ -97,7 +94,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
         }
         boolean validate = sysCaptchaService.validate(uuid, captcha);
         if (!validate) {
-            authThreadPoolTaskExecutor.execute(() -> loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request));
+            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
         }
     }

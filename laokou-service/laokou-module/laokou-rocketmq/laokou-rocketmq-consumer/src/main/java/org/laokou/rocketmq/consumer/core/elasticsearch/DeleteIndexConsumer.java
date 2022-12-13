@@ -19,18 +19,15 @@ package org.laokou.rocketmq.consumer.core.elasticsearch;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
-import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
+import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.rocketmq.consumer.filter.MessageFilter;
 import org.springframework.stereotype.Component;
-import java.util.List;
-
 /**
  * @author Kou Shenhai
  */
@@ -38,25 +35,28 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class DeleteIndexConsumer implements MessageListenerConcurrently {
+public class DeleteIndexConsumer implements RocketMQListener<MessageExt> {
 
     private final ElasticsearchApiFeignClient elasticsearchApiFeignClient;
     private final MessageFilter messageFilter;
+
     @Override
-    public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> messageExtList, ConsumeConcurrentlyContext context) {
-        String messageBody = messageFilter.getBody(messageExtList);
+    public void onMessage(MessageExt message) {
+        String messageBody = messageFilter.getBody(message);
         if (messageBody == null) {
-            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+            return;
         }
         try {
             HttpResultUtil<Boolean> result = elasticsearchApiFeignClient.delete(messageBody);
             if (!result.success()) {
-                return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+                throw new CustomException("消费失败");
             }
-            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
         } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
-            return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+            throw new CustomException("消费失败");
+        } catch (RuntimeException e) {
+            log.error("错误信息:{}",e.getMessage());
+            throw new CustomException("消费失败");
         }
     }
 }

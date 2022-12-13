@@ -73,6 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**"
                         ,"/swagger-resources/**"
                         ,"/oauth/captcha"
+                        ,"/oauth/token"
                         ,"/doc.html"
                         ,"/v2/api-docs"
                         ,"/swagger/api-docs"

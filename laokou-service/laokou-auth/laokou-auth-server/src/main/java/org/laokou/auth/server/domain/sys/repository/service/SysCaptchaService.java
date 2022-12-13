@@ -15,8 +15,6 @@
  */
 package org.laokou.auth.server.domain.sys.repository.service;
 
-import java.awt.image.BufferedImage;
-
 /**
  * @author Kou Shenhai
  */
@@ -25,9 +23,10 @@ public interface SysCaptchaService {
     /**
      * 图片验证码
      * @param uuid
+     * @param code
      * @return
      */
-    BufferedImage createImage(String uuid);
+    Boolean setCode(String uuid,String code);
 
     /**
      * 验证码效验
@@ -35,5 +34,5 @@ public interface SysCaptchaService {
      * @param code
      * @return
      */
-    boolean validate(String uuid,String code);
+    Boolean validate(String uuid,String code);
 }

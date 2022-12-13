@@ -41,10 +41,8 @@ import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.MsgDTO;
 import org.laokou.rocketmq.client.enums.ChannelTypeEnum;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 /**
  * @author Kou Shenhai
@@ -60,8 +58,6 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
     private final SysMessageDetailService sysMessageDetailService;
 
     private final RocketmqApiFeignClient rocketmqApiFeignClient;
-
-    private final ThreadPoolTaskExecutor adminThreadPoolTaskExecutor;
 
     @Override
     public Boolean insertMessage(MessageDTO dto) {
@@ -94,15 +90,15 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
         // 平台-发送消息
         if (CollectionUtils.isNotEmpty(platformReceiver)) {
             String newTitle = String.format("%s发来一条消息", UserUtil.getUsername());
-            adminThreadPoolTaskExecutor.execute(() -> pushMessage(newTitle,"",platformReceiver,ChannelTypeEnum.PLATFORM.ordinal()));
+            pushMessage(newTitle,"",platformReceiver,ChannelTypeEnum.PLATFORM.ordinal());
         }
         // 微信公众号-发送消息
         if (false) {
-            adminThreadPoolTaskExecutor.execute(() -> {});
+
         }
         // 邮件-发送消息
         if (CollectionUtils.isNotEmpty(emailReceiver)) {
-            adminThreadPoolTaskExecutor.execute(() -> pushMessage(title,content,emailReceiver, ChannelTypeEnum.EMAIL.ordinal()));
+            pushMessage(title,content,emailReceiver, ChannelTypeEnum.EMAIL.ordinal());
         }
         return true;
     }
