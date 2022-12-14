@@ -3,35 +3,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>laokou-log</artifactId>
+        <artifactId>laokou-api</artifactId>
         <groupId>org.laokou</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>org.laokou</groupId>
-    <artifactId>laokou-log-server</artifactId>
-    <properties>
-        <java.version>17</java.version>
-    </properties>
+    <artifactId>laokou-api-server</artifactId>
     <dependencies>
         <dependency>
-            <groupId>org.laokou</groupId>
-            <artifactId>laokou-log-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.laokou</groupId>
-            <artifactId>laokou-common-mybatis-plus</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.ulisesbocchio</groupId>
-            <artifactId>jasypt-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-api-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -48,7 +39,7 @@
                 <configuration>
                     <finalName>${project.artifactId}</finalName>
                     <!-- main方法的地址 只需要修改这个地址-->
-                    <mainClass>org.laokou.log.server.LogApplication</mainClass>
+                    <mainClass>org.laokou.api.server.ApiApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

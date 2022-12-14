@@ -12,6 +12,7 @@
         <module>laokou-common</module>
         <module>laokou-cloud</module>
         <module>laokou-service</module>
+        <module>laokou-service/laokou-api</module>
     </modules>
     <properties>
         <laokou.version>1.0-SNAPSHOT</laokou.version>

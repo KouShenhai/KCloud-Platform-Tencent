@@ -23,12 +23,11 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 部门管理  
 日志管理  
 字典管理  
-消息管理    
+消息管理  
 认证管理  
 搜索管理  
-资源管理  
+资源管理（视频管理、音频管理、图片管理、资源审批）  
 流程定义  
-流程任务  
 接口文档  
 数据监控  
 服务监控  
@@ -59,7 +58,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 - API 网关：Spring Cloud Gateway
 - 服务注册&发现：Spring Cloud Netflix Eureka
 - 认证授权：Spring Security OAuth2
-- 服务消费：Spring Cloud OpenFeign & HttpClient
+- 服务消费：Spring Cloud OpenFeign & HttpClient & WebClient
 - 负载均衡：Spring Cloud Loadbalancer
 - 服务熔断&降级&限流：Resilience4j
 - 服务监控：Spring Boot Admin & Prometheus
@@ -78,7 +77,6 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 - 数据库：Mysql
 - 工作流：Flowable
 
-
 #### 项目结构
 ~~~
 ├── laokou-common  
@@ -91,6 +89,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
         └── laokou-monitor                  --- 服务监控  
         └── laokou-register                 --- 服务注册&发现  
 ├── laokou-service  
+        └── laokou-api                      --- API模块  
         └── laokou-log                      --- 日志模块  
         └── laokou-generator                --- 模板模块  
         └── laokou-auth                     --- 认证授权模块  

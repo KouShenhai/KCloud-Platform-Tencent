@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: @pom.parent.artifactId@
+  profiles:
+    active: @profile.active@
+  main:
+    web-application-type: reactive
