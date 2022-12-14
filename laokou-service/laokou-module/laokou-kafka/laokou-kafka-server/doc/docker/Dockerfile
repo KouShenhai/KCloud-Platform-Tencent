@@ -9,4 +9,4 @@ EXPOSE 10002
 COPY laokou-kafka-server.jar app.jar
 RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 # 执行命令
-ENTRYPOINT java -Xms256m -Xmx512m -jar app.jar --spring.profiles.active=prod > app.log
+ENTRYPOINT java -Xms512m -Xmx512m -jar app.jar --spring.profiles.active=prod > app.log
