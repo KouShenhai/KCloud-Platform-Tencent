@@ -16,29 +16,49 @@
 
 package org.laokou.api.server.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import org.laokou.api.client.ApiConstant;
+import org.laokou.api.client.ParamDTO;
 import org.laokou.api.server.service.OpenApiService;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Kou Shenhai
  */
 @Service
+@RequiredArgsConstructor
 public class OpenApiServiceImpl implements OpenApiService {
 
-
+    private final WebClient webClient;
 
     @Override
-    public Mono doGet() {
-        return null;
+    public Mono<String> doGet(String uri) {
+        return webClient.get().uri(uri)
+                .accept(MediaType.TEXT_EVENT_STREAM)
+                .retrieve()
+                .bodyToMono(String.class);
     }
 
     @Override
-    public Mono doPost() {
-        return null;
+    public Mono<String> doPost(ParamDTO dto) {
+        return webClient.post()
+                .uri(dto.getUri(), dto.getUuid())
+                .bodyValue(dto.getParams())
+                .retrieve()
+                .bodyToMono(String.class);
     }
 
     @Override
-    public Mono toPost() {
-        return null;
+    public Mono<String> toPost(ParamDTO dto) {
+        return webClient.post()
+                .uri(dto.getUri(), dto.getUuid())
+                .bodyValue(dto.getParams())
+                .retrieve()
+                .bodyToMono(String.class);
     }
 }

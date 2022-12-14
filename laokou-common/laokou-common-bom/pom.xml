@@ -99,6 +99,8 @@
         <kotlin.version>1.7.10</kotlin.version>
         <!--easyexcel版本-->
         <easyexcel.version>3.1.2</easyexcel.version>
+        <!--junit版本-->
+        <junit.version>4.13.1</junit.version>
     </properties>
 
     <!-- 定义全局jar版本,模块使用需要再次引入但不用写版本号 -->
@@ -586,6 +588,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-webflux</artifactId>
                 <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

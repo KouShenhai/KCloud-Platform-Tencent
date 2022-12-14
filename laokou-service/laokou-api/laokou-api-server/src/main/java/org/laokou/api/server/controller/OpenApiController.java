@@ -17,12 +17,13 @@
 package org.laokou.api.server.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.laokou.api.client.ApiConstant;
+import org.laokou.api.client.ParamDTO;
 import org.laokou.api.server.service.OpenApiService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Kou Shenhai
@@ -35,18 +36,18 @@ public class OpenApiController {
     private final OpenApiService openApiService;
 
     @GetMapping()
-    public Mono doGet() {
-        return openApiService.doGet();
+    public Mono<String> doGet(HttpServletRequest request) {
+        return openApiService.doGet(request.getParameter(ApiConstant.URI));
     }
 
     @PostMapping()
-    public Mono doPost() {
-        return openApiService.doPost();
+    public Mono<String> doPost(@RequestBody ParamDTO dto) {
+        return openApiService.doPost(dto);
     }
 
     @GetMapping("/toPost")
-    public Mono toPost() {
-        return openApiService.toPost();
+    public Mono<String> toPost() {
+        return null;
     }
 
 }

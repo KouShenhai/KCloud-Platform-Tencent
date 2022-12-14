@@ -1,6 +1,10 @@
 package org.laokou.api.server.service;
 
+import org.laokou.api.client.ParamDTO;
 import reactor.core.publisher.Mono;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Kou Shenhai
  */
@@ -8,20 +12,23 @@ public interface OpenApiService {
 
     /**
      * get请求
+     * @param uri
      * @return
      */
-   Mono doGet();
+   Mono<String> doGet(String uri);
 
     /**
      * post请求
      * @return
+     * @param dto
      */
-    Mono doPost();
+    Mono<String> doPost(ParamDTO dto);
 
     /**
      * 转成post请求
+     * @param dto
      * @return
      */
-    Mono toPost();
+    Mono<String> toPost(ParamDTO dto);
 
 }
