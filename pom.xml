@@ -30,10 +30,12 @@
         <docker.repostory>registry.cn-hangzhou.aliyuncs.com</docker.repostory>
         <docker.registry.name>koushenhai</docker.registry.name>
         <docker.version>1.2.2</docker.version>
+        <!--spring版本-->
+        <spring.version>6.0.0</spring.version>
     </properties>
     <dependencyManagement>
         <dependencies>
-            <!-- 定义公共版本-->
+            <!-- 定义公共版本 -->
             <dependency>
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-common-bom</artifactId>
@@ -57,16 +59,34 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- 定义spring security 版本 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <!--配置maven阿里云仓库开始,不用去改maven的setting -->
     <repositories>
+        <!--发行版-->
         <repository>
             <id>springsource-repos</id>
             <name>SpringSource Repository</name>
             <url>https://repo.spring.io/release/</url>
         </repository>
+        <!--里程版-->
+        <repositories>
+            <repository>
+                <id>spring-milestone</id>
+                <name>Spring Milestone Repository</name>
+                <url>https://repo.spring.io/milestone</url>
+            </repository>
+        </repositories>
+        <!--阿里maven镜像-->
+        <!--配置maven阿里云仓库开始,不用去改maven的setting -->
         <repository>
             <id>public</id>
             <name>local private nexus</name>
@@ -89,7 +109,6 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
     <!--配置maven阿里云结束 -->
     <profiles>
         <!--开发环境-->
