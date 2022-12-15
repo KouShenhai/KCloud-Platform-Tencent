@@ -16,6 +16,7 @@
 package org.laokou.auth.server.application.service.impl;
 import com.wf.captcha.GifCaptcha;
 import com.wf.captcha.base.Captcha;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.collections.CollectionUtils;
@@ -42,11 +43,10 @@ import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.util.List;
 /**
- * 官方不再维护，过期类无法替换
+ * SpringSecurity最新版本更新
  * @author Kou Shenhai
  */
 @Service

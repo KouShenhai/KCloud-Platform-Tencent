@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.application.service;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 /**
  * @author Kou Shenhai

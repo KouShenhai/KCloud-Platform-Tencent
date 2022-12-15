@@ -31,7 +31,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 /**
  * 登录或者鉴权失败时的返回信息
- * 官方不再维护，过期类无法替换
+ * SpringSecurity最新版本更新
  * @author Kou Shenhai
  */
 @Slf4j

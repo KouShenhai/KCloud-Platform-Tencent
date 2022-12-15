@@ -19,7 +19,7 @@ import lombok.Setter;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 /**
  * 自定义异常
- * 官方不再维护，过期类无法替换
+ * SpringSecurity最新版本更新
  * @author Kou Shenhai
  */
 @Getter

@@ -15,12 +15,8 @@
  */
 package org.laokou.auth.server.application.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.laokou.auth.client.user.UserDetail;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 /**
  * auth服务
  * @author Kou Shenhai

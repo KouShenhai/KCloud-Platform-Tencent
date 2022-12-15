@@ -17,12 +17,12 @@ package org.laokou.auth.server.interfaces.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 /**
  * 系统认证控制器
  * @author Kou Shenhai

@@ -17,12 +17,12 @@
 package org.laokou.auth.client.exception;
 
 import cn.hutool.http.HttpStatus;
+import jakarta.servlet.http.HttpServletResponse;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.MessageUtil;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.util.MimeTypeUtils;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;

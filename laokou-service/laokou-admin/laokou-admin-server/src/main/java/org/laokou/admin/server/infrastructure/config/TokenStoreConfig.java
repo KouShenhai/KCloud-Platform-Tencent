@@ -24,7 +24,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 
 /**
  * @author Kou Shenhai
- * 官方不再维护，过期类无法替换
+ * SpringSecurity最新版本更新
  */
 @Configuration
 @AllArgsConstructor

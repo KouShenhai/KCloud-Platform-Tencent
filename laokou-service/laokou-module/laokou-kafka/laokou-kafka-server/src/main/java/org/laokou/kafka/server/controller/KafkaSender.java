@@ -41,22 +41,22 @@ public class KafkaSender {
     @PostMapping("/send/{topic}")
     @ApiOperation("Kafka消息>同步发送")
     public void sendMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto) throws InterruptedException, ExecutionException {
-        kafkaTemplate.send(topic,dto.getData()).get();
+        kafkaTemplate.send(topic,dto).get();
     }
 
     @PostMapping("/sendAsync/{topic}")
     @ApiOperation("Kafka消息>异步发送")
     public void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto) {
-        kafkaTemplate.send(topic,dto.getData()).addCallback(new ListenableFutureCallback() {
-            @Override
-            public void onFailure(Throwable throwable) {
-                log.error("报错信息：{}",throwable.getMessage());
-            }
-
-            @Override
-            public void onSuccess(Object o) {
-                log.info("发送成功");
-            }
-        });
+//        kafkaTemplate.send(topic,dto.getData()).addCallback(new ListenableFutureCallback() {
+//            @Override
+//            public void onFailure(Throwable throwable) {
+//                log.error("报错信息：{}",throwable.getMessage());
+//            }
+//
+//            @Override
+//            public void onSuccess(Object o) {
+//                log.info("发送成功");
+//            }
+//        });
     }
 }

@@ -36,8 +36,8 @@ public class StatusChangeNotifier extends AbstractStatusChangeNotifier {
     @Override
     protected Mono<Void> doNotify(InstanceEvent event, Instance instance) {
         return Mono.fromRunnable(() -> {
-            if (event instanceof InstanceStatusChangedEvent) {
-                String status = ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus();
+            if (event instanceof InstanceStatusChangedEvent eventStatus) {
+                String status = eventStatus.getStatusInfo().getStatus();
                 switch (status) {
                     //健康检查没通过
                     case "DOWN" -> log.info("健康检查没通过");

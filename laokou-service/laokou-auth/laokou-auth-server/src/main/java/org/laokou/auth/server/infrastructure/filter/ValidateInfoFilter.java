@@ -15,6 +15,9 @@
  */
 package org.laokou.auth.server.infrastructure.filter;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
@@ -31,9 +34,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Kou Shenhai
@@ -79,7 +79,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void validate(String uuid,String captcha,String username,String password,HttpServletRequest request) {
+    private void validate(String uuid, String captcha, String username, String password, HttpServletRequest request) {
         if (StringUtil.isEmpty(uuid)) {
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.IDENTIFIER_NOT_NULL));
         }

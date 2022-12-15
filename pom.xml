@@ -22,7 +22,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin>2.0.2</maven-compiler-plugin>
         <!--boot版本-->
-        <spring-boot.version>2.7.6</spring-boot.version>
+        <spring-boot.version>3.0.0</spring-boot.version>
         <!--cloud版本-->
         <spring-cloud.version>2021.0.5</spring-cloud.version>
         <!--kotlin版本-->
@@ -78,13 +78,11 @@
             <url>https://repo.spring.io/release/</url>
         </repository>
         <!--里程版-->
-        <repositories>
-            <repository>
-                <id>spring-milestone</id>
-                <name>Spring Milestone Repository</name>
-                <url>https://repo.spring.io/milestone</url>
-            </repository>
-        </repositories>
+        <repository>
+            <id>spring-milestone</id>
+            <name>Spring Milestone Repository</name>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
         <!--阿里maven镜像-->
         <!--配置maven阿里云仓库开始,不用去改maven的setting -->
         <repository>
@@ -107,6 +105,14 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <url>https://repo.spring.io/snapshot</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <url>https://repo.spring.io/milestone</url>
         </pluginRepository>
     </pluginRepositories>
     <!--配置maven阿里云结束 -->

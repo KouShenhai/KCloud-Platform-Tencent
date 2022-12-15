@@ -18,14 +18,16 @@ import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 /**
  * @author Kou Shenhai
- * 官方不再维护，过期类无法替换
+ * SpringSecurity最新版本更新
+ * 目前不兼容springboot 3.0 暂不升级
  */
 @SpringBootApplication
 @EnableAdminServer
@@ -35,23 +37,18 @@ public class MonitorApplication {
         SpringApplication.run(MonitorApplication.class, args);
     }
 
-    @Configuration
-    public static class SecuritySecureConfig extends WebSecurityConfigurerAdapter {
+    @EnableWebSecurity
+    public static class WebSecurityConfig {
 
-        private final String adminContextPath;
-
-        public SecuritySecureConfig(AdminServerProperties adminServerProperties) {
-            this.adminContextPath = adminServerProperties.getContextPath();
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain securityFilterChain (HttpSecurity http,AdminServerProperties adminServerProperties) throws Exception {
+            String adminContextPath = adminServerProperties.getContextPath();
             SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
             successHandler.setTargetUrlParameter("redirectTo");
             successHandler.setDefaultTargetUrl(adminContextPath + "/");
-            http.authorizeRequests()
-                    .antMatchers(adminContextPath + "/assets/**").permitAll()     //放行
-                    .antMatchers(adminContextPath + "/login").permitAll()   //放行
+            return http.authorizeHttpRequests()
+                    .requestMatchers(adminContextPath + "/assets/**").permitAll()     //放行
+                    .requestMatchers(adminContextPath + "/login").permitAll()   //放行
                     .anyRequest().authenticated()
                     .and()
                     .formLogin().loginPage(adminContextPath + "/login").successHandler(successHandler)
@@ -60,10 +57,10 @@ public class MonitorApplication {
                     .httpBasic().and()
                     .csrf()
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                    .ignoringAntMatchers(
-                              adminContextPath + "/instances/**"
+                    .ignoringRequestMatchers(
+                            adminContextPath + "/instances/**"
                             , adminContextPath + "/actuator/**")
-                    .disable();
+                    .disable().build();
         }
     }
 
