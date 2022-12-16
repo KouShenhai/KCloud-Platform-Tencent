@@ -56,7 +56,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 #### 相关技术
 
 - API 网关：Spring Cloud Gateway
-- 服务注册&发现：Spring Cloud Netflix Eureka
+- 服务注册&发现：Spring Cloud Consul
 - 认证授权：Spring Security OAuth2
 - 服务消费：Spring Cloud OpenFeign & HttpClient & WebClient
 - 负载均衡：Spring Cloud Loadbalancer
@@ -87,7 +87,6 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 ├── laokou-cloud  
         └── laokou-gateway                  --- API网关  
         └── laokou-monitor                  --- 服务监控  
-        └── laokou-register                 --- 服务注册&发现  
 ├── laokou-service  
         └── laokou-api                      --- API模块  
         └── laokou-log                      --- 日志模块  
