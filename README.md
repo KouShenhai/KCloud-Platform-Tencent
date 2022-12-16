@@ -6,13 +6,13 @@
 时间：2020.06.08 ~ 至今  
 
 ### 项目介绍
-KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构的云服务平台。基于Spring Boot 2.7.6、Spring Cloud 2021.0.5等最新版本开发，
+KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构的云服务平台。基于Spring Boot 3.0.0、Spring Cloud 2022.0.0-RC2等最新版本开发，
 遵循SpringBoot编程思想，高度模块化和可配置化。具备服务注册&发现、配置中心、限流、熔断、降级、监控、多数据源、工作流、高亮搜索、定时任务、分布式缓存、分布式事务、分布式存储等功能，用于快速构建微服务项目。目前支持Shell、Docker等多种部署方式，实现RBAC权限、其中包含系统管理、系统监控、工作流程、数据分析等几大模块。
 遵循阿里代码规范，代码简洁、架构清晰，非常适合作为基础框架使用。 	<a target="_blank" href="./UPDATE.md">更新日志</a>
 <p align="center">
 	<a target="_blank" href="https://gitee.com/laokouyun/KCloud-Platform-Official/stargazers"><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/badge/star.svg?theme=dark" alt="Gitee Star"></a>
     <a target="_blank" href="https://gitee.com/laokouyun/KCloud-Platform-Official"><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/badge/fork.svg?theme=dark"  alt="Gitee Fork"></a>
-    <a target="_blank" href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/spring--boot-2.7.6-green.svg" alt="SpringBoot"></a>
+    <a target="_blank" href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/spring--boot-3.0.0-green.svg" alt="SpringBoot"></a>
     <a target="_blank" href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-red" alt="License Apache 2.0"></a>
 </p>
 
@@ -39,17 +39,17 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 ### 技术体系
 
 #### Spring全家桶及核心技术版本
-| 组件                | 版本       |
-|:------------------|:---------|
-| Spring Boot       | 2.7.6    |
-| Spring Cloud      | 2021.0.5 |
-| Spring Boot Admin | 2.7.6    |
-| Apollo            | 1.4.0    |
-| Mysql             | 5.7.9    |
-| Redis             | 6.0.6    |
-| Elasticsearch     | 7.6.2    |
-| RocketMQ          | 5.0.0    |
-| Kafka             | 2.8.1    |
+| 组件                | 版本           |
+|:------------------|:-------------|
+| Spring Boot       | 3.0.0        |
+| Spring Cloud      | 2022.0.0-RC2 |
+| Spring Boot Admin | 2.7.6        |
+| Apollo            | 1.4.0        |
+| Mysql             | 5.7.9        |
+| Redis             | 6.0.6        |
+| Elasticsearch     | 7.6.2        |
+| RocketMQ          | 5.0.0        |
+| Kafka             | 2.8.1        |
 
 > Spring 全家桶版本对应关系，详见：[版本说明](https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)
 
