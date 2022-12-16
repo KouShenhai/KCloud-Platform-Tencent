@@ -71,17 +71,22 @@
     </dependencyManagement>
 
     <repositories>
-        <!--发行版-->
         <repository>
-            <id>springsource-repos</id>
-            <name>SpringSource Repository</name>
-            <url>https://repo.spring.io/release/</url>
+            <id>sonatype</id>
+            <name>Spring Milestone Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
         <!--里程版-->
         <repository>
             <id>spring-milestone</id>
             <name>Spring Milestone Repository</name>
             <url>https://repo.spring.io/milestone</url>
+        </repository>
+        <!--发行版-->
+        <repository>
+            <id>springsource-repos</id>
+            <name>SpringSource Repository</name>
+            <url>https://repo.spring.io/release/</url>
         </repository>
         <!--阿里maven镜像-->
         <!--配置maven阿里云仓库开始,不用去改maven的setting -->

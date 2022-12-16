@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 package org.laokou.redis.utils;
+import lombok.RequiredArgsConstructor;
 import org.laokou.common.core.utils.StringUtil;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisServerCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -32,16 +32,14 @@ import java.util.concurrent.TimeUnit;
  * @author  Kou Shenhai
  */
 @Component
+@RequiredArgsConstructor
 public final class RedisUtil {
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private RedissonClient redissonClient;
+    private final RedissonClient redissonClient;
 
-    @Autowired
-    private RBloomFilter<String> bloomFilter;
+    private final RBloomFilter<String> bloomFilter;
 
     /**  默认过期时长为24小时，单位：秒 */
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24L;

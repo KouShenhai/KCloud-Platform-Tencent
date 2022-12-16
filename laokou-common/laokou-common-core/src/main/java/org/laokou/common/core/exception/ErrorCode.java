@@ -271,19 +271,15 @@ public interface ErrorCode {
      */
     int INVALID_REQUEST = 20012;
     /**
-     * 错误重定向地址
-     */
-    int REDIRECT_URI_MISMATCH = 20013;
-    /**
      * 不支持的认证类型
      */
-    int UNSUPPORTED_GRANT_TYPE = 20014;
+    int UNSUPPORTED_GRANT_TYPE = 20013;
     /**
      * 不支持的资源类型
      */
-    int UNSUPPORTED_RESPONSE_TYPE = 20015;
+    int UNSUPPORTED_RESPONSE_TYPE = 20014;
     /**
      * 访问被拒绝
      */
-    int ACCESS_DENIED = 20016;
+    int ACCESS_DENIED = 20015;
 }
