@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.feign.rocketmq.fallback;
+import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 
@@ -26,7 +26,7 @@ import org.laokou.rocketmq.client.dto.RocketmqDTO;
  * @date 2020/9/5 0005 上午 12:12
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RocketmqApiFeignClientFallback implements RocketmqApiFeignClient {
 
     private final Throwable throwable;

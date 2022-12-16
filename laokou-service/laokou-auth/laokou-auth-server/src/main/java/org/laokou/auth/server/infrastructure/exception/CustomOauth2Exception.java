@@ -16,7 +16,9 @@
 package org.laokou.auth.server.infrastructure.exception;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+
 /**
  * 自定义异常
  * SpringSecurity最新版本更新
@@ -24,30 +26,19 @@ import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
  */
 @Getter
 @Setter
-public class CustomOauth2Exception extends OAuth2Exception {
+public class CustomOauth2Exception extends AuthenticationException {
 	private String msg;
 	private String code;
 
 	public CustomOauth2Exception(String msg, Throwable e) {
 		super(msg, e);
 		this.msg = msg;
-		this.code = "500";
+		this.code = OAuth2ParameterNames.ERROR;
 	}
 
 	public CustomOauth2Exception(String code, String msg) {
 		super(msg);
 		this.msg = msg;
 		this.code = code;
-	}
-	/**
-	 * 官方方法，不能驼峰命名
-	 * @return
-	 */
-	@Override
-	public String getOAuth2ErrorCode() {
-		if(null == this.code){
-			return "invalid_request";
-		}
-		return this.code;
 	}
 }

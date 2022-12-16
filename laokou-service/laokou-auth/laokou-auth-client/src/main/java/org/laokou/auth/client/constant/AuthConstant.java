@@ -28,20 +28,9 @@ public interface AuthConstant {
     * 验证码
     */
    String CAPTCHA = "captcha";
-   /**
-    * 账号
-    */
-   String USERNAME = "username";
-   /**
-    * 密码
-    */
-   String PASSWORD = "password";
+
    /**
     * 登录成功
     */
    String LOGIN_SUCCESS_MSG = "登录成功";
-
-   String SELECT_STATEMENT = "select client_id,client_secret,resource_ids, scope,authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity,refresh_token_validity, additional_information, autoapprove from boot_sys_oauth_client_details where client_id = ?";
-
-   String FIND_STATEMENT = "select client_id,client_secret,resource_ids, scope,authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity,refresh_token_validity, additional_information, autoapprove from boot_sys_oauth_client_details order by client_id";
 }

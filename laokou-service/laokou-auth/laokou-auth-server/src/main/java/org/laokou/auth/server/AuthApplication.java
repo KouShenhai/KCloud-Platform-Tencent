@@ -18,12 +18,12 @@ import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.laokou.common.swagger.config.CorsConfig;
+import org.laokou.redis.config.RedisSessionConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -36,11 +36,10 @@ import org.springframework.context.annotation.Import;
  * @author Kou Shenhai
  */
 @SpringBootApplication(scanBasePackages = {"org.laokou.common.core","org.laokou.auth","org.laokou.redis","org.laokou.common.mybatisplus"})
-@EnableDiscoveryClient
 @EnableConfigurationProperties
 @EnableApolloConfig
 @EnableAspectJAutoProxy
-@Import({CorsConfig.class})
+@Import({CorsConfig.class, RedisSessionConfig.class})
 @EnableEncryptableProperties
 @EnableFeignClients
 public class AuthApplication{

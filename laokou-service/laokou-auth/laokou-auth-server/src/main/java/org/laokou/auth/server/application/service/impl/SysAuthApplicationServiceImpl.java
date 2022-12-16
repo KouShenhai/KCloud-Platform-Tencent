@@ -36,12 +36,6 @@ import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.exception.CustomOauth2Exception;
 import org.laokou.common.core.utils.*;
-import org.laokou.redis.utils.RedisKeyUtil;
-import org.laokou.redis.utils.RedisUtil;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.OAuth2RefreshToken;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.util.List;
@@ -58,8 +52,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private final SysMenuService sysMenuService;
     private final SysDeptService sysDeptService;
     private final SysCaptchaService sysCaptchaService;
-    private final TokenStore tokenStore;
-    private final RedisUtil redisUtil;
     private final LoginLogUtil loginLogUtil;
 
     @SneakyThrows
@@ -95,19 +87,19 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
 
     @Override
     public void logout(HttpServletRequest request) {
-        String token = getToken(request);
-        OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
-        if (oAuth2AccessToken != null) {
-            OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(oAuth2AccessToken);
-            UserDetail userDetail = (UserDetail) oAuth2Authentication.getPrincipal();
-            Long userId = userDetail.getUserId();
-            String resourceTreeKey = RedisKeyUtil.getResourceTreeKey(userId);
-            redisUtil.delete(resourceTreeKey);
-            tokenStore.removeAccessToken(oAuth2AccessToken);
-            OAuth2RefreshToken refreshToken = oAuth2AccessToken.getRefreshToken();
-            tokenStore.removeRefreshToken(refreshToken);
-            tokenStore.removeAccessTokenUsingRefreshToken(refreshToken);
-        }
+//        String token = getToken(request);
+//        OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
+//        if (oAuth2AccessToken != null) {
+//            OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(oAuth2AccessToken);
+//            UserDetail userDetail = (UserDetail) oAuth2Authentication.getPrincipal();
+//            Long userId = userDetail.getUserId();
+//            String resourceTreeKey = RedisKeyUtil.getResourceTreeKey(userId);
+//            redisUtil.delete(resourceTreeKey);
+//            tokenStore.removeAccessToken(oAuth2AccessToken);
+//            OAuth2RefreshToken refreshToken = oAuth2AccessToken.getRefreshToken();
+//            tokenStore.removeRefreshToken(refreshToken);
+//            tokenStore.removeAccessTokenUsingRefreshToken(refreshToken);
+//        }
     }
 
     @Override

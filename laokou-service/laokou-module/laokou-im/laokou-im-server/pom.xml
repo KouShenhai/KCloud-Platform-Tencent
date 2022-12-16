@@ -36,10 +36,10 @@
             <groupId>org.laokou</groupId>
             <artifactId>laokou-common-swagger</artifactId>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
+        </dependency>-->
     </dependencies>
     <build>
         <plugins>
@@ -67,6 +67,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.version}</version>
             </plugin>
         </plugins>
     </build>

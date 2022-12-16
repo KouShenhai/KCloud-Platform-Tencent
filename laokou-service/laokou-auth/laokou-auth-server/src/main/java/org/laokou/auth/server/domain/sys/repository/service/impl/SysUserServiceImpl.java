@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.domain.sys.repository.service.impl;
+import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.domain.sys.repository.mapper.SysUserMapper;
 import org.laokou.auth.server.domain.sys.repository.service.SysUserService;
 import org.laokou.auth.client.user.UserDetail;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**
@@ -27,10 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
+@RequiredArgsConstructor
 public class SysUserServiceImpl implements SysUserService {
 
-    @Autowired
-    private SysUserMapper sysUserMapper;
+    private final SysUserMapper sysUserMapper;
 
     @Override
     public UserDetail getUserDetail(String username) {

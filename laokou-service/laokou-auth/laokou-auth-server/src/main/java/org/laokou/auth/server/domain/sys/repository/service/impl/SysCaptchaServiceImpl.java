@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.redis.utils.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 /**
  * 验证码实现类
@@ -30,8 +29,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SysCaptchaServiceImpl implements SysCaptchaService {
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
     @Override
     public Boolean setCode(String uuid,String code) {

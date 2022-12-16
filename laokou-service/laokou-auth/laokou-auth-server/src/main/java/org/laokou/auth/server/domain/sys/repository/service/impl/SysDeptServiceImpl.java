@@ -15,11 +15,11 @@
  */
 package org.laokou.auth.server.domain.sys.repository.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.mapper.SysDeptMapper;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.common.core.enums.SuperAdminEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -28,10 +28,10 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
+@RequiredArgsConstructor
 public class SysDeptServiceImpl implements SysDeptService {
 
-    @Autowired
-    private SysDeptMapper sysDeptMapper;
+    private final SysDeptMapper sysDeptMapper;
 
 
     @Override

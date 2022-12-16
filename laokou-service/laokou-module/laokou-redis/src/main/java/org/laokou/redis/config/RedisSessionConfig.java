@@ -18,12 +18,12 @@ import org.laokou.redis.utils.RedisKeyUtil;
 import org.redisson.Redisson;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
-import org.redisson.client.RedisClient;
 import org.redisson.client.codec.Codec;
 import org.redisson.config.Config;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +41,7 @@ import java.util.List;
  * @author Kou Shenhai
  */
 @ConditionalOnClass(Redisson.class)
-@AutoConfiguration
+@AutoConfiguration(before = RedisAutoConfiguration.class)
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedisSessionConfig {
 
@@ -52,8 +52,8 @@ public class RedisSessionConfig {
     /**
      * ConditionalOnMissingBean -> 相同类型的bean被注入，保证bean只有一个
      */
-    @Bean
-    @ConditionalOnMissingBean(RedisClient.class)
+    @Bean(destroyMethod = "shutdown")
+    @ConditionalOnMissingBean(RedissonClient.class)
     public RedissonClient redisClient(RedisProperties properties) {
         Config config;
         final Duration duration = properties.getTimeout();

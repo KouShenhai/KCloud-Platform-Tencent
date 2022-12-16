@@ -31,6 +31,7 @@ import org.laokou.common.core.utils.StringUtil;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -50,8 +51,6 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
 
     private final static String GRANT_TYPE_NAME = "grant_type";
 
-    private final static String GRANT_TYPE = AuthConstant.PASSWORD;
-
     private final SysCaptchaService sysCaptchaService;
 
     private final AuthAuthenticationFailureHandler authAuthenticationFailureHandler;
@@ -63,11 +62,11 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         if (ANT_PATH_MATCHER.match(request.getServletPath(), OAUTH_URL)
                 && request.getMethod().equalsIgnoreCase(HttpMethod.POST.name())
-                && GRANT_TYPE.equals(request.getParameter(GRANT_TYPE_NAME))) {
+                && OAuth2ParameterNames.PASSWORD.equals(request.getParameter(GRANT_TYPE_NAME))) {
             String uuid = request.getParameter(AuthConstant.UUID);
             String captcha = request.getParameter(AuthConstant.CAPTCHA);
-            String username = request.getParameter(AuthConstant.USERNAME);
-            String password = request.getParameter(AuthConstant.PASSWORD);
+            String username = request.getParameter(OAuth2ParameterNames.USERNAME);
+            String password = request.getParameter(OAuth2ParameterNames.PASSWORD);
             try {
                 validate(uuid, captcha,username,password,request);
             } catch (AuthenticationException e) {
@@ -94,7 +93,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
         }
         boolean validate = sysCaptchaService.validate(uuid, captcha);
         if (!validate) {
-            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
+            //loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
         }
     }
