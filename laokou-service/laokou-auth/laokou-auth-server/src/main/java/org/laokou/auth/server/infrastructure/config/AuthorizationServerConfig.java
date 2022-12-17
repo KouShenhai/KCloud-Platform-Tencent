@@ -54,26 +54,26 @@ public class AuthorizationServerConfig {
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http
-    , AuthorizationServerSettings authorizationServerSettings
     , ValidateInfoFilter validateInfoFilter
     , UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider
     ) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults());
-        return http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
-                .apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) ->{})
-                        .authorizationServerSettings(authorizationServerSettings)
+        return http
+                .exceptionHandling(configurer -> configurer.authenticationEntryPoint(new CustomAuthenticationFailureHandler()))
+                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> tokenEndpoint
+                                .authenticationProvider(usernamePasswordAuthenticationProvider))
                         // 客户端认证异常
                         .clientAuthentication(configurer -> configurer.errorResponseHandler(new CustomAuthenticationFailureHandler())))
                 .and()
                 .addFilterBefore(validateInfoFilter, UsernamePasswordAuthenticationFilter.class)
-                .authenticationProvider(usernamePasswordAuthenticationProvider)
                 .build();
     }
 
     @Bean
-    public RegisteredClientRepository registeredClientRepository() {
+    RegisteredClientRepository registeredClientRepository() {
         InMemoryRegisteredClientRepository inMemoryRegisteredClientRepository = new InMemoryRegisteredClientRepository(
                 RegisteredClient.withId("client_auth")
                         .id("client_auth")

@@ -51,7 +51,7 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
-        UserDetail userDetail = sysAuthApplicationService.login(username,password);
+        UserDetail userDetail = sysAuthApplicationService.login();
         List<String> permissionList = userDetail.getPermissionList();
         Set<GrantedAuthority> authorities = new HashSet<>(permissionList.size());
         authorities.addAll(permissionList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));

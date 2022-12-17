@@ -37,6 +37,7 @@ import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceI
 import org.laokou.common.core.utils.*;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.util.List;
@@ -61,6 +62,12 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     public UserDetail login(String username, String password) {
         log.info("账号：{}，密码：{}",username,password);
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
+
+//        String uuid = request.getParameter(AuthConstant.UUID);
+//        String captcha = request.getParameter(AuthConstant.CAPTCHA);
+//        String scope = request.getParameter(OAuth2ParameterNames.SCOPE);
+
+
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);

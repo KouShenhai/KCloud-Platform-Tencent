@@ -16,10 +16,10 @@
 package org.laokou.auth.server.infrastructure.filter;
 
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.client.constant.AuthConstant;
@@ -37,6 +37,8 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
 
 /**
  * @author Kou Shenhai
@@ -56,17 +58,12 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
 
     private final LoginLogUtil loginLogUtil;
 
-    @SneakyThrows
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         if (ANT_PATH_MATCHER.match(request.getServletPath(), OAUTH_URL)
                 && request.getMethod().equalsIgnoreCase(HttpMethod.POST.name())
                 && OAuth2ParameterNames.PASSWORD.equals(request.getParameter(OAuth2ParameterNames.GRANT_TYPE))) {
-            String uuid = request.getParameter(AuthConstant.UUID);
-            String captcha = request.getParameter(AuthConstant.CAPTCHA);
-            String username = request.getParameter(OAuth2ParameterNames.USERNAME);
-            String password = request.getParameter(OAuth2ParameterNames.PASSWORD);
-            String scope = request.getParameter(OAuth2ParameterNames.SCOPE);
+
             try {
                 //validate(scope,uuid, captcha,username,password,request);
             } catch (AuthenticationException e) {
