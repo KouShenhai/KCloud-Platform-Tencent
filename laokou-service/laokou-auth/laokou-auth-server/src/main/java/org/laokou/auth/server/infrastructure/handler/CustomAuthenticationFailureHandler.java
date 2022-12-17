@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.auth.server.infrastructure.exception;
-
+package org.laokou.auth.server.infrastructure.handler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
+import org.laokou.common.core.exception.ErrorCode;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import java.io.IOException;
-
 /**
+ * 认证失败处理器
  * @author Kou Shenhai
  */
-@Component("customAuthenticationEntryPoint")
+@Component
 @Slf4j
-public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
+    @SneakyThrows
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        log.error("错误信息：{}",authException.getMessage());
-        CustomAuthExceptionHandler.handleException(response, OAuth2ErrorCodes.INVALID_CLIENT, CustomAuthExceptionHandler.getMsg(OAuth2ErrorCodes.INVALID_CLIENT,""));
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)  {
+        log.error("错误信息：{}",e.getMessage());
+        CustomAuthExceptionHandler.handleException(response, ErrorCode.INTERNAL_SERVER_ERROR,e.getMessage());
     }
 }

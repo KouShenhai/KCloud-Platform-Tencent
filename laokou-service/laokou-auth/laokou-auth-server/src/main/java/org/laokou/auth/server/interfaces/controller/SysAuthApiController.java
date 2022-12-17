@@ -37,7 +37,7 @@ public class SysAuthApiController {
     @GetMapping("/oauth/captcha")
     @ApiOperation("系统认证>验证码")
     @ApiImplicitParam(name = "uuid",value = "唯一标识",required = true,paramType = "query",dataType = "String")
-    public HttpResultUtil<String> captcha(@RequestParam(AuthConstant.UUID)String uuid) {
+    public HttpResultUtil<String> captcha(@RequestParam(value = AuthConstant.UUID)String uuid) {
         return new HttpResultUtil<String>().ok(sysAuthApplicationService.captcha(uuid));
     }
 

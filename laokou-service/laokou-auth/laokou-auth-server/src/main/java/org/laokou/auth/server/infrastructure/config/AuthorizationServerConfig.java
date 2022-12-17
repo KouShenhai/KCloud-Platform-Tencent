@@ -15,6 +15,7 @@
  */
 package org.laokou.auth.server.infrastructure.config;
 import org.laokou.auth.server.infrastructure.filter.ValidateInfoFilter;
+import org.laokou.auth.server.infrastructure.handler.CustomAuthenticationFailureHandler;
 import org.laokou.auth.server.infrastructure.provider.UsernamePasswordAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,9 +32,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 /**
  * Spring Security配置
  * SpringSecurity最新版本更新
@@ -41,30 +42,34 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @version 1.0
  * @date 2021/5/28 0028 上午 10:33
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
 
     /**
      * https://docs.spring.io/spring-authorization-server/docs/current/reference/html/configuration-model.html
      * @param http
-     * @param validateInfoFilter
      * @return
      * @throws Exception
      */
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http
-            , ValidateInfoFilter validateInfoFilter
-            , UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider) throws Exception {
-        // 加载默认配置
+    , AuthorizationServerSettings authorizationServerSettings
+    , ValidateInfoFilter validateInfoFilter
+    , UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider
+    ) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults());
-
-        DefaultSecurityFilterChain defaultSecurityFilterChain = http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher()).build();
-        http.addFilterBefore(validateInfoFilter, UsernamePasswordAuthenticationFilter.class)
-                .authenticationProvider(usernamePasswordAuthenticationProvider);
-        return defaultSecurityFilterChain;
+        return http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) ->{})
+                        .authorizationServerSettings(authorizationServerSettings)
+                        // 客户端认证异常
+                        .clientAuthentication(configurer -> configurer.errorResponseHandler(new CustomAuthenticationFailureHandler())))
+                .and()
+                .addFilterBefore(validateInfoFilter, UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(usernamePasswordAuthenticationProvider)
+                .build();
     }
 
     @Bean
@@ -76,10 +81,9 @@ public class AuthorizationServerConfig {
                         .clientSecret("{noop}secret")
                         .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                         .authorizationGrantType(new AuthorizationGrantType(OAuth2ParameterNames.PASSWORD))
-                        .clientName("认证客户端")
+                        .clientName("用户认证")
                         .scope("auth")
-                        .build()
-        );
+                        .build());
         return inMemoryRegisteredClientRepository;
     }
 

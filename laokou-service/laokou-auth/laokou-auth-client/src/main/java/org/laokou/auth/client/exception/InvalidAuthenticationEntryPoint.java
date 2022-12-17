@@ -19,18 +19,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+
 import java.io.IOException;
+
 /**
- * @author Kou Shenhai
+ * token失效，异常处理器
+ * @author Mark sunlightcs@gmail.com
  */
 @Slf4j
-public class AuthExceptionHandler implements AccessDeniedHandler {
+public class InvalidAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-        log.error("错误信息：{}",accessDeniedException.getMessage());
-        CustomAuthExceptionHandler.handleException(response,"" + ErrorCode.FORBIDDEN, MessageUtil.getMessage(ErrorCode.FORBIDDEN));
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+        log.error("错误信息：{}",authException.getMessage());
+        CustomAuthExceptionHandler.handleException(response,ErrorCode.AUTHORIZATION_INVALID, MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
     }
 }

@@ -34,11 +34,13 @@ import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
-import org.laokou.auth.server.infrastructure.exception.CustomOauth2Exception;
 import org.laokou.common.core.utils.*;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.util.List;
+import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
 /**
  * SpringSecurity最新版本更新
  * @author Kou Shenhai
@@ -62,20 +64,20 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
-            throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
+            throw new OAuth2AuthenticationException(new OAuth2Error("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),CustomAuthExceptionHandler.ACCESS_TOKEN_REQUEST_ERROR_URI));
         }
         if(!PasswordUtil.matches(password, userDetail.getPassword())) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
-            throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
+            throw new OAuth2AuthenticationException(new OAuth2Error("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),CustomAuthExceptionHandler.ACCESS_TOKEN_REQUEST_ERROR_URI));
         }
         if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
-            throw new CustomOauth2Exception("" + ErrorCode.ACCOUNT_DISABLE,MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
+            throw new OAuth2AuthenticationException(new OAuth2Error("" + ErrorCode.ACCOUNT_DISABLE,MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),CustomAuthExceptionHandler.ACCESS_TOKEN_REQUEST_ERROR_URI));
         }
         List<String> permissionsList = sysMenuService.getPermissionsList(userDetail);
         if (CollectionUtils.isEmpty(permissionsList)) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
-            throw new CustomOauth2Exception("" + ErrorCode.NOT_PERMISSIONS,MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
+            throw new OAuth2AuthenticationException(new OAuth2Error("" + ErrorCode.NOT_PERMISSIONS,MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),CustomAuthExceptionHandler.ACCESS_TOKEN_REQUEST_ERROR_URI));
         }
         List<Long> deptIds = sysDeptService.getDeptIds(userDetail);
         userDetail.setDeptIds(deptIds);
@@ -104,9 +106,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
 
     @Override
     public String captcha(String uuid) {
-        if (StringUtil.isEmpty(uuid)) {
-            throw new CustomOauth2Exception("" + ErrorCode.IDENTIFIER_NOT_NULL,MessageUtil.getMessage(ErrorCode.IDENTIFIER_NOT_NULL));
-        }
         // 三个参数分别为宽、高、位数
         Captcha captcha = new GifCaptcha(130, 48, 4);
         // 设置字体，有默认字体，可以不用设置

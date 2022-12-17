@@ -19,6 +19,7 @@ package org.laokou.auth.client.exception;
 import cn.hutool.http.HttpStatus;
 import jakarta.servlet.http.HttpServletResponse;
 import org.laokou.common.core.exception.ErrorCode;
+import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.MessageUtil;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
@@ -32,16 +33,18 @@ import java.nio.charset.StandardCharsets;
  */
 public class CustomAuthExceptionHandler {
 
-    public static void handleException(HttpServletResponse response, String code, String message) throws IOException {
+    public static final String ACCESS_TOKEN_REQUEST_ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
+
+    public static void handleException(HttpServletResponse response, int code, String message) throws IOException {
         response.setStatus(HttpStatus.HTTP_OK);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
         PrintWriter writer = response.getWriter();
-        writer.write(JacksonUtil.toJsonStr(new CustomHttpResult(code,message)));
+        writer.write(JacksonUtil.toJsonStr(new HttpResultUtil<>().error(code,message)));
         writer.flush();
     }
 
-    public static String getMsg(String code,String message) {
+    public static String getMsg(String code) {
         return switch (code) {
             case OAuth2ErrorCodes.INVALID_CLIENT ->  MessageUtil.getMessage(ErrorCode.INVALID_CLIENT);
             case OAuth2ErrorCodes.UNAUTHORIZED_CLIENT ->  MessageUtil.getMessage(ErrorCode.UNAUTHORIZED_CLIENT);
@@ -52,7 +55,7 @@ public class CustomAuthExceptionHandler {
             case OAuth2ErrorCodes.UNSUPPORTED_GRANT_TYPE ->  MessageUtil.getMessage(ErrorCode.UNSUPPORTED_GRANT_TYPE);
             case OAuth2ErrorCodes.UNSUPPORTED_RESPONSE_TYPE ->  MessageUtil.getMessage(ErrorCode.UNSUPPORTED_RESPONSE_TYPE);
             case OAuth2ErrorCodes.ACCESS_DENIED -> MessageUtil.getMessage(ErrorCode.ACCESS_DENIED);
-            default -> message;
+            default -> "未知异常";
         };
     }
 

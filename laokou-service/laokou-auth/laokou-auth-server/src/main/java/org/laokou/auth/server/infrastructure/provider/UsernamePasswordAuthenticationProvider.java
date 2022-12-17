@@ -20,14 +20,15 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
+import org.laokou.common.core.utils.JacksonUtil;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,11 +55,15 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
         List<String> permissionList = userDetail.getPermissionList();
         Set<GrantedAuthority> authorities = new HashSet<>(permissionList.size());
         authorities.addAll(permissionList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
-        return new UsernamePasswordAuthenticationToken(userDetail,authentication.getName(),authorities);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetail, authentication.getName(), authorities);
+        // 获取当前认证
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("获取信息：{}", JacksonUtil.toJsonStr(principal));
+        return usernamePasswordAuthenticationToken;
     }
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(aClass);
+        return true;
     }
 }
