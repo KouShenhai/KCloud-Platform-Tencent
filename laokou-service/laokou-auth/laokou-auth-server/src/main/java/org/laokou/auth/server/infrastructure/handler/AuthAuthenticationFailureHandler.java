@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 /**
  * 认证失败处理器
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class AuthAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class AuthAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @SneakyThrows
     @Override

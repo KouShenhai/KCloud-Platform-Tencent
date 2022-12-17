@@ -18,18 +18,15 @@ package org.laokou.gateway;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.laokou.common.swagger.config.Knife4jConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 /**
  * @author kou Shenhai
  */
-@SpringBootApplication(exclude = {Knife4jConfig.class})
-@EnableDiscoveryClient
+@SpringBootApplication()
 @EnableEncryptableProperties
 @EnableApolloConfig
 public class GatewayApplication {

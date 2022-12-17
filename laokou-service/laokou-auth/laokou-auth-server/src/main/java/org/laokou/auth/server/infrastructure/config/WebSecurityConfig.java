@@ -18,6 +18,7 @@ package org.laokou.auth.server.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,22 +40,26 @@ public class WebSecurityConfig {
     @Bean
     @Order(0)
     SecurityFilterChain resources(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((matchers) -> matchers.requestMatchers(
-                        "/webjars/**"
+        return http
+                .authorizeHttpRequests()
+                .requestMatchers("/webjars/**"
                         ,"/swagger-resources/**"
                         ,"/oauth/captcha"
                         ,"/doc.html"
                         ,"/v2/api-docs"
                         ,"/swagger/api-docs"
                         ,"/oauth/logout"
-                        ,"/actuator/**"))
-                .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
+                        ,"/actuator/**")
+                .permitAll()
+                .and()
+                .authorizeHttpRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
                 .requestCache().disable()
                 .securityContext().disable()
-                .sessionManagement().disable();
-
-        return http.build();
+                .sessionManagement().disable()
+                .formLogin(Customizer.withDefaults()).build();
     }
 
 }

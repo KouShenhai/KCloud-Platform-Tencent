@@ -68,7 +68,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
             String username = request.getParameter(OAuth2ParameterNames.USERNAME);
             String password = request.getParameter(OAuth2ParameterNames.PASSWORD);
             try {
-                validate(uuid, captcha,username,password,request);
+                //validate(uuid, captcha,username,password,request);
             } catch (AuthenticationException e) {
                 //失败处理器
                 authAuthenticationFailureHandler.onAuthenticationFailure(request, response, e);
@@ -93,7 +93,7 @@ public class ValidateInfoFilter extends OncePerRequestFilter {
         }
         boolean validate = sysCaptchaService.validate(uuid, captcha);
         if (!validate) {
-            //loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
+            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR));
         }
     }

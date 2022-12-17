@@ -18,6 +18,7 @@ server:
 app:
   id: auth # 应用全局唯一的身份标识
 apollo:
+  meta: http://124.222.196.51:8080
   cacheDir: /opt/config # 自定义本地配置文件缓存路径
   bootstrap:
     namespaces: application-common,application
