@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.domain.sys.repository.service;
-import org.laokou.auth.client.user.UserDetail;
-
 import java.util.List;
 
 /**
@@ -26,9 +24,10 @@ public interface SysMenuService {
 
     /**
      * 查询权限标识列表
-     * @param userDetail
+     * @param superAdmin
+     * @param userId
      * @return
      */
-    List<String> getPermissionsList(UserDetail userDetail);
+    List<String> getPermissionsList(Integer superAdmin,Long userId);
 
 }

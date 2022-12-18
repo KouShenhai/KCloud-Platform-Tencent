@@ -17,6 +17,7 @@ package org.laokou.auth.server.application.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.laokou.auth.server.infrastructure.token.AuthToken;
 
 import java.io.IOException;
 
@@ -29,10 +30,10 @@ public interface SysAuthApplicationService {
     /***
      * 用户登录
      * @param request
-     * @param response
+     * @throws IOException
      * @return
      */
-    void login(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    AuthToken login(HttpServletRequest request) throws IOException;
 
     /**
      * 生成验证码

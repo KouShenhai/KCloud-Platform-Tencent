@@ -15,17 +15,14 @@
  */
 package org.laokou.auth.server.interfaces.controller;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
+import org.laokou.auth.server.infrastructure.token.AuthToken;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
-
 /**
  * 系统认证控制器
  * @author Kou Shenhai
@@ -39,15 +36,14 @@ public class SysAuthApiController {
 
     @GetMapping("/oauth2/captcha")
     @ApiOperation("系统认证>验证码")
-    @ApiImplicitParam(name = "uuid",value = "唯一标识",required = true,paramType = "query",dataType = "String")
     public HttpResultUtil<String> captcha(HttpServletRequest request) {
         return new HttpResultUtil<String>().ok(sysAuthApplicationService.captcha(request));
     }
 
     @PostMapping("/oauth2/login")
     @ApiOperation("系统认证>登录")
-    public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        sysAuthApplicationService.login(request,response);
+    public HttpResultUtil<AuthToken> login(HttpServletRequest request) throws IOException {
+        return new HttpResultUtil<AuthToken>().ok(sysAuthApplicationService.login(request));
     }
 
 }

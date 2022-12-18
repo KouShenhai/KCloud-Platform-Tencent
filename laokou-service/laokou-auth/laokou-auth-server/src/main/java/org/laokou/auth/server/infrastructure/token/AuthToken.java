@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OAuth2Token {
+public class AuthToken {
     private String accessToken;
     private String refreshToken;
     private String tokenType;

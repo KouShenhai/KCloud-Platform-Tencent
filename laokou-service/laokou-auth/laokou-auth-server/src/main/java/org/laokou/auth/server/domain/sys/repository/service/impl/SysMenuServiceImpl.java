@@ -33,10 +33,10 @@ import java.util.List;
 public class SysMenuServiceImpl implements SysMenuService {
     private final SysMenuMapper sysMenuMapper;
     @Override
-    public List<String> getPermissionsList(UserDetail userDetail) {
-        if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {
+    public List<String> getPermissionsList(Integer superAdmin,Long userId) {
+        if (SuperAdminEnum.YES.ordinal() == superAdmin) {
             return sysMenuMapper.getPermissionsList();
         }
-        return sysMenuMapper.getPermissionsListByUserId(userDetail.getUserId());
+        return sysMenuMapper.getPermissionsListByUserId(userId);
     }
 }

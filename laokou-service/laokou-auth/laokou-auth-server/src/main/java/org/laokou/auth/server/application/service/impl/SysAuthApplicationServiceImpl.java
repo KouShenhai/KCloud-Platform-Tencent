@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.application.service.impl;
-import cn.hutool.http.HttpStatus;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.infrastructure.token.AuthenticationToken;
-import org.laokou.auth.server.infrastructure.token.OAuth2Token;
+import org.laokou.auth.server.infrastructure.token.AuthToken;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.exception.ErrorCode;
@@ -41,10 +39,6 @@ import org.springframework.security.oauth2.server.authorization.token.DefaultOAu
 import org.springframework.security.oauth2.server.authorization.token.OAuth2AccessTokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MimeTypeUtils;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -64,13 +58,14 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private static final OAuth2RefreshTokenGenerator OAUTH2_REFRESH_TOKEN_GENERATOR = new OAuth2RefreshTokenGenerator();
     private final OAuth2AuthorizationService oAuth2AuthorizationService;
     @Override
-    public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public AuthToken login(HttpServletRequest request) {
         // 1.验证认证相关信息
         RegisteredClient registeredClient = loginBefore(request);
-        // 2.登录
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = login(request);
+        // 2.登录中
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = loginInfo(request);
         // 3.生成token
-        loginAfter(registeredClient,usernamePasswordAuthenticationToken,response,request);
+        AuthToken authToken = loginAfter(registeredClient, usernamePasswordAuthenticationToken, request);
+        return authToken;
     }
 
     private RegisteredClient loginBefore(HttpServletRequest request) {
@@ -104,7 +99,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         return registeredClient;
     }
 
-    private UsernamePasswordAuthenticationToken login(HttpServletRequest request) {
+    private UsernamePasswordAuthenticationToken loginInfo(HttpServletRequest request) {
         return authenticationToken(request).login(request);
     }
 
@@ -124,10 +119,9 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         }
     }
 
-    private void loginAfter(RegisteredClient registeredClient
+    private AuthToken loginAfter(RegisteredClient registeredClient
             , UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
-            , HttpServletResponse response
-            , HttpServletRequest request) throws IOException {
+            , HttpServletRequest request) {
         // 1.生成token（access_token + refresh_token）
         // 获取认证类型
         AuthorizationGrantType grantType = authenticationToken(request).getGrantType();
@@ -161,7 +155,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         OAuth2Authorization oAuth2Authorization = authorizationBuilder.build();
         // 放入内存
         oAuth2AuthorizationService.save(oAuth2Authorization);
-        log.info("获取{},",oAuth2Authorization);
         // 2.响应给前端
         String accessToken = generatedOAuth2AccessToken.getTokenValue();
         String refreshToken = generateOAuth2RefreshToken.getTokenValue();
@@ -169,21 +162,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         Instant issuedAt = generatedOAuth2AccessToken.getIssuedAt();
         String tokenType = generatedOAuth2AccessToken.getTokenType().getValue();
         long expireIn = ChronoUnit.SECONDS.between(issuedAt, expiresAt);
-        handleResponse(response,new OAuth2Token(accessToken,refreshToken,tokenType,expireIn));
-    }
-
-    /**
-     * 响应给前端
-     * @param response
-     * @throws IOException
-     */
-    private void handleResponse(HttpServletResponse response,Object obj) throws IOException {
-        response.setStatus(HttpStatus.HTTP_OK);
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
-        PrintWriter writer = response.getWriter();
-        writer.write(JacksonUtil.toJsonStr(new HttpResultUtil<>().ok(obj)));
-        writer.flush();
+        return new AuthToken(accessToken,refreshToken,tokenType,expireIn);
     }
 
     @Override

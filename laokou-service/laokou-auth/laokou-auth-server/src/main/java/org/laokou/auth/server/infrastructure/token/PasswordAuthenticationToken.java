@@ -17,7 +17,6 @@ package org.laokou.auth.server.infrastructure.token;
 import com.wf.captcha.GifCaptcha;
 import com.wf.captcha.base.Captcha;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.constant.AuthConstant;
@@ -41,19 +40,26 @@ import org.springframework.stereotype.Component;
 import java.awt.*;
 import java.util.List;
 /**
+ * 密码登录
  * @author Kou Shenhai
  */
 @Component
-@RequiredArgsConstructor
 @Slf4j
-public class PasswordAuthenticationToken implements AuthenticationToken{
+public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
 
-    private final SysUserServiceImpl sysUserService;
-    private final SysMenuService sysMenuService;
-    private final SysDeptService sysDeptService;
     private final SysCaptchaService sysCaptchaService;
     private final LoginLogUtil loginLogUtil;
     private static final String GRANT_TYPE = "password";
+
+    public PasswordAuthenticationToken(SysUserServiceImpl sysUserService
+            , SysMenuService sysMenuService
+            , SysDeptService sysDeptService
+            , SysCaptchaService sysCaptchaService
+            , LoginLogUtil loginLogUtil) {
+        super(sysUserService, sysMenuService, sysDeptService);
+        this.sysCaptchaService = sysCaptchaService;
+        this.loginLogUtil = loginLogUtil;
+    }
 
     @Override
     public AuthorizationGrantType getGrantType() {
@@ -92,6 +98,7 @@ public class PasswordAuthenticationToken implements AuthenticationToken{
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
             throw new CustomException(ErrorCode.CAPTCHA_ERROR);
         }
+        // 验证用户
         UserDetail userDetail = sysUserService.getUserDetail(username);
         if (userDetail == null) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
@@ -105,13 +112,13 @@ public class PasswordAuthenticationToken implements AuthenticationToken{
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
             throw new CustomException(ErrorCode.ACCOUNT_DISABLE);
         }
-        List<String> permissionsList = sysMenuService.getPermissionsList(userDetail);
+        Long userId = userDetail.getUserId();
+        Integer superAdmin = userDetail.getSuperAdmin();
+        List<String> permissionsList = sysMenuService.getPermissionsList(superAdmin,userId);
         if (CollectionUtils.isEmpty(permissionsList)) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
             throw new CustomException(ErrorCode.NOT_PERMISSIONS);
         }
-        Long userId = userDetail.getUserId();
-        Integer superAdmin = userDetail.getSuperAdmin();
         List<Long> deptIds = sysDeptService.getDeptIds(superAdmin,userId);
         userDetail.setDeptIds(deptIds);
         userDetail.setPermissionList(permissionsList);
