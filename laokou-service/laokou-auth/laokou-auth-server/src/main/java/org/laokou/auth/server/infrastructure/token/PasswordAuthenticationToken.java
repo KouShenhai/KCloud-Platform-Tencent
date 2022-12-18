@@ -34,6 +34,7 @@ import org.laokou.common.core.password.PasswordUtil;
 import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.stereotype.Component;
 
@@ -52,6 +53,12 @@ public class PasswordAuthenticationToken implements AuthenticationToken{
     private final SysDeptService sysDeptService;
     private final SysCaptchaService sysCaptchaService;
     private final LoginLogUtil loginLogUtil;
+    private static final String GRANT_TYPE = "password";
+
+    @Override
+    public AuthorizationGrantType getGrantType() {
+        return new AuthorizationGrantType(GRANT_TYPE);
+    }
 
     @Override
     public UsernamePasswordAuthenticationToken login(HttpServletRequest request) {

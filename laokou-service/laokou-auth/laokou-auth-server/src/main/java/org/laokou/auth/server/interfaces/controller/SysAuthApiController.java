@@ -23,6 +23,9 @@ import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+
 /**
  * 系统认证控制器
  * @author Kou Shenhai
@@ -43,7 +46,7 @@ public class SysAuthApiController {
 
     @PostMapping("/oauth2/login")
     @ApiOperation("系统认证>登录")
-    public void login(HttpServletRequest request, HttpServletResponse response) {
+    public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
         sysAuthApplicationService.login(request,response);
     }
 

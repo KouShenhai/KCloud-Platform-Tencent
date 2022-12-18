@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * <p>
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,32 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.auth.server.application.service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+package org.laokou.auth.server.infrastructure.token;
 
-import java.io.IOException;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * auth服务
  * @author Kou Shenhai
  */
-public interface SysAuthApplicationService {
-
-    /***
-     * 用户登录
-     * @param request
-     * @param response
-     * @return
-     */
-    void login(HttpServletRequest request, HttpServletResponse response) throws IOException;
-
-    /**
-     * 生成验证码
-     * @param request
-     * @return
-     */
-    String captcha(HttpServletRequest request);
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class OAuth2Token {
+    private String accessToken;
+    private String refreshToken;
+    private String tokenType;
+    private Long expiresIn;
 }

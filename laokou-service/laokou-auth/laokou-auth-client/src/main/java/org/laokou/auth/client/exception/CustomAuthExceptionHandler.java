@@ -29,9 +29,6 @@ import java.nio.charset.StandardCharsets;
  * @author Kou Shenhai
  */
 public class CustomAuthExceptionHandler {
-
-    public static final String ACCESS_TOKEN_REQUEST_ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
-
     public static void handleException(HttpServletResponse response, int code, String message) throws IOException {
         response.setStatus(HttpStatus.HTTP_OK);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
