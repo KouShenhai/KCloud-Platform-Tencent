@@ -16,7 +16,7 @@
 
 package org.laokou.auth.server.infrastructure.config;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,7 +24,6 @@ import org.springframework.security.web.SecurityFilterChain;
  * @author Kou Shenhai
  */
 @EnableWebSecurity
-@Configuration(proxyBeanMethods = false)
 public class WebSecurityConfig {
 
     /**
@@ -39,11 +38,12 @@ public class WebSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests().requestMatchers("/webjars/**"
                         ,"/swagger-resources/**"
-                        ,"/oauth/captcha"
+                        ,"/oauth2/captcha"
+                        ,"/oauth2/login"
                         ,"/doc.html"
                         ,"/v2/api-docs"
                         ,"/swagger/api-docs"
-                        ,"/oauth/logout"
+                        ,"/oauth2/logout"
                         ,"/actuator/**")
                 .permitAll()
                 .and()
@@ -51,11 +51,7 @@ public class WebSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .csrf().disable()
-                .cors().disable()
-                .httpBasic().disable()
-                .formLogin()
-                .and()
+                .formLogin(Customizer.withDefaults())
                 .build();
     }
 

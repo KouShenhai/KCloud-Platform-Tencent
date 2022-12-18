@@ -16,8 +16,11 @@
 package org.laokou.auth.client.user;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +29,7 @@ import java.util.Objects;
  */
 @Getter
 @Setter
-public class UserDetail implements Serializable {
+public class UserDetail implements UserDetails {
     private Long userId;
     private String username;
     private String imgUrl;
@@ -69,5 +72,30 @@ public class UserDetail implements Serializable {
                 ", deptIds=" + deptIds +
                 ", permissionList=" + permissionList +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

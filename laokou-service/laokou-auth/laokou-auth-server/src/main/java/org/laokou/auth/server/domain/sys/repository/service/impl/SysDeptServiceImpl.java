@@ -33,7 +33,6 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     private final SysDeptMapper sysDeptMapper;
 
-
     @Override
     public List<Long> getDeptIds(UserDetail userDetail) {
         if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {

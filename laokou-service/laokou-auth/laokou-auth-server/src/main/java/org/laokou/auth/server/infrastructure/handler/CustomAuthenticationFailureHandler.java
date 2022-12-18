@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.handler;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
-import org.laokou.common.core.exception.ErrorCode;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -39,12 +38,14 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
         log.error("错误信息：{}",e.getMessage());
-        CustomAuthExceptionHandler.handleException(response, ErrorCode.INTERNAL_SERVER_ERROR,e.getMessage());
+        OAuth2Error error = ((OAuth2AuthenticationException) e).getError();
+        CustomAuthExceptionHandler.handleException(response, Integer.valueOf(error.getErrorCode()),error.getDescription());
     }
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
         log.error("错误信息：{}",e.getMessage());
-        CustomAuthExceptionHandler.handleException(response, ErrorCode.INTERNAL_SERVER_ERROR,e.getMessage());
+        OAuth2Error error = ((OAuth2AuthenticationException) e).getError();
+        CustomAuthExceptionHandler.handleException(response, Integer.valueOf(error.getErrorCode()),error.getDescription());
     }
 }

@@ -18,11 +18,8 @@ package org.laokou.auth.client.exception;
 
 import cn.hutool.http.HttpStatus;
 import jakarta.servlet.http.HttpServletResponse;
-import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.common.core.utils.MessageUtil;
-import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.util.MimeTypeUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,21 +39,6 @@ public class CustomAuthExceptionHandler {
         PrintWriter writer = response.getWriter();
         writer.write(JacksonUtil.toJsonStr(new HttpResultUtil<>().error(code,message)));
         writer.flush();
-    }
-
-    public static String getMsg(String code) {
-        return switch (code) {
-            case OAuth2ErrorCodes.INVALID_CLIENT ->  MessageUtil.getMessage(ErrorCode.INVALID_CLIENT);
-            case OAuth2ErrorCodes.UNAUTHORIZED_CLIENT ->  MessageUtil.getMessage(ErrorCode.UNAUTHORIZED_CLIENT);
-            case OAuth2ErrorCodes.INVALID_GRANT ->  MessageUtil.getMessage(ErrorCode.INVALID_GRANT);
-            case OAuth2ErrorCodes.INVALID_SCOPE ->  MessageUtil.getMessage(ErrorCode.INVALID_SCOPE);
-            case OAuth2ErrorCodes.INVALID_TOKEN ->  MessageUtil.getMessage(ErrorCode.INVALID_TOKEN);
-            case OAuth2ErrorCodes.INVALID_REQUEST ->  MessageUtil.getMessage(ErrorCode.INVALID_REQUEST);
-            case OAuth2ErrorCodes.UNSUPPORTED_GRANT_TYPE ->  MessageUtil.getMessage(ErrorCode.UNSUPPORTED_GRANT_TYPE);
-            case OAuth2ErrorCodes.UNSUPPORTED_RESPONSE_TYPE ->  MessageUtil.getMessage(ErrorCode.UNSUPPORTED_RESPONSE_TYPE);
-            case OAuth2ErrorCodes.ACCESS_DENIED -> MessageUtil.getMessage(ErrorCode.ACCESS_DENIED);
-            default -> "未知异常";
-        };
     }
 
 }

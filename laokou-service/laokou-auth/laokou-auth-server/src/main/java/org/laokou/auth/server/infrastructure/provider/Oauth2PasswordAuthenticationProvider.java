@@ -16,7 +16,6 @@
 package org.laokou.auth.server.infrastructure.provider;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
@@ -42,16 +41,15 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
+public class Oauth2PasswordAuthenticationProvider implements AuthenticationProvider {
 
     private final SysAuthApplicationService sysAuthApplicationService;
 
-    @SneakyThrows
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
-        UserDetail userDetail = sysAuthApplicationService.login();
+        UserDetail userDetail = sysAuthApplicationService.login(username,password);
         List<String> permissionList = userDetail.getPermissionList();
         Set<GrantedAuthority> authorities = new HashSet<>(permissionList.size());
         authorities.addAll(permissionList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));

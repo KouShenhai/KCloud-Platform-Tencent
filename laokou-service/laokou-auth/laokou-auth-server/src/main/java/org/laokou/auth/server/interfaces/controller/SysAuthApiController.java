@@ -19,10 +19,20 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.common.core.utils.HttpResultUtil;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * 系统认证控制器
  * @author Kou Shenhai
@@ -34,17 +44,27 @@ public class SysAuthApiController {
 
     private final SysAuthApplicationService sysAuthApplicationService;
 
-    @GetMapping("/oauth/captcha")
+    @GetMapping("/oauth2/captcha")
     @ApiOperation("系统认证>验证码")
     @ApiImplicitParam(name = "uuid",value = "唯一标识",required = true,paramType = "query",dataType = "String")
     public HttpResultUtil<String> captcha(@RequestParam(value = AuthConstant.UUID)String uuid) {
         return new HttpResultUtil<String>().ok(sysAuthApplicationService.captcha(uuid));
     }
 
-    @GetMapping("/oauth/logout")
+    @GetMapping("/oauth2/logout")
     @ApiOperation("系统认证>退出登录")
     public void logout(HttpServletRequest request) {
         sysAuthApplicationService.logout(request);
+    }
+
+    @GetMapping("/oauth2/login")
+    public void test() {
+        UserDetail userDetail = sysAuthApplicationService.login("admin", "admin123");
+        List<String> permissionList = userDetail.getPermissionList();
+        Set<GrantedAuthority> authorities = new HashSet<>(permissionList.size());
+        authorities.addAll(permissionList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetail, "", authorities);
+
     }
 
 }
