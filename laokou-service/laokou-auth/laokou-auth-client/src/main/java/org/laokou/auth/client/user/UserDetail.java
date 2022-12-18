@@ -16,13 +16,14 @@
 package org.laokou.auth.client.user;
 import lombok.Getter;
 import lombok.Setter;
+import org.laokou.auth.client.enums.UserStatusEnum;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Kou Shenhai
@@ -76,7 +77,9 @@ public class UserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Set<GrantedAuthority> authorities = new HashSet<>(this.permissionList.size());
+        authorities.addAll(this.permissionList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
+        return authorities;
     }
 
     @Override
@@ -96,6 +99,6 @@ public class UserDetail implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.status == UserStatusEnum.DISABLE.ordinal() ? false : true;
     }
 }

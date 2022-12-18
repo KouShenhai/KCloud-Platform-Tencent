@@ -33,4 +33,6 @@ public interface Constant {
     Integer SUCCESS = 200;
 
     String UNDERLINE = "_";
+
+    String COMMA = ",";
 }

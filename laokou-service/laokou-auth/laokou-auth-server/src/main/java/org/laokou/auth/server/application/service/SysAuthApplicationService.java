@@ -16,7 +16,7 @@
 package org.laokou.auth.server.application.service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.laokou.auth.client.user.UserDetail;
+import jakarta.servlet.http.HttpServletResponse;
 /**
  * auth服务
  * @author Kou Shenhai
@@ -25,24 +25,17 @@ public interface SysAuthApplicationService {
 
     /***
      * 用户登录
-     * @param username
-     * @param password
-     * @return
-     */
-    UserDetail login(String username,String password);
-
-    /**
-     * 退出
      * @param request
+     * @param response
      * @return
      */
-    void logout(HttpServletRequest request);
+    void login(HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 生成验证码
-     * @param uuid
+     * @param request
      * @return
      */
-    String captcha(String uuid);
+    String captcha(HttpServletRequest request);
 
 }

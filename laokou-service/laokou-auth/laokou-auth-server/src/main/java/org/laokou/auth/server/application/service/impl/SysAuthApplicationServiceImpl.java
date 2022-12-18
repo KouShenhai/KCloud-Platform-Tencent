@@ -14,33 +14,26 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.application.service.impl;
-import com.wf.captcha.GifCaptcha;
-import com.wf.captcha.base.Captcha;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.apache.commons.collections.CollectionUtils;
-import org.laokou.auth.client.enums.UserStatusEnum;
-import org.laokou.auth.client.constant.AuthConstant;
-import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
+import org.laokou.auth.server.infrastructure.token.AuthenticationToken;
 import org.laokou.common.core.constant.Constant;
-import org.laokou.common.core.enums.ResultStatusEnum;
+import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.exception.ErrorCode;
-import org.laokou.common.core.password.PasswordUtil;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
-import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
-import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
-import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.common.core.utils.*;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.stereotype.Service;
-import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
-import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
+import java.util.Objects;
+import java.util.Set;
 /**
  * SpringSecurity最新版本更新
  * @author Kou Shenhai
@@ -49,106 +42,95 @@ import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
 @Slf4j
 @RequiredArgsConstructor
 public class SysAuthApplicationServiceImpl implements SysAuthApplicationService {
+    private final RegisteredClientRepository registeredClientRepository;
 
-    private final SysUserServiceImpl sysUserService;
-    private final SysMenuService sysMenuService;
-    private final SysDeptService sysDeptService;
-    private final SysCaptchaService sysCaptchaService;
-    private final LoginLogUtil loginLogUtil;
-
-    @SneakyThrows
     @Override
-    public UserDetail login(String username, String password) {
+    public void login(HttpServletRequest request, HttpServletResponse response) {
+        // 1.验证认证相关信息
+        RegisteredClient registeredClient = loginBefore(request);
+        // 2.登录
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = login(request);
+        // 3.生成token
+        loginAfter(registeredClient,usernamePasswordAuthenticationToken);
+    }
+
+    private RegisteredClient loginBefore(HttpServletRequest request) {
+        // 1.验证clientId
+        String clientId = request.getParameter(OAuth2ParameterNames.CLIENT_ID);
+        if (StringUtil.isEmpty(clientId)) {
+            throw new CustomException(ErrorCode.INVALID_CLIENT);
+        }
+        RegisteredClient registeredClient = registeredClientRepository.findByClientId(clientId);
+        if (registeredClient == null) {
+            throw new CustomException(ErrorCode.INVALID_CLIENT);
+        }
+        // 2.验证clientSecret
+        String secret = request.getParameter(OAuth2ParameterNames.CLIENT_SECRET);
+        String clientSecret = registeredClient.getClientSecret();
+        if (!Objects.equals(clientSecret,secret)) {
+            throw new CustomException(ErrorCode.INVALID_CLIENT);
+        }
+        // 3.验证scope
+        String scope = request.getParameter(OAuth2ParameterNames.SCOPE);
+        Set<String> scopes = registeredClient.getScopes();
+        if (StringUtil.isEmpty(scope)) {
+            throw new CustomException(ErrorCode.INVALID_SCOPE);
+        }
+        List<String> scopeList = Arrays.asList(scope.split(Constant.COMMA));
+        for (String s : scopeList) {
+            if (!scopes.contains(s)) {
+                throw new CustomException(ErrorCode.INVALID_SCOPE);
+            }
+        }
+        return registeredClient;
+    }
+
+    private UsernamePasswordAuthenticationToken login(HttpServletRequest request) {
         // 1.验证grantType
-        // 2.验证clientId
-        // 3.验证账号/密码/验证码 或 手机号/验证码
-        // 4.查询数据库
-        // 5.生成token（access_token + refresh_token）
-        // 6.响应给前端
-
-
-
-
-
-
-
-
-
-
-
-
-        log.info("账号：{}，密码：{}",username,password);
-        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-        UserDetail userDetail = sysUserService.getUserDetail(username);
-        if (userDetail == null) {
-            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
-            throw new OAuth2AuthenticationException(new OAuth2Error("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),CustomAuthExceptionHandler.ACCESS_TOKEN_REQUEST_ERROR_URI));
+        String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
+        if (StringUtil.isEmpty(grantType)) {
+            throw new CustomException(ErrorCode.UNSUPPORTED_GRANT_TYPE);
         }
-        if(!PasswordUtil.matches(password, userDetail.getPassword())) {
-            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
-            throw new OAuth2AuthenticationException(new OAuth2Error("" + ErrorCode.ACCOUNT_PASSWORD_ERROR,MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),CustomAuthExceptionHandler.ACCESS_TOKEN_REQUEST_ERROR_URI));
+        try {
+            String className = AuthenticationToken.class.getSimpleName();
+            AuthenticationToken authenticationToken = SpringContextUtil.getBean(grantType + className, AuthenticationToken.class);
+            // 2.验证账号/密码/验证码 或 手机号/验证码等等
+            return authenticationToken.login(request);
+        } catch (Exception e) {
+            if (e instanceof NoSuchBeanDefinitionException) {
+                throw new CustomException(ErrorCode.UNSUPPORTED_GRANT_TYPE);
+            } else {
+                throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
+            }
         }
-        if (UserStatusEnum.DISABLE.ordinal() == userDetail.getStatus()) {
-            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
-            throw new OAuth2AuthenticationException(new OAuth2Error("" + ErrorCode.ACCOUNT_DISABLE,MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),CustomAuthExceptionHandler.ACCESS_TOKEN_REQUEST_ERROR_URI));
-        }
-        List<String> permissionsList = sysMenuService.getPermissionsList(userDetail);
-        if (CollectionUtils.isEmpty(permissionsList)) {
-            loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
-            throw new OAuth2AuthenticationException(new OAuth2Error("" + ErrorCode.NOT_PERMISSIONS,MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),CustomAuthExceptionHandler.ACCESS_TOKEN_REQUEST_ERROR_URI));
-        }
-        List<Long> deptIds = sysDeptService.getDeptIds(userDetail);
-        userDetail.setDeptIds(deptIds);
-        userDetail.setPermissionList(permissionsList);
-        // 登录成功
-        loginLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
-        return userDetail;
+    }
+
+    private void loginAfter(RegisteredClient registeredClient
+            , UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) {
+        // 1.生成token（access_token + refresh_token）
+
+        // 2.响应给前端
     }
 
     @Override
-    public void logout(HttpServletRequest request) {
-//        String token = getToken(request);
-//        OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
-//        if (oAuth2AccessToken != null) {
-//            OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(oAuth2AccessToken);
-//            UserDetail userDetail = (UserDetail) oAuth2Authentication.getPrincipal();
-//            Long userId = userDetail.getUserId();
-//            String resourceTreeKey = RedisKeyUtil.getResourceTreeKey(userId);
-//            redisUtil.delete(resourceTreeKey);
-//            tokenStore.removeAccessToken(oAuth2AccessToken);
-//            OAuth2RefreshToken refreshToken = oAuth2AccessToken.getRefreshToken();
-//            tokenStore.removeRefreshToken(refreshToken);
-//            tokenStore.removeAccessTokenUsingRefreshToken(refreshToken);
-//        }
-    }
-
-    @Override
-    public String captcha(String uuid) {
-        // 三个参数分别为宽、高、位数
-        Captcha captcha = new GifCaptcha(130, 48, 4);
-        // 设置字体，有默认字体，可以不用设置
-        captcha.setFont(new Font("Verdana", Font.PLAIN, 32));
-        // 设置类型，纯数字、纯字母、字母数字混合
-        captcha.setCharType(Captcha.TYPE_DEFAULT);
-        sysCaptchaService.setCode(uuid,captcha.text());
-        return captcha.toBase64();
-    }
-
-    private static String getToken(HttpServletRequest request){
-        //从header中获取token
-        String token = request.getHeader(Constant.AUTHORIZATION_HEAD);
-        //如果header中不存在Authorization，则从参数中获取Authorization
-        if(StringUtil.isEmpty(token)){
-            token = request.getParameter(Constant.AUTHORIZATION_HEAD);
+    public String captcha(HttpServletRequest request) {
+        // 1.验证grantType
+        String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
+        if (StringUtil.isEmpty(grantType)) {
+            throw new CustomException(ErrorCode.UNSUPPORTED_GRANT_TYPE);
         }
-        if (StringUtil.isEmpty(token)) {
-            return token;
+        try {
+            String className = AuthenticationToken.class.getSimpleName();
+            AuthenticationToken authenticationToken = SpringContextUtil.getBean(grantType + className, AuthenticationToken.class);
+            // 2.获取验证码
+            return authenticationToken.captcha(request);
+        } catch (Exception e) {
+            if (e instanceof NoSuchBeanDefinitionException) {
+                throw new CustomException(ErrorCode.UNSUPPORTED_GRANT_TYPE);
+            } else {
+                throw new CustomException(ErrorCode.SERVICE_MAINTENANCE);
+            }
         }
-        int index = token.indexOf(Constant.BEARER);
-        if (index == -1) {
-            return token.trim();
-        }
-        return token.substring(index + 7).trim();
     }
 
 }

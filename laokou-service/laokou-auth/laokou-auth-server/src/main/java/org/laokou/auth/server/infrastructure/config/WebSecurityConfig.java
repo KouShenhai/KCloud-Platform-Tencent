@@ -16,14 +16,14 @@
 
 package org.laokou.auth.server.infrastructure.config;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 /**
  * @author Kou Shenhai
  */
-@EnableWebSecurity
+@Configuration
 public class WebSecurityConfig {
 
     /**
@@ -36,7 +36,8 @@ public class WebSecurityConfig {
      */
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests().requestMatchers("/webjars/**"
+        return http.authorizeHttpRequests().requestMatchers(
+                "/webjars/**"
                         ,"/swagger-resources/**"
                         ,"/oauth2/captcha"
                         ,"/oauth2/login"
@@ -51,6 +52,9 @@ public class WebSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
+                .csrf().disable()
+                .httpBasic().disable()
+                .cors().disable()
                 .formLogin(Customizer.withDefaults())
                 .build();
     }
