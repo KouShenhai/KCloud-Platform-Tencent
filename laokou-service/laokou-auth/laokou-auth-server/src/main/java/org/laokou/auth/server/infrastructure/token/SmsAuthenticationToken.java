@@ -21,15 +21,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.stereotype.Component;
 
 /**
- * 手机登录
+ * 验证码登录
  * @author Kou Shenhai
  */
 @Component
+@Primary
 @Slf4j
 public class SmsAuthenticationToken extends AbstractAuthenticationToken{
 

@@ -26,7 +26,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  * 共享用户信息接口
  * 继承该类
  *  $ 密码登录
- *  @ 手机登录
+ *  @ 验证码登录
  *  # 邮件登录
  * @author Kou Shenhai
  */

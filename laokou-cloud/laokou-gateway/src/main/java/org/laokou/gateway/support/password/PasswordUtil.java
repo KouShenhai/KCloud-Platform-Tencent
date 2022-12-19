@@ -14,35 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.laokou.common.core.password;
+package org.laokou.gateway.support.password;
 /**
  * @author Kou Shenhai
  */
 public class PasswordUtil {
-    private static final PasswordEncoder PASSWORD_ENCODER = new BcryptPasswordEncoder();
-
-    /**
-     * 加密
-     * @param str  字符串
-     * @return     返回加密字符串
-     */
-    public static String encode(CharSequence str){
-        return PASSWORD_ENCODER.encode(str);
-    }
-
     public static String decode(String str) throws Exception {
         return RsaCoder.decryptByPrivateKey(str);
     }
-
-
-    /**
-     * 比较密码是否相等
-     * @param str  明文密码
-     * @param  password  加密后密码
-     * @return     true：成功    false：失败
-     */
-    public static boolean matches(CharSequence str, String password){
-        return PASSWORD_ENCODER.matches(str, password);
-    }
-
 }

@@ -36,7 +36,6 @@ import org.laokou.common.core.enums.SuperAdminEnum;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
 import org.apache.commons.collections.CollectionUtils;
-import org.laokou.common.core.password.PasswordUtil;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,7 +90,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
             throw new CustomException("账号已存在，请重新填写");
         }
         sysUserDO.setCreator(UserUtil.getUserId());
-        sysUserDO.setPassword(PasswordUtil.encode(dto.getPassword()));
+        //sysUserDO.setPassword(PasswordUtil.encode(dto.getPassword()));
         sysUserService.save(sysUserDO);
         List<Long> roleIds = dto.getRoleIds();
         if (CollectionUtils.isNotEmpty(roleIds)) {

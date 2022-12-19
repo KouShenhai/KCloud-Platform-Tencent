@@ -21,7 +21,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.exception.ErrorCode;
-import org.laokou.common.core.password.PasswordUtil;
+import org.laokou.gateway.support.password.PasswordUtil;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.gateway.constant.GatewayConstant;

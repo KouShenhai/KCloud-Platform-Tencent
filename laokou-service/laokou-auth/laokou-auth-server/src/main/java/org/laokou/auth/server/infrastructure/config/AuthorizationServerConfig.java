@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.config;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -53,9 +57,12 @@ public class AuthorizationServerConfig {
      */
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http
+        , @Qualifier("passwordAuthenticationToken") UserDetailsService userDetailsService) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        return http.build();
+        return http
+                .userDetailsService(userDetailsService)
+                .build();
     }
 
     @Bean
@@ -64,6 +71,7 @@ public class AuthorizationServerConfig {
                 RegisteredClient.withId("client_auth")
                         .clientId("client_auth")
                         .clientSecret("{noop}secret")
+                        // ClientAuthenticationMethod.CLIENT_SECRET_BASIC => client_id:client_secret 进行Base64编码后的值
                         .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                         .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(
                                 List.of(AuthorizationGrantType.AUTHORIZATION_CODE
@@ -82,7 +90,6 @@ public class AuthorizationServerConfig {
                                 .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
                                 .accessTokenTimeToLive(Duration.ofHours(1))
                                 .refreshTokenTimeToLive(Duration.ofHours(6))
-                                .reuseRefreshTokens(true)
                                 .build())
                         // 客户端相关配置，包括验证密钥或需要授权页面
                         .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
@@ -93,6 +100,11 @@ public class AuthorizationServerConfig {
     @Bean
     AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
