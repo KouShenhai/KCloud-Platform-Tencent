@@ -18,6 +18,7 @@ import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
+import org.laokou.auth.server.infrastructure.handler.CustomAuthenticationFailureHandler;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.auth.server.infrastructure.token.EmailAuthenticationToken;
 import org.laokou.auth.server.infrastructure.token.PasswordAuthenticationToken;
@@ -26,6 +27,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,10 +43,15 @@ import org.springframework.security.oauth2.server.authorization.client.InMemoryR
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.web.authentication.DelegatingAuthenticationConverter;
+import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2AuthorizationCodeAuthenticationConverter;
+import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2ClientCredentialsAuthenticationConverter;
+import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import java.time.Duration;
 import java.util.List;
@@ -66,6 +75,15 @@ public class AuthorizationServerConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+                .oidc(Customizer.withDefaults());
+        http.apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(new DelegatingAuthenticationConverter(
+                List.of(
+                        new OAuth2AuthorizationCodeAuthenticationConverter()
+                        , new OAuth2ClientCredentialsAuthenticationConverter()
+                        , new OAuth2RefreshTokenAuthenticationConverter()))))
+                .clientAuthentication(clientAuthentication -> clientAuthentication.errorResponseHandler(new CustomAuthenticationFailureHandler()))
+        );
         return http.build();
     }
 
@@ -134,4 +152,14 @@ public class AuthorizationServerConfig {
                 , loginLogUtil
                 , passwordEncoder);
     }
+
+    @Bean
+    AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder
+     , UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        return daoAuthenticationProvider;
+    }
+
 }

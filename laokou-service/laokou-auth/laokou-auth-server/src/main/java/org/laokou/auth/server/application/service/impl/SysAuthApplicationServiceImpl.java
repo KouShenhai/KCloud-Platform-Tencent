@@ -16,6 +16,7 @@
 package org.laokou.auth.server.application.service.impl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.laokou.auth.server.infrastructure.context.CustomAuthorizationServerContext;
 import org.laokou.auth.server.infrastructure.token.AuthenticationToken;
 import org.laokou.auth.server.infrastructure.token.AuthToken;
 import org.laokou.common.core.constant.Constant;
@@ -25,7 +26,11 @@ import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.utils.*;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
@@ -35,15 +40,17 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.DefaultOAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2AccessTokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 /**
  * SpringSecurity最新版本更新
@@ -51,12 +58,17 @@ import java.util.Set;
  */
 @Service
 @Slf4j
+@Configuration
 @RequiredArgsConstructor
 public class SysAuthApplicationServiceImpl implements SysAuthApplicationService {
     private final RegisteredClientRepository registeredClientRepository;
     private static final OAuth2AccessTokenGenerator OAUTH2_ACCESS_TOKEN_GENERATOR = new OAuth2AccessTokenGenerator();
     private static final OAuth2RefreshTokenGenerator OAUTH2_REFRESH_TOKEN_GENERATOR = new OAuth2RefreshTokenGenerator();
     private final OAuth2AuthorizationService oAuth2AuthorizationService;
+    private final AuthenticationProvider authenticationProvider;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthorizationServerSettings authorizationServerSettings;
+
     @Override
     public AuthToken login(HttpServletRequest request) {
         // 1.验证认证相关信息
@@ -81,7 +93,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         // 2.验证clientSecret
         String secret = request.getParameter(OAuth2ParameterNames.CLIENT_SECRET);
         String clientSecret = registeredClient.getClientSecret();
-        if (!Objects.equals(clientSecret,secret)) {
+        if (!passwordEncoder.matches(secret,clientSecret)) {
             throw new CustomException(ErrorCode.INVALID_CLIENT);
         }
         // 3.验证scope
@@ -125,16 +137,23 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         // 1.生成token（access_token + refresh_token）
         // 获取认证类型
         AuthorizationGrantType grantType = authenticationToken(request).getGrantType();
+        // 获取认证范围
+        Set<String> scopes = registeredClient.getScopes();
+        Authentication principal = authenticationProvider.authenticate(usernamePasswordAuthenticationToken);
         // 获取上下文
         DefaultOAuth2TokenContext.Builder builder = DefaultOAuth2TokenContext.builder()
                 .registeredClient(registeredClient)
-                .principal(usernamePasswordAuthenticationToken)
+                .principal(principal)
                 .tokenType(OAuth2TokenType.ACCESS_TOKEN)
+                .authorizedScopes(scopes)
+                .authorizationServerContext(new CustomAuthorizationServerContext(request,authorizationServerSettings))
                 .authorizationGrantType(grantType);
         DefaultOAuth2TokenContext context = builder.build();
         OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization
                 .withRegisteredClient(registeredClient)
-                .principalName(usernamePasswordAuthenticationToken.getName())
+                .principalName(principal.getName())
+                .authorizedScopes(scopes)
+                .attribute(Principal.class.getName(), principal)
                 .authorizationGrantType(grantType);
         // 生成access_token
         OAuth2AccessToken generatedOAuth2AccessToken = OAUTH2_ACCESS_TOKEN_GENERATOR.generate(context);
