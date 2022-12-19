@@ -55,6 +55,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .httpBasic().disable()
                 .cors().disable()
+                .requestCache().disable()
                 .formLogin(Customizer.withDefaults())
                 .build();
     }

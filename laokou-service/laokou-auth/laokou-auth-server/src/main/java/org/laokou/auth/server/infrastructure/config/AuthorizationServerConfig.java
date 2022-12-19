@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.config;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
+import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
+import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
+import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
+import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
+import org.laokou.auth.server.infrastructure.token.EmailAuthenticationToken;
+import org.laokou.auth.server.infrastructure.token.PasswordAuthenticationToken;
+import org.laokou.auth.server.infrastructure.token.SmsAuthenticationToken;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -57,25 +64,26 @@ public class AuthorizationServerConfig {
      */
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http
-        , @Qualifier("passwordAuthenticationToken") UserDetailsService userDetailsService) throws Exception {
+    SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        return http
-                .userDetailsService(userDetailsService)
-                .build();
+        return http.build();
     }
 
     @Bean
-    RegisteredClientRepository registeredClientRepository() {
+    RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
         InMemoryRegisteredClientRepository inMemoryRegisteredClientRepository = new InMemoryRegisteredClientRepository(
                 RegisteredClient.withId("client_auth")
                         .clientId("client_auth")
-                        .clientSecret("{noop}secret")
+                        .clientSecret(passwordEncoder.encode("secret"))
                         // ClientAuthenticationMethod.CLIENT_SECRET_BASIC => client_id:client_secret 进行Base64编码后的值
+                        // Headers Authorization Basic Y2xpZW50X2F1dGg6c2VjcmV0
                         .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                         .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(
                                 List.of(AuthorizationGrantType.AUTHORIZATION_CODE
                                         , AuthorizationGrantType.REFRESH_TOKEN
+                                        , new AuthorizationGrantType(PasswordAuthenticationToken.GRANT_TYPE)
+                                        , new AuthorizationGrantType(SmsAuthenticationToken.GRANT_TYPE)
+                                        , new AuthorizationGrantType(EmailAuthenticationToken.GRANT_TYPE)
                                         , AuthorizationGrantType.CLIENT_CREDENTIALS)))
                         // 支持OIDC
                         .scopes(scopes -> scopes.addAll(List.of(
@@ -112,4 +120,18 @@ public class AuthorizationServerConfig {
         return new InMemoryOAuth2AuthorizationService();
     }
 
+    @Bean
+    UserDetailsService userDetailsService(
+            SysUserServiceImpl sysUserService
+            , SysMenuService sysMenuService
+            , SysDeptService sysDeptService
+            , SysCaptchaService sysCaptchaService
+            , LoginLogUtil loginLogUtil
+            , PasswordEncoder passwordEncoder) {
+        return new PasswordAuthenticationToken(sysUserService,sysMenuService
+                , sysDeptService
+                , sysCaptchaService
+                , loginLogUtil
+                , passwordEncoder);
+    }
 }

@@ -5,6 +5,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 /**
+ * 认证流程
+ *
+ * 1.UsernamePasswordAuthenticationToken -> AuthenticationManager
+ * 2.AuthenticationManager -> ProviderManager
+ * 3.ProviderManager -> AuthenticationProviders
+ * 4.AuthenticationProviders -> DaoAuthenticationProvider
+ * 5.DaoAuthenticationProvider -> UserDetailsService
+ * 6.UserDetailsService -> PasswordEncoder
+ * 7.AuthenticationManager -> UsernamePasswordAuthenticationToken
+ *
  * @author Kou Shenhai
  */
 public interface AuthenticationToken {

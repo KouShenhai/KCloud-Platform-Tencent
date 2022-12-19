@@ -31,7 +31,6 @@ import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.common.core.utils.StringUtil;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -44,13 +43,12 @@ import java.util.List;
  * @author Kou Shenhai
  */
 @Component
-@Primary
 @Slf4j
 public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
 
     private final SysCaptchaService sysCaptchaService;
     private final LoginLogUtil loginLogUtil;
-    private static final String GRANT_TYPE = "password";
+    public static final String GRANT_TYPE = "password";
     private final PasswordEncoder passwordEncoder;
 
     public PasswordAuthenticationToken(SysUserServiceImpl sysUserService
@@ -108,21 +106,26 @@ public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             throw new CustomException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
         }
-        if(!passwordEncoder.matches(password, userDetail.getPassword())) {
+        // 验证密码
+        String clientPassword = userDetail.getPassword();
+        if(!passwordEncoder.matches(password, clientPassword)) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             throw new CustomException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
         }
+        // 是否锁定
         if (!userDetail.isEnabled()) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
             throw new CustomException(ErrorCode.ACCOUNT_DISABLE);
         }
         Long userId = userDetail.getUserId();
         Integer superAdmin = userDetail.getSuperAdmin();
+        // 权限标识列表
         List<String> permissionsList = sysMenuService.getPermissionsList(superAdmin,userId);
         if (CollectionUtils.isEmpty(permissionsList)) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
             throw new CustomException(ErrorCode.NOT_PERMISSIONS);
         }
+        // 部门列表
         List<Long> deptIds = sysDeptService.getDeptIds(superAdmin,userId);
         userDetail.setDeptIds(deptIds);
         userDetail.setPermissionList(permissionsList);
