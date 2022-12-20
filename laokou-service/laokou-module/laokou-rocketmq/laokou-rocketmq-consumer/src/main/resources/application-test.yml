@@ -11,7 +11,7 @@ server:
     # 分配堆外内存
     direct-buffers: true
 rocketmq:
-  name-server: 192.168.62.128:9876;192.168.62.144:9876;192.168.62.145:9876
+  name-server: 192.168.62.144:9876
   # 生产者
   producer:
     group: laokou-producer-group

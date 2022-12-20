@@ -31,7 +31,7 @@ spring:
         instance:
           service-base-url: http://192.168.62.1:${server.port}
   redis:
-    host: 192.168.62.128
+    host: 192.168.62.144
     port: 6379
     timeout: 6000ms #连接超时时长（毫秒）
     lettuce:
@@ -44,7 +44,7 @@ spring:
     druid:
       db-type: mysql
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://192.168.62.128:3306/kcloud_platform?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
+      url: jdbc:mysql://192.168.62.144:3306/kcloud_platform?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
       username: ENC(7j+MYBNM2fhq8WST3DE3WA==)
       password: ENC(SX9kPzLDaZb9kGOl2QBziw==)
       initial-size: 10
