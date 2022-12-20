@@ -21,7 +21,7 @@ package org.laokou.auth.client.constant;
  */
 public interface AuthConstant {
    /**
-    * 标识
+    * 唯一标识
     */
    String UUID = "uuid";
    /**

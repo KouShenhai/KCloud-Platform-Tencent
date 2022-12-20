@@ -22,11 +22,9 @@ import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.exception.ErrorCode;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -67,7 +65,7 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetail userDetail = caffeineCache.getIfPresent(username);
         if (null == userDetail) {
-            throw new CustomException(ErrorCode.ACCOUNT_NOT_EXIST);
+            throw new CustomException("请稍后再试");
         }
         // 移除
         caffeineCache.invalidate(username);

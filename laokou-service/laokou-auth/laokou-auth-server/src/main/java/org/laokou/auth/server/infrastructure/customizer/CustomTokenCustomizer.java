@@ -15,17 +15,23 @@
  */
 
 package org.laokou.auth.server.infrastructure.customizer;
-
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
 /**
+ * 扩展信息
  * @author Kou Shenhai
  */
 public class CustomTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodingContext> {
 
     @Override
     public void customize(JwtEncodingContext context) {
-
+//        JwtClaimsSet.Builder claims = context.getClaims();
+//        RegisteredClient registeredClient = context.getRegisteredClient();
+//        String clientId = registeredClient.getClientId();
+//        String grantType = context.getAuthorizationGrantType().getValue();
+//        // 写入clientId 和 grantType
+//        claims.claim(OAuth2ParameterNames.CLIENT_ID,clientId);
+//        claims.claim(OAuth2ParameterNames.GRANT_TYPE,grantType);
     }
 }
