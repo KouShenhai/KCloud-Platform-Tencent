@@ -32,6 +32,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClaimAccessor;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
@@ -153,7 +154,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 .withRegisteredClient(registeredClient)
                 .principalName(principal.getName())
                 .authorizedScopes(scopes)
-                .attribute(Principal.class.getName(), principal)
                 .authorizationGrantType(grantType);
         // 生成access_token
         OAuth2AccessToken generatedOAuth2AccessToken = OAUTH2_ACCESS_TOKEN_GENERATOR.generate(context);
@@ -163,7 +163,16 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 , generatedOAuth2AccessToken.getIssuedAt()
                 , generatedOAuth2AccessToken.getExpiresAt()
                 , context.getAuthorizedScopes());
-        authorizationBuilder.accessToken(oAuth2AccessToken);
+        // jwt
+        if (generatedOAuth2AccessToken instanceof ClaimAccessor) {
+            authorizationBuilder.token(oAuth2AccessToken,
+                    meta -> meta.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME
+                            ,((ClaimAccessor)generatedOAuth2AccessToken).getClaims()))
+                    .authorizedScopes(scopes)
+                    .attribute(Principal.class.getName(), principal);
+        }else {
+            authorizationBuilder.accessToken(oAuth2AccessToken);
+        }
         // 生成refresh_token
         context = builder
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)

@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
+import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.stereotype.Component;
@@ -35,8 +36,8 @@ public class SmsAuthenticationToken extends AbstractAuthenticationToken{
 
     public static final String GRANT_TYPE = "sms";
 
-    public SmsAuthenticationToken(SysUserServiceImpl sysUserService, SysMenuService sysMenuService, SysDeptService sysDeptService) {
-        super(sysUserService, sysMenuService, sysDeptService);
+    public SmsAuthenticationToken(SysUserServiceImpl sysUserService, SysMenuService sysMenuService, SysDeptService sysDeptService, LoginLogUtil loginLogUtil) {
+        super(sysUserService, sysMenuService, sysDeptService, loginLogUtil);
     }
 
     @Override
