@@ -47,7 +47,6 @@ import java.util.List;
 public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
 
     private final SysCaptchaService sysCaptchaService;
-    private final LoginLogUtil loginLogUtil;
     public static final String GRANT_TYPE = "password";
     private final PasswordEncoder passwordEncoder;
 
@@ -57,9 +56,8 @@ public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
             , SysCaptchaService sysCaptchaService
             , LoginLogUtil loginLogUtil
             , PasswordEncoder passwordEncoder) {
-        super(sysUserService, sysMenuService, sysDeptService);
+        super(sysUserService, sysMenuService, sysDeptService,loginLogUtil);
         this.sysCaptchaService = sysCaptchaService;
-        this.loginLogUtil = loginLogUtil;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -131,6 +129,8 @@ public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
         userDetail.setPermissionList(permissionsList);
         // 登录成功
         loginLogUtil.recordLogin(userDetail.getUsername(), ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
+        // 放入
+        caffeineCache.put(username,userDetail);
         return new UsernamePasswordAuthenticationToken(username,password);
     }
 

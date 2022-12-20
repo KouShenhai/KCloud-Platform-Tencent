@@ -12,7 +12,6 @@
         <module>laokou-common</module>
         <module>laokou-cloud</module>
         <module>laokou-service</module>
-        <module>laokou-service/laokou-api</module>
     </modules>
     <properties>
         <laokou.version>1.0-SNAPSHOT</laokou.version>
@@ -24,7 +23,7 @@
         <!--boot版本-->
         <spring-boot.version>3.0.0</spring-boot.version>
         <!--cloud版本-->
-        <spring-cloud.version>2022.0.0-RC3</spring-cloud.version>
+        <spring-cloud.version>2022.0.0</spring-cloud.version>
         <!--kotlin版本-->
         <kotlin.version>1.7.10</kotlin.version>
         <docker.repostory>registry.cn-hangzhou.aliyuncs.com</docker.repostory>

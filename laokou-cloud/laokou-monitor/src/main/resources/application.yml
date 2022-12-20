@@ -17,8 +17,6 @@ server:
     # 分配堆外内存
     direct-buffers: true
 spring:
-  main:
-    allow-bean-definition-overriding: true
   profiles:
     active: @profile.active@
   application:

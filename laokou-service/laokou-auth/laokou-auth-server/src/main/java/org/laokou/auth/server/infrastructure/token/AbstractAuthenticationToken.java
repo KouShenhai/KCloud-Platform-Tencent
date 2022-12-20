@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.infrastructure.token;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
+import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
+import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.core.exception.ErrorCode;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.concurrent.TimeUnit;
+
 /**
  * 共享用户信息接口
  * 继承该类
@@ -33,17 +41,35 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @RequiredArgsConstructor
 public abstract class AbstractAuthenticationToken implements AuthenticationToken, UserDetailsService {
 
-    final SysUserServiceImpl sysUserService;
-    final SysMenuService sysMenuService;
-    final SysDeptService sysDeptService;
+    protected final SysUserServiceImpl sysUserService;
+    protected final SysMenuService sysMenuService;
+    protected final SysDeptService sysDeptService;
+    protected final LoginLogUtil loginLogUtil;
+    protected final Cache<String,UserDetail> caffeineCache;
+
+    public AbstractAuthenticationToken(
+      SysUserServiceImpl sysUserService
+    , SysMenuService sysMenuService
+    , SysDeptService sysDeptService
+    , LoginLogUtil loginLogUtil) {
+        this.sysDeptService = sysDeptService;
+        this.sysMenuService = sysMenuService;
+        this.loginLogUtil = loginLogUtil;
+        this.sysUserService = sysUserService;
+        this.caffeineCache = Caffeine.newBuilder().initialCapacity(200)
+                .expireAfterAccess(2, TimeUnit.MINUTES)
+                .maximumSize(4028)
+                .build();
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetail userDetail = sysUserService.getUserDetail(username);
-        Long userId = userDetail.getUserId();
-        Integer superAdmin = userDetail.getSuperAdmin();
-        userDetail.setDeptIds(sysDeptService.getDeptIds(superAdmin,userId));
-        userDetail.setPermissionList(sysMenuService.getPermissionsList(superAdmin,userId));
+        UserDetail userDetail = caffeineCache.getIfPresent(username);
+        if (null == userDetail) {
+            throw new CustomException(ErrorCode.ACCOUNT_NOT_EXIST);
+        }
+        // 移除
+        caffeineCache.invalidate(username);
         return userDetail;
     }
 
