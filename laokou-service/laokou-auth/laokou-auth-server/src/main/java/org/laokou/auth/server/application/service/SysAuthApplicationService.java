@@ -16,7 +16,6 @@
 package org.laokou.auth.server.application.service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.laokou.auth.server.infrastructure.token.AuthToken;
 
 import java.io.IOException;
