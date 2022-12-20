@@ -96,7 +96,7 @@ public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
         Boolean validate = sysCaptchaService.validate(uuid, captcha);
         if (!validate) {
             loginLogUtil.recordLogin(username, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
-            throw new CustomException(ErrorCode.CAPTCHA_ERROR);
+            //throw new CustomException(ErrorCode.CAPTCHA_ERROR);
         }
         // 验证用户
         UserDetail userDetail = sysUserService.getUserDetail(username);

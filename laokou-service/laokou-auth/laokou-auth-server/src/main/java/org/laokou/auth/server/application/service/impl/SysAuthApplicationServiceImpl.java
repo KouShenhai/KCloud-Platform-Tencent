@@ -31,10 +31,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClaimAccessor;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.OAuth2RefreshToken;
+import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
@@ -43,15 +40,14 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.DefaultOAuth2TokenContext;
-import org.springframework.security.oauth2.server.authorization.token.OAuth2AccessTokenGenerator;
-import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.stereotype.Service;
-
 import java.security.Principal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 /**
  * SpringSecurity最新版本更新
@@ -63,8 +59,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SysAuthApplicationServiceImpl implements SysAuthApplicationService {
     private final RegisteredClientRepository registeredClientRepository;
-    private static final OAuth2AccessTokenGenerator OAUTH2_ACCESS_TOKEN_GENERATOR = new OAuth2AccessTokenGenerator();
-    private static final OAuth2RefreshTokenGenerator OAUTH2_REFRESH_TOKEN_GENERATOR = new OAuth2RefreshTokenGenerator();
+    private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
     private final OAuth2AuthorizationService oAuth2AuthorizationService;
     private final AuthenticationProvider authenticationProvider;
     private final PasswordEncoder passwordEncoder;
@@ -156,7 +151,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 .authorizedScopes(scopes)
                 .authorizationGrantType(grantType);
         // 生成access_token
-        OAuth2AccessToken generatedOAuth2AccessToken = OAUTH2_ACCESS_TOKEN_GENERATOR.generate(context);
+        OAuth2Token generatedOAuth2AccessToken = Optional.ofNullable(tokenGenerator.generate(context)).orElseThrow(() -> new CustomException("令牌生成器无法生成访问令牌"));
         OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(
                 OAuth2AccessToken.TokenType.BEARER
                 , generatedOAuth2AccessToken.getTokenValue()
@@ -178,8 +173,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .tokenType(OAuth2TokenType.REFRESH_TOKEN)
                 .build();
-        OAuth2RefreshToken generateOAuth2RefreshToken = OAUTH2_REFRESH_TOKEN_GENERATOR.generate(context);
-        authorizationBuilder.refreshToken(generateOAuth2RefreshToken);
+        OAuth2Token generateOAuth2RefreshToken = Optional.ofNullable(tokenGenerator.generate(context)).orElseThrow(() -> new CustomException("令牌生成器无法生成刷新令牌"));
+        authorizationBuilder.refreshToken((OAuth2RefreshToken) generateOAuth2RefreshToken);
         OAuth2Authorization oAuth2Authorization = authorizationBuilder.build();
         // 放入内存
         oAuth2AuthorizationService.save(oAuth2Authorization);
@@ -188,7 +183,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         String refreshToken = generateOAuth2RefreshToken.getTokenValue();
         Instant expiresAt = generatedOAuth2AccessToken.getExpiresAt();
         Instant issuedAt = generatedOAuth2AccessToken.getIssuedAt();
-        String tokenType = generatedOAuth2AccessToken.getTokenType().getValue();
+        String tokenType = OAuth2AccessToken.TokenType.BEARER.getValue();
         long expireIn = ChronoUnit.SECONDS.between(issuedAt, expiresAt);
         return new AuthToken(accessToken,refreshToken,tokenType,expireIn);
     }

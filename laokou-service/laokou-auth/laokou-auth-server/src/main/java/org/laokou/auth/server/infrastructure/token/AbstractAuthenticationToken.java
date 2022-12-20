@@ -16,7 +16,6 @@
 package org.laokou.auth.server.infrastructure.token;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import lombok.RequiredArgsConstructor;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
@@ -38,14 +37,20 @@ import java.util.concurrent.TimeUnit;
  *  # 邮件登录
  * @author Kou Shenhai
  */
-@RequiredArgsConstructor
 public abstract class AbstractAuthenticationToken implements AuthenticationToken, UserDetailsService {
 
     protected final SysUserServiceImpl sysUserService;
     protected final SysMenuService sysMenuService;
     protected final SysDeptService sysDeptService;
     protected final LoginLogUtil loginLogUtil;
-    protected final Cache<String,UserDetail> caffeineCache;
+    protected static final Cache<String,UserDetail> caffeineCache;
+
+    static {
+        caffeineCache = Caffeine.newBuilder().initialCapacity(200)
+                .expireAfterAccess(2, TimeUnit.MINUTES)
+                .maximumSize(4028)
+                .build();
+    }
 
     public AbstractAuthenticationToken(
       SysUserServiceImpl sysUserService
@@ -56,10 +61,6 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
         this.sysMenuService = sysMenuService;
         this.loginLogUtil = loginLogUtil;
         this.sysUserService = sysUserService;
-        this.caffeineCache = Caffeine.newBuilder().initialCapacity(200)
-                .expireAfterAccess(2, TimeUnit.MINUTES)
-                .maximumSize(4028)
-                .build();
     }
 
     @Override
