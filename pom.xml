@@ -23,7 +23,7 @@
         <!--boot版本-->
         <spring-boot.version>3.0.0</spring-boot.version>
         <!--cloud版本-->
-        <spring-cloud.version>2022.0.0-RC2</spring-cloud.version>
+        <spring-cloud.version>2022.0.0</spring-cloud.version>
         <!--kotlin版本-->
         <kotlin.version>1.7.10</kotlin.version>
         <docker.repostory>registry.cn-hangzhou.aliyuncs.com</docker.repostory>
@@ -141,6 +141,7 @@
             <id>dev</id>
             <properties>
                 <profile.active>dev</profile.active>
+                <tencent.namespace>laokou</tencent.namespace>
                 <mybatis-plus.log-impl>org.apache.ibatis.logging.stdout.StdOutImpl</mybatis-plus.log-impl>
             </properties>
             <activation>
@@ -152,6 +153,7 @@
             <id>test</id>
             <properties>
                 <profile.active>test</profile.active>
+                <tencent.namespace>laokou</tencent.namespace>
                 <mybatis-plus.log-impl>org.apache.ibatis.logging.stdout.StdOutImpl</mybatis-plus.log-impl>
             </properties>
         </profile>
@@ -160,6 +162,7 @@
             <id>prod</id>
             <properties>
                 <profile.active>prod</profile.active>
+                <tencent.namespace>laokou</tencent.namespace>
                 <mybatis-plus.log-impl>org.apache.ibatis.logging.nologging.NoLoggingImpl</mybatis-plus.log-impl>
             </properties>
         </profile>
