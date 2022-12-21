@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 package org.laokou.monitor;
-import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 /**
  * @author Kou Shenhai
  * SpringSecurity最新版本更新
@@ -35,33 +28,6 @@ public class MonitorApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MonitorApplication.class, args);
-    }
-
-    @EnableWebSecurity
-    public static class WebSecurityConfig {
-
-        @Bean
-        public SecurityFilterChain securityFilterChain (HttpSecurity http,AdminServerProperties adminServerProperties) throws Exception {
-            String adminContextPath = adminServerProperties.getContextPath();
-            SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
-            successHandler.setTargetUrlParameter("redirectTo");
-            successHandler.setDefaultTargetUrl(adminContextPath + "/");
-            return http.authorizeHttpRequests()
-                    .requestMatchers(adminContextPath + "/assets/**").permitAll()     //放行
-                    .requestMatchers(adminContextPath + "/login").permitAll()   //放行
-                    .anyRequest().authenticated()
-                    .and()
-                    .formLogin().loginPage(adminContextPath + "/login").successHandler(successHandler)
-                    .and()
-                    .logout().logoutUrl(adminContextPath + "/logout").and()   //登录
-                    .httpBasic().and()
-                    .csrf()
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                    .ignoringRequestMatchers(
-                            adminContextPath + "/instances/**"
-                            , adminContextPath + "/actuator/**")
-                    .disable().build();
-        }
     }
 
 }

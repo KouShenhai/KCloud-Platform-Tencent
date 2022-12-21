@@ -1,38 +1,44 @@
-#spring
+# server
+server:
+  port: 10000
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    encoding:
+      charset: UTF-8
+  undertow:
+    threads:
+      # 设置IO线程数，来执行非阻塞任务，负责多个连接数
+      io: 16
+      # 工作线程数
+      worker: 256
+    # 每块buffer的空间大小
+    buffer-size: 1024
+    # 分配堆外内存
+    direct-buffers: true
+
+# spring
 spring:
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-  application:
-    name: @pom.parent.artifactId@
-  profiles:
-    # 环境 dev|test|prod
-    active: @profile.active@
   messages:
     encoding: UTF-8
     basename: i18n/messages
-  cloud:
+  config:
+    import:
+      # 导入配置
+      - optional:polaris:application-@profile.active@
     inetutils:
       ignoredInterfaces:
         - docker0
         - veth.*
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-
-#mybatis
+# mybatis-plus
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   configuration:
     cache-enabled: false
     log-impl: @mybatis-plus.log-impl@
 
+# feign
 feign:
   httpclient:
     enabled: true # 支持HttpClient的开关
@@ -43,3 +49,10 @@ feign:
       default:
         connectTimeout: 10000 # 连接时间
         readTimeout: 15000 # 超时时间
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - polaris-config

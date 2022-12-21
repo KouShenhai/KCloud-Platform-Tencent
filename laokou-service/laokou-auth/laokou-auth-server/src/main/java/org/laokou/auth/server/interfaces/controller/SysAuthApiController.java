@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.interfaces.controller;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
@@ -28,20 +26,20 @@ import java.io.IOException;
  * @author Kou Shenhai
  */
 @RestController
-@Api(value = "系统认证API",protocols = "http",tags = "系统认证API")
+//@Api(value = "系统认证API",protocols = "http",tags = "系统认证API")
 @RequiredArgsConstructor
 public class SysAuthApiController {
 
     private final SysAuthApplicationService sysAuthApplicationService;
 
     @GetMapping("/oauth2/captcha")
-    @ApiOperation("系统认证>验证码")
+//    @ApiOperation("系统认证>验证码")
     public HttpResultUtil<String> captcha(HttpServletRequest request) {
         return new HttpResultUtil<String>().ok(sysAuthApplicationService.captcha(request));
     }
 
     @PostMapping("/oauth2/login")
-    @ApiOperation("系统认证>登录")
+//    @ApiOperation("系统认证>登录")
     public HttpResultUtil<AuthToken> login(HttpServletRequest request) throws IOException {
         return new HttpResultUtil<AuthToken>().ok(sysAuthApplicationService.login(request));
     }

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: laokou-auth
+  cloud:
+    polaris:
+      address: grpc://192.168.62.144:8091
+      namespace: laokou
+      config:
+        address: grpc://192.168.62.144:8093
+        auto-refresh: true
