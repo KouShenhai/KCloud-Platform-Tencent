@@ -24,15 +24,13 @@
         <spring-boot.version>3.0.0</spring-boot.version>
         <!--cloud版本-->
         <spring-cloud.version>2022.0.0</spring-cloud.version>
-        <!--kotlin版本-->
-        <kotlin.version>1.7.10</kotlin.version>
         <docker.repostory>registry.cn-hangzhou.aliyuncs.com</docker.repostory>
         <docker.registry.name>koushenhai</docker.registry.name>
         <docker.version>1.2.2</docker.version>
         <!--spring版本-->
         <spring.version>6.0.0</spring.version>
         <!--cloud-tencent版本-->
-        <spring-cloud-tencent.version>1.8.2-2022.0.0-RC2</spring-cloud-tencent.version>
+        <spring-cloud-tencent.version>1.8.2-2022.0.0</spring-cloud-tencent.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -81,59 +79,22 @@
 
     <repositories>
         <repository>
-            <id>lib-m</id>
-            <name>Spring Lib M</name>
-            <url>https://repo.spring.io/libs-milestone/</url>
-        </repository>
-        <repository>
-            <id>sonatype</id>
-            <name>Spring Milestone Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-        <!--里程版-->
-        <repository>
-            <id>spring-milestone</id>
-            <name>Spring Milestone Repository</name>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
-        </repository>
-        <!--发行版-->
-        <repository>
-            <id>springsource-repos</id>
-            <name>SpringSource Repository</name>
-            <url>https://repo.spring.io/release/</url>
-        </repository>
-        <!--阿里maven镜像-->
-        <!--配置maven阿里云仓库开始,不用去改maven的setting -->
-        <repository>
-            <id>public</id>
-            <name>local private nexus</name>
-            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>public</id>
-            <name>local private nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <url>https://repo.spring.io/snapshot</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <url>https://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <name>Oss Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
     <!--配置maven阿里云结束 -->
     <profiles>
         <!--开发环境-->
@@ -201,51 +162,6 @@
                         </resource>
                     </resources>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
-                <configuration>
-                    <jvmTarget>${java.version}</jvmTarget>
-                    <javaParameters>true</javaParameters>
-                    <compilerPlugins>
-                        <plugin>all-open</plugin>
-                        <plugin>spring</plugin>
-                        <plugin>no-arg</plugin>
-                        <plugin>jpa</plugin>
-                    </compilerPlugins>
-                    <pluginOptions>
-                    </pluginOptions>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-allopen</artifactId>
-                        <version>${kotlin.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-noarg</artifactId>
-                        <version>${kotlin.version}</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <!-- profile对资源的操作 -->

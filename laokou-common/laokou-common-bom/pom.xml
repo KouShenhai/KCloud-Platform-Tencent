@@ -95,8 +95,6 @@
         <rocketmq.version>2.2.2</rocketmq.version>
         <!--jakarta.servlet-api版本-->
         <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
-        <!--kotlin版本-->
-        <kotlin.version>1.7.10</kotlin.version>
         <!--easyexcel版本-->
         <easyexcel.version>3.1.2</easyexcel.version>
         <!--junit版本-->
@@ -504,32 +502,6 @@
                 <groupId>jakarta.servlet</groupId>
                 <artifactId>jakarta.servlet-api</artifactId>
                 <version>${jakarta.servlet-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-stdlib-jdk8</artifactId>
-                <version>${kotlin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-allopen</artifactId>
-                <version>${kotlin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-noarg</artifactId>
-                <version>${kotlin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-reflect</artifactId>
-                <version>${kotlin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-test</artifactId>
-                <version>${kotlin.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.laokou</groupId>
