@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import org.laokou.rocketmq.client.dto.RocketmqDTO;
 
 /**
  * 服务降级
- * @author Kou Shenhai
+ * @author laokou
  * @version 1.0
  * @date 2020/9/5 0005 上午 12:12
  */

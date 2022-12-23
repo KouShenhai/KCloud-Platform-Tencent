@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Import;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @SpringBootApplication(scanBasePackages = {"org.laokou.flowable","org.laokou.common.core","org.laokou.common.swagger"})
 @EnableDiscoveryClient

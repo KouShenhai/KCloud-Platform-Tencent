@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.laokou.common.core.function;
 import java.io.Serializable;
 import java.util.function.Function;
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @FunctionalInterface
 public interface FieldFunction<T> extends Function<T,Object>, Serializable {

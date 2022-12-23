@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import java.util.List;
  * @ConditionalOnBean -> spring容器中存在指定的class实例对象，对应的配置才生效
  * @ConditionalOnMissingBean -> ConditionalOnMissingBean 保证只有一个bean被注入
  * 某个class位于类路径上，才会实例化一个bean
- * @author Kou Shenhai
+ * @author laokou
  */
 @ConditionalOnClass(Redisson.class)
 @AutoConfiguration(before = RedisAutoConfiguration.class)

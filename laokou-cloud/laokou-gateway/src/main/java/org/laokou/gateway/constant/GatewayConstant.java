@@ -1,7 +1,7 @@
 package org.laokou.gateway.constant;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface GatewayConstant {
 

@@ -1,5 +1,5 @@
 ///**
-// * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+// * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
 // * <p>
 // * Licensed under the Apache License, Version 2.0 (the "License");
 // * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@
 //
 ///**
 // * SpringSecurity最新版本更新
-// * @author Kou Shenhai
+// * @author laokou
 // * @version 1.0
 // * @date 2021/5/30 0030 下午 2:48
 // */

@@ -2,7 +2,7 @@ package org.laokou.redis.factory;
 import org.laokou.redis.enums.LockType;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface Locks<T> {
 

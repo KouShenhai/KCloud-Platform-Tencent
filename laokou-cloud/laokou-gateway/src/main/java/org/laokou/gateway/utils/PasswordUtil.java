@@ -16,7 +16,7 @@
  */
 package org.laokou.gateway.utils;
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public class PasswordUtil {
     public static String decode(String str) throws Exception {

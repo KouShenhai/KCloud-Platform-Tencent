@@ -9,7 +9,7 @@ import org.laokou.flowable.client.vo.TaskVO;
 import java.io.IOException;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface WorkTaskService {
 

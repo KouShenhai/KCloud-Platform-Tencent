@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import java.util.List;
  *  $ 密码登录
  *  @ 验证码登录
  *  # 邮件登录
- * @author Kou Shenhai
+ * @author laokou
  */
 public abstract class AbstractAuthenticationToken implements AuthenticationToken, UserDetailsService {
 

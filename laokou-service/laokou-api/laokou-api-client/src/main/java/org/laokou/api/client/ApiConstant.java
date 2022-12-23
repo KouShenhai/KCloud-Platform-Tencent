@@ -1,7 +1,7 @@
 package org.laokou.api.client;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface ApiConstant {
 

@@ -1,7 +1,7 @@
 package org.laokou.oss.server.support;
 import java.io.InputStream;
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface StorageService {
 

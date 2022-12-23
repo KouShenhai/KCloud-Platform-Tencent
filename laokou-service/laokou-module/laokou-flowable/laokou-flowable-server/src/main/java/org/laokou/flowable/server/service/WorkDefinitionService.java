@@ -5,7 +5,7 @@ import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
 import java.io.InputStream;
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface WorkDefinitionService {
 

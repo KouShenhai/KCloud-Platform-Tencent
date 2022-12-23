@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 /**
  * 每个属性对应的类型及分词器
- * @author Kou Shenhai
+ * @author laokou
  * @version 1.0
  * @date 2021/1/24 0024 下午 7:51
  */

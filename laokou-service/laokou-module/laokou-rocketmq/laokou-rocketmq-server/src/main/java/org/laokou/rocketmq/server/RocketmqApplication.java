@@ -8,7 +8,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Import;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @SpringBootApplication(scanBasePackages = {"org.laokou.rocketmq.server","org.laokou.common.swagger", "org.laokou.common.core"})
 @EnableDiscoveryClient

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 /**
  * 属性、类型、分词器
- * @author Kou Shenhai
+ * @author laokou
  * @version 1.0
  * @date 2021/2/9 0009 上午 10:20
  */

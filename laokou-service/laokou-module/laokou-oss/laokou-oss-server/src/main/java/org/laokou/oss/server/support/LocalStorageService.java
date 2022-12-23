@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,7 @@ import java.nio.channels.FileChannel;
 import java.util.concurrent.CountDownLatch;
 /**
  * 本地上传
- * @author : Kou Shenhai
- * @date : 2020-06-21 23:42
+ * @author laokou
  */
 @Slf4j
 public class LocalStorageService extends AbstractStorageService {

@@ -3,7 +3,7 @@ package org.laokou.api.server.service;
 import org.laokou.api.client.ParamDTO;
 import reactor.core.publisher.Mono;
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface OpenApiService {
 

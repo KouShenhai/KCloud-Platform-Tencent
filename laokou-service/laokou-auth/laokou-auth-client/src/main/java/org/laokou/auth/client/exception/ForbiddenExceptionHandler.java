@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import java.io.IOException;
 /**
  * 无权限访问，异常处理器
- * @author Kou Shenhai
+ * @author laokou
  */
 @Slf4j
 public class ForbiddenExceptionHandler implements AccessDeniedHandler {

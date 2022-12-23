@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
  * 6.UserDetailsService -> PasswordEncoder
  * 7.AuthenticationManager -> UsernamePasswordAuthenticationToken
  *
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface AuthenticationToken {
 
