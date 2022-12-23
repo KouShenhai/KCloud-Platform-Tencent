@@ -16,21 +16,18 @@
 package org.laokou.gateway.route;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
-import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.common.core.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
+import org.laokou.common.core.exception.CustomException;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.data.redis.core.ReactiveHashOperations;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 /**
  * 基于redis存储
@@ -40,63 +37,49 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Component
-@RequiredArgsConstructor
-public class RedisRouteDefinitionRepository implements RouteDefinitionRepository, ApplicationEventPublisherAware {
+public class RedisRouteDefinitionRepository implements RouteDefinitionRepository {
 
-    private static final String DYNAMIC_GATEWAY_ROUTES = "dynamic_gateway_routes";
-
-    private ApplicationEventPublisher publisher;
+    private static final String DYNAMIC_GATEWAY_ROUTES = "dynamic:gateway:routes";
 
     /**
      * 高性能缓存
      */
     private final Cache<String,RouteDefinition> caffeineCache;
+    private final ReactiveHashOperations<String,String,RouteDefinition> reactiveHashOperations;
 
-    public RedisRouteDefinitionRepository() {
-        caffeineCache = Caffeine.newBuilder().initialCapacity(10)
-                .expireAfterAccess(10, TimeUnit.MINUTES)
-                .maximumSize(100)
+    public RedisRouteDefinitionRepository(ReactiveRedisTemplate reactiveRedisTemplate) {
+        this.reactiveHashOperations = reactiveRedisTemplate.opsForHash();
+        caffeineCache = Caffeine.newBuilder().initialCapacity(15)
+                .expireAfterAccess(30, TimeUnit.MINUTES)
+                .maximumSize(150)
                 .build();
-    }
-
-    @ApolloConfig
-    private Config config;
-
-    @ApolloConfigChangeListener(value = "application")
-    private void changeHandler(ConfigChangeEvent event) {
-        if (event.isChanged(ROUTES)) {
-            log.info("拉取Apollo Gateway动态配置");
-            this.caffeineCache.invalidateAll();
-            this.publisher.publishEvent(new RefreshRoutesEvent(this));
-        }
     }
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
         Collection<RouteDefinition> routeDefinitions = caffeineCache.asMap().values();
         if (CollectionUtils.isEmpty(routeDefinitions)) {
-            final String property = config.getProperty(ROUTES, null);
-            if (StringUtil.isEmpty(property)) {
-                return Flux.fromIterable(new ArrayList<>(0));
-            }
-            routeDefinitions = JacksonUtil.toList(property, RouteDefinition.class);
-            routeDefinitions.forEach(item -> caffeineCache.put(item.getId(),item));
+            return reactiveHashOperations.entries(DYNAMIC_GATEWAY_ROUTES)
+                    .map(Map.Entry::getValue)
+                    .doOnNext(definition -> caffeineCache.put(definition.getId(),definition));
         }
         return Flux.fromIterable(routeDefinitions);
     }
 
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
-        return Mono.empty();
+        return route.flatMap(definition -> reactiveHashOperations.put(DYNAMIC_GATEWAY_ROUTES,definition.getId(), definition))
+                .doOnNext(result -> caffeineCache.invalidateAll())
+                .flatMap(result -> result ? Mono.empty()
+                        : Mono.defer(() -> Mono.error(new CustomException("Route definition cannot be added"))));
     }
 
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
-        return Mono.empty();
+        return routeId.flatMap(id -> reactiveHashOperations.remove(DYNAMIC_GATEWAY_ROUTES,id))
+                .doOnNext(result -> caffeineCache.invalidateAll())
+                .flatMap(result -> result != 0 ? Mono.empty()
+                        : Mono.defer(() -> Mono.error(new CustomException(String.format("Route definition is not found,routeId:%s",routeId)))));
     }
 
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publisher = applicationEventPublisher;
-    }
 }

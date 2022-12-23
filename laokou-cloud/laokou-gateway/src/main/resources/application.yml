@@ -44,7 +44,6 @@ management:
 gateway:
   uris:
     - /oauth2/captcha
-    - /oauth2/logout
     - /oauth2/login
     - /actuator/**
     - /ws/**
