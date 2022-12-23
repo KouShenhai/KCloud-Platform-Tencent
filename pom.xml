@@ -180,6 +180,7 @@
                 <excludes>
                     <exclude>application*.yml</exclude>
                     <exclude>application*.properties</exclude>
+                    <exclude>bootstrap.yml</exclude>
                 </excludes>
             </resource>
             <!--添加需要包含的文件-->
@@ -192,6 +193,7 @@
                     <include>application.yml</include>
                     <include>application-${profile.active}.yml</include>
                     <include>application-${profile.active}.properties</include>
+                    <include>bootstrap.yml</include>
                 </includes>
             </resource>
         </resources>
