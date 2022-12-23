@@ -16,10 +16,13 @@
 package org.laokou.auth.server.application.service.impl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.server.infrastructure.context.CustomAuthorizationServerContext;
+import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.auth.server.infrastructure.token.AuthenticationToken;
 import org.laokou.auth.server.infrastructure.token.AuthToken;
 import org.laokou.common.core.constant.Constant;
+import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
@@ -64,6 +67,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private final AuthenticationProvider authenticationProvider;
     private final PasswordEncoder passwordEncoder;
     private final AuthorizationServerSettings authorizationServerSettings;
+    private final LoginLogUtil loginLogUtil;
 
     @Override
     public AuthToken login(HttpServletRequest request) {
@@ -127,7 +131,8 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         }
     }
 
-    private AuthToken loginAfter(RegisteredClient registeredClient
+    private AuthToken loginAfter(
+            RegisteredClient registeredClient
             , UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
             , HttpServletRequest request) {
         // 1.生成token（access_token + refresh_token）
@@ -136,6 +141,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         // 获取认证范围
         Set<String> scopes = registeredClient.getScopes();
         Authentication principal = authenticationProvider.authenticate(usernamePasswordAuthenticationToken);
+        String loginName = principal.getName();
         // 获取上下文
         DefaultOAuth2TokenContext.Builder builder = DefaultOAuth2TokenContext.builder()
                 .registeredClient(registeredClient)
@@ -147,7 +153,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         DefaultOAuth2TokenContext context = builder.build();
         OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization
                 .withRegisteredClient(registeredClient)
-                .principalName(principal.getName())
+                .principalName(loginName)
                 .authorizedScopes(scopes)
                 .authorizationGrantType(grantType);
         // 生成access_token
@@ -185,6 +191,9 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         Instant issuedAt = generatedOAuth2AccessToken.getIssuedAt();
         String tokenType = OAuth2AccessToken.TokenType.BEARER.getValue();
         long expireIn = ChronoUnit.SECONDS.between(issuedAt, expiresAt);
+        String loginType = grantType.getValue();
+        // 登录成功
+        loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
         return new AuthToken(accessToken,refreshToken,tokenType,expireIn);
     }
 
