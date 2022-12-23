@@ -56,4 +56,9 @@ public class LoginLogDTO {
      */
     private String msg;
 
+    /**
+     * 类型
+     */
+    private String loginType;
+
 }

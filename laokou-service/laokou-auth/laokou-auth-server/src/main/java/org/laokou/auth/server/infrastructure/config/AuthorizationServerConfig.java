@@ -29,6 +29,7 @@ import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.auth.server.infrastructure.token.EmailAuthenticationToken;
 import org.laokou.auth.server.infrastructure.token.PasswordAuthenticationToken;
 import org.laokou.auth.server.infrastructure.token.SmsAuthenticationToken;
+import org.laokou.redis.utils.RedisUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -172,12 +173,14 @@ public class AuthorizationServerConfig {
             , SysDeptService sysDeptService
             , SysCaptchaService sysCaptchaService
             , LoginLogUtil loginLogUtil
-            , PasswordEncoder passwordEncoder) {
+            , PasswordEncoder passwordEncoder
+            , RedisUtil redisUtil) {
         return new PasswordAuthenticationToken(sysUserService,sysMenuService
                 , sysDeptService
                 , sysCaptchaService
                 , loginLogUtil
-                , passwordEncoder);
+                , passwordEncoder
+                , redisUtil);
     }
 
     @Bean

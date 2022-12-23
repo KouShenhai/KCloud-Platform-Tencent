@@ -42,13 +42,16 @@ public final class RedisUtil {
     private final RBloomFilter<String> bloomFilter;
 
     /**  默认过期时长为24小时，单位：秒 */
-    public final static long DEFAULT_EXPIRE = 60 * 60 * 24L;
+    public final static long DEFAULT_EXPIRE = 60 * 60 * 24;
 
     /**  过期时长为1小时，单位：秒 */
-    public final static long HOUR_ONE_EXPIRE = (long) 60 * 60;
+    public final static long HOUR_ONE_EXPIRE = 60 * 60;
 
     /**  过期时长为6小时，单位：秒 */
-    public final static long HOUR_SIX_EXPIRE = 60 * 60 * 6L;
+    public final static long HOUR_SIX_EXPIRE = 60 * 60 * 6;
+
+    /**  过期时长为1分钟，单位：秒 */
+    public final static long MINUTE_ONE_EXPIRE = 1 * 60;
 
     /**  不设置过期时长 */
     public final static long NOT_EXPIRE = -1L;

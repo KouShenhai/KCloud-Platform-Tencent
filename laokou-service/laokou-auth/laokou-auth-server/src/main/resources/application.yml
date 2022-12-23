@@ -1,6 +1,6 @@
 # server
 server:
-  port: 10000
+  port: 11111
   tomcat:
     uri-encoding: UTF-8
   servlet:
@@ -19,26 +19,13 @@ server:
 
 # spring
 spring:
-  application:
-    name: @pom.parent.artifactId@
+  profiles:
+    # 环境 dev|test|prod
+    active: @profile.active@
   messages:
     encoding: UTF-8
     basename: i18n/messages
-  config:
-    import:
-      # 导入配置
-      - optional:polaris:${spring.application.name}:application-@profile.active@.yml
   cloud:
-    polaris:
-      address: grpc://192.168.62.144:8091
-      namespace: @tencent.namespace@
-    config:
-      address: grpc://192.168.62.144:8093
-      auto-refresh: true
-      groups:
-        - name: ${spring.application.name}
-          files:
-            - application-@profile.active@.yml
     inetutils:
       ignoredInterfaces:
         - docker0

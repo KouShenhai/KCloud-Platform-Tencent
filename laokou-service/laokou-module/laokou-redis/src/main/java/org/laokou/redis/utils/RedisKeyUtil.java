@@ -27,13 +27,6 @@ public final class RedisKeyUtil {
         return "sys:user:captcha:" + uuid;
     }
 
-    /**
-     * 用户资源Key
-     */
-    public static String getUserResourceKey(String token) {
-        return "sys:user:resource:" + token;
-    }
-
     public static String getResourceTreeKey(Long userId) {
         return "sys:resource:tree:" + userId;
     }
@@ -41,15 +34,8 @@ public final class RedisKeyUtil {
     /**
      * 用户信息Key
      */
-    public static String getUserInfoKey(String token) {
-        return "sys:user:info:" + token;
-    }
-
-    /**
-     * 资源审批Key
-     */
-    public static String getResourceAuditKey(Long id) {
-        return "sys:resource:audit:" + id;
+    public static String getUserLoginKey(String name) {
+        return "sys:user:login:" + name;
     }
 
     /**

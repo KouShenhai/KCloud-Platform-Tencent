@@ -42,7 +42,7 @@ public class LoginLogUtil {
 
     private final RocketmqApiFeignClient rocketmqApiFeignClient;
 
-    public void recordLogin(String username, Integer status, String msg, HttpServletRequest request) {
+    public void recordLogin(String username,String loginType, Integer status, String msg, HttpServletRequest request) {
         try {
             UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader(HttpHeaders.USER_AGENT));
             String ip = IpUtil.getIpAddr(request);
@@ -57,6 +57,7 @@ public class LoginLogUtil {
             dto.setBrowser(browser);
             dto.setOs(os);
             dto.setMsg(msg);
+            dto.setLoginType(loginType);
             dto.setRequestStatus(status);
             RocketmqDTO rocketmqDTO = new RocketmqDTO();
             rocketmqDTO.setData(JacksonUtil.toJsonStr(dto));

@@ -62,5 +62,10 @@ public class SysLoginLogDO extends BaseDO {
      */
     private String msg;
 
+    /**
+     * 登录类型
+     */
+    private String loginType;
+
 
 }
