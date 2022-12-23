@@ -99,7 +99,7 @@ public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
         // 验证用户
         UserDetail userDetail = sysUserService.getUserDetail(username);
         // 验证用户信息
-        checkUserInfo(userDetail,username,password,request);
+        super.checkUserInfo(userDetail,username,password,request);
         return new UsernamePasswordAuthenticationToken(username,password);
     }
 

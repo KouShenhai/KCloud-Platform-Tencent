@@ -78,7 +78,6 @@
     </dependencyManagement>
 
     <repositories>
-
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>

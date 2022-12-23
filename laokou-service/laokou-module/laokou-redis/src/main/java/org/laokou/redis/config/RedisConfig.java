@@ -84,9 +84,8 @@ public class RedisConfig {
 
     private Jackson2JsonRedisSerializer getJsonRedisSerializer() {
         // Json序列化配置
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper objectMapper = CustomJsonJacksonCodec.getObjectMapper();
-        jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(objectMapper,Object.class);
         return jackson2JsonRedisSerializer;
     }
 

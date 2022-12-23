@@ -21,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 import org.laokou.api.client.ApiConstant;
 import org.laokou.api.client.ParamDTO;
 import org.laokou.api.server.service.OpenApiService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -35,9 +34,6 @@ import reactor.core.publisher.Mono;
 public class OpenApiController {
 
     private final OpenApiService openApiService;
-
-    @Value("${laokou}")
-    private String value;
 
     @GetMapping()
     public Mono<String> doGet(HttpServletRequest request) {

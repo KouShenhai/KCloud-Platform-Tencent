@@ -1,15 +1,3 @@
-server:
-  address: 127.0.0.1
-  port: 5555
-  tomcat:
-    connection-timeout: 18000000
-  ssl:
-    enabled: true
-    key-alias: gateway
-    key-store-type: PKCS12
-    key-store-password: koushenhai
-    key-store: classpath:scg-keystore.p12
-
 spring:
   data:
     redis:
@@ -22,25 +10,3 @@ spring:
           max-wait: -1 #连接池最大阻塞等待时间（使用负值表示没有限制）
           max-idle: 10 #连接池最大空闲连接
           min-idle: 5 #连接池最小空间连接
-  boot:
-    admin:
-      client:
-        url: http://127.0.0.1:5000/monitor
-        username: ENC(7j+MYBNM2fhq8WST3DE3WA==)
-        password: ENC(nj35dMcOWEmR5EASEZR3yfaT4IdT9TPm)
-        instance:
-          service-base-url: http://127.0.0.1:${server.port}
-
-logging:
-  file:
-    name: logs/${spring.application.name}/info.log
-
-app:
-  id: gateway # 应用全局唯一的身份标识
-apollo:
-  cacheDir: config # 自定义本地配置文件缓存路径
-  bootstrap:
-    namespaces: application-common-redis,application
-    enabled: true # 设置在应用启动阶段就加载 Apollo 配置
-    eagerLoad:
-      enabled: true

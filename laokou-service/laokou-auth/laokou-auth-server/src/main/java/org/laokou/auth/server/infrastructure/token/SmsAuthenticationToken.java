@@ -54,6 +54,9 @@ public class SmsAuthenticationToken extends AbstractAuthenticationToken{
 
     @Override
     public UsernamePasswordAuthenticationToken login(HttpServletRequest request) {
+        // 验证用户信息
+        // 必须调用该方法
+        // super.checkUserInfo(userDetail,username,password,request);
         return null;
     }
 

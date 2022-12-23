@@ -13,11 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.gateway.support.apollo;
-import com.ctrip.framework.apollo.Config;
-import com.ctrip.framework.apollo.model.ConfigChangeEvent;
-import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
-import com.ctrip.framework.apollo.spring.annotation.ApolloConfigChangeListener;
+package org.laokou.gateway.route;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
@@ -30,24 +26,24 @@ import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
-
 /**
+ * 基于redis存储
  * @author Kou Shenhai
  * @version 1.0
  * @date 2022/7/25 0025 下午 3:55
  */
 @Slf4j
-@Configuration
+@Component
 @RequiredArgsConstructor
-public class ApolloRouteDefinitionRepository implements RouteDefinitionRepository, ApplicationEventPublisherAware {
+public class RedisRouteDefinitionRepository implements RouteDefinitionRepository, ApplicationEventPublisherAware {
 
-    private static final String ROUTES = "gateway.routes";
+    private static final String DYNAMIC_GATEWAY_ROUTES = "dynamic_gateway_routes";
 
     private ApplicationEventPublisher publisher;
 
@@ -56,7 +52,7 @@ public class ApolloRouteDefinitionRepository implements RouteDefinitionRepositor
      */
     private final Cache<String,RouteDefinition> caffeineCache;
 
-    public ApolloRouteDefinitionRepository() {
+    public RedisRouteDefinitionRepository() {
         caffeineCache = Caffeine.newBuilder().initialCapacity(10)
                 .expireAfterAccess(10, TimeUnit.MINUTES)
                 .maximumSize(100)
