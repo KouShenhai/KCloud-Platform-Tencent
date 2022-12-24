@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  */
 @Getter
 @Setter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
 public class UserDetail implements UserDetails {
     private Long userId;
     private String username;

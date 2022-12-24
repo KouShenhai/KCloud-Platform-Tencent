@@ -28,10 +28,10 @@ public interface SysUserMapper {
 
     /**
      * 获取用户信息
-     * @param username
+     * @param loginName
      * @return
      */
-    UserDetail getUserDetail(@Param("username")String username);
+    UserDetail getUserDetail(@Param("loginName")String loginName);
 
 
 }

@@ -14,8 +14,6 @@ server:
 spring:
   profiles:
     active: @profile.active@
-  main:
-    lazy-initialization: true
   servlet:
     multipart:
       max-file-size: -1

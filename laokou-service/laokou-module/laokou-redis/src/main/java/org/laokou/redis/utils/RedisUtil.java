@@ -50,9 +50,6 @@ public final class RedisUtil {
     /**  过期时长为6小时，单位：秒 */
     public final static long HOUR_SIX_EXPIRE = 60 * 60 * 6;
 
-    /**  过期时长为1分钟，单位：秒 */
-    public final static long MINUTE_ONE_EXPIRE = 1 * 60;
-
     /**  不设置过期时长 */
     public final static long NOT_EXPIRE = -1L;
 

@@ -45,4 +45,8 @@ public interface GatewayConstant {
      */
     String PASSWORD = "password";
 
+    /**
+     * 动态路由
+     */
+    String DYNAMIC_GATEWAY_ROUTES = "dynamic:gateway:routes";
 }

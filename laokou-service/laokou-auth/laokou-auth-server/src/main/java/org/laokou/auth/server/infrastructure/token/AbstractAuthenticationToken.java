@@ -15,13 +15,13 @@
  */
 package org.laokou.auth.server.infrastructure.token;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.common.core.enums.ResultStatusEnum;
+import org.laokou.common.core.enums.SuperAdminEnum;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
@@ -32,7 +32,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import java.util.List;
 /**
  * 共享用户信息接口
  * 继承该类
@@ -66,15 +65,19 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        String userLoginKey = RedisKeyUtil.getUserLoginKey(username);
-        Object obj = redisUtil.get(userLoginKey);
-        if (null == obj) {
-            throw new CustomException("请稍后再试");
+    public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException {
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(loginName);
+        Object obj = redisUtil.get(userInfoKey);
+        if (obj != null) {
+            return (UserDetail) obj;
         }
-        // 移除
-        redisUtil.delete(userLoginKey);
-        return (UserDetail) obj;
+        UserDetail userDetail = sysUserService.getUserDetail(loginName);
+        Long userId = userDetail.getUserId();
+        Integer superAdmin = userDetail.getSuperAdmin();
+        userDetail.setPermissionList(sysMenuService.getPermissionsList(superAdmin,userId));
+        userDetail.setDeptIds(sysDeptService.getDeptIds(superAdmin,userId));
+        redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
+        return userDetail;
     }
 
     protected void checkUserInfo(UserDetail userDetail, String loginName, String password, HttpServletRequest request) {
@@ -100,18 +103,10 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
         Long userId = userDetail.getUserId();
         Integer superAdmin = userDetail.getSuperAdmin();
         // 权限标识列表
-        List<String> permissionsList = sysMenuService.getPermissionsList(superAdmin,userId);
-        if (CollectionUtils.isEmpty(permissionsList)) {
+        if (SuperAdminEnum.YES.ordinal() != superAdmin && sysMenuService.getPermissionsCount(userId) < 1) {
             loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
             throw new CustomException(ErrorCode.NOT_PERMISSIONS);
         }
-        // 部门列表
-        List<Long> deptIds = sysDeptService.getDeptIds(superAdmin,userId);
-        userDetail.setDeptIds(deptIds);
-        userDetail.setPermissionList(permissionsList);
-        // 过期时间设为一分钟
-        String userLoginKey = RedisKeyUtil.getUserLoginKey(loginName);
-        redisUtil.set(userLoginKey,userDetail,RedisUtil.MINUTE_ONE_EXPIRE);
     }
 
 }

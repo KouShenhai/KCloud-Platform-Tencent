@@ -19,6 +19,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import org.apache.commons.collections.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.exception.CustomException;
+import org.laokou.gateway.constant.GatewayConstant;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.data.redis.core.ReactiveHashOperations;
@@ -39,8 +40,6 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisRouteDefinitionRepository implements RouteDefinitionRepository {
 
-    private static final String DYNAMIC_GATEWAY_ROUTES = "dynamic:gateway:routes";
-
     /**
      * 高性能缓存
      */
@@ -59,7 +58,7 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
     public Flux<RouteDefinition> getRouteDefinitions() {
         Collection<RouteDefinition> routeDefinitions = caffeineCache.asMap().values();
         if (CollectionUtils.isEmpty(routeDefinitions)) {
-            return reactiveHashOperations.entries(DYNAMIC_GATEWAY_ROUTES)
+            return reactiveHashOperations.entries(GatewayConstant.DYNAMIC_GATEWAY_ROUTES)
                     .map(Map.Entry::getValue)
                     .doOnNext(definition -> caffeineCache.put(definition.getId(),definition));
         }
@@ -68,7 +67,7 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
 
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
-        return route.flatMap(definition -> reactiveHashOperations.put(DYNAMIC_GATEWAY_ROUTES,definition.getId(), definition))
+        return route.flatMap(definition -> reactiveHashOperations.put(GatewayConstant.DYNAMIC_GATEWAY_ROUTES,definition.getId(), definition))
                 .doOnNext(result -> caffeineCache.invalidateAll())
                 .flatMap(result -> result ? Mono.empty()
                         : Mono.defer(() -> Mono.error(new CustomException("Route definition cannot be added"))));
@@ -76,7 +75,7 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
 
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
-        return routeId.flatMap(id -> reactiveHashOperations.remove(DYNAMIC_GATEWAY_ROUTES,id))
+        return routeId.flatMap(id -> reactiveHashOperations.remove(GatewayConstant.DYNAMIC_GATEWAY_ROUTES,id))
                 .doOnNext(result -> caffeineCache.invalidateAll())
                 .flatMap(result -> result != 0 ? Mono.empty()
                         : Mono.defer(() -> Mono.error(new CustomException(String.format("Route definition is not found,routeId:%s",routeId)))));

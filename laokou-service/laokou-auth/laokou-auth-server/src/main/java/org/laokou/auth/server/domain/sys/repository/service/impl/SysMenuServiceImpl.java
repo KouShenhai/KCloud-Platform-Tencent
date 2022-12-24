@@ -39,4 +39,9 @@ public class SysMenuServiceImpl implements SysMenuService {
         }
         return sysMenuMapper.getPermissionsListByUserId(userId);
     }
+
+    @Override
+    public Long getPermissionsCount(Long userId) {
+        return sysMenuMapper.getPermissionsCount(userId);
+    }
 }

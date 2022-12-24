@@ -39,4 +39,11 @@ public interface SysMenuMapper {
      */
     List<String> getPermissionsListByUserId(@Param("userId") Long userId);
 
+    /**
+     * 拥有权限数
+     * @param userId
+     * @return
+     */
+    Long getPermissionsCount(@Param("userId") Long userId);
+
 }
