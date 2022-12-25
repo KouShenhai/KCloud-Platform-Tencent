@@ -137,7 +137,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         AuthorizationGrantType grantType = authenticationToken(request).getGrantType();
         // 获取认证范围
         Set<String> scopes = registeredClient.getScopes();
-        String loginName = getLoginName(request ,grantType.getValue());
+        String loginName = principal.getCredentials().toString();
         // 获取上下文
         DefaultOAuth2TokenContext.Builder builder = DefaultOAuth2TokenContext.builder()
                 .registeredClient(registeredClient)
@@ -196,15 +196,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @Override
     public String captcha(HttpServletRequest request) {
         return authenticationToken(request).captcha(request);
-    }
-
-    private String getLoginName(HttpServletRequest request,String grantType) {
-        return switch (grantType) {
-            case OAuth2ParameterNames.USERNAME -> request.getParameter(OAuth2ParameterNames.USERNAME);
-            case AuthConstant.MOBILE -> request.getParameter(AuthConstant.MOBILE);
-            case AuthConstant.EMAIL -> request.getParameter(AuthConstant.EMAIL);
-            default -> "";
-        };
     }
 
 }

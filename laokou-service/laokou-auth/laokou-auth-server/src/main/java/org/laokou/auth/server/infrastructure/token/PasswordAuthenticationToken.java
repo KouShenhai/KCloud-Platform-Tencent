@@ -19,7 +19,6 @@ import com.wf.captcha.base.Captcha;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.client.constant.AuthConstant;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
@@ -97,8 +96,7 @@ public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
             throw new CustomException(ErrorCode.CAPTCHA_ERROR);
         }
         // 获取用户信息
-        UserDetail userDetail = super.getUserInfo(username, password, request);
-        return new UsernamePasswordAuthenticationToken(userDetail,password,userDetail.getAuthorities());
+        return super.getUserInfo(username, password, request);
     }
 
     @Override

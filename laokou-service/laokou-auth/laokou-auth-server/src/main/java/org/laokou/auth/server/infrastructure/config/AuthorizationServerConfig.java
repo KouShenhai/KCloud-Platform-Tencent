@@ -117,7 +117,7 @@ public class AuthorizationServerConfig {
                 .clientSecret(passwordEncoder.encode("secret"))
                 // ClientAuthenticationMethod.CLIENT_SECRET_BASIC => client_id:client_secret 进行Base64编码后的值
                 // Headers Authorization Basic YXV0aC1jbGllbnQ6c2VjcmV0
-                // http://localhost:11111/oauth2/authorize?client_id=auth-client&client_secret=secret&response_type=code&redirect_uri=https://www.baidu.com
+                // http://localhost:11111/oauth2/authorize?client_id=auth-client&client_secret=secret&response_type=code&scope=auth email phone&redirect_uri=https://www.baidu.com
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(
                         List.of(AuthorizationGrantType.AUTHORIZATION_CODE

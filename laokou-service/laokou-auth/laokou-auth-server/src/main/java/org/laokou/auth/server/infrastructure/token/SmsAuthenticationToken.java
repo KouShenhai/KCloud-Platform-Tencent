@@ -19,7 +19,6 @@ package org.laokou.auth.server.infrastructure.token;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.auth.client.constant.AuthConstant;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
@@ -77,8 +76,7 @@ public class SmsAuthenticationToken extends AbstractAuthenticationToken{
         }
         // TODO 验证验证码
         // 获取用户信息
-        UserDetail userDetail = super.getUserInfo(mobile, "", request);
-        return new UsernamePasswordAuthenticationToken(userDetail,code,userDetail.getAuthorities());
+        return super.getUserInfo(mobile, "", request);
     }
 
     @Override

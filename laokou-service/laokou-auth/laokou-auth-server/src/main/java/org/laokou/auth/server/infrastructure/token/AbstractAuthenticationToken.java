@@ -28,6 +28,7 @@ import org.laokou.common.core.utils.HttpContextUtil;
 import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -91,7 +92,7 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
         return userDetail;
     }
 
-    protected UserDetail getUserInfo(String loginName, String password, HttpServletRequest request) {
+    protected UsernamePasswordAuthenticationToken getUserInfo(String loginName, String password, HttpServletRequest request) {
         AuthorizationGrantType grantType = getGrantType();
         String loginType = grantType.getValue();
         // 验证用户
@@ -125,7 +126,7 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
         List<Long> deptIds = sysDeptService.getDeptIds(superAdmin,userId);
         userDetail.setDeptIds(deptIds);
         userDetail.setPermissionList(permissionsList);
-        return userDetail;
+        return new UsernamePasswordAuthenticationToken(userDetail,loginName,userDetail.getAuthorities());
     }
 
 }
