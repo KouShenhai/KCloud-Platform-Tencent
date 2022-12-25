@@ -92,8 +92,11 @@ public class AuthorizationServerConfig {
         authorizationServerConfigurer.oidc(Customizer.withDefaults());
         http.exceptionHandling(configurer -> configurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
                 .apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(new DelegatingAuthenticationConverter(
-                List.of(new OAuth2ClientCredentialsAuthenticationConverter()
-                        , new OAuth2RefreshTokenAuthenticationConverter()))))
+                List.of(
+                        new OAuth2AuthorizationCodeAuthenticationConverter()
+                        , new OAuth2ClientCredentialsAuthenticationConverter()
+                        , new OAuth2RefreshTokenAuthenticationConverter()
+                        , new OAuth2AuthorizationCodeRequestAuthenticationConverter()))))
                 .clientAuthentication(clientAuthentication -> clientAuthentication.errorResponseHandler(new CustomAuthenticationFailureHandler()))
         );
         return http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
