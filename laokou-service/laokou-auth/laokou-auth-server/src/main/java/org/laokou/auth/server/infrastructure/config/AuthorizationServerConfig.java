@@ -136,7 +136,7 @@ public class AuthorizationServerConfig {
                         , OidcScopes.EMAIL
                 )))
                 .redirectUris(redirectUris -> redirectUris.addAll(List.of(
-                        "https://spring.io"
+                          "https://spring.io"
                         , "https://gitee.com/laokouyun"
                         , "https://www.baidu.com"
                 )))
