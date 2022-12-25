@@ -62,11 +62,10 @@ import org.springframework.security.oauth2.server.authorization.token.Delegating
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
-import org.springframework.security.oauth2.server.authorization.web.authentication.DelegatingAuthenticationConverter;
-import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2AuthorizationCodeAuthenticationConverter;
-import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2ClientCredentialsAuthenticationConverter;
-import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
+import org.springframework.security.oauth2.server.authorization.web.authentication.*;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+
 import java.time.Duration;
 import java.util.List;
 /**
@@ -80,25 +79,35 @@ import java.util.List;
 public class AuthorizationServerConfig {
 
     /**
-     * https://docs.spring.io/spring-authorization-server/docs/current/reference/html/configuration-model.html
      * @param http
      * @return
      * @throws Exception
      */
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                .oidc(Customizer.withDefaults());
-        http.apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(new DelegatingAuthenticationConverter(
+    SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http
+    , AuthorizationServerSettings authorizationServerSettings
+    , OAuth2AuthorizationService authorizationService) throws Exception {
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
+        authorizationServerConfigurer.oidc(Customizer.withDefaults());
+        http.exceptionHandling(configurer -> configurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
+                .apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(new DelegatingAuthenticationConverter(
                 List.of(
                         new OAuth2AuthorizationCodeAuthenticationConverter()
                         , new OAuth2ClientCredentialsAuthenticationConverter()
-                        , new OAuth2RefreshTokenAuthenticationConverter()))))
+                        , new OAuth2RefreshTokenAuthenticationConverter()
+                        , new OAuth2AuthorizationCodeRequestAuthenticationConverter()))))
                 .clientAuthentication(clientAuthentication -> clientAuthentication.errorResponseHandler(new CustomAuthenticationFailureHandler()))
         );
-        return http.build();
+        return http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .csrf(csrf -> csrf.ignoringRequestMatchers(authorizationServerConfigurer.getEndpointsMatcher()))
+                .apply(authorizationServerConfigurer
+                        .authorizationService(authorizationService)
+                        .authorizationServerSettings(authorizationServerSettings))
+                .and()
+                .apply(new FormConfig())
+                .and()
+                .build();
     }
 
     @Bean
@@ -108,6 +117,7 @@ public class AuthorizationServerConfig {
                 .clientSecret(passwordEncoder.encode("secret"))
                 // ClientAuthenticationMethod.CLIENT_SECRET_BASIC => client_id:client_secret 进行Base64编码后的值
                 // Headers Authorization Basic YXV0aC1jbGllbnQ6c2VjcmV0
+                // http://localhost:11111/oauth2/authorize?client_id=auth-client&client_secret=secret&response_type=code&redirect_uri=https://www.baidu.com
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(
                         List.of(AuthorizationGrantType.AUTHORIZATION_CODE
@@ -128,6 +138,7 @@ public class AuthorizationServerConfig {
                 .redirectUris(redirectUris -> redirectUris.addAll(List.of(
                         "https://spring.io"
                         , "https://gitee.com/laokouyun"
+                        , "https://www.baidu.com"
                 )))
                 .clientName("认证")
                 // JWT配置
@@ -185,7 +196,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder
-     , UserDetailsService userDetailsService) {
+            , UserDetailsService userDetailsService) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);

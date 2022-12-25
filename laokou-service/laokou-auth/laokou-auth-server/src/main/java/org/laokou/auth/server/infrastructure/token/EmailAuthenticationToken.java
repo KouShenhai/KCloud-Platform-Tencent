@@ -18,14 +18,21 @@ package org.laokou.auth.server.infrastructure.token;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.auth.client.constant.AuthConstant;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
+import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.core.exception.ErrorCode;
+import org.laokou.common.core.utils.RegexUtil;
+import org.laokou.common.core.utils.StringUtil;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.stereotype.Component;
 
 /**
@@ -54,14 +61,30 @@ public class EmailAuthenticationToken extends AbstractAuthenticationToken{
 
     @Override
     public UsernamePasswordAuthenticationToken login(HttpServletRequest request) {
-        // 验证用户信息
-        // 必须调用该方法
-        // super.checkUserInfo(userDetail,username,password,request);
-        return null;
+        // 判断验证码
+        String code = request.getParameter(OAuth2ParameterNames.CODE);
+        log.info("验证码：{}",code);
+        if (StringUtil.isEmpty(code)) {
+            throw new CustomException(ErrorCode.CAPTCHA_NOT_NULL);
+        }
+        String email = request.getParameter(AuthConstant.EMAIL);
+        log.info("邮箱：{}",email);
+        if (StringUtil.isEmpty(email)) {
+            throw new CustomException("邮箱不为空");
+        }
+        boolean isEmail = RegexUtil.emailRegex(email);
+        if (!isEmail) {
+            throw new CustomException("邮箱格式不对");
+        }
+        // TODO 验证验证码
+        // 获取用户信息
+        UserDetail userDetail = super.getUserInfo(email, "", request);
+        return new UsernamePasswordAuthenticationToken(userDetail,code,userDetail.getAuthorities());
     }
 
     @Override
     public String captcha(HttpServletRequest request) {
+
         return null;
     }
 }

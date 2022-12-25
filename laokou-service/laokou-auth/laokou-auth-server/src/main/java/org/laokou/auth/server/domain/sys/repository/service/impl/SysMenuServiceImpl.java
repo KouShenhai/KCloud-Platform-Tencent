@@ -15,7 +15,6 @@
  */
 package org.laokou.auth.server.domain.sys.repository.service.impl;
 import lombok.RequiredArgsConstructor;
-import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.mapper.SysMenuMapper;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.common.core.enums.SuperAdminEnum;
@@ -38,10 +37,5 @@ public class SysMenuServiceImpl implements SysMenuService {
             return sysMenuMapper.getPermissionsList();
         }
         return sysMenuMapper.getPermissionsListByUserId(userId);
-    }
-
-    @Override
-    public Long getPermissionsCount(Long userId) {
-        return sysMenuMapper.getPermissionsCount(userId);
     }
 }

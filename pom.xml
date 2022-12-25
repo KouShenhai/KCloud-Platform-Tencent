@@ -21,14 +21,14 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin>2.0.2</maven-compiler-plugin>
         <!--boot版本-->
-        <spring-boot.version>3.0.0</spring-boot.version>
+        <spring-boot.version>3.0.1</spring-boot.version>
         <!--cloud版本-->
         <spring-cloud.version>2022.0.0</spring-cloud.version>
         <docker.repostory>registry.cn-hangzhou.aliyuncs.com</docker.repostory>
         <docker.registry.name>koushenhai</docker.registry.name>
         <docker.version>1.2.2</docker.version>
-        <!--spring版本-->
-        <spring.version>6.0.0</spring.version>
+        <!--spring-security版本-->
+        <spring-security.version>6.0.1</spring-security.version>
         <!--cloud-tencent版本-->
         <spring-cloud-tencent.version>1.8.2-2022.0.0</spring-cloud-tencent.version>
     </properties>
@@ -70,7 +70,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

@@ -30,10 +30,4 @@ public interface SysMenuService {
      */
     List<String> getPermissionsList(Integer superAdmin,Long userId);
 
-    /**
-     * 拥有权限数
-     * @param userId
-     * @return
-     */
-    Long getPermissionsCount(Long userId);
 }

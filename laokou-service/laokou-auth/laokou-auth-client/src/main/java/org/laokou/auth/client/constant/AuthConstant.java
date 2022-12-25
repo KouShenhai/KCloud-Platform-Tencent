@@ -33,4 +33,14 @@ public interface AuthConstant {
     * 登录成功
     */
    String LOGIN_SUCCESS_MSG = "登录成功";
+
+   /**
+    * 邮箱
+    */
+   String EMAIL = "email";
+
+   /**
+    * 手机
+    */
+   String MOBILE = "mobile";
 }

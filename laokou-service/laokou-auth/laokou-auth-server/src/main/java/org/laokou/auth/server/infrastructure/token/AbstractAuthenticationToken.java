@@ -15,23 +15,27 @@
  */
 package org.laokou.auth.server.infrastructure.token;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.common.core.enums.ResultStatusEnum;
-import org.laokou.common.core.enums.SuperAdminEnum;
 import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.exception.ErrorCode;
+import org.laokou.common.core.utils.HttpContextUtil;
 import org.laokou.common.core.utils.MessageUtil;
-import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.redis.utils.RedisUtil;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+
+import java.util.List;
+
 /**
  * 共享用户信息接口
  * 继承该类
@@ -66,23 +70,32 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
 
     @Override
     public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException {
-        String userInfoKey = RedisKeyUtil.getUserInfoKey(loginName);
-        Object obj = redisUtil.get(userInfoKey);
-        if (obj != null) {
-            return (UserDetail) obj;
-        }
         UserDetail userDetail = sysUserService.getUserDetail(loginName);
+        // 是否锁定
+        String loginType = PasswordAuthenticationToken.GRANT_TYPE;
+        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
+        if (!userDetail.isEnabled()) {
+            loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
+            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
+        }
         Long userId = userDetail.getUserId();
         Integer superAdmin = userDetail.getSuperAdmin();
-        userDetail.setPermissionList(sysMenuService.getPermissionsList(superAdmin,userId));
+        // 权限标识列表
+        List<String> permissionsList = sysMenuService.getPermissionsList(superAdmin,userId);
+        if (CollectionUtils.isEmpty(permissionsList)) {
+            loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
+            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
+        }
+        userDetail.setPermissionList(permissionsList);
         userDetail.setDeptIds(sysDeptService.getDeptIds(superAdmin,userId));
-        redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
         return userDetail;
     }
 
-    protected void checkUserInfo(UserDetail userDetail, String loginName, String password, HttpServletRequest request) {
+    protected UserDetail getUserInfo(String loginName, String password, HttpServletRequest request) {
         AuthorizationGrantType grantType = getGrantType();
         String loginType = grantType.getValue();
+        // 验证用户
+        UserDetail userDetail = sysUserService.getUserDetail(loginName);
         if (userDetail == null) {
             loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             throw new CustomException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
@@ -103,10 +116,16 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
         Long userId = userDetail.getUserId();
         Integer superAdmin = userDetail.getSuperAdmin();
         // 权限标识列表
-        if (SuperAdminEnum.YES.ordinal() != superAdmin && sysMenuService.getPermissionsCount(userId) < 1) {
+        List<String> permissionsList = sysMenuService.getPermissionsList(superAdmin,userId);
+        if (CollectionUtils.isEmpty(permissionsList)) {
             loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
             throw new CustomException(ErrorCode.NOT_PERMISSIONS);
         }
+        // 部门列表
+        List<Long> deptIds = sysDeptService.getDeptIds(superAdmin,userId);
+        userDetail.setDeptIds(deptIds);
+        userDetail.setPermissionList(permissionsList);
+        return userDetail;
     }
 
 }

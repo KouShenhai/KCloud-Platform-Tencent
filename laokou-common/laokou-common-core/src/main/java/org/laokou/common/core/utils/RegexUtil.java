@@ -66,4 +66,8 @@ public class RegexUtil {
         return Pattern.matches(GRADE_REGEX,grade);
     }
 
+    public static void main(String[] args) {
+        System.out.println(emailRegex("24131760@qq"));
+    }
+
 }

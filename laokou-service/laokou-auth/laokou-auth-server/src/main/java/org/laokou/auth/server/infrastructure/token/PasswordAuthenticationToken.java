@@ -96,11 +96,9 @@ public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
             loginLogUtil.recordLogin(username,GRANT_TYPE, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
             throw new CustomException(ErrorCode.CAPTCHA_ERROR);
         }
-        // 验证用户
-        UserDetail userDetail = sysUserService.getUserDetail(username);
-        // 验证用户信息
-        super.checkUserInfo(userDetail,username,password,request);
-        return new UsernamePasswordAuthenticationToken(username,password);
+        // 获取用户信息
+        UserDetail userDetail = super.getUserInfo(username, password, request);
+        return new UsernamePasswordAuthenticationToken(userDetail,password,userDetail.getAuthorities());
     }
 
     @Override

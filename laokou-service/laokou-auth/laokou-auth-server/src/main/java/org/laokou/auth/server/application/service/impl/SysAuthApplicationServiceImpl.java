@@ -30,9 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.utils.*;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
@@ -64,7 +62,6 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private final RegisteredClientRepository registeredClientRepository;
     private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
     private final OAuth2AuthorizationService oAuth2AuthorizationService;
-    private final AuthenticationProvider authenticationProvider;
     private final PasswordEncoder passwordEncoder;
     private final AuthorizationServerSettings authorizationServerSettings;
     private final LoginLogUtil loginLogUtil;
@@ -133,15 +130,14 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
 
     private AuthToken loginAfter(
             RegisteredClient registeredClient
-            , UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
+            , UsernamePasswordAuthenticationToken principal
             , HttpServletRequest request) {
         // 1.生成token（access_token + refresh_token）
         // 获取认证类型
         AuthorizationGrantType grantType = authenticationToken(request).getGrantType();
         // 获取认证范围
         Set<String> scopes = registeredClient.getScopes();
-        Authentication principal = authenticationProvider.authenticate(usernamePasswordAuthenticationToken);
-        String loginName = principal.getName();
+        String loginName = getLoginName(request ,grantType.getValue());
         // 获取上下文
         DefaultOAuth2TokenContext.Builder builder = DefaultOAuth2TokenContext.builder()
                 .registeredClient(registeredClient)
@@ -200,6 +196,15 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @Override
     public String captcha(HttpServletRequest request) {
         return authenticationToken(request).captcha(request);
+    }
+
+    private String getLoginName(HttpServletRequest request,String grantType) {
+        return switch (grantType) {
+            case OAuth2ParameterNames.USERNAME -> request.getParameter(OAuth2ParameterNames.USERNAME);
+            case AuthConstant.MOBILE -> request.getParameter(AuthConstant.MOBILE);
+            case AuthConstant.EMAIL -> request.getParameter(AuthConstant.EMAIL);
+            default -> "";
+        };
     }
 
 }
