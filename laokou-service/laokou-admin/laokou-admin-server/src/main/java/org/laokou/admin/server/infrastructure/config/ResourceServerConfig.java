@@ -44,7 +44,15 @@ public class ResourceServerConfig {
                  "/actuator/**"
                         , "/ws/**").permitAll()
                 .and()
-                .oauth2ResourceServer(oauth2 -> oauth2.accessDeniedHandler(forbiddenExceptionHandler))
+                .authorizeHttpRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .oauth2ResourceServer(oauth2 -> oauth2.accessDeniedHandler(forbiddenExceptionHandler)
+                        .authenticationEntryPoint(invalidAuthenticationEntryPoint)
+                        .jwt()
+                )
                 .build();
     }
+
 }

@@ -101,6 +101,8 @@
         <junit.version>4.13.1</junit.version>
         <!--spring-security-oauth2-authorization-server版本-->
         <spring-security-oauth2-authorization-server.version>1.0.0</spring-security-oauth2-authorization-server.version>
+        <!--spring-boot-starter-oauth2-resource-server版本-->
+        <spring-boot-starter-oauth2-resource-server.version>3.0.0</spring-boot-starter-oauth2-resource-server.version>
     </properties>
 
     <!-- 定义全局jar版本,模块使用需要再次引入但不用写版本号 -->
@@ -572,6 +574,11 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-oauth2-authorization-server</artifactId>
                 <version>${spring-security-oauth2-authorization-server.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+                <version>${spring-boot-starter-oauth2-resource-server.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
