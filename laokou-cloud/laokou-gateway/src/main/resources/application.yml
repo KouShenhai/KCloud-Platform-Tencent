@@ -3,13 +3,6 @@ server:
   port: 5555
   tomcat:
     connection-timeout: 600000
-  # https配置
-  ssl:
-    enabled: true
-    key-alias: gateway
-    key-store-type: PKCS12
-    key-store-password: koushenhai
-    key-store: classpath:scg-keystore.p12
 
 spring:
   profiles:
@@ -42,7 +35,6 @@ management:
 gateway:
   uris:
     - /oauth2/captcha
-    - /oauth2/login
     - /actuator/**
     - /ws/**
     - /favicon.ico
