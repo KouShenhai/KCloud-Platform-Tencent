@@ -14,32 +14,37 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.config;
-import org.springframework.context.annotation.Configuration;
+import lombok.RequiredArgsConstructor;
+import org.laokou.auth.client.exception.ForbiddenExceptionHandler;
+import org.laokou.auth.client.exception.InvalidAuthenticationEntryPoint;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
 /**
  * SpringSecurity最新版本更新
  * @author laokou
  * @version 1.0
  * @date 2021/5/30 0030 下午 2:48
  */
-@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
 public class ResourceServerConfig {
 
-//    @Override
-//    public void configure(HttpSecurity http) throws Exception {
-//        http
-//                .httpBasic().disable()
-//                .cors().disable()
-//                .csrf().disable()
-//                .formLogin().disable()
-//                .authorizeRequests()
-//                .antMatchers("/druid/**"
-//                        ,"/webjars/**"
-//                        ,"/swagger-resources/**"
-//                        ,"/doc.html"
-//                        ,"/v2/api-docs"
-//                        ,"/swagger/api-docs"
-//                        ,"/actuator/**"
-//                        ,"/ws/**").permitAll()
-//                .anyRequest().authenticated();
-//    }
+    private final ForbiddenExceptionHandler forbiddenExceptionHandler;
+    private final InvalidAuthenticationEntryPoint invalidAuthenticationEntryPoint;
+
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    SecurityFilterChain resourceFilterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests().requestMatchers(
+                 "/actuator/**"
+                        , "/ws/**").permitAll()
+                .and()
+                .oauth2ResourceServer(oauth2 -> oauth2.accessDeniedHandler(forbiddenExceptionHandler))
+                .build();
+    }
 }
