@@ -133,7 +133,7 @@ public class AuthorizationServerConfig {
                                 , AuthorizationGrantType.CLIENT_CREDENTIALS)))
                 // 支持OIDC
                 .scopes(scopes -> scopes.addAll(List.of(
-                        "auth"
+                          "auth"
                         , OidcScopes.OPENID
                         , OidcScopes.PROFILE
                         , OidcScopes.PHONE

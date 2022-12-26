@@ -20,7 +20,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author laokou
  * SpringSecurity最新版本更新
- * 目前不兼容springboot 3.0 暂不升级
  */
 @SpringBootApplication
 @EnableAdminServer

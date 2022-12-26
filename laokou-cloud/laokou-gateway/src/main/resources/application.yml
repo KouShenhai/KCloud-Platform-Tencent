@@ -2,7 +2,7 @@
 server:
   port: 5555
   tomcat:
-    connection-timeout: 18000000
+    connection-timeout: 600000
   # https配置
   ssl:
     enabled: true

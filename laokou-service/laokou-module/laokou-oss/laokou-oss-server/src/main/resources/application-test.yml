@@ -3,7 +3,7 @@ server:
   address: 192.168.62.1
   tomcat:
     uri-encoding: UTF-8
-    connection-timeout: 18000000
+    connection-timeout: 600000
   undertow:
     threads:
       # 设置IO线程数，来执行非阻塞任务，负责多个连接数

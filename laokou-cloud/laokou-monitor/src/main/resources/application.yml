@@ -4,8 +4,7 @@ server:
     context-path: /monitor
   tomcat:
     max-connections: -1
-    max-http-form-post-size: -1
-    connection-timeout: 60000
+    connection-timeout: 600000
   undertow:
     threads:
       # 设置IO线程数，来执行非阻塞任务，负责多个连接数
