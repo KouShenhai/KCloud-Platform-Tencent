@@ -1,10 +1,19 @@
-#spring
+# server
+server:
+  port: 9999
+  undertow:
+    threads:
+      # 设置IO线程数，来执行非阻塞任务，负责多个连接数
+      io: 16
+      # 工作线程数
+      worker: 256
+    # 每块buffer的空间大小
+    buffer-size: 1024
+    # 分配堆外内存
+    direct-buffers: true
+
+# spring
 spring:
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-  application:
-    name: @pom.parent.artifactId@
   profiles:
     # 环境 dev|test|prod
     active: @profile.active@
@@ -22,21 +31,13 @@ spring:
         - docker0
         - veth.*
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-
-#mybatis
+# mybatis-plus
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   configuration:
     log-impl: @mybatis-plus.log-impl@
 
+# feign
 feign:
   httpclient:
     enabled: true # 支持HttpClient的开关
@@ -47,3 +48,13 @@ feign:
       default:
         connectTimeout: 120000
         readTimeout: 120000
+
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

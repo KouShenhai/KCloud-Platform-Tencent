@@ -50,9 +50,12 @@ feign:
         connectTimeout: 10000 # 连接时间
         readTimeout: 15000 # 超时时间
 
+# actuator
 management:
   endpoints:
     web:
       exposure:
-        include:
-          - polaris-config
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

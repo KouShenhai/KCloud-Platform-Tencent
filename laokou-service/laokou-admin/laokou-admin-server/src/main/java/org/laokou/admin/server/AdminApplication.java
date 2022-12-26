@@ -17,9 +17,8 @@
  * limitations under the License.
  */
 package org.laokou.admin.server;
-import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
-import org.laokou.common.swagger.config.CorsConfig;
+import org.laokou.redis.config.RedisConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,6 +26,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+
 /**
  * 架构演变
  * 单机架构（两层架构）
@@ -37,11 +37,10 @@ import org.springframework.context.annotation.Import;
 @SpringBootApplication(scanBasePackages = {"org.laokou.common.core", "org.laokou.admin", "org.laokou.redis", "org.laokou.common.mybatisplus", "org.laokou.auth.client"})
 @EnableDiscoveryClient
 @EnableConfigurationProperties
-@EnableApolloConfig
 @EnableAspectJAutoProxy
-@Import(CorsConfig.class)
 @EnableEncryptableProperties
 @EnableFeignClients
+@Import(RedisConfig.class)
 public class AdminApplication {
 
     public static void main(String[] args) {
