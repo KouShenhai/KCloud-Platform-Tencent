@@ -1,6 +1,6 @@
 # server
 server:
-  port: 11111
+  port: 1111
   tomcat:
     uri-encoding: UTF-8
   servlet:
