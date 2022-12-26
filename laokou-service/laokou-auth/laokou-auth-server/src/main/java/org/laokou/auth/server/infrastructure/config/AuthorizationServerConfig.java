@@ -99,7 +99,13 @@ public class AuthorizationServerConfig {
                         , new OAuth2AuthorizationCodeRequestAuthenticationConverter()))))
                 .clientAuthentication(clientAuthentication -> clientAuthentication.errorResponseHandler(new CustomAuthenticationFailureHandler()))
         );
-        return http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+        return http
+                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .authorizeHttpRequests(authorizeRequests -> {
+                    // 自定义接口、端点暴露
+                    authorizeRequests.requestMatchers("/error").permitAll();
+                    authorizeRequests.anyRequest().authenticated();
+                })
                 .csrf(csrf -> csrf.ignoringRequestMatchers(authorizationServerConfigurer.getEndpointsMatcher()))
                 .apply(authorizationServerConfigurer
                         .authorizationService(authorizationService)

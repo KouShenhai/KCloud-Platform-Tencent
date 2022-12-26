@@ -37,15 +37,15 @@ public class WebSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests().requestMatchers(
-                "/webjars/**"
-                        ,"/swagger-resources/**"
-                        ,"/oauth2/captcha"
-                        ,"/oauth2/login"
-                        ,"/doc.html"
-                        ,"/v2/api-docs"
-                        ,"/swagger/api-docs"
-                        ,"/oauth2/logout"
-                        ,"/actuator/**")
+                 "/webjars/**"
+                        , "/swagger-resources/**"
+                        , "/oauth2/captcha"
+                        , "/oauth2/login"
+                        , "/doc.html"
+                        , "/v2/api-docs"
+                        , "/swagger/api-docs"
+                        , "/oauth2/logout"
+                        , "/actuator/**")
                 .permitAll()
                 .and()
                 .authorizeHttpRequests()
