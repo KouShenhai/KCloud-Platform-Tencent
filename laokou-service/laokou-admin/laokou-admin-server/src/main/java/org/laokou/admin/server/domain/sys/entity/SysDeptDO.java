@@ -18,8 +18,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 /**
  * @author laokou
@@ -28,7 +26,7 @@ import lombok.Data;
  */
 @Data
 @TableName("boot_sys_dept")
-@ApiModel("部门")
+//@ApiModel("部门")
 @EqualsAndHashCode(callSuper=true)
 public class SysDeptDO extends BaseDO {
 
@@ -36,28 +34,28 @@ public class SysDeptDO extends BaseDO {
      * 父部门ID
      */
     @TableField("pid")
-    @ApiModelProperty(value = "父部门ID",name = "pid",required = true,example = "0")
+//    @ApiModelProperty(value = "父部门ID",name = "pid",required = true,example = "0")
     private Long pid;
 
     /**
      * 部门名称
      */
     @TableField("name")
-    @ApiModelProperty(value = "部门名称",name = "name",required = true,example = "老寇云集团")
+//    @ApiModelProperty(value = "部门名称",name = "name",required = true,example = "老寇云集团")
     private String name;
 
     /**
      * 排序
      */
     @TableField("sort")
-    @ApiModelProperty(value = "排序",name = "sort",example = "1")
+//    @ApiModelProperty(value = "排序",name = "sort",example = "1")
     private Integer sort;
 
     /**
      * 路径
      */
     @TableField("path")
-    @ApiModelProperty(value = "路径",name = "path",example = "0")
+//    @ApiModelProperty(value = "路径",name = "path",example = "0")
     private String path;
 
 }

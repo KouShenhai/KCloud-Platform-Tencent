@@ -22,8 +22,6 @@ import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,7 +34,7 @@ import java.io.IOException;
  */
 @RestController
 @AllArgsConstructor
-@Api(value = "系统消息API",protocols = "http",tags = "系统消息API")
+//@Api(value = "系统消息API",protocols = "http",tags = "系统消息API")
 @RequestMapping("/sys/message/api")
 public class SysMessageApiController {
 
@@ -44,7 +42,7 @@ public class SysMessageApiController {
     private SysMessageApplicationService sysMessageApplicationService;
 
     @PostMapping("/insert")
-    @ApiOperation("系统消息>新增")
+//    @ApiOperation("系统消息>新增")
     @OperateLog(module = "系统消息",name = "消息新增")
     @PreAuthorize("hasAuthority('sys:message:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody MessageDTO dto) throws IOException {
@@ -52,34 +50,34 @@ public class SysMessageApiController {
     }
 
     @PostMapping("/query")
-    @ApiOperation("系统消息>查询")
+//    @ApiOperation("系统消息>查询")
     @PreAuthorize("hasAuthority('sys:message:query')")
     public HttpResultUtil<IPage<SysMessageVO>> query(@RequestBody SysMessageQo qo) {
         return new HttpResultUtil<IPage<SysMessageVO>>().ok(sysMessageApplicationService.queryMessagePage(qo));
     }
 
     @GetMapping("/get")
-    @ApiOperation("系统消息>查看")
+//    @ApiOperation("系统消息>查看")
     @OperateLog(module = "系统消息",name = "消息查看")
     public HttpResultUtil<MessageDetailVO> get(@RequestParam("id")Long id) {
         return new HttpResultUtil<MessageDetailVO>().ok(sysMessageApplicationService.getMessageByDetailId(id));
     }
 
     @GetMapping("/detail")
-    @ApiOperation("系统消息>详情")
+//    @ApiOperation("系统消息>详情")
     @PreAuthorize("hasAuthority('sys:message:detail')")
     public HttpResultUtil<MessageDetailVO> detail(@RequestParam("id")Long id) {
         return new HttpResultUtil<MessageDetailVO>().ok(sysMessageApplicationService.getMessageById(id));
     }
 
     @PostMapping("/unread/list")
-    @ApiOperation("系统消息>未读")
+//    @ApiOperation("系统消息>未读")
     public HttpResultUtil<IPage<SysMessageVO>> unread(@RequestBody SysMessageQo qo) {
         return new HttpResultUtil<IPage<SysMessageVO>>().ok(sysMessageApplicationService.getUnReadList(qo));
     }
 
     @GetMapping("/count")
-    @ApiOperation("系统消息>统计")
+//    @ApiOperation("系统消息>统计")
     public HttpResultUtil<Long> count() {
         return new HttpResultUtil<Long>().ok(sysMessageApplicationService.unReadCount());
     }

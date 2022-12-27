@@ -18,8 +18,6 @@ import org.laokou.admin.server.application.service.SysSearchApplicationService;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +30,7 @@ import java.util.Map;
  * @author laokou
  */
 @RestController
-@Api(value = "搜索管理API",protocols = "http",tags = "搜索管理API")
+//@Api(value = "搜索管理API",protocols = "http",tags = "搜索管理API")
 @RequestMapping("/sys/search/api")
 public class SysSearchApiController {
 
@@ -40,7 +38,7 @@ public class SysSearchApiController {
     private SysSearchApplicationService sysSearchApplicationService;
 
     @PostMapping("/resource")
-    @ApiOperation("搜索管理>资源")
+//    @ApiOperation("搜索管理>资源")
     @PreAuthorize("hasAuthority('sys:search:resource:query')")
     public HttpResultUtil<SearchVO<Map<String,Object>>> searchResource(@RequestBody SearchForm form) {
         return new HttpResultUtil<SearchVO<Map<String,Object>>>().ok(sysSearchApplicationService.searchResource(form));

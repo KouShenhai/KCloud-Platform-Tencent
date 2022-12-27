@@ -18,7 +18,6 @@ package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
@@ -28,7 +27,7 @@ import lombok.Data;
  */
 @Data
 @TableName("boot_sys_message_detail")
-@ApiModel("消息详情")
+//@ApiModel("消息详情")
 @EqualsAndHashCode(callSuper=true)
 public class SysMessageDetailDO extends BaseDO {
 

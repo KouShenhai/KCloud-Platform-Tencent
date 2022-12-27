@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 /**
@@ -33,7 +32,7 @@ import org.hibernate.validator.constraints.Length;
 public class SysUserDO extends BaseDO {
 
     @NotBlank(message = "{sys.user.password.require}")
-    @ApiModelProperty(value = "密码",name = "password",required = true,example = "123456")
+//    @ApiModelProperty(value = "密码",name = "password",required = true,example = "123456")
     @Length(min = 6, max = 18, message = "密码长度必须在 {min} - {max} 之间")
     @TableField("password")
     private String password;
@@ -42,14 +41,14 @@ public class SysUserDO extends BaseDO {
      * 用户名
      */
     @NotBlank(message = "{sys.user.username.require}")
-    @ApiModelProperty(value = "用户名",name = "username",required = true,example = "admin")
+//    @ApiModelProperty(value = "用户名",name = "username",required = true,example = "admin")
     @TableField("username")
     private String username;
 
     /**
      * 超级管理员 0：否 1：是
      */
-    @ApiModelProperty(value = "超级管理员 0：否 1：是",name = "superAdmin",example = "1")
+//    @ApiModelProperty(value = "超级管理员 0：否 1：是",name = "superAdmin",example = "1")
     @TableField("super_admin")
     @JsonProperty("superAdmin")
     private Integer superAdmin;
@@ -57,7 +56,7 @@ public class SysUserDO extends BaseDO {
     /**
      * 头像url
      */
-    @ApiModelProperty(value = "头像url",name = "imgUrl",example = "https://pic.cnblogs.com/avatar/simple_avatar.gif")
+//    @ApiModelProperty(value = "头像url",name = "imgUrl",example = "https://pic.cnblogs.com/avatar/simple_avatar.gif")
     @TableField("img_url")
     @JsonProperty("imgUrl")
     private String imgUrl;
@@ -65,7 +64,7 @@ public class SysUserDO extends BaseDO {
     /**
      * 电子邮箱
      */
-    @ApiModelProperty(value = "电子邮箱",name = "email",example = "2413176044@qq.com")
+//    @ApiModelProperty(value = "电子邮箱",name = "email",example = "2413176044@qq.com")
     @TableField("email")
     @JsonProperty("email")
     private String email;
@@ -73,7 +72,7 @@ public class SysUserDO extends BaseDO {
     /**
      * 状态 0停用 1正常
      */
-    @ApiModelProperty(value = "状态 0停用 1正常",name = "status",example = "1")
+//    @ApiModelProperty(value = "状态 0停用 1正常",name = "status",example = "1")
     @TableField("status")
     @JsonProperty("status")
     private Integer status;
@@ -81,7 +80,7 @@ public class SysUserDO extends BaseDO {
     /**
      * 手机号
      */
-    @ApiModelProperty(value = "手机号",name = "mobile",example = "18974432576")
+//    @ApiModelProperty(value = "手机号",name = "mobile",example = "18974432576")
     @TableField("mobile")
     @JsonProperty("mobile")
     private String mobile;
@@ -89,7 +88,7 @@ public class SysUserDO extends BaseDO {
     /**
      * 部门id
      */
-    @ApiModelProperty(value = "部门id",name = "deptId",example = "0")
+//    @ApiModelProperty(value = "部门id",name = "deptId",example = "0")
     @TableField("dept_id")
     @JsonProperty("deptId")
     private Long deptId;

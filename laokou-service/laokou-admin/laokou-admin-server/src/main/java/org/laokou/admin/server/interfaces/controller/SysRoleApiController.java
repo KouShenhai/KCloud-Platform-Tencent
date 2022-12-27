@@ -20,8 +20,6 @@ import org.laokou.admin.client.dto.SysRoleDTO;
 import org.laokou.admin.server.interfaces.qo.SysRoleQo;
 import org.laokou.admin.client.vo.SysRoleVO;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,7 +30,7 @@ import java.util.List;
  * @author laokou
  */
 @RestController
-@Api(value = "系统角色API",protocols = "http",tags = "系统角色API")
+//@Api(value = "系统角色API",protocols = "http",tags = "系统角色API")
 @RequestMapping("/sys/role/api")
 public class SysRoleApiController {
 
@@ -40,26 +38,26 @@ public class SysRoleApiController {
     private SysRoleApplicationService sysRoleApplicationService;
 
     @PostMapping("/query")
-    @ApiOperation("系统角色>查询")
+//    @ApiOperation("系统角色>查询")
     @PreAuthorize("hasAuthority('sys:role:query')")
     public HttpResultUtil<IPage<SysRoleVO>> query(@RequestBody SysRoleQo qo) {
         return new HttpResultUtil<IPage<SysRoleVO>>().ok(sysRoleApplicationService.queryRolePage(qo));
     }
 
     @PostMapping("/list")
-    @ApiOperation("系统角色>列表")
+//    @ApiOperation("系统角色>列表")
     public HttpResultUtil<List<SysRoleVO>> list(@RequestBody SysRoleQo qo) {
         return new HttpResultUtil<List<SysRoleVO>>().ok(sysRoleApplicationService.getRoleList(qo));
     }
 
     @GetMapping("/detail")
-    @ApiOperation("系统角色>详情")
+//    @ApiOperation("系统角色>详情")
     public HttpResultUtil<SysRoleVO> detail(@RequestParam("id") Long id) {
         return new HttpResultUtil<SysRoleVO>().ok(sysRoleApplicationService.getRoleById(id));
     }
 
     @PostMapping("/insert")
-    @ApiOperation("系统角色>新增")
+//    @ApiOperation("系统角色>新增")
     @OperateLog(module = "系统角色",name = "角色新增")
     @PreAuthorize("hasAuthority('sys:role:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody SysRoleDTO dto) {
@@ -67,7 +65,7 @@ public class SysRoleApiController {
     }
 
     @PutMapping("/update")
-    @ApiOperation("系统角色>修改")
+//    @ApiOperation("系统角色>修改")
     @OperateLog(module = "系统角色",name = "角色修改")
     @PreAuthorize("hasAuthority('sys:role:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysRoleDTO dto) {
@@ -75,7 +73,7 @@ public class SysRoleApiController {
     }
 
     @DeleteMapping("/delete")
-    @ApiOperation("系统角色>删除")
+//    @ApiOperation("系统角色>删除")
     @OperateLog(module = "系统角色",name = "角色删除")
     @PreAuthorize("hasAuthority('sys:role:delete')")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {

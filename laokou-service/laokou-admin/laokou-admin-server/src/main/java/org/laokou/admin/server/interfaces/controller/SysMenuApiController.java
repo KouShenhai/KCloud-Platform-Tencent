@@ -20,8 +20,6 @@ import org.laokou.admin.server.interfaces.qo.SysMenuQo;
 import org.laokou.admin.client.vo.SysMenuVO;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +29,7 @@ import java.util.List;
  * @author laokou
  */
 @RestController
-@Api(value = "系统菜单API",protocols = "http",tags = "系统菜单API")
+//@Api(value = "系统菜单API",protocols = "http",tags = "系统菜单API")
 @RequestMapping("/sys/menu/api")
 public class SysMenuApiController {
 
@@ -39,26 +37,26 @@ public class SysMenuApiController {
     private SysMenuApplicationService sysMenuApplicationService;
 
     @GetMapping("/list")
-    @ApiOperation("系统菜单>列表")
+//    @ApiOperation("系统菜单>列表")
     public HttpResultUtil<SysMenuVO> list() {
         return new HttpResultUtil<SysMenuVO>().ok(sysMenuApplicationService.getMenuList());
     }
 
     @PostMapping("/query")
-    @ApiOperation("系统菜单>查询")
+//    @ApiOperation("系统菜单>查询")
     @PreAuthorize("hasAuthority('sys:menu:query')")
     public HttpResultUtil<List<SysMenuVO>> query(@RequestBody SysMenuQo qo) {
         return new HttpResultUtil<List<SysMenuVO>>().ok(sysMenuApplicationService.queryMenuList(qo));
     }
 
     @GetMapping("/detail")
-    @ApiOperation("系统菜单>详情")
+//    @ApiOperation("系统菜单>详情")
     public HttpResultUtil<SysMenuVO> detail(@RequestParam("id")Long id) {
         return new HttpResultUtil<SysMenuVO>().ok(sysMenuApplicationService.getMenuById(id));
     }
 
     @PutMapping("/update")
-    @ApiOperation("系统菜单>修改")
+//    @ApiOperation("系统菜单>修改")
     @OperateLog(module = "系统菜单",name = "菜单修改")
     @PreAuthorize("hasAuthority('sys:menu:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysMenuDTO dto) {
@@ -66,7 +64,7 @@ public class SysMenuApiController {
     }
 
     @PostMapping("/insert")
-    @ApiOperation("系统菜单>新增")
+//    @ApiOperation("系统菜单>新增")
     @OperateLog(module = "系统菜单",name = "菜单新增")
     @PreAuthorize("hasAuthority('sys:menu:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody SysMenuDTO dto) {
@@ -74,7 +72,7 @@ public class SysMenuApiController {
     }
 
     @DeleteMapping("/delete")
-    @ApiOperation("系统菜单>删除")
+//    @ApiOperation("系统菜单>删除")
     @OperateLog(module = "系统菜单",name = "菜单删除")
     @PreAuthorize("hasAuthority('sys:menu:delete')")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
@@ -82,13 +80,13 @@ public class SysMenuApiController {
     }
 
     @GetMapping("/tree")
-    @ApiOperation("系统菜单>树菜单")
+//    @ApiOperation("系统菜单>树菜单")
     public HttpResultUtil<SysMenuVO> tree(@RequestParam(required = false,value = "roleId")Long roleId) {
         return new HttpResultUtil<SysMenuVO>().ok(sysMenuApplicationService.treeMenu(roleId));
     }
 
     @GetMapping("/get")
-    @ApiOperation("系统菜单>菜单树ids")
+//    @ApiOperation("系统菜单>菜单树ids")
     public HttpResultUtil<List<Long>> get(@RequestParam(value = "roleId")Long roleId) {
         return new HttpResultUtil<List<Long>>().ok(sysMenuApplicationService.getMenuIdsByRoleId(roleId));
     }

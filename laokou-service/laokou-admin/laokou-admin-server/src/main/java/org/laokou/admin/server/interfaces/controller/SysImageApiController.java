@@ -26,8 +26,6 @@ import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.laokou.redis.annotation.Lock4j;
 import org.laokou.redis.enums.LockScope;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +41,7 @@ import java.util.*;
  * @date 2022/8/19 0019 下午 3:56
  */
 @RestController
-@Api(value = "图片管理API",protocols = "http",tags = "图片管理API")
+//@Api(value = "图片管理API",protocols = "http",tags = "图片管理API")
 @RequestMapping("/sys/resource/image/api")
 public class SysImageApiController {
 
@@ -54,7 +52,7 @@ public class SysImageApiController {
     private WorkflowTaskApplicationService workflowTaskApplicationService;
 
     @PostMapping("/upload")
-    @ApiOperation("图片管理>上传")
+//    @ApiOperation("图片管理>上传")
     public HttpResultUtil<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) {
             throw new CustomException("上传的文件不能为空");
@@ -69,7 +67,7 @@ public class SysImageApiController {
     }
 
     @PostMapping("/syncIndex")
-    @ApiOperation("图片管理>同步索引")
+//    @ApiOperation("图片管理>同步索引")
     @OperateLog(module = "图片管理",name = "索引同步")
     @PreAuthorize("hasAuthority('sys:resource:image:syncIndex')")
     @Lock4j(key = "image_sync_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
@@ -78,7 +76,7 @@ public class SysImageApiController {
     }
 
     @PostMapping("/createIndex")
-    @ApiOperation("图片管理>创建索引")
+//    @ApiOperation("图片管理>创建索引")
     @OperateLog(module = "图片管理",name = "创建索引")
     @PreAuthorize("hasAuthority('sys:resource:image:createIndex')")
     @Lock4j(key = "image_create_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
@@ -87,7 +85,7 @@ public class SysImageApiController {
     }
 
     @DeleteMapping("/deleteIndex")
-    @ApiOperation("图片管理>创建索引")
+//    @ApiOperation("图片管理>创建索引")
     @OperateLog(module = "图片管理",name = "删除索引")
     @PreAuthorize("hasAuthority('sys:resource:image:deleteIndex')")
     @Lock4j(key = "image_delete_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
@@ -96,21 +94,21 @@ public class SysImageApiController {
     }
 
     @PostMapping("/query")
-    @ApiOperation("图片管理>查询")
+//    @ApiOperation("图片管理>查询")
     @PreAuthorize("hasAuthority('sys:resource:image:query')")
     public HttpResultUtil<IPage<SysResourceVO>> query(@RequestBody SysResourceQo qo) {
         return new HttpResultUtil<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
     }
 
     @GetMapping(value = "/detail")
-    @ApiOperation("图片管理>详情")
+//    @ApiOperation("图片管理>详情")
     @PreAuthorize("hasAuthority('sys:resource:image:detail')")
     public HttpResultUtil<SysResourceVO> detail(@RequestParam("id") Long id) {
         return new HttpResultUtil<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
     }
 
     @PostMapping(value = "/insert")
-    @ApiOperation("图片管理>新增")
+//    @ApiOperation("图片管理>新增")
     @OperateLog(module = "图片管理",name = "图片新增")
     @PreAuthorize("hasAuthority('sys:resource:image:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) throws IOException {
@@ -118,7 +116,7 @@ public class SysImageApiController {
     }
 
     @PutMapping(value = "/update")
-    @ApiOperation("图片管理>修改")
+//    @ApiOperation("图片管理>修改")
     @OperateLog(module = "图片管理",name = "图片修改")
     @PreAuthorize("hasAuthority('sys:resource:image:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) throws IOException {
@@ -126,7 +124,7 @@ public class SysImageApiController {
     }
 
     @DeleteMapping(value = "/delete")
-    @ApiOperation("图片管理>删除")
+//    @ApiOperation("图片管理>删除")
     @OperateLog(module = "图片管理",name = "图片删除")
     @PreAuthorize("hasAuthority('sys:resource:image:delete')")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
@@ -134,14 +132,14 @@ public class SysImageApiController {
     }
 
     @GetMapping(value = "/diagram")
-    @ApiOperation(value = "图片管理>流程图")
+//    @ApiOperation(value = "图片管理>流程图")
     @PreAuthorize("hasAuthority('sys:resource:image:diagram')")
     public void diagram(@RequestParam("processInstanceId")String processInstanceId, HttpServletResponse response) throws IOException {
         workflowTaskApplicationService.diagramProcess(processInstanceId, response);
     }
 
     @GetMapping("/auditLog")
-    @ApiOperation("图片管理>审批日志")
+//    @ApiOperation("图片管理>审批日志")
     @PreAuthorize("hasAuthority('sys:resource:image:auditLog')")
     public HttpResultUtil<List<SysAuditLogVO>> auditLog(@RequestParam("businessId") Long businessId) {
         return new HttpResultUtil<List<SysAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(businessId));
