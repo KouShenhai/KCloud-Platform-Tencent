@@ -34,10 +34,9 @@ public final class RedisKeyUtil {
     /**
      * 用户信息Key
      */
-    public static String getUserInfoKey(String name) {
-        return "sys:user:info:" + name;
+    public static String getUserInfoKey(String token) {
+        return "sys:user:info:" + token;
     }
-
     /**
      * 布隆过滤器Key
      */

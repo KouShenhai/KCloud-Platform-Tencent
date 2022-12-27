@@ -22,6 +22,8 @@ import org.laokou.auth.client.enums.UserStatusEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,7 +34,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
-public class UserDetail implements UserDetails {
+public class UserDetail implements UserDetails, OAuth2AuthenticatedPrincipal {
     private Long userId;
     private String username;
     private String imgUrl;
@@ -107,5 +109,21 @@ public class UserDetail implements UserDetails {
     @JsonIgnore
     public boolean isEnabled() {
         return this.status == UserStatusEnum.DISABLE.ordinal() ? false : true;
+    }
+
+    /**
+     * Get the OAuth 2.0 token attributes
+     * @return the OAuth 2.0 token attributes
+     */
+    @Override
+    @JsonIgnore
+    public Map<String, Object> getAttributes() {
+        return new HashMap<>(0);
+    }
+
+    @Override
+    @JsonIgnore
+    public String getName() {
+        return this.getUsername();
     }
 }
