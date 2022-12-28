@@ -39,19 +39,19 @@ KCloud-Platform-Tencent（老寇云平台）是一款企业级微服务架构的
 ### 技术体系
 
 #### Spring全家桶及核心技术版本
-| 组件                   | 版本       |
-|:---------------------|:---------|
-| Spring Boot          | 3.0.0    |
-| Spring Cloud         | 2022.0.0 |
-| Spring Cloud Tencent | 1.8.2-2022.0.0 |
-| Spring Boot Admin    | 3.0.0-M6    |
-| Polaris              | 1.13.3    |
-| Mybatis Plus         | 3.5.2.7-SNAPSHOT    |
-| Mysql                | 5.7.9    |
-| Redis                | 6.0.6    |
-| Elasticsearch        | 7.6.2    |
-| RocketMQ             | 5.0.0    |
-| Kafka                | 2.8.1    |
+| 组件                   | 版本               |
+|:---------------------|:-----------------|
+| Spring Boot          | 3.0.0            |
+| Spring Cloud         | 2022.0.0         |
+| Spring Cloud Tencent | 1.8.2-2022.0.0   |
+| Spring Boot Admin    | 3.0.0-M8         |
+| Mybatis Plus         | 3.5.2.7-SNAPSHOT |
+| Polaris              | 1.13.3           |
+| Mysql                | 5.7.9            |
+| Redis                | 6.0.6            |
+| Elasticsearch        | 7.6.2            |
+| RocketMQ             | 5.0.0            |
+| Kafka                | 2.8.1            |
 
 #### 相关技术
 

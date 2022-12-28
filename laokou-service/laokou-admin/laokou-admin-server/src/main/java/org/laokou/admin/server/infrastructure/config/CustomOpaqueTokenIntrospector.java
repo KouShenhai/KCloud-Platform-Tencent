@@ -20,8 +20,8 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.exception.ErrorCode;
+import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +29,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
+import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.stereotype.Component;
 import java.security.Principal;
@@ -67,7 +68,10 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
         }
         OAuth2Authorization oAuth2Authorization = oAuth2AuthorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
         if (oAuth2Authorization == null) {
-            throw new CustomException(ErrorCode.INVALID_TOKEN);
+            throw new InvalidBearerTokenException(MessageUtil.getMessage(ErrorCode.UNAUTHORIZED));
+        }
+        if (!oAuth2Authorization.getAccessToken().isActive()) {
+            throw new InvalidBearerTokenException(MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
         }
         userDetail = (UserDetail) ((UsernamePasswordAuthenticationToken) oAuth2Authorization.getAttribute(Principal.class.getName())).getPrincipal();
         redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
