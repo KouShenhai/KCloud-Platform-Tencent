@@ -18,14 +18,11 @@ import lombok.RequiredArgsConstructor;
 import org.laokou.auth.client.exception.ForbiddenExceptionHandler;
 import org.laokou.auth.client.exception.InvalidAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -36,6 +33,7 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Configuration
 public class ResourceServerConfig {
 
     private final ForbiddenExceptionHandler forbiddenExceptionHandler;
@@ -46,8 +44,7 @@ public class ResourceServerConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityFilterChain resourceFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests().requestMatchers(
-                 "/actuator/**"
-                        , "/ws/**").permitAll()
+                 "/actuator/**").permitAll()
                 .and()
                 .authorizeHttpRequests()
                 .anyRequest()
@@ -58,11 +55,6 @@ public class ResourceServerConfig {
                         .authenticationEntryPoint(invalidAuthenticationEntryPoint)
                 )
                 .build();
-    }
-
-    @Bean
-    OAuth2AuthorizationService auth2AuthorizationService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
-        return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
     }
 
 }

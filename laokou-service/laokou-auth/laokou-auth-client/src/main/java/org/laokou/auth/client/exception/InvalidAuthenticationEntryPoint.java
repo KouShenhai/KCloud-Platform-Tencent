@@ -21,6 +21,7 @@ import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -29,6 +30,7 @@ import java.io.IOException;
  * @author Mark sunlightcs@gmail.com
  */
 @Slf4j
+@Component
 public class InvalidAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override

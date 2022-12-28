@@ -18,7 +18,7 @@
  */
 package org.laokou.admin.server;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
-import org.laokou.redis.config.RedisConfig;
+import org.laokou.redis.config.RedisSessionConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -40,7 +40,7 @@ import org.springframework.context.annotation.Import;
 @EnableAspectJAutoProxy
 @EnableEncryptableProperties
 @EnableFeignClients
-@Import(RedisConfig.class)
+@Import(RedisSessionConfig.class)
 public class AdminApplication {
 
     public static void main(String[] args) {
