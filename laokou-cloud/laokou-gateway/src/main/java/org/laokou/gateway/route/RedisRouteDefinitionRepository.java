@@ -50,7 +50,7 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
         this.reactiveHashOperations = reactiveRedisTemplate.opsForHash();
         caffeineCache = Caffeine.newBuilder().initialCapacity(15)
                 .expireAfterAccess(30, TimeUnit.MINUTES)
-                .maximumSize(150)
+                .maximumSize(300)
                 .build();
     }
 
