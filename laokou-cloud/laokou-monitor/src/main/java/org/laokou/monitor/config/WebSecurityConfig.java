@@ -28,9 +28,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import java.util.UUID;
-
 /**
  * @author laokou
  */
@@ -69,10 +66,6 @@ public class WebSecurityConfig {
                 .ignoringRequestMatchers(new AntPathRequestMatcher(adminServerProperties.path("/instances"), HttpMethod.POST.toString()),
                         new AntPathRequestMatcher(adminServerProperties.path("/instances/*"), HttpMethod.DELETE.toString()),
                         new AntPathRequestMatcher(adminServerProperties.path("/actuator/**")))
-                .and()
-                .rememberMe()
-                .key(UUID.randomUUID().toString())
-                .tokenValiditySeconds(1209600)
                 .and()
                 .build();
     }
