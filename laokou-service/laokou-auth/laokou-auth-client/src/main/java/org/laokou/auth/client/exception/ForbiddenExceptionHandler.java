@@ -21,12 +21,15 @@ import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 /**
  * 无权限访问，异常处理器
  * @author laokou
  */
 @Slf4j
+@Component
 public class ForbiddenExceptionHandler implements AccessDeniedHandler {
 
     @Override

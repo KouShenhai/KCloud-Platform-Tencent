@@ -87,12 +87,15 @@
             </snapshots>
         </repository>
         <repository>
-            <id>snapshots</id>
-            <name>Oss Snapshots</name>
+            <id>ossrh</id>
+            <name>OSS Snapshot repository</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
     <!--配置maven阿里云结束 -->
