@@ -38,24 +38,21 @@ public class DynamicGatewayRoutesServiceImpl implements DynamicGatewayRoutesServ
 
     @Override
     public Mono<Void> insert(Mono<RouteDefinition> route) {
-        redisRouteDefinitionRepository.save(route).subscribe();
-        applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
-        return Mono.empty();
+        return redisRouteDefinitionRepository.save(route)
+                .doOnNext(app -> applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this)));
     }
 
     @Override
     public Mono<Void> update(Mono<RouteDefinition> route) {
-        redisRouteDefinitionRepository.delete(route.map(r -> r.getId())).subscribe();
-        redisRouteDefinitionRepository.save(route).subscribe();
-        applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
-        return Mono.empty();
+        return redisRouteDefinitionRepository.delete(route.map(RouteDefinition::getId))
+                        .flatMap(app -> redisRouteDefinitionRepository.save(route))
+                .doOnNext(app -> applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this)));
     }
 
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
-        redisRouteDefinitionRepository.delete(routeId).subscribe();
-        applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
-        return Mono.empty();
+        return redisRouteDefinitionRepository.delete(routeId)
+                .doOnNext(app -> applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this)));
     }
 
     @Override
