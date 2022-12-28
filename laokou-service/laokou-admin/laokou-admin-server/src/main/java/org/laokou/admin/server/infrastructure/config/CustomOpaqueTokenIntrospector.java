@@ -36,7 +36,7 @@ import java.security.Principal;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Component
 @RequiredArgsConstructor

@@ -11,4 +11,10 @@
     <groupId>org.laokou</groupId>
     <artifactId>laokou-mongodb-client</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.laokou</groupId>
+            <artifactId>laokou-common-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>

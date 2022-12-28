@@ -25,7 +25,7 @@ import org.springframework.security.oauth2.server.authorization.client.JdbcRegis
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Configuration
 public class AuthorizationConfig {
