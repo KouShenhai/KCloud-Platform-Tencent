@@ -12,7 +12,7 @@ KCloud-Platform-Tencent（老寇云平台）是一款企业级微服务架构的
 <p align="center">
 	<a target="_blank" href="https://gitee.com/laokouyun/KCloud-Platform-Tencent/stargazers"><img src="https://gitee.com/laokouyun/KCloud-Platform-Tencent/badge/star.svg?theme=dark" alt="Gitee Star"></a>
     <a target="_blank" href="https://gitee.com/laokouyun/KCloud-Platform-Tencent"><img src="https://gitee.com/laokouyun/KCloud-Platform-Tencent/badge/fork.svg?theme=dark"  alt="Gitee Fork"></a>
-    <a target="_blank" href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/spring--boot-3.0.0-green.svg" alt="SpringBoot"></a>
+    <a target="_blank" href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/spring--boot-3.0.1-green.svg" alt="SpringBoot"></a>
     <a target="_blank" href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-red" alt="License Apache 2.0"></a>
 </p>
 
