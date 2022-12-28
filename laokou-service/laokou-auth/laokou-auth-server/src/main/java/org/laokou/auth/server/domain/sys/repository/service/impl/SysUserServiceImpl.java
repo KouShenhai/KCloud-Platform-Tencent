@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.domain.sys.repository.service.impl;
+import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.domain.sys.repository.mapper.SysUserMapper;
 import org.laokou.auth.server.domain.sys.repository.service.SysUserService;
 import org.laokou.auth.client.user.UserDetail;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
+@RequiredArgsConstructor
 public class SysUserServiceImpl implements SysUserService {
 
-    @Autowired
-    private SysUserMapper sysUserMapper;
+    private final SysUserMapper sysUserMapper;
 
     @Override
-    public UserDetail getUserDetail(String username) {
-        return sysUserMapper.getUserDetail(username);
+    public UserDetail getUserDetail(String loginName) {
+        return sysUserMapper.getUserDetail(loginName);
     }
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.laokou.im.server.config;
 
+import jakarta.servlet.ServletContext;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 import org.springframework.web.util.WebAppRootListener;
-import javax.servlet.ServletContext;
 /**
- * @author  Kou Shenhai
+ * @author laokou
  */
 @Configuration
 public class WebSocketConfig implements ServletContextInitializer {

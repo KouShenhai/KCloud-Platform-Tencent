@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 package org.laokou.common.mybatisplus.entity;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import javax.validation.constraints.NotNull;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Data
 public abstract class BasePage {

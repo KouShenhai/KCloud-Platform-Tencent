@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,6 @@ import org.laokou.admin.server.application.service.SysSearchApplicationService;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 /**
  * 搜索管理控制器
- * @author Kou Shenhai
+ * @author laokou
  */
 @RestController
-@Api(value = "搜索管理API",protocols = "http",tags = "搜索管理API")
+//@Api(value = "搜索管理API",protocols = "http",tags = "搜索管理API")
 @RequestMapping("/sys/search/api")
 public class SysSearchApiController {
 
@@ -40,7 +38,7 @@ public class SysSearchApiController {
     private SysSearchApplicationService sysSearchApplicationService;
 
     @PostMapping("/resource")
-    @ApiOperation("搜索管理>资源")
+//    @ApiOperation("搜索管理>资源")
     @PreAuthorize("hasAuthority('sys:search:resource:query')")
     public HttpResultUtil<SearchVO<Map<String,Object>>> searchResource(@RequestBody SearchForm form) {
         return new HttpResultUtil<SearchVO<Map<String,Object>>>().ok(sysSearchApplicationService.searchResource(form));

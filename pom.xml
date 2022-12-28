@@ -12,7 +12,6 @@
         <module>laokou-common</module>
         <module>laokou-cloud</module>
         <module>laokou-service</module>
-        <module>laokou-service/laokou-api</module>
     </modules>
     <properties>
         <laokou.version>1.0-SNAPSHOT</laokou.version>
@@ -22,16 +21,16 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin>2.0.2</maven-compiler-plugin>
         <!--boot版本-->
-        <spring-boot.version>2.7.6</spring-boot.version>
+        <spring-boot.version>3.0.1</spring-boot.version>
         <!--cloud版本-->
-        <spring-cloud.version>2021.0.5</spring-cloud.version>
-        <!--kotlin版本-->
-        <kotlin.version>1.7.10</kotlin.version>
+        <spring-cloud.version>2022.0.0</spring-cloud.version>
         <docker.repostory>registry.cn-hangzhou.aliyuncs.com</docker.repostory>
         <docker.registry.name>koushenhai</docker.registry.name>
         <docker.version>1.2.2</docker.version>
-        <!--spring版本-->
-        <spring.version>6.0.0</spring.version>
+        <!--spring-security版本-->
+        <spring-security.version>6.0.1</spring-security.version>
+        <!--cloud-tencent版本-->
+        <spring-cloud-tencent.version>1.8.2-2022.0.0</spring-cloud-tencent.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -59,11 +58,19 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- 定义 spring cloud tencent 版本 -->
+            <dependency>
+                <groupId>com.tencent.cloud</groupId>
+                <artifactId>spring-cloud-tencent-dependencies</artifactId>
+                <version>${spring-cloud-tencent.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- 定义spring security 版本 -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -71,44 +78,23 @@
     </dependencyManagement>
 
     <repositories>
-        <!--发行版-->
         <repository>
-            <id>springsource-repos</id>
-            <name>SpringSource Repository</name>
-            <url>https://repo.spring.io/release/</url>
-        </repository>
-        <!--里程版-->
-        <repositories>
-            <repository>
-                <id>spring-milestone</id>
-                <name>Spring Milestone Repository</name>
-                <url>https://repo.spring.io/milestone</url>
-            </repository>
-        </repositories>
-        <!--阿里maven镜像-->
-        <!--配置maven阿里云仓库开始,不用去改maven的setting -->
-        <repository>
-            <id>public</id>
-            <name>local private nexus</name>
-            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>public</id>
-            <name>local private nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <name>Oss Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
     <!--配置maven阿里云结束 -->
     <profiles>
         <!--开发环境-->
@@ -116,6 +102,7 @@
             <id>dev</id>
             <properties>
                 <profile.active>dev</profile.active>
+                <tencent.namespace>laokou</tencent.namespace>
                 <mybatis-plus.log-impl>org.apache.ibatis.logging.stdout.StdOutImpl</mybatis-plus.log-impl>
             </properties>
             <activation>
@@ -127,6 +114,7 @@
             <id>test</id>
             <properties>
                 <profile.active>test</profile.active>
+                <tencent.namespace>laokou</tencent.namespace>
                 <mybatis-plus.log-impl>org.apache.ibatis.logging.stdout.StdOutImpl</mybatis-plus.log-impl>
             </properties>
         </profile>
@@ -135,6 +123,7 @@
             <id>prod</id>
             <properties>
                 <profile.active>prod</profile.active>
+                <tencent.namespace>laokou</tencent.namespace>
                 <mybatis-plus.log-impl>org.apache.ibatis.logging.nologging.NoLoggingImpl</mybatis-plus.log-impl>
             </properties>
         </profile>
@@ -174,51 +163,6 @@
                     </resources>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
-                <configuration>
-                    <jvmTarget>${java.version}</jvmTarget>
-                    <javaParameters>true</javaParameters>
-                    <compilerPlugins>
-                        <plugin>all-open</plugin>
-                        <plugin>spring</plugin>
-                        <plugin>no-arg</plugin>
-                        <plugin>jpa</plugin>
-                    </compilerPlugins>
-                    <pluginOptions>
-                    </pluginOptions>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-allopen</artifactId>
-                        <version>${kotlin.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-noarg</artifactId>
-                        <version>${kotlin.version}</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
         <!-- profile对资源的操作 -->
         <resources>
@@ -228,6 +172,7 @@
                 <excludes>
                     <exclude>application*.yml</exclude>
                     <exclude>application*.properties</exclude>
+                    <exclude>bootstrap.yml</exclude>
                 </excludes>
             </resource>
             <!--添加需要包含的文件-->
@@ -240,6 +185,7 @@
                     <include>application.yml</include>
                     <include>application-${profile.active}.yml</include>
                     <include>application-${profile.active}.properties</include>
+                    <include>bootstrap.yml</include>
                 </includes>
             </resource>
         </resources>

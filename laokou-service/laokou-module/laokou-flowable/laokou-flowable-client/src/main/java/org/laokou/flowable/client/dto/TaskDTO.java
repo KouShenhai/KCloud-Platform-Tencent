@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package org.laokou.flowable.client.dto;
 import lombok.Data;
 /**
- * @author Kou Shenhai
+ * @author laokou
  * @version 1.0
  * @date 2022/7/7 0007 下午 5:40
  */

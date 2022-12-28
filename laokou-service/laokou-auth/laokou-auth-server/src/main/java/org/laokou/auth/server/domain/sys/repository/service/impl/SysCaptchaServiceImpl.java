@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,10 @@ import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.redis.utils.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 /**
  * 验证码实现类
- * @author Kou Shenhai
+ * @author laokou
  * @version 1.0
  * @date 2020/12/19 0019 下午 7:23
  */
@@ -30,8 +29,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SysCaptchaServiceImpl implements SysCaptchaService {
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
     @Override
     public Boolean setCode(String uuid,String code) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 /**
  * 通知配置
- * @author Kou Shenhai
+ * @author laokou
  */
 @Slf4j
 @Component
@@ -36,8 +36,8 @@ public class StatusChangeNotifier extends AbstractStatusChangeNotifier {
     @Override
     protected Mono<Void> doNotify(InstanceEvent event, Instance instance) {
         return Mono.fromRunnable(() -> {
-            if (event instanceof InstanceStatusChangedEvent) {
-                String status = ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus();
+            if (event instanceof InstanceStatusChangedEvent eventStatus) {
+                String status = eventStatus.getStatusInfo().getStatus();
                 switch (status) {
                     //健康检查没通过
                     case "DOWN" -> log.info("健康检查没通过");

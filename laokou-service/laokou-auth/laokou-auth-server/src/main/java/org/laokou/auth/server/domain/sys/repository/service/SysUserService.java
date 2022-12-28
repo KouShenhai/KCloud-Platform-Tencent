@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@ package org.laokou.auth.server.domain.sys.repository.service;
 import org.laokou.auth.client.user.UserDetail;
 /**
  * 用户类
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface SysUserService {
 
     /**
      * 获取用户信息
-     * @param username
+     * @param loginName
      * @return
      */
-    UserDetail getUserDetail(String username);
+    UserDetail getUserDetail(String loginName);
 
 }

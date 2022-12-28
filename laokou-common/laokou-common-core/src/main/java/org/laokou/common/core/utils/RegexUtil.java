@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.laokou.common.core.utils;
 import java.util.regex.Pattern;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public class RegexUtil {
 
@@ -64,6 +64,10 @@ public class RegexUtil {
      */
     public static boolean gradeRegex(String grade) {
         return Pattern.matches(GRADE_REGEX,grade);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(emailRegex("24131760@qq"));
     }
 
 }

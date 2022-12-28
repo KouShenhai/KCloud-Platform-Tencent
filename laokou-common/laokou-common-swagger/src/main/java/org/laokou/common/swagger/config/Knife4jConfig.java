@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import java.util.List;
 
 /**
  * Swagger
- * @author Kou Shenhai
+ * @author laokou
  * @date 2019/09/01
  */
 @Configuration
@@ -70,7 +70,7 @@ public class Knife4jConfig {
                 .version("3.0.0")
                 .description("API文档")
                 //作者信息
-                .contact(new Contact("Kou Shenhai", "https://blog.csdn.net/qq_39893313", "2413176044@qq.com"))
+                .contact(new Contact("laokou", "https://blog.csdn.net/qq_39893313", "2413176044@qq.com"))
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .build();
     }
@@ -88,7 +88,7 @@ public class Knife4jConfig {
         String basePath = webEndpointProperties.getBasePath();
         EndpointMapping endpointMapping = new EndpointMapping(basePath);
         boolean shouldRegisterLinksMapping = this.shouldRegisterLinksMapping(webEndpointProperties, environment, basePath);
-        return new WebMvcEndpointHandlerMapping(endpointMapping, webEndpoints, endpointMediaTypes, corsProperties.toCorsConfiguration(), new EndpointLinksResolver(allEndpoints, basePath), shouldRegisterLinksMapping, null);
+        return new WebMvcEndpointHandlerMapping(endpointMapping, webEndpoints, endpointMediaTypes, corsProperties.toCorsConfiguration(), new EndpointLinksResolver(allEndpoints, basePath), shouldRegisterLinksMapping);
     }
     private boolean shouldRegisterLinksMapping(WebEndpointProperties webEndpointProperties, Environment environment, String basePath) {
         return webEndpointProperties.getDiscovery().isEnabled() && (StringUtil.isNotEmpty(basePath) || ManagementPortType.get(environment).equals(ManagementPortType.DIFFERENT));

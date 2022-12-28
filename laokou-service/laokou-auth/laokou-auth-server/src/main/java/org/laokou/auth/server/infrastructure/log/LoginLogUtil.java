@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.laokou.auth.server.infrastructure.log;
 
 import eu.bitwalker.useragentutils.UserAgent;
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
@@ -29,12 +30,10 @@ import org.laokou.log.client.dto.LoginLogDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Component
 @Slf4j
@@ -43,7 +42,7 @@ public class LoginLogUtil {
 
     private final RocketmqApiFeignClient rocketmqApiFeignClient;
 
-    public void recordLogin(String username,Integer status,String msg,HttpServletRequest request) {
+    public void recordLogin(String username,String loginType, Integer status, String msg, HttpServletRequest request) {
         try {
             UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader(HttpHeaders.USER_AGENT));
             String ip = IpUtil.getIpAddr(request);
@@ -58,6 +57,7 @@ public class LoginLogUtil {
             dto.setBrowser(browser);
             dto.setOs(os);
             dto.setMsg(msg);
+            dto.setLoginType(loginType);
             dto.setRequestStatus(status);
             RocketmqDTO rocketmqDTO = new RocketmqDTO();
             rocketmqDTO.setData(JacksonUtil.toJsonStr(dto));

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import jakarta.servlet.http.HttpServletResponse;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
 import org.laokou.admin.client.dto.SysResourceDTO;
@@ -25,8 +26,6 @@ import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.laokou.redis.annotation.Lock4j;
 import org.laokou.redis.enums.LockScope;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +33,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 /**
- * @author Kou Shenhai
+ * @author laokou
  * @version 1.0
  * @date 2022/8/19 0019 下午 3:56
  */
 @RestController
-@Api(value = "视频管理API",protocols = "http",tags = "视频管理API")
+//@Api(value = "视频管理API",protocols = "http",tags = "视频管理API")
 @RequestMapping("/sys/resource/video/api")
 public class SysVideoApiController {
 
@@ -55,7 +53,7 @@ public class SysVideoApiController {
     private WorkflowTaskApplicationService workflowTaskApplicationService;
 
     @PostMapping("/upload")
-    @ApiOperation("视频管理>上传")
+//    @ApiOperation("视频管理>上传")
     public HttpResultUtil<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) {
             throw new CustomException("上传的文件不能为空");
@@ -70,14 +68,14 @@ public class SysVideoApiController {
     }
 
     @PostMapping("/query")
-    @ApiOperation("视频管理>查询")
+//    @ApiOperation("视频管理>查询")
     @PreAuthorize("hasAuthority('sys:resource:video:query')")
     public HttpResultUtil<IPage<SysResourceVO>> query(@RequestBody SysResourceQo qo) {
         return new HttpResultUtil<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
     }
 
     @PostMapping("/syncIndex")
-    @ApiOperation("视频管理>同步索引")
+//    @ApiOperation("视频管理>同步索引")
     @OperateLog(module = "视频管理",name = "索引同步")
     @PreAuthorize("hasAuthority('sys:resource:video:syncIndex')")
     @Lock4j(key = "video_sync_index_lock",scope = LockScope.DISTRIBUTED_LOCK)
@@ -86,7 +84,7 @@ public class SysVideoApiController {
     }
 
     @PostMapping("/createIndex")
-    @ApiOperation("视频管理>创建索引")
+//    @ApiOperation("视频管理>创建索引")
     @OperateLog(module = "视频管理",name = "创建索引")
     @PreAuthorize("hasAuthority('sys:resource:video:createIndex')")
     @Lock4j(key = "video_create_index_lock",scope = LockScope.DISTRIBUTED_LOCK)
@@ -95,7 +93,7 @@ public class SysVideoApiController {
     }
 
     @DeleteMapping("/deleteIndex")
-    @ApiOperation("视频管理>创建索引")
+//    @ApiOperation("视频管理>创建索引")
     @OperateLog(module = "视频管理",name = "删除索引")
     @PreAuthorize("hasAuthority('sys:resource:video:deleteIndex')")
     @Lock4j(key = "video_delete_index_lock",scope = LockScope.DISTRIBUTED_LOCK)
@@ -104,14 +102,14 @@ public class SysVideoApiController {
     }
 
     @GetMapping(value = "/detail")
-    @ApiOperation("视频管理>详情")
+//    @ApiOperation("视频管理>详情")
     @PreAuthorize("hasAuthority('sys:resource:video:detail')")
     public HttpResultUtil<SysResourceVO> detail(@RequestParam("id") Long id) {
         return new HttpResultUtil<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
     }
 
     @PostMapping(value = "/insert")
-    @ApiOperation("视频管理>新增")
+//    @ApiOperation("视频管理>新增")
     @OperateLog(module = "视频管理",name = "视频新增")
     @PreAuthorize("hasAuthority('sys:resource:video:insert')")
     public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) throws IOException {
@@ -119,7 +117,7 @@ public class SysVideoApiController {
     }
 
     @PutMapping(value = "/update")
-    @ApiOperation("视频管理>修改")
+//    @ApiOperation("视频管理>修改")
     @OperateLog(module = "视频管理",name = "视频修改")
     @PreAuthorize("hasAuthority('sys:resource:video:update')")
     public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) throws IOException {
@@ -127,7 +125,7 @@ public class SysVideoApiController {
     }
 
     @DeleteMapping(value = "/delete")
-    @ApiOperation("视频管理>删除")
+//    @ApiOperation("视频管理>删除")
     @OperateLog(module = "视频管理",name = "视频删除")
     @PreAuthorize("hasAuthority('sys:resource:video:delete')")
     public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
@@ -135,14 +133,14 @@ public class SysVideoApiController {
     }
 
     @GetMapping(value = "/diagram")
-    @ApiOperation(value = "视频管理>流程图")
+//    @ApiOperation(value = "视频管理>流程图")
     @PreAuthorize("hasAuthority('sys:resource:video:diagram')")
     public void diagram(@RequestParam("processInstanceId")String processInstanceId, HttpServletResponse response) throws IOException {
         workflowTaskApplicationService.diagramProcess(processInstanceId, response);
     }
 
     @GetMapping("/auditLog")
-    @ApiOperation("视频管理>审批日志")
+//    @ApiOperation("视频管理>审批日志")
     @PreAuthorize("hasAuthority('sys:resource:video:auditLog')")
     public HttpResultUtil<List<SysAuditLogVO>> auditLog(@RequestParam("businessId") Long businessId) {
         return new HttpResultUtil<List<SysAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(businessId));

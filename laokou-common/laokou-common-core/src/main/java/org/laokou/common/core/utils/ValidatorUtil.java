@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,20 @@
  */
 package org.laokou.common.core.utils;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.laokou.common.core.exception.CustomException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.MessageSourceResourceBundleLocator;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.util.Locale;
 import java.util.Set;
 
 /**
  * hibernate-validator校验工具
- * @author  Kou Shenhai
+ * @author laokou
  */
 public class ValidatorUtil {
     private static ResourceBundleMessageSource getMessageSource() {

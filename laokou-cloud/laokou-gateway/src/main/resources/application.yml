@@ -1,13 +1,14 @@
+# tomcat
+server:
+  port: 5555
+  tomcat:
+    connection-timeout: 600000
+
 spring:
-  application:
-    name: @artifactId@
   profiles:
     active: @profile.active@
-  main:
-    lazy-initialization: true
   servlet:
     multipart:
-      enabled: true
       max-file-size: -1
       max-request-size: -1
   cloud:
@@ -21,42 +22,6 @@ spring:
           enabled: true
           lower-case-service-id: true
 
-resilience4j.circuitbreaker:
-  configs: #通用配置
-    default: # 断路器系统默认配置
-      #失败率，错误率达到或高于该值则进入open状态
-      failureRateThreshold: 50
-      #慢调用阀值，请求执行的时间大于该值时会标记为慢调用
-      slowCallDurationThreshold: 60s
-      #慢调用熔断阀值，当慢调用率达到或高于该值时，进入open状态
-      slowCallRateThreshold: 100
-      #状态滚动收集器大小，close状态时收集多少请求状态，用于计算失败率。
-      slidingWindowSize: 100
-      #状态收集器类型
-      slidingWindowType: COUNT_BASED
-      #计算错误率的最小请求数，不足最小调用次数不会触发任何变化。
-      minimumNumberOfCalls: 100
-      #是否自动进入halfOpen状态，默认false-一定时间后进入halfopen，true-需要通过接口执行。
-      automaticTransitionFromOpenToHalfOpenEnabled: false
-      #进入halfOpen状态时，可以被调用次数，就算这些请求的失败率，低于设置的失败率变为close状态，否则变为open。
-      permittedNumberOfCallsInHalfOpenState: 100
-      #open状态变为half状态需要等待的时间，即熔断多久后开始尝试访问被熔断的服务。
-      waitDurationInOpenState: 60s
-      #事件缓冲区大小
-      eventConsumerBufferSize: 100
-      #被计为失败的异常集合，默认情况下所有异常都为失败。
-      recordExceptions:
-        - java.lang.Exception
-      #不会被计为失败的异常集合，优先级高于recordExceptions。
-      ignoreExceptions:
-        - org.laokou.common.core.exception.CustomException
-
-resilience4j.timelimiter:
-  instances:
-    default:
-      timeoutDuration: 90s
-      cancelRunningFuture: true
-
 # actuator相关配置
 management:
   endpoints:
@@ -68,29 +33,8 @@ management:
       show-details: always
 
 gateway:
-  swagger:
-    routes:
-      - name: laokou-admin
-        location: /admin
-      - name: laokou-auth
-        location: /auth
-      - name: laokou-elasticsearch
-        location: /elasticsearch
-      - name: laokou-kafka
-        location: /kafka
-      - name: laokou-im
-        location: /im
-      - name: laokou-oss
-        location: /oss
   uris:
-    - /oauth/captcha
-    - /oauth/logout
+    - /oauth2/captcha
     - /actuator/**
-    - /swagger/api-docs
-    - /swagger-resources/**
-    - /doc.html
-    - /v2/api-docs
-    - /webjars/**
-    - /druid/**
     - /ws/**
     - /favicon.ico

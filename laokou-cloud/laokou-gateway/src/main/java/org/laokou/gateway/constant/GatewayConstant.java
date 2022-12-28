@@ -1,7 +1,7 @@
 package org.laokou.gateway.constant;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface GatewayConstant {
 
@@ -33,7 +33,7 @@ public interface GatewayConstant {
     /**
      * 密码模式-请求地址
      */
-    String OAUTH_URI = "/oauth/token";
+    String OAUTH_URI = "/oauth2/login";
 
     /**
      * 密码模式-用户名
@@ -45,4 +45,8 @@ public interface GatewayConstant {
      */
     String PASSWORD = "password";
 
+    /**
+     * 动态路由
+     */
+    String DYNAMIC_GATEWAY_ROUTES = "dynamic:gateway:routes";
 }

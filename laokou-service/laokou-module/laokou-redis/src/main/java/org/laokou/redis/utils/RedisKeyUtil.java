@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package org.laokou.redis.utils;
 /**
- * @author  Kou Shenhai
+ * @author laokou
  * @since 1.0.0
  */
 public final class RedisKeyUtil {
@@ -25,13 +25,6 @@ public final class RedisKeyUtil {
      */
     public static String getUserCaptchaKey(String uuid) {
         return "sys:user:captcha:" + uuid;
-    }
-
-    /**
-     * 用户资源Key
-     */
-    public static String getUserResourceKey(String token) {
-        return "sys:user:resource:" + token;
     }
 
     public static String getResourceTreeKey(Long userId) {
@@ -44,14 +37,6 @@ public final class RedisKeyUtil {
     public static String getUserInfoKey(String token) {
         return "sys:user:info:" + token;
     }
-
-    /**
-     * 资源审批Key
-     */
-    public static String getResourceAuditKey(Long id) {
-        return "sys:resource:audit:" + id;
-    }
-
     /**
      * 布隆过滤器Key
      */

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 package org.laokou.auth.client.user;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.Setter;
+import org.laokou.auth.client.enums.UserStatusEnum;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * @author Kou Shenhai
+ * @JsonTypeInfo(use = JsonTypeInfo.Id.NAME) => 多态子类与抽象类绑定
+ * @author laokou
  */
 @Getter
 @Setter
-public class UserDetail implements Serializable {
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
+public class UserDetail implements UserDetails, OAuth2AuthenticatedPrincipal {
     private Long userId;
     private String username;
     private String imgUrl;
@@ -69,5 +77,53 @@ public class UserDetail implements Serializable {
                 ", deptIds=" + deptIds +
                 ", permissionList=" + permissionList +
                 '}';
+    }
+
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>(this.permissionList.size());
+        authorities.addAll(this.permissionList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
+        return authorities;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return this.status == UserStatusEnum.DISABLE.ordinal() ? false : true;
+    }
+
+    /**
+     * Get the OAuth 2.0 token attributes
+     * @return the OAuth 2.0 token attributes
+     */
+    @Override
+    @JsonIgnore
+    public Map<String, Object> getAttributes() {
+        return new HashMap<>(0);
+    }
+
+    @Override
+    @JsonIgnore
+    public String getName() {
+        return this.getUsername();
     }
 }

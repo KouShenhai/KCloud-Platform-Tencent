@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,57 +14,55 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.config;
-
-import lombok.AllArgsConstructor;
-import org.laokou.auth.client.exception.AuthExceptionHandler;
-import org.laokou.auth.client.exception.SecurityAuthenticationEntryPoint;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import lombok.RequiredArgsConstructor;
+import org.laokou.auth.client.exception.ForbiddenExceptionHandler;
+import org.laokou.auth.client.exception.InvalidAuthenticationEntryPoint;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * 官方不再维护，过期类无法替换
- * @author Kou Shenhai
+ * SpringSecurity最新版本更新
+ * @author laokou
  * @version 1.0
  * @date 2021/5/30 0030 下午 2:48
  */
-@Configuration
-@AllArgsConstructor
-@EnableResourceServer
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class ResourceServerConfig {
 
-    private TokenStore tokenStore;
+    private final ForbiddenExceptionHandler forbiddenExceptionHandler;
+    private final InvalidAuthenticationEntryPoint invalidAuthenticationEntryPoint;
+    private final CustomOpaqueTokenIntrospector customOpaqueTokenIntrospector;
 
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) {
-        // 无状态
-        resources.stateless(true).tokenStore(tokenStore);
-        //token不存在或错误时，异常处理
-        resources.authenticationEntryPoint(new SecurityAuthenticationEntryPoint())
-                .accessDeniedHandler(new AuthExceptionHandler());
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    SecurityFilterChain resourceFilterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests().requestMatchers(
+                 "/actuator/**"
+                        , "/ws/**").permitAll()
+                .and()
+                .authorizeHttpRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .oauth2ResourceServer(oauth2 -> oauth2.opaqueToken(token -> token.introspector(customOpaqueTokenIntrospector))
+                        .accessDeniedHandler(forbiddenExceptionHandler)
+                        .authenticationEntryPoint(invalidAuthenticationEntryPoint)
+                )
+                .build();
     }
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable()
-                .cors().disable()
-                .csrf().disable()
-                .formLogin().disable()
-                .authorizeRequests()
-                .antMatchers("/druid/**"
-                        ,"/webjars/**"
-                        ,"/swagger-resources/**"
-                        ,"/doc.html"
-                        ,"/v2/api-docs"
-                        ,"/swagger/api-docs"
-                        ,"/actuator/**"
-                        ,"/ws/**").permitAll()
-                .anyRequest().authenticated();
+    @Bean
+    OAuth2AuthorizationService auth2AuthorizationService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
+        return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
     }
+
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 /**
  * 角色菜单管理
- * @author Kou Shenhai
+ * @author laokou
  */
 @Data
 @TableName("boot_sys_role_menu")
-@ApiModel("系统角色菜单DO")
+//@ApiModel("系统角色菜单DO")
 public class SysRoleMenuDO {
 
     private Long menuId;

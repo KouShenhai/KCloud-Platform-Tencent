@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,34 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.interfaces.controller;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
-import org.laokou.auth.client.constant.AuthConstant;
+import org.laokou.auth.server.infrastructure.token.AuthToken;
 import org.laokou.common.core.utils.HttpResultUtil;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 /**
  * 系统认证控制器
- * @author Kou Shenhai
+ * @author laokou
  */
 @RestController
-@Api(value = "系统认证API",protocols = "http",tags = "系统认证API")
+//@Api(value = "系统认证API",protocols = "http",tags = "系统认证API")
 @RequiredArgsConstructor
 public class SysAuthApiController {
 
     private final SysAuthApplicationService sysAuthApplicationService;
 
-    @GetMapping("/oauth/captcha")
-    @ApiOperation("系统认证>验证码")
-    @ApiImplicitParam(name = "uuid",value = "唯一标识",required = true,paramType = "query",dataType = "String")
-    public HttpResultUtil<String> captcha(@RequestParam(AuthConstant.UUID)String uuid) {
-        return new HttpResultUtil<String>().ok(sysAuthApplicationService.captcha(uuid));
+    @GetMapping("/oauth2/captcha")
+//    @ApiOperation("系统认证>验证码")
+    public HttpResultUtil<String> captcha(HttpServletRequest request) {
+        return new HttpResultUtil<String>().ok(sysAuthApplicationService.captcha(request));
     }
 
-    @GetMapping("/oauth/logout")
-    @ApiOperation("系统认证>退出登录")
-    public void logout(HttpServletRequest request) {
-        sysAuthApplicationService.logout(request);
+    @PostMapping("/oauth2/login")
+//    @ApiOperation("系统认证>登录")
+    public HttpResultUtil<AuthToken> login(HttpServletRequest request) throws IOException {
+        return new HttpResultUtil<AuthToken>().ok(sysAuthApplicationService.login(request));
     }
 
 }

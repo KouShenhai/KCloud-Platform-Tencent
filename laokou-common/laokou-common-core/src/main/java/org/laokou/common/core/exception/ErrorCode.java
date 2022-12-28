@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package org.laokou.common.core.exception;
  * 错误编码，由5位数字组成，前2位为模块编码，后3位为业务编码
  * 如：10001（10代表系统模块，001代表业务代码）
  * 错误编码
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface ErrorCode {
     /**
@@ -271,19 +271,15 @@ public interface ErrorCode {
      */
     int INVALID_REQUEST = 20012;
     /**
-     * 错误重定向地址
-     */
-    int REDIRECT_URI_MISMATCH = 20013;
-    /**
      * 不支持的认证类型
      */
-    int UNSUPPORTED_GRANT_TYPE = 20014;
+    int UNSUPPORTED_GRANT_TYPE = 20013;
     /**
      * 不支持的资源类型
      */
-    int UNSUPPORTED_RESPONSE_TYPE = 20015;
+    int UNSUPPORTED_RESPONSE_TYPE = 20014;
     /**
      * 访问被拒绝
      */
-    int ACCESS_DENIED = 20016;
+    int ACCESS_DENIED = 20015;
 }

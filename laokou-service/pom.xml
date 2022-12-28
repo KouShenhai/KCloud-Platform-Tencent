@@ -20,5 +20,6 @@
         <module>laokou-report</module>
         <module>laokou-auth</module>
         <module>laokou-log</module>
+        <module>laokou-api</module>
     </modules>
 </project>

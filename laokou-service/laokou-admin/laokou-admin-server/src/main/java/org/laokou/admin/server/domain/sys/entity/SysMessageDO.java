@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,16 @@ package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
  * 消息管理
  *
- * @author Kou Shenhai
+ * @author laokou
  */
 @Data
 @TableName("boot_sys_message")
-@ApiModel("消息")
+//@ApiModel("消息")
 @EqualsAndHashCode(callSuper=true)
 public class SysMessageDO extends BaseDO {
 

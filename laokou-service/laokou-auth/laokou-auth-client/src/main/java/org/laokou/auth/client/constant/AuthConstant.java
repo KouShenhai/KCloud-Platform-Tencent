@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,33 +15,32 @@
  */
 package org.laokou.auth.client.constant;
 /**
- * @author Kou Shenhai
+ * @author laokou
  * @version 1.0
  * @date 2022/8/10 0010 下午 4:28
  */
 public interface AuthConstant {
    /**
-    * 标识
+    * 唯一标识
     */
    String UUID = "uuid";
    /**
     * 验证码
     */
    String CAPTCHA = "captcha";
-   /**
-    * 账号
-    */
-   String USERNAME = "username";
-   /**
-    * 密码
-    */
-   String PASSWORD = "password";
+
    /**
     * 登录成功
     */
    String LOGIN_SUCCESS_MSG = "登录成功";
 
-   String SELECT_STATEMENT = "select client_id,client_secret,resource_ids, scope,authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity,refresh_token_validity, additional_information, autoapprove from boot_sys_oauth_client_details where client_id = ?";
+   /**
+    * 邮箱
+    */
+   String EMAIL = "email";
 
-   String FIND_STATEMENT = "select client_id,client_secret,resource_ids, scope,authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity,refresh_token_validity, additional_information, autoapprove from boot_sys_oauth_client_details order by client_id";
+   /**
+    * 手机
+    */
+   String MOBILE = "mobile";
 }

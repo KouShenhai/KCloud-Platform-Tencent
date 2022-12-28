@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package org.laokou.common.core.constant;
 /**
  * 常量
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface Constant {
 
@@ -33,4 +33,6 @@ public interface Constant {
     Integer SUCCESS = 200;
 
     String UNDERLINE = "_";
+
+    String COMMA = ",";
 }

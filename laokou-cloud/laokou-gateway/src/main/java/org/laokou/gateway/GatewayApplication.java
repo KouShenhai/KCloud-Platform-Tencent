@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,18 @@
  * limitations under the License.
  */
 package org.laokou.gateway;
-
-import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
-import io.micrometer.core.instrument.MeterRegistry;
-import org.laokou.common.swagger.config.Knife4jConfig;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.Bean;
 /**
- * @author kou Shenhai
+ * @author laokou
  */
-@SpringBootApplication(exclude = {Knife4jConfig.class})
-@EnableDiscoveryClient
+@SpringBootApplication()
 @EnableEncryptableProperties
-@EnableApolloConfig
+@EnableDiscoveryClient
 public class GatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
-    }
-
-    /**
-     * 监控服务
-     * @param applicationName
-     * @return
-     */
-    @Bean
-    MeterRegistryCustomizer<MeterRegistry> configurer(
-            @Value("${spring.application.name}") String applicationName) {
-        return (registry) -> registry.config().commonTags("application", applicationName);
     }
 }

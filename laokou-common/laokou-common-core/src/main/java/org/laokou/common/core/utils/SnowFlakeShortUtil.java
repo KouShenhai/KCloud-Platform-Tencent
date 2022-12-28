@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.exception.CustomException;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Slf4j
 public class SnowFlakeShortUtil {

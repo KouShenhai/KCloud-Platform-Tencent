@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 package org.laokou.admin.server.interfaces.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.WorkflowDefinitionApplicationService;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
@@ -28,17 +27,15 @@ import org.laokou.flowable.client.vo.DefinitionVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  * @version 1.0
  * @date 2022/7/6 0006 下午 5:59
  */
 @RestController
-@Api(value = "流程定义API",protocols = "http",tags = "流程定义API")
+//@Api(value = "流程定义API",protocols = "http",tags = "流程定义API")
 @RequestMapping("/workflow/definition/api")
 @RequiredArgsConstructor
 public class WorkflowDefinitionApiController {
@@ -46,7 +43,7 @@ public class WorkflowDefinitionApiController {
     private final WorkflowDefinitionApplicationService workflowDefinitionApplicationService;
 
     @PostMapping("/insert")
-    @ApiOperation("流程定义>")
+//    @ApiOperation("流程定义>")
     @OperateLog(module = "流程定义",name = "流程新增",type = DataTypeEnum.FILE)
     @PreAuthorize("hasAuthority('workflow:definition:insert')")
     public HttpResultUtil<Boolean> insert(@RequestParam("name")String name, @RequestPart("file") MultipartFile file) throws IOException {
@@ -54,21 +51,21 @@ public class WorkflowDefinitionApiController {
     }
 
     @PostMapping("/query")
-    @ApiOperation("流程定义>查询")
+//    @ApiOperation("流程定义>查询")
     @PreAuthorize("hasAuthority('workflow:definition:query')")
     public HttpResultUtil<IPage<DefinitionVO>> query(@RequestBody DefinitionQo qo) {
         return new HttpResultUtil<IPage<DefinitionVO>>().ok(workflowDefinitionApplicationService.queryDefinitionPage(qo));
     }
 
     @GetMapping("/image")
-    @ApiOperation("流程定义>图片")
+//    @ApiOperation("流程定义>图片")
     @PreAuthorize("hasAuthority('workflow:definition:diagram')")
     public void image(@RequestParam("definitionId")String definitionId, HttpServletResponse response) {
         workflowDefinitionApplicationService.diagramDefinition(definitionId,response);
     }
 
     @DeleteMapping("/delete")
-    @ApiOperation("流程定义>删除")
+//    @ApiOperation("流程定义>删除")
     @OperateLog(module = "流程定义",name = "流程删除")
     @PreAuthorize("hasAuthority('workflow:definition:delete')")
     public HttpResultUtil<Boolean> delete(@RequestParam("deploymentId")String deploymentId) {
@@ -76,7 +73,7 @@ public class WorkflowDefinitionApiController {
     }
 
     @PutMapping("/suspend")
-    @ApiOperation("流程定义>挂起")
+//    @ApiOperation("流程定义>挂起")
     @OperateLog(module = "流程定义",name = "流程挂起")
     @PreAuthorize("hasAuthority('workflow:definition:suspend')")
     public HttpResultUtil<Boolean> suspend(@RequestParam("definitionId")String definitionId) {
@@ -84,7 +81,7 @@ public class WorkflowDefinitionApiController {
     }
 
     @PutMapping("/activate")
-    @ApiOperation("流程定义>激活")
+//    @ApiOperation("流程定义>激活")
     @OperateLog(module = "流程定义",name = "流程激活")
     @PreAuthorize("hasAuthority('workflow:definition:activate')")
     public HttpResultUtil<Boolean> activate(@RequestParam("definitionId")String definitionId) {

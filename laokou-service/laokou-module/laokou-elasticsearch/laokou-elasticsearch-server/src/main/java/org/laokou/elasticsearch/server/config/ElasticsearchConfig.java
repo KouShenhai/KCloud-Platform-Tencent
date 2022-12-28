@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.Objects;
 /**
  * es配置文件
- * @author Kou Shenhai
+ * @author laokou
  * @version 1.0
  * @date 2020/8/9 0009 下午 2:01
  */

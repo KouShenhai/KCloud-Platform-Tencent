@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import org.laokou.auth.client.user.UserDetail;
 import org.springframework.stereotype.Repository;
 /**
  * 用户类
- * @author  Kou Shenhai
+ * @author laokou
  */
 @Mapper
 @Repository
@@ -28,10 +28,10 @@ public interface SysUserMapper {
 
     /**
      * 获取用户信息
-     * @param username
+     * @param loginName
      * @return
      */
-    UserDetail getUserDetail(@Param("username")String username);
+    UserDetail getUserDetail(@Param("loginName")String loginName);
 
 
 }

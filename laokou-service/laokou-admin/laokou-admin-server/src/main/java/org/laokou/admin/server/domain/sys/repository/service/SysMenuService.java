@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import org.laokou.auth.client.user.UserDetail;
 import java.util.List;
 /**
  * 菜单类
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface SysMenuService extends IService<SysMenuDO> {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Import;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @SpringBootApplication(scanBasePackages = {"org.laokou.kafka.server","org.laokou.common.swagger", "org.laokou.common.core"})
 @EnableDiscoveryClient

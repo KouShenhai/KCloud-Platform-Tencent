@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import cn.hutool.core.codec.Base64Encoder;
 import java.io.IOException;
 import java.io.InputStream;
 /**
- * @author Kou Shenhai
+ * @author laokou
  * @version 1.0
  * @date 2021/10/13 0013 下午 10:23
  */

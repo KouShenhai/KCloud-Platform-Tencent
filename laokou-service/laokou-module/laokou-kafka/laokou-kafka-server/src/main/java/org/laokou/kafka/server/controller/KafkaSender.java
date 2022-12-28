@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.kafka.client.dto.KafkaDTO;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.ExecutionException;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @RestController
 @RequestMapping("/api")
@@ -41,22 +40,22 @@ public class KafkaSender {
     @PostMapping("/send/{topic}")
     @ApiOperation("Kafka消息>同步发送")
     public void sendMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto) throws InterruptedException, ExecutionException {
-        kafkaTemplate.send(topic,dto.getData()).get();
+        kafkaTemplate.send(topic,dto).get();
     }
 
     @PostMapping("/sendAsync/{topic}")
     @ApiOperation("Kafka消息>异步发送")
     public void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto) {
-        kafkaTemplate.send(topic,dto.getData()).addCallback(new ListenableFutureCallback() {
-            @Override
-            public void onFailure(Throwable throwable) {
-                log.error("报错信息：{}",throwable.getMessage());
-            }
-
-            @Override
-            public void onSuccess(Object o) {
-                log.info("发送成功");
-            }
-        });
+//        kafkaTemplate.send(topic,dto.getData()).addCallback(new ListenableFutureCallback() {
+//            @Override
+//            public void onFailure(Throwable throwable) {
+//                log.error("报错信息：{}",throwable.getMessage());
+//            }
+//
+//            @Override
+//            public void onSuccess(Object o) {
+//                log.info("发送成功");
+//            }
+//        });
     }
 }

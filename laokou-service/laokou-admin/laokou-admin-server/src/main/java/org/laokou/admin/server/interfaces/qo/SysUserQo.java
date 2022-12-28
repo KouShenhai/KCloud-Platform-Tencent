@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BasePage;
 import lombok.Data;
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Data
 @EqualsAndHashCode(callSuper=true)

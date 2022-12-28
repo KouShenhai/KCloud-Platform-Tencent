@@ -1,11 +1,11 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * <p>
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,87 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.laokou.auth.server.infrastructure.config;
-
-import lombok.AllArgsConstructor;
-import org.laokou.auth.server.infrastructure.exception.CustomWebResponseExceptionTranslator;
-import org.laokou.auth.server.infrastructure.filter.ValidateInfoFilter;
-import org.laokou.auth.server.infrastructure.provider.AuthAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
-import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.security.web.SecurityFilterChain;
 /**
- * Spring Security配置
- * 官方不再维护，过期类无法替换
- * @author Kou Shenhai
- * @version 1.0
- * @date 2021/5/28 0028 上午 10:33
+ * @author laokou
  */
-@AllArgsConstructor
-@EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@Configuration
+public class WebSecurityConfig {
 
-    private final AuthAuthenticationProvider authAuthenticationProvider;
-    private final ValidateInfoFilter validateInfoFilter;
     /**
-     * 密码模式
+     * 不拦截拦截静态资源
+     * 如果您不想要警告消息并且需要性能优化，则可以为静态资源引入第二个过滤器链
+     * https://github.com/spring-projects/spring-security/issues/10938
+     * @param http
+     * @return
+     * @throws Exception
      */
     @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception{
-        return super.authenticationManager();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authAuthenticationProvider);
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable()
-                .addFilterBefore(validateInfoFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors().disable()
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests().requestMatchers(
+                 "/webjars/**"
+                        , "/swagger-resources/**"
+                        , "/oauth2/captcha"
+                        , "/oauth2/login"
+                        , "/doc.html"
+                        , "/v2/api-docs"
+                        , "/swagger/api-docs"
+                        , "/oauth2/logout"
+                        , "/actuator/**")
+                .permitAll()
+                .and()
+                .authorizeHttpRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
                 .csrf().disable()
-                .formLogin()
-                .disable()
-                .authorizeRequests()
-                .antMatchers("/webjars/**"
-                        ,"/swagger-resources/**"
-                        ,"/oauth/captcha"
-                        ,"/oauth/token"
-                        ,"/doc.html"
-                        ,"/v2/api-docs"
-                        ,"/swagger/api-docs"
-                        ,"/oauth/logout"
-                        ,"/actuator/**").permitAll()
-                .anyRequest().authenticated();
+                .cors().disable()
+                .formLogin(Customizer.withDefaults())
+                .build();
     }
 
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(HttpMethod.OPTIONS);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
-    }
-
-    @Bean
-    public WebResponseExceptionTranslator<OAuth2Exception> webResponseExceptionTranslator() {
-        return new CustomWebResponseExceptionTranslator();
-    }
 }

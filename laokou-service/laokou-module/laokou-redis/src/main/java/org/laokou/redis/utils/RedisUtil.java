@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 package org.laokou.redis.utils;
+import lombok.RequiredArgsConstructor;
 import org.laokou.common.core.utils.StringUtil;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisServerCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,28 +29,26 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 /**
  * Redis工具类
- * @author  Kou Shenhai
+ * @author laokou
  */
 @Component
+@RequiredArgsConstructor
 public final class RedisUtil {
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private RedissonClient redissonClient;
+    private final RedissonClient redissonClient;
 
-    @Autowired
-    private RBloomFilter<String> bloomFilter;
+    private final RBloomFilter<String> bloomFilter;
 
     /**  默认过期时长为24小时，单位：秒 */
-    public final static long DEFAULT_EXPIRE = 60 * 60 * 24L;
+    public final static long DEFAULT_EXPIRE = 60 * 60 * 24;
 
     /**  过期时长为1小时，单位：秒 */
-    public final static long HOUR_ONE_EXPIRE = (long) 60 * 60;
+    public final static long HOUR_ONE_EXPIRE = 60 * 60;
 
     /**  过期时长为6小时，单位：秒 */
-    public final static long HOUR_SIX_EXPIRE = 60 * 60 * 6L;
+    public final static long HOUR_SIX_EXPIRE = 60 * 60 * 6;
 
     /**  不设置过期时长 */
     public final static long NOT_EXPIRE = -1L;

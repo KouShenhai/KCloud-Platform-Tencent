@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ import org.laokou.redis.utils.RedisKeyUtil;
 import org.redisson.Redisson;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
-import org.redisson.client.RedisClient;
 import org.redisson.client.codec.Codec;
 import org.redisson.config.Config;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -38,10 +38,10 @@ import java.util.List;
  * @ConditionalOnBean -> spring容器中存在指定的class实例对象，对应的配置才生效
  * @ConditionalOnMissingBean -> ConditionalOnMissingBean 保证只有一个bean被注入
  * 某个class位于类路径上，才会实例化一个bean
- * @author Kou Shenhai
+ * @author laokou
  */
 @ConditionalOnClass(Redisson.class)
-@AutoConfiguration
+@AutoConfiguration(before = RedisAutoConfiguration.class)
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedisSessionConfig {
 
@@ -52,8 +52,8 @@ public class RedisSessionConfig {
     /**
      * ConditionalOnMissingBean -> 相同类型的bean被注入，保证bean只有一个
      */
-    @Bean
-    @ConditionalOnMissingBean(RedisClient.class)
+    @Bean(destroyMethod = "shutdown")
+    @ConditionalOnMissingBean(RedissonClient.class)
     public RedissonClient redisClient(RedisProperties properties) {
         Config config;
         final Duration duration = properties.getTimeout();

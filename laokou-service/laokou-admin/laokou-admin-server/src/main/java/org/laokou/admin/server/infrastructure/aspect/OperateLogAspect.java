@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.laokou.admin.server.infrastructure.aspect;
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.laokou.admin.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
 import org.laokou.auth.client.utils.UserUtil;
@@ -36,8 +38,6 @@ import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Component
 @Aspect

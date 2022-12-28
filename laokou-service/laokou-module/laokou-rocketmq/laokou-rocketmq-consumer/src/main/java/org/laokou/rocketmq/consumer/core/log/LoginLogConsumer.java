@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import org.laokou.rocketmq.consumer.feign.log.LogApiFeignClient;
 import org.laokou.rocketmq.consumer.filter.MessageFilter;
 import org.springframework.stereotype.Component;
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @RocketMQMessageListener(consumerGroup = "laokou-consumer-group-1", topic = RocketmqConstant.LAOKOU_LOGIN_LOG_TOPIC)
 @Component

@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: @artifactId@
-  security:
-    user:
-      name: root
-      password: koushenhai
-  profiles:
-    active: @profile.active@

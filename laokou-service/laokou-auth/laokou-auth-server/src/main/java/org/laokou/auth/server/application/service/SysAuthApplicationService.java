@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,38 +15,30 @@
  */
 package org.laokou.auth.server.application.service;
 
-import org.laokou.auth.client.user.UserDetail;
+import jakarta.servlet.http.HttpServletRequest;
+import org.laokou.auth.server.infrastructure.token.AuthToken;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
  * auth服务
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface SysAuthApplicationService {
 
     /***
      * 用户登录
-     * @param username
-     * @param password
-     * @return
-     */
-    UserDetail login(String username,String password);
-
-    /**
-     * 退出
      * @param request
+     * @throws IOException
      * @return
      */
-    void logout(HttpServletRequest request);
+    AuthToken login(HttpServletRequest request) throws IOException;
 
     /**
      * 生成验证码
-     * @param uuid
+     * @param request
      * @return
      */
-    String captcha(String uuid);
+    String captcha(HttpServletRequest request);
 
 }

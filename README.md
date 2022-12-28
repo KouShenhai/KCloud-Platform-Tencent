@@ -1,18 +1,18 @@
 ### 项目备注
-项目：KCloud-Platform-Official  
+项目：KCloud-Platform-Tencent  
 作者：老寇  
 语言：Java  
 职位：Java工程师  
 时间：2020.06.08 ~ 至今  
 
 ### 项目介绍
-KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构的云服务平台。基于Spring Boot 2.7.6、Spring Cloud 2021.0.5等最新版本开发，
+KCloud-Platform-Tencent（老寇云平台）是一款企业级微服务架构的云服务平台。基于Spring Boot 3.0.0、Spring Cloud 2022.0.0、Spring Cloud Tencent 1.8.2-2022.0.0最新版本开发，
 遵循SpringBoot编程思想，高度模块化和可配置化。具备服务注册&发现、配置中心、限流、熔断、降级、监控、多数据源、工作流、高亮搜索、定时任务、分布式缓存、分布式事务、分布式存储等功能，用于快速构建微服务项目。目前支持Shell、Docker等多种部署方式，实现RBAC权限、其中包含系统管理、系统监控、工作流程、数据分析等几大模块。
 遵循阿里代码规范，代码简洁、架构清晰，非常适合作为基础框架使用。 	<a target="_blank" href="./UPDATE.md">更新日志</a>
 <p align="center">
-	<a target="_blank" href="https://gitee.com/laokouyun/KCloud-Platform-Official/stargazers"><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/badge/star.svg?theme=dark" alt="Gitee Star"></a>
-    <a target="_blank" href="https://gitee.com/laokouyun/KCloud-Platform-Official"><img src="https://gitee.com/laokouyun/KCloud-Platform-Official/badge/fork.svg?theme=dark"  alt="Gitee Fork"></a>
-    <a target="_blank" href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/spring--boot-2.7.6-green.svg" alt="SpringBoot"></a>
+	<a target="_blank" href="https://gitee.com/laokouyun/KCloud-Platform-Tencent/stargazers"><img src="https://gitee.com/laokouyun/KCloud-Platform-Tencent/badge/star.svg?theme=dark" alt="Gitee Star"></a>
+    <a target="_blank" href="https://gitee.com/laokouyun/KCloud-Platform-Tencent"><img src="https://gitee.com/laokouyun/KCloud-Platform-Tencent/badge/fork.svg?theme=dark"  alt="Gitee Fork"></a>
+    <a target="_blank" href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/spring--boot-3.0.0-green.svg" alt="SpringBoot"></a>
     <a target="_blank" href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-red" alt="License Apache 2.0"></a>
 </p>
 
@@ -39,30 +39,30 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 ### 技术体系
 
 #### Spring全家桶及核心技术版本
-| 组件                | 版本       |
-|:------------------|:---------|
-| Spring Boot       | 2.7.6    |
-| Spring Cloud      | 2021.0.5 |
-| Spring Boot Admin | 2.7.6    |
-| Apollo            | 1.4.0    |
-| Mysql             | 5.7.9    |
-| Redis             | 6.0.6    |
-| Elasticsearch     | 7.6.2    |
-| RocketMQ          | 5.0.0    |
-| Kafka             | 2.8.1    |
-
-> Spring 全家桶版本对应关系，详见：[版本说明](https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)
+| 组件                   | 版本       |
+|:---------------------|:---------|
+| Spring Boot          | 3.0.0    |
+| Spring Cloud         | 2022.0.0 |
+| Spring Cloud Tencent | 1.8.2-2022.0.0 |
+| Spring Boot Admin    | 3.0.0-M6    |
+| Polaris              | 1.13.3    |
+| Mybatis Plus         | 3.5.2.7-SNAPSHOT    |
+| Mysql                | 5.7.9    |
+| Redis                | 6.0.6    |
+| Elasticsearch        | 7.6.2    |
+| RocketMQ             | 5.0.0    |
+| Kafka                | 2.8.1    |
 
 #### 相关技术
 
 - API 网关：Spring Cloud Gateway
-- 服务注册&发现：Spring Cloud Netflix Eureka
-- 认证授权：Spring Security OAuth2
+- 服务注册&发现：Spring Cloud Tencent Polaris
+- 认证授权：Spring Security OAuth2 Authorization Server
 - 服务消费：Spring Cloud OpenFeign & HttpClient & WebClient
 - 负载均衡：Spring Cloud Loadbalancer
-- 服务熔断&降级&限流：Resilience4j
+- 服务熔断&降级&限流：Spring Cloud Tencent Polaris
 - 服务监控：Spring Boot Admin & Prometheus
-- 配置中心：Apollo
+- 配置中心：Spring Cloud Tencent Polaris
 - 消息队列：RocketMQ & Kafka
 - 链路跟踪：SkyWalking
 - 日志中心：EFK
@@ -71,7 +71,7 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 - 对象存储：Local & Alibaba Cloud OSS & FastDFS & Minio
 - 服务部署：Docker-Compose
 - 持续交付：Jenkins
-- 服务发布：金丝雀发布
+- 服务发布：
 - 持久层框架：Mybatis Plus
 - JSON 序列化：Jackson
 - 数据库：Mysql
@@ -87,7 +87,6 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 ├── laokou-cloud  
         └── laokou-gateway                  --- API网关  
         └── laokou-monitor                  --- 服务监控  
-        └── laokou-register                 --- 服务注册&发现  
 ├── laokou-service  
         └── laokou-api                      --- API模块  
         └── laokou-log                      --- 日志模块  
@@ -114,7 +113,6 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 [centos7 安装jdk1.8](https://kcloud.blog.csdn.net/article/details/82184984)  
 [centos7 安装mysql5.7](https://kcloud.blog.csdn.net/article/details/123628721)  
 [centos7 安装maven](https://kcloud.blog.csdn.net/article/details/108459715)  
-[centos7 安装apollo](https://kcloud.blog.csdn.net/article/details/124957353)  
 [centos7 安装redis](https://kcloud.blog.csdn.net/article/details/82589349)  
 [centos7 安装fastdfs](https://kcloud.blog.csdn.net/article/details/116423931)  
 [centos7 安装中文字体](https://kcloud.blog.csdn.net/article/details/106575947)  
@@ -130,24 +128,24 @@ KCloud-Platform-Official（老寇云平台）是一款企业级微服务架构�
 ### 项目配置
 #### 服务配置
 ```yaml
-  # mysql
 spring:
+  # mysql
   datasource:
-    druid:
-      # 连接地址
-      url: jdbc:mysql://127.0.0.1:3306/kcloud_platform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
-      # 用户名
-      username: root
-      # 密码
-      password: 123456
+    # 连接地址
+    url: jdbc:mysql://127.0.0.1:3306/kcloud_platform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    # 用户名
+    username: root
+    # 密码
+    password: 123456
   # redis
-  redis:
-    #主机
-    host: 127.0.0.1
-    #端口
-    port: 6379
-    #连接超时时长（毫秒）
-    timeout: 6000ms 
+  data:
+    redis:
+      #主机
+      host: 127.0.0.1
+      #端口
+      port: 6379
+      #连接超时时长（毫秒）
+      timeout: 6000ms 
 # elasticsearch
 elasticsearch:
   #主机
@@ -184,41 +182,6 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
 <if test="qo.sqlFilter != null and qo.sqlFilter != ''">
     and ( ${qo.sqlFilter} )
 </if>
-```
-
-### 金丝雀发布
-##### Apollo配置
-```yaml
-[{
-  {
-    "id": "laokou-admin",
-    "uri": "lb://laokou-admin",
-    "predicates": [
-      {
-        "name": "Path",
-        "args": {
-          "_genkey_0": "/admin/**"
-        }
-      },
-      {
-        "name": "Weight",
-        "args": {
-          "_genkey_0": "admin",
-          "_genkey_1": "50"
-        }
-      }
-    ],
-    "filters": [
-      {
-        "name": "StripPrefix",
-        "args": {
-          "_genkey_0": "1"
-        }
-      }
-    ],
-    "order": 0
-  }
-}]
 ```
     
 ### 高可用系统构建
@@ -295,15 +258,15 @@ laok5/test123
 - 采用Apache2.0开源协议，并且承诺永不参与商业用途，仅供大家无偿使用
 
 ### 参与贡献
-欢迎各路英雄好汉参与KCloud-Platform-Official代码贡献，期待您的加入！Fork本仓库 新建Feat_xxx分支提交代码，新建Pull Request
+欢迎各路英雄好汉参与KCloud-Platform-Tencent代码贡献，期待您的加入！Fork本仓库 新建Feat_xxx分支提交代码，新建Pull Request
 
 ### 开源协议
-KCloud-Platform-Official 开源软件遵循 [Apache 2.0 协议](https://www.apache.org/licenses/LICENSE-2.0.html) 请务必保留作者、Copyright信息  
+KCloud-Platform-Tencent 开源软件遵循 [Apache 2.0 协议](https://www.apache.org/licenses/LICENSE-2.0.html) 请务必保留作者、Copyright信息  
 ![](doc/image/25.png)
 
 ### 项目地址
-后端地址：[KCloud-Platform-Official](https://gitee.com/laokouyun/KCloud-Platform-Official)  
-前端地址：[KCloud-Antdv-Official](https://gitee.com/laokouyun/KCloud-Antdv-Official)
+后端地址：[KCloud-Platform-Tencent](https://gitee.com/laokouyun/KCloud-Platform-Tencent)  
+前端地址：[KCloud-Antdv-Tencent](https://gitee.com/laokouyun/KCloud-Antdv-Tencent)
 
 ### 致谢
 [Spring官网](https://spring.io)  

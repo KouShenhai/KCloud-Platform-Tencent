@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.domain.sys.repository.service;
-import org.laokou.auth.client.user.UserDetail;
-
 import java.util.List;
 
 /**
  * 菜单类
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface SysMenuService {
 
     /**
      * 查询权限标识列表
-     * @param userDetail
+     * @param superAdmin
+     * @param userId
      * @return
      */
-    List<String> getPermissionsList(UserDetail userDetail);
+    List<String> getPermissionsList(Integer superAdmin,Long userId);
 
 }

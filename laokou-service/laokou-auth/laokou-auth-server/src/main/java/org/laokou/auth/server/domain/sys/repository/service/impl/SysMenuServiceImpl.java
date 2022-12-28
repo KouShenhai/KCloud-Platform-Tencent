@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 KCloud-Platform-Official Authors. All Rights Reserved.
+ * Copyright (c) 2022 KCloud-Platform-Tencent Authors. All Rights Reserved.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.domain.sys.repository.service.impl;
-import org.laokou.auth.client.user.UserDetail;
+import lombok.RequiredArgsConstructor;
 import org.laokou.auth.server.domain.sys.repository.mapper.SysMenuMapper;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.common.core.enums.SuperAdminEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
+@RequiredArgsConstructor
 public class SysMenuServiceImpl implements SysMenuService {
-
-
-    @Autowired
-    private SysMenuMapper sysMenuMapper;
-
-
+    private final SysMenuMapper sysMenuMapper;
     @Override
-    public List<String> getPermissionsList(UserDetail userDetail) {
-        if (SuperAdminEnum.YES.ordinal() == userDetail.getSuperAdmin()) {
+    public List<String> getPermissionsList(Integer superAdmin,Long userId) {
+        if (SuperAdminEnum.YES.ordinal() == superAdmin) {
             return sysMenuMapper.getPermissionsList();
         }
-        return sysMenuMapper.getPermissionsListByUserId(userDetail.getUserId());
+        return sysMenuMapper.getPermissionsListByUserId(userId);
     }
 }
