@@ -15,6 +15,7 @@
  */
 package org.laokou.auth.server;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
+import org.laokou.common.swagger.config.CorsConfig;
 import org.laokou.redis.config.RedisSessionConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,12 +32,12 @@ import org.springframework.context.annotation.Import;
  * DDD分层架构(分布式微服务架构) > 表现层 应用层 领域层 基础层
  * @author laokou
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common.core","org.laokou.redis","org.laokou.auth","org.laokou.common.mybatisplus"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.common.core","org.laokou.redis","org.laokou.auth"})
 @EnableConfigurationProperties
 @EnableAspectJAutoProxy
 @EnableEncryptableProperties
 @EnableFeignClients
-@Import(RedisSessionConfig.class)
+@Import({RedisSessionConfig.class, CorsConfig.class})
 @EnableDiscoveryClient
 public class AuthApplication{
 
