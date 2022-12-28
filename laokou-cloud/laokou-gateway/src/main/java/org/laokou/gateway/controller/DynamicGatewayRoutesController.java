@@ -26,23 +26,23 @@ import reactor.core.publisher.Mono;
  * @author laokou
  */
 @RestController
-@RequestMapping("/dynamic/gateway/routes")
+//@RequestMapping("/dynamic/gateway/routes")
 @RequiredArgsConstructor
 public class DynamicGatewayRoutesController {
 
     private final DynamicGatewayRoutesService dynamicGatewayRoutesService;
 
-    @PostMapping()
+//    @PostMapping()
     public Mono<Void> insert(@RequestBody RouteDefinition route) {
         return dynamicGatewayRoutesService.insert(Mono.just(route));
     }
 
-    @PutMapping()
+//    @PutMapping()
     public Mono<Void> update(@RequestBody RouteDefinition route) {
         return dynamicGatewayRoutesService.update(Mono.just(route));
     }
 
-    @DeleteMapping("{id}")
+//    @DeleteMapping("{id}")
     public Mono<Void> insert(@PathVariable("id")String id) {
         return dynamicGatewayRoutesService.delete(Mono.just(id));
     }
