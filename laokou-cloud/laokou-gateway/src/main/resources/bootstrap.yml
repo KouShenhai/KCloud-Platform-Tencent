@@ -6,5 +6,8 @@ spring:
     polaris:
       address: grpc://192.168.62.144:8091
       namespace: laokou
+      stat:
+        port: 5552
+        enabled: true
     config:
       address: grpc://192.168.62.144:8093

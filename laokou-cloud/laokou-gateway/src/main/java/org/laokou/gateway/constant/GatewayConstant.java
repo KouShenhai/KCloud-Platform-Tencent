@@ -48,5 +48,6 @@ public interface GatewayConstant {
     /**
      * 动态路由
      */
-    String DYNAMIC_GATEWAY_ROUTES = "dynamic:gateway:routes";
+    String REDIS_DYNAMIC_GATEWAY_ROUTES = "dynamic:gateway:routes";
+
 }

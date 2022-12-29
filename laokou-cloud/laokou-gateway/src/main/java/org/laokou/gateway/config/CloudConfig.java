@@ -25,8 +25,6 @@ import java.util.stream.Collectors;
 
 /**
  * @author laokou
- * @version 1.0
- * @date 2021/11/6 0006 上午 8:07
  */
 @Configuration
 public class CloudConfig {

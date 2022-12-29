@@ -15,7 +15,6 @@
  */
 
 package org.laokou.gateway.service.impl;
-
 import lombok.RequiredArgsConstructor;
 import org.laokou.gateway.route.RedisRouteDefinitionRepository;
 import org.laokou.gateway.service.DynamicGatewayRoutesService;

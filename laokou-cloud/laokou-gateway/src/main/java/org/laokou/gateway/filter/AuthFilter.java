@@ -65,7 +65,7 @@ import java.util.function.Function;
 @Slf4j
 @Setter
 @Getter
-@ConfigurationProperties(prefix = "gateway")
+@ConfigurationProperties(prefix = "ignore")
 public class AuthFilter implements GlobalFilter,Ordered {
 
     private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();

@@ -26,6 +26,10 @@ spring:
       max-file-size: -1
       max-request-size: -1
   cloud:
+    tencent:
+      metadata:
+        content:
+          env: @profile.active@
     inetutils:
       ignoredInterfaces:
         - docker0

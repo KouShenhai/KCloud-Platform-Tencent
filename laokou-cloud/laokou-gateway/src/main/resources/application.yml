@@ -32,7 +32,7 @@ management:
     health:
       show-details: always
 
-gateway:
+ignore:
   uris:
     - /oauth2/captcha
     - /actuator/**

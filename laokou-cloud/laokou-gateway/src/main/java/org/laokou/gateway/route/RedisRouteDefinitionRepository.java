@@ -42,20 +42,20 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
-        return reactiveHashOperations.entries(GatewayConstant.DYNAMIC_GATEWAY_ROUTES)
+        return reactiveHashOperations.entries(GatewayConstant.REDIS_DYNAMIC_GATEWAY_ROUTES)
                 .map(Map.Entry::getValue);
     }
 
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
-        return route.flatMap(definition -> reactiveHashOperations.put(GatewayConstant.DYNAMIC_GATEWAY_ROUTES,definition.getId(), definition))
+        return route.flatMap(definition -> reactiveHashOperations.put(GatewayConstant.REDIS_DYNAMIC_GATEWAY_ROUTES,definition.getId(), definition))
                 .flatMap(result -> result ? Mono.empty()
                         : Mono.defer(() -> Mono.error(new CustomException("Route definition cannot be added"))));
     }
 
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
-        return routeId.flatMap(id -> reactiveHashOperations.remove(GatewayConstant.DYNAMIC_GATEWAY_ROUTES,id))
+        return routeId.flatMap(id -> reactiveHashOperations.remove(GatewayConstant.REDIS_DYNAMIC_GATEWAY_ROUTES,id))
                 .flatMap(result -> result != 0 ? Mono.empty()
                         : Mono.defer(() -> Mono.error(new CustomException(String.format("Route definition is not found,routeId:%s",routeId)))));
     }
