@@ -21,7 +21,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 /**
  * @author laokou
  */
-@SpringBootApplication()
+@SpringBootApplication
 @EnableEncryptableProperties
 @EnableDiscoveryClient
 public class GatewayApplication {

@@ -15,15 +15,16 @@
  */
 
 package org.laokou.gateway.service.impl;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.laokou.gateway.route.RedisRouteDefinitionRepository;
+import org.laokou.common.core.utils.StringUtil;
+import org.laokou.gateway.route.CacheRouteDefinitionRepository;
+import org.laokou.gateway.route.RouterProperties;
 import org.laokou.gateway.service.DynamicGatewayRoutesService;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
-import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 /**
  * @author laokou
@@ -33,29 +34,32 @@ import reactor.core.publisher.Mono;
 public class DynamicGatewayRoutesServiceImpl implements DynamicGatewayRoutesService, ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher applicationEventPublisher;
-    private final RedisRouteDefinitionRepository redisRouteDefinitionRepository;
 
-    @Override
-    public Mono<Void> insert(Mono<RouteDefinition> route) {
-        return redisRouteDefinitionRepository.save(route)
-                .doOnNext(app -> applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this)));
-    }
+    private final RouterProperties properties;
 
-    @Override
-    public Mono<Void> update(Mono<RouteDefinition> route) {
-        return redisRouteDefinitionRepository.delete(route.map(RouteDefinition::getId))
-                        .flatMap(app -> redisRouteDefinitionRepository.save(route))
-                .doOnNext(app -> applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this)));
-    }
-
-    @Override
-    public Mono<Void> delete(Mono<String> routeId) {
-        return redisRouteDefinitionRepository.delete(routeId)
-                .doOnNext(app -> applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this)));
-    }
+    private final CacheRouteDefinitionRepository cacheRouteDefinitionRepository;
 
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
     }
+
+
+    @Override
+    public void batch() {
+        if (initRouter()) {
+            applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
+        }
+    }
+
+    @PostConstruct
+    private Boolean initRouter() {
+        String rule = properties.getRule();
+        if (StringUtil.isNotEmpty(rule)) {
+            cacheRouteDefinitionRepository.freshRouter(rule);
+            return true;
+        }
+        return false;
+    }
+
 }

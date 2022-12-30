@@ -22,7 +22,7 @@
         <!--flowable版本-->
         <flowable.version>6.7.2</flowable.version>
         <!--mybatis-plus版本 -->
-        <mybatis-plus.version>3.5.2.7-SNAPSHOT</mybatis-plus.version>
+        <mybatis-plus.version>3.5.3</mybatis-plus.version>
         <!--commons-httpclient版本-->
         <commons-httpclient.version>3.1</commons-httpclient.version>
         <!--commons-configuration版本-->

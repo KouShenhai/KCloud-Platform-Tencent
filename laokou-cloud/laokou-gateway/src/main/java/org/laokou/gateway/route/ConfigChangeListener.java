@@ -14,37 +14,31 @@
  * limitations under the License.
  */
 
-package org.laokou.gateway.controller;
+package org.laokou.gateway.route;
 
+import com.tencent.cloud.polaris.config.spring.event.ConfigChangeSpringEvent;
 import lombok.RequiredArgsConstructor;
 import org.laokou.gateway.service.DynamicGatewayRoutesService;
-import org.springframework.cloud.gateway.route.RouteDefinition;
-import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
+import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 /**
- * @author laokou
+ * @author Kou Shenhai
  */
-@RestController
-//@RequestMapping("/dynamic/gateway/routes")
+@Component
 @RequiredArgsConstructor
-public class DynamicGatewayRoutesController {
+public class ConfigChangeListener implements ApplicationListener<ConfigChangeSpringEvent> {
 
     private final DynamicGatewayRoutesService dynamicGatewayRoutesService;
 
-//    @PostMapping()
-    public Mono<Void> insert(@RequestBody RouteDefinition route) {
-        return dynamicGatewayRoutesService.insert(Mono.just(route));
+    @Override
+    public void onApplicationEvent(ConfigChangeSpringEvent event) {
+        try {
+            dynamicGatewayRoutesService.batch();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-//    @PutMapping()
-    public Mono<Void> update(@RequestBody RouteDefinition route) {
-        return dynamicGatewayRoutesService.update(Mono.just(route));
-    }
-
-//    @DeleteMapping("{id}")
-    public Mono<Void> insert(@PathVariable("id")String id) {
-        return dynamicGatewayRoutesService.delete(Mono.just(id));
-    }
-
 }

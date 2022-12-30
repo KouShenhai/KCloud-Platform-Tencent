@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.springframework.stereotype.Component;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArraySet;
 /**
@@ -99,7 +98,7 @@ public class WebSocketServer {
      * @param throwable
      */
     @OnError
-    public void onError(@NotNull Throwable throwable){
+    public void onError(Throwable throwable){
         log.error("发生错误：{}",throwable.getMessage());
         throwable.printStackTrace();
     }

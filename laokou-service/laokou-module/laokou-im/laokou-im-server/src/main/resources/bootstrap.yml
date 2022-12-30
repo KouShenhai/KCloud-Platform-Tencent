@@ -1,10 +1,13 @@
 # spring
 spring:
   application:
-    name: laokou-auth
+    name: laokou-im
   cloud:
     polaris:
       address: grpc://192.168.62.144:8091
       namespace: laokou
+      stat:
+        enabled: true
+        port: 10081
     config:
       address: grpc://192.168.62.144:8093
