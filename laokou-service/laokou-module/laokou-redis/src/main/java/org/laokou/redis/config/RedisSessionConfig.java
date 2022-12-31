@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.redis.config;
-import org.laokou.redis.utils.RedisKeyUtil;
 import org.redisson.Redisson;
-import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.Codec;
 import org.redisson.config.Config;
@@ -84,13 +82,6 @@ public class RedisSessionConfig {
         Codec codec = CustomJsonJacksonCodec.INSTANCE;
         config.setCodec(codec);
         return Redisson.create(config);
-    }
-
-    @Bean
-    public RBloomFilter<String> bloomFilter(RedissonClient redisson) {
-        RBloomFilter<String> bloomFilter = redisson.getBloomFilter(RedisKeyUtil.getBloomFilterKey());
-        bloomFilter.tryInit(200,0.01);
-        return bloomFilter;
     }
 
     private String getProtocolPrefix(boolean isSsl) {

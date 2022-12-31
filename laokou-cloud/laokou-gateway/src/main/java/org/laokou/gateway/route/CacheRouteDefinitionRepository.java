@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 package org.laokou.gateway.route;
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.gateway.constant.GatewayConstant;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -32,10 +29,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 /**
  * @author laokou
@@ -46,14 +41,10 @@ public class CacheRouteDefinitionRepository implements RouteDefinitionRepository
 
     private ReactiveRedisTemplate<String, RouteDefinition> reactiveRedisTemplate;
     private ReactiveValueOperations<String, RouteDefinition> routeDefinitionReactiveValueOperations;
-    private Cache<String,RouteDefinition> caffeineCache;
 
     public CacheRouteDefinitionRepository(ReactiveRedisTemplate<String, RouteDefinition> reactiveRedisTemplate) {
         this.reactiveRedisTemplate = reactiveRedisTemplate;
         this.routeDefinitionReactiveValueOperations = reactiveRedisTemplate.opsForValue();
-        this.caffeineCache = Caffeine.newBuilder().initialCapacity(30)
-                .expireAfterAccess(30, TimeUnit.MINUTES)
-                .build();
     }
 
     @PostConstruct
@@ -68,12 +59,7 @@ public class CacheRouteDefinitionRepository implements RouteDefinitionRepository
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
-        Collection<RouteDefinition> routeDefinitions = caffeineCache.asMap().values();
-        if (CollectionUtils.isNotEmpty(routeDefinitions)) {
-            return Flux.fromIterable(routeDefinitions);
-        }
         return this.reactiveRedisTemplate.keys(this.createKey("*")).flatMap((key) -> this.routeDefinitionReactiveValueOperations.get(key))
-                .doOnNext(definition -> caffeineCache.put(definition.getId(),definition))
                 .onErrorContinue((throwable, routeDefinition) -> {
             if (log.isErrorEnabled()) {
                 log.error("get routes from redis error cause : {}", throwable.toString(), throwable);
@@ -84,7 +70,6 @@ public class CacheRouteDefinitionRepository implements RouteDefinitionRepository
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
         return route.flatMap((routeDefinition) -> this.routeDefinitionReactiveValueOperations.set(this.createKey(routeDefinition.getId()), routeDefinition)
-                .doOnNext(result -> caffeineCache.invalidateAll())
                 .flatMap((success) -> success ? Mono.empty()
                         : Mono.defer(() -> Mono.error(new RuntimeException(String.format("Could not add route to redis repository: %s", routeDefinition))))));
     }
@@ -92,7 +77,6 @@ public class CacheRouteDefinitionRepository implements RouteDefinitionRepository
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
         return routeId.flatMap((id) -> this.routeDefinitionReactiveValueOperations.delete(this.createKey(id))
-                .doOnNext(result -> caffeineCache.invalidateAll())
                 .flatMap((success) -> success ? Mono.empty()
                         : Mono.defer(() -> Mono.error(new NotFoundException(String.format("Could not remove route from redis repository with id: %s", routeId))))));
     }
