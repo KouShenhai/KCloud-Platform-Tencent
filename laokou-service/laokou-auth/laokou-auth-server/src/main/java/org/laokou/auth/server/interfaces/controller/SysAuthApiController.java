@@ -44,4 +44,9 @@ public class SysAuthApiController {
         return new HttpResultUtil<AuthToken>().ok(sysAuthApplicationService.login(request));
     }
 
+    @GetMapping("/oauth2/logout")
+    public HttpResultUtil<Boolean> logout(HttpServletRequest request) {
+        return new HttpResultUtil<Boolean>().ok(sysAuthApplicationService.logout(request));
+    }
+
 }

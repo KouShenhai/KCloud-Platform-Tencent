@@ -41,4 +41,11 @@ public interface SysAuthApplicationService {
      */
     String captcha(HttpServletRequest request);
 
+    /**
+     * 退出登录
+     * @param request
+     * @return
+     */
+    Boolean logout(HttpServletRequest request);
+
 }

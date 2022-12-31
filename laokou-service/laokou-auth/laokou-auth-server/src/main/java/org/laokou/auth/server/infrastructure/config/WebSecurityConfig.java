@@ -53,8 +53,9 @@ public class WebSecurityConfig {
                 .authenticated()
                 .and()
                 .csrf().disable()
-                .cors().disable()
                 .formLogin(Customizer.withDefaults())
+                .logout()
+                .and()
                 .build();
     }
 

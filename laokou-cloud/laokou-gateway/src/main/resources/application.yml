@@ -18,11 +18,49 @@ spring:
       ignoredInterfaces:
         - docker0
         - veth.*
+    # gateway
     gateway:
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
+      routes:
+        - id: laokou-admin
+          uri: lb://laokou-admin
+          predicates:
+            - Path=/admin/**
+          filters:
+            - StripPrefix=1
+        - id: laokou-auth
+          uri: lb://laokou-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: laokou-elasticsearch
+          uri: lb://laokou-elasticsearch
+          predicates:
+            - Path=/elasticsearch/**
+          filters:
+            - StripPrefix=1
+        - id: laokou-rocketmq
+          uri: lb://laokou-rocketmq
+          predicates:
+            - Path=/rocketmq/**
+          filters:
+            - StripPrefix=1
+        - id: laokou-oss
+          uri: lb://laokou-oss
+          predicates:
+            - Path=/oss/**
+          filters:
+            - StripPrefix=1
+        - id: laokou-im
+          uri: lb://laokou-im
+          predicates:
+            - Path=/im/**
+          filters:
+            - StripPrefix=1
 
 # actuator相关配置
 management:
@@ -34,6 +72,7 @@ management:
     health:
       show-details: always
 
+# 忽略uris
 ignore:
   uris:
     - /oauth2/captcha

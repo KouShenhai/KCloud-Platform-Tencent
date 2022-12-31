@@ -16,6 +16,7 @@
 package org.laokou.redis.utils;
 import lombok.RequiredArgsConstructor;
 import org.laokou.common.core.utils.StringUtil;
+import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
@@ -37,6 +38,8 @@ public final class RedisUtil {
     private final RedisTemplate<String, Object> redisTemplate;
 
     private final RedissonClient redissonClient;
+
+    private final RBloomFilter<String> bloomFilter;
 
     /**  默认过期时长为24小时，单位：秒 */
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24;

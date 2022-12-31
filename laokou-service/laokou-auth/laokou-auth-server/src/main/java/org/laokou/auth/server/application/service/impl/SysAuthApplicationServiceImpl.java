@@ -17,6 +17,7 @@ package org.laokou.auth.server.application.service.impl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.client.constant.AuthConstant;
+import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.infrastructure.context.CustomAuthorizationServerContext;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.auth.server.infrastructure.token.AuthenticationToken;
@@ -28,6 +29,8 @@ import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.utils.*;
+import org.laokou.redis.utils.RedisKeyUtil;
+import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,6 +68,7 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private final PasswordEncoder passwordEncoder;
     private final AuthorizationServerSettings authorizationServerSettings;
     private final LoginLogUtil loginLogUtil;
+    private final RedisUtil redisUtil;
 
     @Override
     public AuthToken login(HttpServletRequest request) {
@@ -196,6 +200,29 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     @Override
     public String captcha(HttpServletRequest request) {
         return authenticationToken(request).captcha(request);
+    }
+
+    @Override
+    public Boolean logout(HttpServletRequest request) {
+        String token = request.getHeader(Constant.AUTHORIZATION_HEAD);
+        if (StringUtil.isEmpty(token)) {
+            return true;
+        }
+        token = token.substring(7);
+        OAuth2Authorization oAuth2Authorization = oAuth2AuthorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
+        if (oAuth2Authorization == null) {
+            return true;
+        }
+        UserDetail userDetail = (UserDetail) ((UsernamePasswordAuthenticationToken) oAuth2Authorization.getAttribute(Principal.class.getName())).getPrincipal();
+        // 清空用户信息
+        oAuth2AuthorizationService.remove(oAuth2Authorization);
+        // 清空用户key
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
+        redisUtil.delete(userInfoKey);
+        Long userId = userDetail.getUserId();
+        String resourceTreeKey = RedisKeyUtil.getResourceTreeKey(userId);
+        redisUtil.delete(resourceTreeKey);
+        return true;
     }
 
 }
