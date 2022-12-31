@@ -72,6 +72,9 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
     @Override
     public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException {
         UserDetail userDetail = sysUserService.getUserDetail(loginName);
+        if (userDetail == null) {
+            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
+        }
         // 是否锁定
         String loginType = PasswordAuthenticationToken.GRANT_TYPE;
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
