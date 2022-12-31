@@ -16,6 +16,8 @@ spring:
             rule-staining:
               enabled: true
               namespace: laokou
+              group: ${spring.application.name}
+              fileName: rule/staining.json
     loadbalancer:
       configurations: polaris
     config:

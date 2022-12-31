@@ -78,7 +78,7 @@
             <groupId>com.tencent.cloud</groupId>
             <artifactId>spring-cloud-tencent-gateway-plugin</artifactId>
         </dependency>
-        <!-- 如何需要全链路透传标签，需要引入 spring-cloud-starter-tencent-metadata-transfer 依赖 -->
+        <!-- 需要全链路透传标签，需要引入 spring-cloud-starter-tencent-metadata-transfer 依赖 -->
         <dependency>
             <groupId>com.tencent.cloud</groupId>
             <artifactId>spring-cloud-starter-tencent-metadata-transfer</artifactId>
