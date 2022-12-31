@@ -21,13 +21,10 @@ import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 /**
  * @author laokou
  */
@@ -45,8 +42,8 @@ public class WebSecurityConfig {
         return http.authorizeHttpRequests()
                 .requestMatchers(adminServerProperties.path("/assets/**")
                         , adminServerProperties.path("/variables.css")
-                        , adminServerProperties.path("/actuator/info")
-                        , adminServerProperties.path("/actuator/health")
+                        , adminServerProperties.path("/actuator/**")
+                        , adminServerProperties.path("/instances/**")
                         , adminServerProperties.path("/login")).permitAll()
                 .dispatcherTypeMatchers(DispatcherType.ASYNC)
                 .permitAll()
@@ -61,12 +58,7 @@ public class WebSecurityConfig {
                 .logoutUrl(adminServerProperties.path("/logout"))
                 .and()
                 .httpBasic(Customizer.withDefaults())
-                .csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .ignoringRequestMatchers(new AntPathRequestMatcher(adminServerProperties.path("/instances"), HttpMethod.POST.toString()),
-                        new AntPathRequestMatcher(adminServerProperties.path("/instances/*"), HttpMethod.DELETE.toString()),
-                        new AntPathRequestMatcher(adminServerProperties.path("/actuator/**")))
-                .and()
+                .csrf().disable()
                 .build();
     }
 }

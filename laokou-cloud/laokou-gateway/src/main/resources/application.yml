@@ -3,6 +3,8 @@ server:
   port: 5555
   tomcat:
     connection-timeout: 600000
+  compression:
+    enabled: true
 
 spring:
   profiles:
