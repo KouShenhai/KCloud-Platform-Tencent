@@ -57,7 +57,7 @@ public class XssUtil extends Whitelist {
     }
 
     public static void main(String[] args) {
-        String cleanValue = XssUtil.clean("select * from sql <script>qqqqqq</script>");
+        String cleanValue = XssUtil.clean("select & from sql <script>qqqqqq</script>");
         System.out.println(cleanValue);
     }
 
