@@ -6,8 +6,7 @@ spring:
         url: http://127.0.0.1:5000/monitor
         username: root
         password: 123456
-        instance:
-          service-base-url: http://127.0.0.1:${server.port}
+
   data:
     # redis
     redis:
