@@ -63,8 +63,6 @@ import java.util.function.Function;
  */
 @Component
 @Slf4j
-@Setter
-@Getter
 @ConfigurationProperties(prefix = "ignore")
 public class AuthFilter implements GlobalFilter,Ordered {
 
@@ -73,6 +71,8 @@ public class AuthFilter implements GlobalFilter,Ordered {
     /**
      * 不拦截的urls
      */
+    @Setter
+    @Getter
     private List<String> uris;
 
     @Override

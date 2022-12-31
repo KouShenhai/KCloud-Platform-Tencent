@@ -50,4 +50,6 @@ public interface GatewayConstant {
      */
     String REDIS_DYNAMIC_ROUTER_RULE_KEY = "dynamic:router:rule";
 
+    String XSS_TICKET_HEADER = "xss-ticket";
+    String XSS_TICKET_VALUE = "xss-white";
 }

@@ -56,6 +56,11 @@ public class XssUtil extends Whitelist {
         return value;
     }
 
+    public static void main(String[] args) {
+        String cleanValue = XssUtil.clean("select * from sql <script>qqqqqq</script>");
+        System.out.println(cleanValue);
+    }
+
     /**
      * XSS过滤白名单
      */
@@ -66,7 +71,6 @@ public class XssUtil extends Whitelist {
                         "dt", "em", "h1", "h2", "h3", "h4", "h5", "h6", "i", "img", "li", "ol", "p", "pre", "q", "small",
                         "strike", "strong","sub", "sup", "table", "tbody", "td","tfoot", "th", "thead", "tr", "u","ul",
                         "embed","object","param","span")
-
                 //支持的标签属性
                 .addAttributes("a", "href", "class", "style", "target", "rel", "nofollow")
                 .addAttributes("blockquote", "cite")
@@ -88,7 +92,6 @@ public class XssUtil extends Whitelist {
                 .addAttributes("object", "type", "id", "name", "data", "width", "height", "style", "classid", "codebase")
                 .addAttributes("param", "name", "value")
                 .addAttributes("span", "class", "style")
-
                 //标签属性对应的协议
                 .addProtocols("a", "href", "ftp", "http", "https", "mailto")
                 .addProtocols("img", "src", "http", "https")
