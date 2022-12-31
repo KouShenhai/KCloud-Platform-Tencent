@@ -7,9 +7,14 @@ spring:
       address: grpc://192.168.62.144:8091
       namespace: laokou
       config:
-        groups:
-          - name: ${spring.application.name}
-            files:
-              - "application-router.properties"
+        local-file-root-path: polaris
+    tencent:
+      plugin:
+        scg:
+          staining:
+            enabled: true
+            rule-staining:
+              enabled: true
+              namespace: laokou
     config:
       address: grpc://192.168.62.144:8093

@@ -16,6 +16,7 @@
 package org.laokou.gateway.route;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.laokou.common.core.utils.JacksonUtil;
@@ -23,11 +24,14 @@ import org.laokou.gateway.constant.GatewayConstant;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.cloud.gateway.support.NotFoundException;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.ReactiveValueOperations;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -50,16 +54,17 @@ public class CacheRouteDefinitionRepository implements RouteDefinitionRepository
         this.routeDefinitionReactiveValueOperations = reactiveRedisTemplate.opsForValue();
         this.caffeineCache = Caffeine.newBuilder().initialCapacity(30)
                 .expireAfterAccess(30, TimeUnit.MINUTES)
-                .maximumSize(300)
                 .build();
     }
 
-    public void freshRouter(String rule) {
+    @PostConstruct
+    public void initRouter() throws IOException {
+        ClassPathResource resource = new ClassPathResource("router.json");
+        String rule = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
         List<RouteDefinition> routeDefinitionList = JacksonUtil.toList(rule, RouteDefinition.class);
         Map<String, RouteDefinition> routeDefinitionMap = routeDefinitionList.stream().collect(Collectors.toMap(k -> createKey(k.getId()), v -> v));
-        caffeineCache.invalidateAll();
-        routeDefinitionReactiveValueOperations.delete(this.createKey("*")).subscribe();
-        routeDefinitionReactiveValueOperations.multiSet(routeDefinitionMap).subscribe();
+        routeDefinitionReactiveValueOperations.delete(this.createKey("*"))
+                        .flatMap(success -> routeDefinitionReactiveValueOperations.multiSet(routeDefinitionMap)).subscribe();
     }
 
     @Override
