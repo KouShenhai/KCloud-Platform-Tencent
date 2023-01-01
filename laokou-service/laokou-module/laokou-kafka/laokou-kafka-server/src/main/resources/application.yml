@@ -1,6 +1,4 @@
-jasypt:
-  encryptor:
-    password: koushenhai5201314wumeihua
+
 spring:
   mvc:
     pathmatch:
