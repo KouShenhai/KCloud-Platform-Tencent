@@ -21,7 +21,7 @@ import org.laokou.admin.server.interfaces.qo.SysUserQo;
 import org.laokou.admin.client.vo.OptionVO;
 import org.laokou.admin.client.vo.SysUserVO;
 import org.laokou.admin.server.application.service.SysUserApplicationService;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,62 +43,62 @@ public class SysUserApiController {
 //    @ApiOperation("系统用户>修改")
     @OperateLog(module = "系统用户",name = "用户修改")
     @PreAuthorize("hasAuthority('sys:user:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysUserDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto));
+    public HttpResult<Boolean> update(@RequestBody SysUserDTO dto) {
+        return new HttpResult<Boolean>().ok(sysUserApplicationService.updateUser(dto));
     }
 
     @GetMapping("/userInfo")
-    public HttpResultUtil<UserInfoVO> userInfo() {
-        return new HttpResultUtil<UserInfoVO>().ok(sysUserApplicationService.getUserInfo());
+    public HttpResult<UserInfoVO> userInfo() {
+        return new HttpResult<UserInfoVO>().ok(sysUserApplicationService.getUserInfo());
     }
 
     @GetMapping("/option/list")
 //    @ApiOperation("系统用户>下拉框列表")
-    public HttpResultUtil<List<OptionVO>> optionList() {
-        return new HttpResultUtil<List<OptionVO>>().ok(sysUserApplicationService.getOptionList());
+    public HttpResult<List<OptionVO>> optionList() {
+        return new HttpResult<List<OptionVO>>().ok(sysUserApplicationService.getOptionList());
     }
 
     @PutMapping("/updateInfo")
 //    @ApiOperation("系统用户>修改个人信息")
-    public HttpResultUtil<Boolean> updateInfo(@RequestBody SysUserDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto));
+    public HttpResult<Boolean> updateInfo(@RequestBody SysUserDTO dto) {
+        return new HttpResult<Boolean>().ok(sysUserApplicationService.updateUser(dto));
     }
 
     @PutMapping("/password")
 //    @ApiOperation("系统用户>重置")
     @OperateLog(module = "系统用户",name = "重置密码")
     @PreAuthorize("hasAuthority('sys:user:password')")
-    public HttpResultUtil<Boolean> password(@RequestBody SysUserDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.updateUser(dto));
+    public HttpResult<Boolean> password(@RequestBody SysUserDTO dto) {
+        return new HttpResult<Boolean>().ok(sysUserApplicationService.updateUser(dto));
     }
 
     @PostMapping("/insert")
 //    @ApiOperation("系统用户>新增")
     @OperateLog(module = "系统用户",name = "用户新增")
     @PreAuthorize("hasAuthority('sys:user:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysUserDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.insertUser(dto));
+    public HttpResult<Boolean> insert(@RequestBody SysUserDTO dto) {
+        return new HttpResult<Boolean>().ok(sysUserApplicationService.insertUser(dto));
     }
 
     @GetMapping("/detail")
 //    @ApiOperation("系统用户>详情")
-    public HttpResultUtil<SysUserVO> detail(@RequestParam("id") Long id) {
-        return new HttpResultUtil<SysUserVO>().ok(sysUserApplicationService.getUserById(id));
+    public HttpResult<SysUserVO> detail(@RequestParam("id") Long id) {
+        return new HttpResult<SysUserVO>().ok(sysUserApplicationService.getUserById(id));
     }
 
     @DeleteMapping("/delete")
 //    @ApiOperation("系统用户>删除")
     @OperateLog(module = "系统用户",name = "用户删除")
     @PreAuthorize("hasAuthority('sys:user:delete')")
-    public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
-        return new HttpResultUtil<Boolean>().ok(sysUserApplicationService.deleteUser(id));
+    public HttpResult<Boolean> delete(@RequestParam("id") Long id) {
+        return new HttpResult<Boolean>().ok(sysUserApplicationService.deleteUser(id));
     }
 
     @PostMapping("/query")
 //    @ApiOperation("系统用户>查询")
     @PreAuthorize("hasAuthority('sys:user:query')")
-    public HttpResultUtil<IPage<SysUserVO>> query(@RequestBody SysUserQo qo) {
-        return new HttpResultUtil<IPage<SysUserVO>>().ok(sysUserApplicationService.queryUserPage(qo));
+    public HttpResult<IPage<SysUserVO>> query(@RequestBody SysUserQo qo) {
+        return new HttpResult<IPage<SysUserVO>>().ok(sysUserApplicationService.queryUserPage(qo));
     }
 
 }

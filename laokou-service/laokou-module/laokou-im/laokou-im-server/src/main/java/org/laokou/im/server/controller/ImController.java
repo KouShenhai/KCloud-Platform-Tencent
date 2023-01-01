@@ -16,7 +16,7 @@
 
 package org.laokou.im.server.controller;
 import lombok.RequiredArgsConstructor;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.im.client.PushMsgDTO;
 import org.laokou.im.server.service.ImService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,8 +39,8 @@ public class ImController {
 
     @PostMapping("/push")
 //    @ApiOperation("即时通讯API>消息推送")
-    public HttpResultUtil<Boolean> push(@RequestBody PushMsgDTO dto) throws IOException {
-        return new HttpResultUtil<Boolean>().ok(imService.pusMessage(dto));
+    public HttpResult<Boolean> push(@RequestBody PushMsgDTO dto) throws IOException {
+        return new HttpResult<Boolean>().ok(imService.pusMessage(dto));
     }
 
 }

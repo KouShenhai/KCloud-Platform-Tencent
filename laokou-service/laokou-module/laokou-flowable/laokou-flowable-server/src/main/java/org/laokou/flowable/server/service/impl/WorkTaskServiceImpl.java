@@ -30,7 +30,7 @@ import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.image.ProcessDiagramGenerator;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
-import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.core.utils.FileUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.flowable.client.dto.AuditDTO;

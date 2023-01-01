@@ -20,7 +20,7 @@ import org.laokou.admin.client.dto.SysRoleDTO;
 import org.laokou.admin.server.interfaces.qo.SysRoleQo;
 import org.laokou.admin.client.vo.SysRoleVO;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -40,44 +40,44 @@ public class SysRoleApiController {
     @PostMapping("/query")
 //    @ApiOperation("系统角色>查询")
     @PreAuthorize("hasAuthority('sys:role:query')")
-    public HttpResultUtil<IPage<SysRoleVO>> query(@RequestBody SysRoleQo qo) {
-        return new HttpResultUtil<IPage<SysRoleVO>>().ok(sysRoleApplicationService.queryRolePage(qo));
+    public HttpResult<IPage<SysRoleVO>> query(@RequestBody SysRoleQo qo) {
+        return new HttpResult<IPage<SysRoleVO>>().ok(sysRoleApplicationService.queryRolePage(qo));
     }
 
     @PostMapping("/list")
 //    @ApiOperation("系统角色>列表")
-    public HttpResultUtil<List<SysRoleVO>> list(@RequestBody SysRoleQo qo) {
-        return new HttpResultUtil<List<SysRoleVO>>().ok(sysRoleApplicationService.getRoleList(qo));
+    public HttpResult<List<SysRoleVO>> list(@RequestBody SysRoleQo qo) {
+        return new HttpResult<List<SysRoleVO>>().ok(sysRoleApplicationService.getRoleList(qo));
     }
 
     @GetMapping("/detail")
 //    @ApiOperation("系统角色>详情")
-    public HttpResultUtil<SysRoleVO> detail(@RequestParam("id") Long id) {
-        return new HttpResultUtil<SysRoleVO>().ok(sysRoleApplicationService.getRoleById(id));
+    public HttpResult<SysRoleVO> detail(@RequestParam("id") Long id) {
+        return new HttpResult<SysRoleVO>().ok(sysRoleApplicationService.getRoleById(id));
     }
 
     @PostMapping("/insert")
 //    @ApiOperation("系统角色>新增")
     @OperateLog(module = "系统角色",name = "角色新增")
     @PreAuthorize("hasAuthority('sys:role:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysRoleDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.insertRole(dto));
+    public HttpResult<Boolean> insert(@RequestBody SysRoleDTO dto) {
+        return new HttpResult<Boolean>().ok(sysRoleApplicationService.insertRole(dto));
     }
 
     @PutMapping("/update")
 //    @ApiOperation("系统角色>修改")
     @OperateLog(module = "系统角色",name = "角色修改")
     @PreAuthorize("hasAuthority('sys:role:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysRoleDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.updateRole(dto));
+    public HttpResult<Boolean> update(@RequestBody SysRoleDTO dto) {
+        return new HttpResult<Boolean>().ok(sysRoleApplicationService.updateRole(dto));
     }
 
     @DeleteMapping("/delete")
 //    @ApiOperation("系统角色>删除")
     @OperateLog(module = "系统角色",name = "角色删除")
     @PreAuthorize("hasAuthority('sys:role:delete')")
-    public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
-        return new HttpResultUtil<Boolean>().ok(sysRoleApplicationService.deleteRole(id));
+    public HttpResult<Boolean> delete(@RequestParam("id") Long id) {
+        return new HttpResult<Boolean>().ok(sysRoleApplicationService.deleteRole(id));
     }
 
 }

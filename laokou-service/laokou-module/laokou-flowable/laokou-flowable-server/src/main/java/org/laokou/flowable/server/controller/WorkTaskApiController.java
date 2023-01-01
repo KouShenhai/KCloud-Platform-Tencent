@@ -20,7 +20,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.flowable.client.dto.AuditDTO;
 import org.laokou.flowable.client.dto.ProcessDTO;
 import org.laokou.flowable.client.dto.TaskDTO;
@@ -44,20 +44,20 @@ public class WorkTaskApiController {
 
     @PostMapping(value = "/query")
     @ApiOperation(value = "流程任务>任务查询")
-    public HttpResultUtil<PageVO<TaskVO>> query(@RequestBody TaskDTO dto) {
-        return new HttpResultUtil<PageVO<TaskVO>>().ok(workTaskService.queryTaskPage(dto));
+    public HttpResult<PageVO<TaskVO>> query(@RequestBody TaskDTO dto) {
+        return new HttpResult<PageVO<TaskVO>>().ok(workTaskService.queryTaskPage(dto));
     }
 
     @PostMapping(value = "/audit")
     @ApiOperation(value = "流程任务>任务审批")
-    public HttpResultUtil<AssigneeVO> audit(@RequestBody AuditDTO dto) {
-        return new HttpResultUtil<AssigneeVO>().ok(workTaskService.auditTask(dto));
+    public HttpResult<AssigneeVO> audit(@RequestBody AuditDTO dto) {
+        return new HttpResult<AssigneeVO>().ok(workTaskService.auditTask(dto));
     }
 
     @PostMapping(value = "/start")
     @ApiOperation(value = "流程任务>任务开始")
-    public HttpResultUtil<AssigneeVO> start(@RequestBody ProcessDTO dto) {
-        return new HttpResultUtil<AssigneeVO>().ok(workTaskService.startTask(dto));
+    public HttpResult<AssigneeVO> start(@RequestBody ProcessDTO dto) {
+        return new HttpResult<AssigneeVO>().ok(workTaskService.startTask(dto));
     }
 
     @GetMapping(value = "/diagram")

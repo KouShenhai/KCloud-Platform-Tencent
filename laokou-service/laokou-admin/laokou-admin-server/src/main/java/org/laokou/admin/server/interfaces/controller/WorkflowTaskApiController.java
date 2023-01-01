@@ -20,7 +20,7 @@ import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.laokou.admin.server.interfaces.qo.TaskQo;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.flowable.client.dto.AuditDTO;
 import org.laokou.flowable.client.vo.TaskVO;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,23 +40,23 @@ public class WorkflowTaskApiController {
     @PostMapping(value = "/resource/query")
 //    @ApiOperation(value = "流程任务>资源查询")
     @PreAuthorize("hasAuthority('workflow:task:resource:query')")
-    public HttpResultUtil<IPage<TaskVO>> queryResource(@RequestBody TaskQo qo) {
-        return new HttpResultUtil<IPage<TaskVO>>().ok(sysResourceApplicationService.queryResourceTask(qo));
+    public HttpResult<IPage<TaskVO>> queryResource(@RequestBody TaskQo qo) {
+        return new HttpResult<IPage<TaskVO>>().ok(sysResourceApplicationService.queryResourceTask(qo));
     }
 
     @PostMapping(value = "/resource/audit")
 //    @ApiOperation(value = "流程任务>资源审批")
     @OperateLog(module = "流程任务",name = "资源审批")
     @PreAuthorize("hasAuthority('workflow:task:resource:audit')")
-    public HttpResultUtil<Boolean> auditResource(@RequestBody AuditDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.auditResourceTask(dto));
+    public HttpResult<Boolean> auditResource(@RequestBody AuditDTO dto) {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.auditResourceTask(dto));
     }
 
     @GetMapping(value = "/resource/detail")
 //    @ApiOperation(value = "流程任务>资源详情")
     @PreAuthorize("hasAuthority('workflow:task:resource:detail')")
-    public HttpResultUtil<SysResourceVO> detailResource(@RequestParam("id") Long id) {
-        return new HttpResultUtil<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
+    public HttpResult<SysResourceVO> detailResource(@RequestParam("id") Long id) {
+        return new HttpResult<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
     }
 
 }

@@ -19,7 +19,7 @@ import feign.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkDefinitionApiFeignClient;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.flowable.client.dto.DefinitionDTO;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
@@ -38,15 +38,15 @@ public class WorkDefinitionApiFeignClientFallback implements WorkDefinitionApiFe
     private final Throwable throwable;
 
     @Override
-    public HttpResultUtil<Boolean> insert(String name, MultipartFile file) {
+    public HttpResult<Boolean> insert(String name, MultipartFile file) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
+        return new HttpResult<Boolean>().error("服务调用失败，请联系管理员");
     }
 
     @Override
-    public HttpResultUtil<PageVO<DefinitionVO>> query(DefinitionDTO dto) {
+    public HttpResult<PageVO<DefinitionVO>> query(DefinitionDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<PageVO<DefinitionVO>>().error("服务调用失败，请联系管理员");
+        return new HttpResult<PageVO<DefinitionVO>>().error("服务调用失败，请联系管理员");
     }
 
     @Override
@@ -56,20 +56,20 @@ public class WorkDefinitionApiFeignClientFallback implements WorkDefinitionApiFe
     }
 
     @Override
-    public HttpResultUtil<Boolean> delete(String deploymentId) {
+    public HttpResult<Boolean> delete(String deploymentId) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
+        return new HttpResult<Boolean>().error("服务调用失败，请联系管理员");
     }
 
     @Override
-    public HttpResultUtil<Boolean> suspend(String definitionId) {
+    public HttpResult<Boolean> suspend(String definitionId) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
+        return new HttpResult<Boolean>().error("服务调用失败，请联系管理员");
     }
 
     @Override
-    public HttpResultUtil<Boolean> activate(String definitionId) {
+    public HttpResult<Boolean> activate(String definitionId) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
+        return new HttpResult<Boolean>().error("服务调用失败，请联系管理员");
     }
 }

@@ -24,7 +24,7 @@ import org.laokou.admin.server.interfaces.qo.SysLoginLogQo;
 import org.laokou.admin.server.interfaces.qo.SysOperateLogQo;
 import org.laokou.admin.client.vo.SysLoginLogVO;
 import org.laokou.admin.client.vo.SysOperateLogVO;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
@@ -44,8 +44,8 @@ public class SysLogApiController {
     @PostMapping(value = "/operate/query")
 //    @ApiOperation("系统日志>操作日志>查询")
     @PreAuthorize("hasAuthority('sys:log:operate:query')")
-    public HttpResultUtil<IPage<SysOperateLogVO>> queryOperateLog(@RequestBody SysOperateLogQo qo) {
-        return new HttpResultUtil<IPage<SysOperateLogVO>>().ok(sysLogApplicationService.queryOperateLogPage(qo));
+    public HttpResult<IPage<SysOperateLogVO>> queryOperateLog(@RequestBody SysOperateLogQo qo) {
+        return new HttpResult<IPage<SysOperateLogVO>>().ok(sysLogApplicationService.queryOperateLogPage(qo));
     }
 
     @PostMapping(value = "/operate/export")
@@ -59,8 +59,8 @@ public class SysLogApiController {
     @PostMapping(value = "/login/query")
 //    @ApiOperation("系统日志>登录日志>查询")
     @PreAuthorize("hasAuthority('sys:log:login:query')")
-    public HttpResultUtil<IPage<SysLoginLogVO>> queryLoginLog(@RequestBody SysLoginLogQo qo) {
-        return new HttpResultUtil<IPage<SysLoginLogVO>>().ok(sysLogApplicationService.queryLoginLogPage(qo));
+    public HttpResult<IPage<SysLoginLogVO>> queryLoginLog(@RequestBody SysLoginLogQo qo) {
+        return new HttpResult<IPage<SysLoginLogVO>>().ok(sysLogApplicationService.queryLoginLogPage(qo));
     }
 
     @PostMapping(value = "/login/export")

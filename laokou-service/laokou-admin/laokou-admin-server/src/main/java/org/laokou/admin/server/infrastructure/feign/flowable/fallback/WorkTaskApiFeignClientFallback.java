@@ -19,7 +19,7 @@ import feign.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkTaskApiFeignClient;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.flowable.client.dto.AuditDTO;
 import org.laokou.flowable.client.dto.ProcessDTO;
 import org.laokou.flowable.client.dto.TaskDTO;
@@ -39,21 +39,21 @@ public class WorkTaskApiFeignClientFallback implements WorkTaskApiFeignClient {
     private final Throwable throwable;
 
     @Override
-    public HttpResultUtil<PageVO<TaskVO>> query(TaskDTO dto) {
+    public HttpResult<PageVO<TaskVO>> query(TaskDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<PageVO<TaskVO>>().error("服务调用失败，请联系管理员");
+        return new HttpResult<PageVO<TaskVO>>().error("服务调用失败，请联系管理员");
     }
 
     @Override
-    public HttpResultUtil<AssigneeVO> audit(AuditDTO dto) {
+    public HttpResult<AssigneeVO> audit(AuditDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<AssigneeVO>().error("服务调用失败，请联系管理员");
+        return new HttpResult<AssigneeVO>().error("服务调用失败，请联系管理员");
     }
 
     @Override
-    public HttpResultUtil<AssigneeVO> start(ProcessDTO dto) {
+    public HttpResult<AssigneeVO> start(ProcessDTO dto) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<AssigneeVO>().error("服务调用失败，请联系管理员");
+        return new HttpResult<AssigneeVO>().error("服务调用失败，请联系管理员");
     }
 
     @Override

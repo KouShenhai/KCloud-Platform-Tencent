@@ -17,7 +17,7 @@ package org.laokou.admin.server.interfaces.controller;
 import org.laokou.admin.server.application.service.SysMonitorApplicationService;
 import org.laokou.admin.client.vo.CacheVO;
 import org.laokou.admin.server.infrastructure.server.Server;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,14 +37,14 @@ public class SysMonitorApiController {
 
     @GetMapping("/cache")
 //    @ApiOperation("系统监控>缓存")
-    public HttpResultUtil<CacheVO> redis() {
-        return new HttpResultUtil<CacheVO>().ok(sysMonitorApplicationService.getCacheInfo());
+    public HttpResult<CacheVO> redis() {
+        return new HttpResult<CacheVO>().ok(sysMonitorApplicationService.getCacheInfo());
     }
 
     @GetMapping("/server")
 //    @ApiOperation("系统监控>主机")
-    public HttpResultUtil<Server> server() throws Exception {
-        return new HttpResultUtil<Server>().ok(sysMonitorApplicationService.getServerInfo());
+    public HttpResult<Server> server() throws Exception {
+        return new HttpResult<Server>().ok(sysMonitorApplicationService.getServerInfo());
     }
 
 }

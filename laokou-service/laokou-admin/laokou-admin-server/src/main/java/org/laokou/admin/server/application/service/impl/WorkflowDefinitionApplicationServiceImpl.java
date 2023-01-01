@@ -24,8 +24,8 @@ import org.laokou.admin.server.application.service.WorkflowDefinitionApplication
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkDefinitionApiFeignClient;
 import org.laokou.admin.server.interfaces.qo.DefinitionQo;
-import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.exception.CustomException;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.flowable.client.dto.DefinitionDTO;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
@@ -52,7 +52,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     @Override
     public Boolean insertDefinition(String name, MultipartFile file) {
         try {
-            HttpResultUtil<Boolean> result = workDefinitionApiFeignClient.insert(name,file);
+            HttpResult<Boolean> result = workDefinitionApiFeignClient.insert(name,file);
             if (!result.success()) {
                 throw new CustomException(result.getCode(), result.getMsg());
             }
@@ -73,7 +73,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
             dto.setPageNum(pageNum);
             dto.setPageSize(pageSize);
             dto.setProcessName(processName);
-            HttpResultUtil<PageVO<DefinitionVO>> result = workDefinitionApiFeignClient.query(dto);
+            HttpResult<PageVO<DefinitionVO>> result = workDefinitionApiFeignClient.query(dto);
             if (!result.success()) {
                 throw new CustomException(result.getCode(), result.getMsg());
             }
@@ -105,7 +105,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     @Override
     public Boolean deleteDefinition(String deploymentId) {
         try {
-            HttpResultUtil<Boolean> result = workDefinitionApiFeignClient.delete(deploymentId);
+            HttpResult<Boolean> result = workDefinitionApiFeignClient.delete(deploymentId);
             if (!result.success()) {
                 throw new CustomException(result.getCode(), result.getMsg());
             }
@@ -118,7 +118,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     @Override
     public Boolean suspendDefinition(String definitionId) {
         try {
-            HttpResultUtil<Boolean> result = workDefinitionApiFeignClient.suspend(definitionId);
+            HttpResult<Boolean> result = workDefinitionApiFeignClient.suspend(definitionId);
             if (!result.success()) {
                 throw new CustomException(result.getCode(), result.getMsg());
             }
@@ -131,7 +131,7 @@ public class WorkflowDefinitionApplicationServiceImpl implements WorkflowDefinit
     @Override
     public Boolean activateDefinition(String definitionId) {
         try {
-            HttpResultUtil<Boolean> result = workDefinitionApiFeignClient.activate(definitionId);
+            HttpResult<Boolean> result = workDefinitionApiFeignClient.activate(definitionId);
             if (!result.success()) {
                 throw new CustomException(result.getCode(), result.getMsg());
             }

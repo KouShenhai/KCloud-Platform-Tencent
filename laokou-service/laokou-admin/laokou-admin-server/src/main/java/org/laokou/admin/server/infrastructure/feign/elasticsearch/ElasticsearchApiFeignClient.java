@@ -16,7 +16,7 @@
 package org.laokou.admin.server.infrastructure.feign.elasticsearch;
 import org.laokou.admin.server.infrastructure.feign.elasticsearch.factory.ElasticsearchApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -36,5 +36,5 @@ public interface ElasticsearchApiFeignClient {
      * @return
      */
     @PostMapping("/api/highlightSearch")
-    HttpResultUtil<SearchVO<Map<String,Object>>> highlightSearch(@RequestBody final SearchForm searchForm);
+    HttpResult<SearchVO<Map<String,Object>>> highlightSearch(@RequestBody final SearchForm searchForm);
 }

@@ -18,7 +18,6 @@ package org.laokou.common.core.utils;
 import cn.hutool.core.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.function.FieldFunction;
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Field;
@@ -47,7 +46,7 @@ public final class FieldUtil extends ReflectUtil {
             } else if (getter.startsWith(is)) {
                 getter = getter.substring(2);
             } else {
-                throw new CustomException("缺少get|is方法");
+                throw new RuntimeException("缺少get|is方法");
             }
             if (StringUtil.isNotEmpty(getter)) {
                 final char[] cs = getter.toCharArray();
@@ -55,7 +54,7 @@ public final class FieldUtil extends ReflectUtil {
                 cs[0] += 32;
                 return String.valueOf(cs);
             }
-            throw new CustomException("属性字段值丢失");
+            throw new RuntimeException("属性字段值丢失");
         } catch (Exception e) {
             log.error("获取字段名称失败 信息:{},错误:{}",e.getMessage(),e);
             return null;

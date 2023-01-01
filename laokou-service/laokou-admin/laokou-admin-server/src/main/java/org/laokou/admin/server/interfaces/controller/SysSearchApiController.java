@@ -15,7 +15,7 @@
  */
 package org.laokou.admin.server.interfaces.controller;
 import org.laokou.admin.server.application.service.SysSearchApplicationService;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +40,8 @@ public class SysSearchApiController {
     @PostMapping("/resource")
 //    @ApiOperation("搜索管理>资源")
     @PreAuthorize("hasAuthority('sys:search:resource:query')")
-    public HttpResultUtil<SearchVO<Map<String,Object>>> searchResource(@RequestBody SearchForm form) {
-        return new HttpResultUtil<SearchVO<Map<String,Object>>>().ok(sysSearchApplicationService.searchResource(form));
+    public HttpResult<SearchVO<Map<String,Object>>> searchResource(@RequestBody SearchForm form) {
+        return new HttpResult<SearchVO<Map<String,Object>>>().ok(sysSearchApplicationService.searchResource(form));
     }
 
 }

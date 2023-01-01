@@ -2,7 +2,7 @@ package org.laokou.admin.server.infrastructure.feign.flowable;
 import feign.Response;
 import org.laokou.admin.server.infrastructure.feign.flowable.factory.WorkTaskApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.flowable.client.dto.DefinitionDTO;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
@@ -29,7 +29,7 @@ public interface WorkDefinitionApiFeignClient {
      * @throws IOException
      */
     @PostMapping(value = "/insert",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    HttpResultUtil<Boolean> insert(@RequestParam("name")String name, @RequestPart("file") MultipartFile file);
+    HttpResult<Boolean> insert(@RequestParam("name")String name, @RequestPart("file") MultipartFile file);
 
     /**
      * 查询流程
@@ -37,7 +37,7 @@ public interface WorkDefinitionApiFeignClient {
      * @return
      */
     @PostMapping(value = "/query")
-    HttpResultUtil<PageVO<DefinitionVO>> query(@RequestBody DefinitionDTO dto);
+    HttpResult<PageVO<DefinitionVO>> query(@RequestBody DefinitionDTO dto);
 
     /**
      * 流程图
@@ -53,7 +53,7 @@ public interface WorkDefinitionApiFeignClient {
      * @return
      */
     @DeleteMapping(value = "/delete")
-    HttpResultUtil<Boolean> delete(@RequestParam("deploymentId")String deploymentId);
+    HttpResult<Boolean> delete(@RequestParam("deploymentId")String deploymentId);
 
     /**
      * 挂起流程
@@ -61,7 +61,7 @@ public interface WorkDefinitionApiFeignClient {
      * @return
      */
     @PutMapping(value = "/suspend")
-    HttpResultUtil<Boolean> suspend(@RequestParam("definitionId")String definitionId);
+    HttpResult<Boolean> suspend(@RequestParam("definitionId")String definitionId);
 
     /**
      * 激活流程
@@ -69,6 +69,6 @@ public interface WorkDefinitionApiFeignClient {
      * @return
      */
     @PutMapping(value = "/activate")
-    HttpResultUtil<Boolean> activate(@RequestParam("definitionId")String definitionId);
+    HttpResult<Boolean> activate(@RequestParam("definitionId")String definitionId);
 
 }

@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.application.service.SysSearchApplicationService;
 import org.laokou.admin.server.infrastructure.feign.elasticsearch.ElasticsearchApiFeignClient;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.elasticsearch.client.form.SearchForm;
 import org.laokou.elasticsearch.client.vo.SearchVO;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class SysSearchApplicationServiceImpl implements SysSearchApplicationServ
     @Override
     public SearchVO<Map<String,Object>> searchResource(SearchForm form) {
         try {
-            HttpResultUtil<SearchVO<Map<String, Object>>> result = elasticsearchApiFeignClient.highlightSearch(form);
+            HttpResult<SearchVO<Map<String, Object>>> result = elasticsearchApiFeignClient.highlightSearch(form);
             return result.getData();
         } catch (FeignException ex) {
             log.error("错误信息：{}",ex.getMessage());

@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.auth.server.infrastructure.token.AuthToken;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
@@ -44,8 +44,8 @@ public class SysAuthApiController {
               @Parameter(name = AuthConstant.UUID,description = "唯一标识",example = "1111")
             , @Parameter(name = OAuth2ParameterNames.GRANT_TYPE,description = "认证类型",example = "password")
     })
-    public HttpResultUtil<String> captcha(HttpServletRequest request) {
-        return new HttpResultUtil<String>().ok(sysAuthApplicationService.captcha(request));
+    public HttpResult<String> captcha(HttpServletRequest request) {
+        return new HttpResult<String>().ok(sysAuthApplicationService.captcha(request));
     }
 
     @PostMapping("/oauth2/login")
@@ -60,14 +60,14 @@ public class SysAuthApiController {
             , @Parameter(name = OAuth2ParameterNames.SCOPE,description = "认证范围",example = "auth")
             , @Parameter(name = OAuth2ParameterNames.GRANT_TYPE,description = "认证类型",example = "password")
     })
-    public HttpResultUtil<AuthToken> login(HttpServletRequest request) throws IOException {
-        return new HttpResultUtil<AuthToken>().ok(sysAuthApplicationService.login(request));
+    public HttpResult<AuthToken> login(HttpServletRequest request) throws IOException {
+        return new HttpResult<AuthToken>().ok(sysAuthApplicationService.login(request));
     }
 
     @GetMapping("/oauth2/logout")
     @Operation(summary = "系统认证>注销",description = "系统认证>注销")
-    public HttpResultUtil<Boolean> logout(HttpServletRequest request) {
-        return new HttpResultUtil<Boolean>().ok(sysAuthApplicationService.logout(request));
+    public HttpResult<Boolean> logout(HttpServletRequest request) {
+        return new HttpResult<Boolean>().ok(sysAuthApplicationService.logout(request));
     }
 
 }

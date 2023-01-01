@@ -18,7 +18,7 @@ package org.laokou.oss.server.support;
 import cn.hutool.core.util.IdUtil;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
-import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.core.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.oss.client.vo.CloudStorageVO;

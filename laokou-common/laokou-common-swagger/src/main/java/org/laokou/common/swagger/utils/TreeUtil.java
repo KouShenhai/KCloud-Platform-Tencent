@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.utils;
+package org.laokou.common.swagger.utils;
 import lombok.Data;
 import org.apache.commons.collections.CollectionUtils;
-import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.swagger.exception.CustomException;
 
 import java.util.*;
 
 /**
- * 构造树
  * @author laokou
- * @version 1.0
- * @date 2022/5/20 0020 下午 8:20
  */
 @Data
 public class TreeUtil {

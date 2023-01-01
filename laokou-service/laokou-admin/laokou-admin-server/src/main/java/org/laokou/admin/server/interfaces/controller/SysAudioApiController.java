@@ -22,8 +22,8 @@ import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
-import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.exception.CustomException;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.laokou.redis.annotation.Lock4j;
@@ -54,8 +54,8 @@ public class SysAudioApiController {
     @GetMapping("/auditLog")
 //    @ApiOperation("音频管理>审批日志")
     @PreAuthorize("hasAuthority('sys:resource:audio:auditLog')")
-    public HttpResultUtil<List<SysAuditLogVO>> auditLog(@RequestParam("businessId") Long businessId) {
-        return new HttpResultUtil<List<SysAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(businessId));
+    public HttpResult<List<SysAuditLogVO>> auditLog(@RequestParam("businessId") Long businessId) {
+        return new HttpResult<List<SysAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(businessId));
     }
 
     @PostMapping("/syncIndex")
@@ -63,8 +63,8 @@ public class SysAudioApiController {
     @OperateLog(module = "音频管理",name = "同步索引")
     @Lock4j(key = "audio_sync_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
     @PreAuthorize("hasAuthority('sys:resource:audio:syncIndex')")
-    public HttpResultUtil<Boolean> syncIndex(@RequestParam("code") String code) throws InterruptedException {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
+    public HttpResult<Boolean> syncIndex(@RequestParam("code") String code) throws InterruptedException {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
     }
 
     @PostMapping("/createIndex")
@@ -72,8 +72,8 @@ public class SysAudioApiController {
     @OperateLog(module = "音频管理",name = "创建索引")
     @PreAuthorize("hasAuthority('sys:resource:audio:createIndex')")
     @Lock4j(key = "audio_create_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
-    public HttpResultUtil<Boolean> createIndex(@RequestParam("code") String code) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.createResourceIndex(code));
+    public HttpResult<Boolean> createIndex(@RequestParam("code") String code) {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.createResourceIndex(code));
     }
 
     @DeleteMapping("/deleteIndex")
@@ -81,13 +81,13 @@ public class SysAudioApiController {
     @OperateLog(module = "音频管理",name = "删除索引")
     @PreAuthorize("hasAuthority('sys:resource:audio:deleteIndex')")
     @Lock4j(key = "audio_delete_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
-    public HttpResultUtil<Boolean> deleteIndex(@RequestParam("code") String code) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.deleteResourceIndex(code));
+    public HttpResult<Boolean> deleteIndex(@RequestParam("code") String code) {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.deleteResourceIndex(code));
     }
 
     @PostMapping("/upload")
 //    @ApiOperation("音频管理>上传")
-    public HttpResultUtil<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
+    public HttpResult<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) {
             throw new CustomException("上传的文件不能为空");
         }
@@ -97,45 +97,45 @@ public class SysAudioApiController {
         final InputStream inputStream = file.getInputStream();
         //文件大小
         final Long fileSize = file.getSize();
-        return new HttpResultUtil<UploadVO>().ok(sysResourceApplicationService.uploadResource("audio",fileName,inputStream,fileSize));
+        return new HttpResult<UploadVO>().ok(sysResourceApplicationService.uploadResource("audio",fileName,inputStream,fileSize));
     }
 
     @PostMapping("/query")
 //    @ApiOperation("音频管理>查询")
     @PreAuthorize("hasAuthority('sys:resource:audio:query')")
-    public HttpResultUtil<IPage<SysResourceVO>> query(@RequestBody SysResourceQo qo) {
-        return new HttpResultUtil<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
+    public HttpResult<IPage<SysResourceVO>> query(@RequestBody SysResourceQo qo) {
+        return new HttpResult<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
     }
 
     @GetMapping(value = "/detail")
 //    @ApiOperation("音频管理>详情")
     @PreAuthorize("hasAuthority('sys:resource:audio:detail')")
-    public HttpResultUtil<SysResourceVO> detail(@RequestParam("id") Long id) {
-        return new HttpResultUtil<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
+    public HttpResult<SysResourceVO> detail(@RequestParam("id") Long id) {
+        return new HttpResult<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
     }
 
     @PostMapping(value = "/insert")
 //    @ApiOperation("音频管理>新增")
     @OperateLog(module = "音频管理",name = "音频新增")
     @PreAuthorize("hasAuthority('sys:resource:audio:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) throws IOException {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto));
+    public HttpResult<Boolean> insert(@RequestBody SysResourceDTO dto) throws IOException {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.insertResource(dto));
     }
 
     @PutMapping(value = "/update")
 //    @ApiOperation("音频管理>修改")
     @OperateLog(module = "音频管理",name = "音频修改")
     @PreAuthorize("hasAuthority('sys:resource:audio:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) throws IOException {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto));
+    public HttpResult<Boolean> update(@RequestBody SysResourceDTO dto) throws IOException {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.updateResource(dto));
     }
 
     @DeleteMapping(value = "/delete")
 //    @ApiOperation("音频管理>删除")
     @OperateLog(module = "音频管理",name = "音频删除")
     @PreAuthorize("hasAuthority('sys:resource:audio:delete')")
-    public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.deleteResource(id));
+    public HttpResult<Boolean> delete(@RequestParam("id") Long id) {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.deleteResource(id));
     }
 
     @GetMapping(value = "/diagram")

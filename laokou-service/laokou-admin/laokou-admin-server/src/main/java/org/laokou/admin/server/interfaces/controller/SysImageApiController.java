@@ -22,8 +22,8 @@ import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
-import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.exception.CustomException;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.laokou.redis.annotation.Lock4j;
@@ -53,7 +53,7 @@ public class SysImageApiController {
 
     @PostMapping("/upload")
 //    @ApiOperation("图片管理>上传")
-    public HttpResultUtil<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
+    public HttpResult<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) {
             throw new CustomException("上传的文件不能为空");
         }
@@ -63,7 +63,7 @@ public class SysImageApiController {
         final InputStream inputStream = file.getInputStream();
         //文件大小
         final Long fileSize = file.getSize();
-        return new HttpResultUtil<UploadVO>().ok(sysResourceApplicationService.uploadResource("image",fileName,inputStream,fileSize));
+        return new HttpResult<UploadVO>().ok(sysResourceApplicationService.uploadResource("image",fileName,inputStream,fileSize));
     }
 
     @PostMapping("/syncIndex")
@@ -71,8 +71,8 @@ public class SysImageApiController {
     @OperateLog(module = "图片管理",name = "索引同步")
     @PreAuthorize("hasAuthority('sys:resource:image:syncIndex')")
     @Lock4j(key = "image_sync_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
-    public HttpResultUtil<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
+    public HttpResult<Boolean> sync(@RequestParam("code") String code) throws InterruptedException {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
     }
 
     @PostMapping("/createIndex")
@@ -80,8 +80,8 @@ public class SysImageApiController {
     @OperateLog(module = "图片管理",name = "创建索引")
     @PreAuthorize("hasAuthority('sys:resource:image:createIndex')")
     @Lock4j(key = "image_create_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
-    public HttpResultUtil<Boolean> create(@RequestParam("code") String code) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.createResourceIndex(code));
+    public HttpResult<Boolean> create(@RequestParam("code") String code) {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.createResourceIndex(code));
     }
 
     @DeleteMapping("/deleteIndex")
@@ -89,46 +89,46 @@ public class SysImageApiController {
     @OperateLog(module = "图片管理",name = "删除索引")
     @PreAuthorize("hasAuthority('sys:resource:image:deleteIndex')")
     @Lock4j(key = "image_delete_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
-    public HttpResultUtil<Boolean> deleteIndex(@RequestParam("code") String code) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.deleteResourceIndex(code));
+    public HttpResult<Boolean> deleteIndex(@RequestParam("code") String code) {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.deleteResourceIndex(code));
     }
 
     @PostMapping("/query")
 //    @ApiOperation("图片管理>查询")
     @PreAuthorize("hasAuthority('sys:resource:image:query')")
-    public HttpResultUtil<IPage<SysResourceVO>> query(@RequestBody SysResourceQo qo) {
-        return new HttpResultUtil<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
+    public HttpResult<IPage<SysResourceVO>> query(@RequestBody SysResourceQo qo) {
+        return new HttpResult<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
     }
 
     @GetMapping(value = "/detail")
 //    @ApiOperation("图片管理>详情")
     @PreAuthorize("hasAuthority('sys:resource:image:detail')")
-    public HttpResultUtil<SysResourceVO> detail(@RequestParam("id") Long id) {
-        return new HttpResultUtil<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
+    public HttpResult<SysResourceVO> detail(@RequestParam("id") Long id) {
+        return new HttpResult<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
     }
 
     @PostMapping(value = "/insert")
 //    @ApiOperation("图片管理>新增")
     @OperateLog(module = "图片管理",name = "图片新增")
     @PreAuthorize("hasAuthority('sys:resource:image:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysResourceDTO dto) throws IOException {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.insertResource(dto));
+    public HttpResult<Boolean> insert(@RequestBody SysResourceDTO dto) throws IOException {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.insertResource(dto));
     }
 
     @PutMapping(value = "/update")
 //    @ApiOperation("图片管理>修改")
     @OperateLog(module = "图片管理",name = "图片修改")
     @PreAuthorize("hasAuthority('sys:resource:image:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysResourceDTO dto) throws IOException {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.updateResource(dto));
+    public HttpResult<Boolean> update(@RequestBody SysResourceDTO dto) throws IOException {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.updateResource(dto));
     }
 
     @DeleteMapping(value = "/delete")
 //    @ApiOperation("图片管理>删除")
     @OperateLog(module = "图片管理",name = "图片删除")
     @PreAuthorize("hasAuthority('sys:resource:image:delete')")
-    public HttpResultUtil<Boolean> delete(@RequestParam("id") Long id) {
-        return new HttpResultUtil<Boolean>().ok(sysResourceApplicationService.deleteResource(id));
+    public HttpResult<Boolean> delete(@RequestParam("id") Long id) {
+        return new HttpResult<Boolean>().ok(sysResourceApplicationService.deleteResource(id));
     }
 
     @GetMapping(value = "/diagram")
@@ -141,8 +141,8 @@ public class SysImageApiController {
     @GetMapping("/auditLog")
 //    @ApiOperation("图片管理>审批日志")
     @PreAuthorize("hasAuthority('sys:resource:image:auditLog')")
-    public HttpResultUtil<List<SysAuditLogVO>> auditLog(@RequestParam("businessId") Long businessId) {
-        return new HttpResultUtil<List<SysAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(businessId));
+    public HttpResult<List<SysAuditLogVO>> auditLog(@RequestParam("businessId") Long businessId) {
+        return new HttpResult<List<SysAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(businessId));
     }
 
 }

@@ -19,7 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.flowable.client.dto.DefinitionDTO;
 import org.laokou.flowable.client.vo.DefinitionVO;
 import org.laokou.flowable.client.vo.PageVO;
@@ -41,14 +41,14 @@ public class WorkDefinitionApiController {
 
     @PostMapping(value = "/insert")
     @ApiOperation(value = "流程定义>新增流程")
-    public HttpResultUtil<Boolean> insert(@RequestParam("name")String name, @RequestPart("file") MultipartFile file) throws IOException {
-        return new HttpResultUtil<Boolean>().ok(workDefinitionService.insertDefinition(name,file.getInputStream()));
+    public HttpResult<Boolean> insert(@RequestParam("name")String name, @RequestPart("file") MultipartFile file) throws IOException {
+        return new HttpResult<Boolean>().ok(workDefinitionService.insertDefinition(name,file.getInputStream()));
     }
 
     @PostMapping(value = "/query")
     @ApiOperation(value = "流程定义>查询流程")
-    public HttpResultUtil<PageVO<DefinitionVO>> query(@RequestBody DefinitionDTO dto) {
-        return new HttpResultUtil<PageVO<DefinitionVO>>().ok(workDefinitionService.queryDefinitionPage(dto));
+    public HttpResult<PageVO<DefinitionVO>> query(@RequestBody DefinitionDTO dto) {
+        return new HttpResult<PageVO<DefinitionVO>>().ok(workDefinitionService.queryDefinitionPage(dto));
     }
 
     @GetMapping(value = "/diagram")
@@ -59,20 +59,20 @@ public class WorkDefinitionApiController {
 
     @DeleteMapping(value = "/delete")
     @ApiOperation(value = "流程定义>删除流程")
-    public HttpResultUtil<Boolean> delete(@RequestParam("deploymentId")String deploymentId) {
-        return new HttpResultUtil<Boolean>().ok(workDefinitionService.deleteDefinition(deploymentId));
+    public HttpResult<Boolean> delete(@RequestParam("deploymentId")String deploymentId) {
+        return new HttpResult<Boolean>().ok(workDefinitionService.deleteDefinition(deploymentId));
     }
 
     @PutMapping(value = "/suspend")
     @ApiOperation(value = "流程定义>挂起流程")
-    public HttpResultUtil<Boolean> suspend(@RequestParam("definitionId")String definitionId) {
-        return new HttpResultUtil<Boolean>().ok(workDefinitionService.suspendDefinition(definitionId));
+    public HttpResult<Boolean> suspend(@RequestParam("definitionId")String definitionId) {
+        return new HttpResult<Boolean>().ok(workDefinitionService.suspendDefinition(definitionId));
     }
 
     @PutMapping(value = "/activate")
     @ApiOperation(value = "流程定义>激活流程")
-    public HttpResultUtil<Boolean> activate(@RequestParam("definitionId")String definitionId) {
-        return new HttpResultUtil<Boolean>().ok(workDefinitionService.activateDefinition(definitionId));
+    public HttpResult<Boolean> activate(@RequestParam("definitionId")String definitionId) {
+        return new HttpResult<Boolean>().ok(workDefinitionService.activateDefinition(definitionId));
     }
 
 }

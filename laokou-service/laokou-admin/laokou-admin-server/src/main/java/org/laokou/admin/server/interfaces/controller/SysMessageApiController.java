@@ -20,7 +20,7 @@ import org.laokou.admin.client.dto.MessageDTO;
 import org.laokou.admin.server.interfaces.qo.SysMessageQo;
 import org.laokou.admin.client.vo.MessageDetailVO;
 import org.laokou.admin.client.vo.SysMessageVO;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,41 +45,41 @@ public class SysMessageApiController {
 //    @ApiOperation("系统消息>新增")
     @OperateLog(module = "系统消息",name = "消息新增")
     @PreAuthorize("hasAuthority('sys:message:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody MessageDTO dto) throws IOException {
-        return new HttpResultUtil<Boolean>().ok(sysMessageApplicationService.insertMessage(dto));
+    public HttpResult<Boolean> insert(@RequestBody MessageDTO dto) throws IOException {
+        return new HttpResult<Boolean>().ok(sysMessageApplicationService.insertMessage(dto));
     }
 
     @PostMapping("/query")
 //    @ApiOperation("系统消息>查询")
     @PreAuthorize("hasAuthority('sys:message:query')")
-    public HttpResultUtil<IPage<SysMessageVO>> query(@RequestBody SysMessageQo qo) {
-        return new HttpResultUtil<IPage<SysMessageVO>>().ok(sysMessageApplicationService.queryMessagePage(qo));
+    public HttpResult<IPage<SysMessageVO>> query(@RequestBody SysMessageQo qo) {
+        return new HttpResult<IPage<SysMessageVO>>().ok(sysMessageApplicationService.queryMessagePage(qo));
     }
 
     @GetMapping("/get")
 //    @ApiOperation("系统消息>查看")
     @OperateLog(module = "系统消息",name = "消息查看")
-    public HttpResultUtil<MessageDetailVO> get(@RequestParam("id")Long id) {
-        return new HttpResultUtil<MessageDetailVO>().ok(sysMessageApplicationService.getMessageByDetailId(id));
+    public HttpResult<MessageDetailVO> get(@RequestParam("id")Long id) {
+        return new HttpResult<MessageDetailVO>().ok(sysMessageApplicationService.getMessageByDetailId(id));
     }
 
     @GetMapping("/detail")
 //    @ApiOperation("系统消息>详情")
     @PreAuthorize("hasAuthority('sys:message:detail')")
-    public HttpResultUtil<MessageDetailVO> detail(@RequestParam("id")Long id) {
-        return new HttpResultUtil<MessageDetailVO>().ok(sysMessageApplicationService.getMessageById(id));
+    public HttpResult<MessageDetailVO> detail(@RequestParam("id")Long id) {
+        return new HttpResult<MessageDetailVO>().ok(sysMessageApplicationService.getMessageById(id));
     }
 
     @PostMapping("/unread/list")
 //    @ApiOperation("系统消息>未读")
-    public HttpResultUtil<IPage<SysMessageVO>> unread(@RequestBody SysMessageQo qo) {
-        return new HttpResultUtil<IPage<SysMessageVO>>().ok(sysMessageApplicationService.getUnReadList(qo));
+    public HttpResult<IPage<SysMessageVO>> unread(@RequestBody SysMessageQo qo) {
+        return new HttpResult<IPage<SysMessageVO>>().ok(sysMessageApplicationService.getUnReadList(qo));
     }
 
     @GetMapping("/count")
 //    @ApiOperation("系统消息>统计")
-    public HttpResultUtil<Long> count() {
-        return new HttpResultUtil<Long>().ok(sysMessageApplicationService.unReadCount());
+    public HttpResult<Long> count() {
+        return new HttpResult<Long>().ok(sysMessageApplicationService.unReadCount());
     }
 
 }

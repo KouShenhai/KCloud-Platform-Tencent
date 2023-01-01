@@ -33,7 +33,7 @@ import org.laokou.admin.client.dto.SysUserDTO;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.enums.SuperAdminEnum;
-import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
 import org.apache.commons.collections.CollectionUtils;
 import org.laokou.common.core.utils.ConvertUtil;

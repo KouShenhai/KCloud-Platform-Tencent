@@ -38,7 +38,8 @@ import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.auth.client.utils.UserUtil;
-import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.swagger.exception.CustomException;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.elasticsearch.client.index.ResourceIndex;
 import org.laokou.flowable.client.dto.AuditDTO;
 import org.laokou.flowable.client.dto.ProcessDTO;
@@ -54,7 +55,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.SyncIndexDTO;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -256,7 +256,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     @Override
     public Boolean auditResourceTask(AuditDTO dto) {
         try {
-            HttpResultUtil<AssigneeVO> result = workTaskApiFeignClient.audit(dto);
+            HttpResult<AssigneeVO> result = workTaskApiFeignClient.audit(dto);
             if (!result.success()) {
                 throw new CustomException(result.getCode(),result.getMsg());
             }
@@ -332,7 +332,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             dto.setUsername(UserUtil.getUsername());
             dto.setUserId(UserUtil.getUserId());
             dto.setProcessName(qo.getProcessName());
-            HttpResultUtil<PageVO<TaskVO>> result = workTaskApiFeignClient.query(dto);
+            HttpResult<PageVO<TaskVO>> result = workTaskApiFeignClient.query(dto);
             if (!result.success()) {
                 throw new CustomException(result.getCode(),result.getMsg());
             }
@@ -379,7 +379,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             dto.setBusinessKey(businessKey.toString());
             dto.setBusinessName(businessName);
             dto.setProcessKey(PROCESS_KEY);
-            HttpResultUtil<AssigneeVO> result = workTaskApiFeignClient.start(dto);
+            HttpResult<AssigneeVO> result = workTaskApiFeignClient.start(dto);
             if (!result.success()) {
                 throw new CustomException(result.getCode(),result.getMsg());
             }

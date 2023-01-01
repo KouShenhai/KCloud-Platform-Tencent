@@ -17,7 +17,7 @@ package org.laokou.admin.server.interfaces.controller;
 import org.laokou.admin.server.application.service.SysDeptApplicationService;
 import org.laokou.admin.client.dto.SysDeptDTO;
 import org.laokou.admin.server.interfaces.qo.SysDeptQo;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.admin.client.vo.SysDeptVO;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 //import io.swagger.annotations.Api;
@@ -42,51 +42,51 @@ public class SysDeptApiController {
 
     @GetMapping("/list")
 //    @ApiOperation("系统部门>列表")
-    public HttpResultUtil<SysDeptVO> list() {
-        return new HttpResultUtil<SysDeptVO>().ok(sysDeptApplicationService.getDeptList());
+    public HttpResult<SysDeptVO> list() {
+        return new HttpResult<SysDeptVO>().ok(sysDeptApplicationService.getDeptList());
     }
 
     @PostMapping("/query")
 //    @ApiOperation("系统部门>查询")
     @PreAuthorize("hasAuthority('sys:dept:query')")
-    public HttpResultUtil<List<SysDeptVO>> query(@RequestBody SysDeptQo qo) {
-        return new HttpResultUtil<List<SysDeptVO>>().ok(sysDeptApplicationService.queryDeptList(qo));
+    public HttpResult<List<SysDeptVO>> query(@RequestBody SysDeptQo qo) {
+        return new HttpResult<List<SysDeptVO>>().ok(sysDeptApplicationService.queryDeptList(qo));
     }
 
     @PostMapping("/insert")
 //    @ApiOperation("系统部门>新增")
     @OperateLog(module = "系统部门",name = "部门新增")
     @PreAuthorize("hasAuthority('sys:dept:insert')")
-    public HttpResultUtil<Boolean> insert(@RequestBody SysDeptDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysDeptApplicationService.insertDept(dto));
+    public HttpResult<Boolean> insert(@RequestBody SysDeptDTO dto) {
+        return new HttpResult<Boolean>().ok(sysDeptApplicationService.insertDept(dto));
     }
 
     @PutMapping("/update")
 //    @ApiOperation("系统部门>修改")
     @OperateLog(module = "系统部门",name = "部门修改")
     @PreAuthorize("hasAuthority('sys:dept:update')")
-    public HttpResultUtil<Boolean> update(@RequestBody SysDeptDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysDeptApplicationService.updateDept(dto));
+    public HttpResult<Boolean> update(@RequestBody SysDeptDTO dto) {
+        return new HttpResult<Boolean>().ok(sysDeptApplicationService.updateDept(dto));
     }
 
     @GetMapping("/detail")
 //    @ApiOperation("系统部门>详情")
-    public HttpResultUtil<SysDeptVO> detail(@RequestParam("id")Long id) {
-        return new HttpResultUtil<SysDeptVO>().ok(sysDeptApplicationService.getDept(id));
+    public HttpResult<SysDeptVO> detail(@RequestParam("id")Long id) {
+        return new HttpResult<SysDeptVO>().ok(sysDeptApplicationService.getDept(id));
     }
 
     @DeleteMapping("/delete")
 //    @ApiOperation("系统部门>删除")
     @OperateLog(module = "系统部门",name = "部门删除")
     @PreAuthorize("hasAuthority('sys:dept:delete')")
-    public HttpResultUtil<Boolean> delete(@RequestParam("id")Long id) {
-        return new HttpResultUtil<Boolean>().ok(sysDeptApplicationService.deleteDept(id));
+    public HttpResult<Boolean> delete(@RequestParam("id")Long id) {
+        return new HttpResult<Boolean>().ok(sysDeptApplicationService.deleteDept(id));
     }
 
     @GetMapping("/get")
 //    @ApiOperation("系统部门>部门树ids")
-    public HttpResultUtil<List<Long>> get(@RequestParam(value = "roleId")Long roleId) {
-        return new HttpResultUtil<List<Long>>().ok(sysDeptApplicationService.getDeptIdsByRoleId(roleId));
+    public HttpResult<List<Long>> get(@RequestParam(value = "roleId")Long roleId) {
+        return new HttpResult<List<Long>>().ok(sysDeptApplicationService.getDeptIdsByRoleId(roleId));
     }
 
 }

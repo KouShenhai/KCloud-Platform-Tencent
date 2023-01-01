@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 package org.laokou.common.core.utils;
-
-
-import org.laokou.common.core.exception.CustomException;
-
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-
 /**
  * 分布式锁工具类
  * @author laokou
@@ -53,7 +48,7 @@ public class LockUtil {
             //把字符串所有小写都改成大写成为正规的mac地址并返回
             return sb.toString().toUpperCase().replaceAll("-","");
         } catch (UnknownHostException | SocketException e) {
-            throw new CustomException("getLocalMAC error");
+            throw new RuntimeException("getLocalMAC error");
         }
     }
 
@@ -64,7 +59,7 @@ public class LockUtil {
             pid = pid.substring(0,indexOf);
             return pid;
         }
-        throw new CustomException("ManagementFactory error");
+        throw new RuntimeException("ManagementFactory error");
     }
 
 }

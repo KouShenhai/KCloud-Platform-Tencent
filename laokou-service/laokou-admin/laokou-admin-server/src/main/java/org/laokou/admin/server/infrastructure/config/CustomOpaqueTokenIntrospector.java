@@ -20,7 +20,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.common.core.exception.ErrorCode;
+import org.laokou.common.swagger.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
 import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.redis.utils.RedisUtil;

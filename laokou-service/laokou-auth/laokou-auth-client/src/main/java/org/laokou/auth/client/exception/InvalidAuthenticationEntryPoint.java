@@ -17,8 +17,8 @@ package org.laokou.auth.client.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
+import org.laokou.common.swagger.exception.ErrorCode;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -36,6 +36,6 @@ public class InvalidAuthenticationEntryPoint implements AuthenticationEntryPoint
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         log.error("错误信息：{}",authException.getMessage());
-        CustomAuthExceptionHandler.handleException(response,ErrorCode.AUTHORIZATION_INVALID, MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
+        CustomAuthExceptionHandler.handleException(response, ErrorCode.AUTHORIZATION_INVALID, MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
     }
 }

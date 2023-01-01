@@ -18,8 +18,8 @@ package org.laokou.auth.client.exception;
 
 import cn.hutool.http.HttpStatus;
 import jakarta.servlet.http.HttpServletResponse;
-import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.springframework.util.MimeTypeUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,7 +34,7 @@ public class CustomAuthExceptionHandler {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
         PrintWriter writer = response.getWriter();
-        writer.write(JacksonUtil.toJsonStr(new HttpResultUtil<>().error(code,message)));
+        writer.write(JacksonUtil.toJsonStr(new HttpResult().error(code,message)));
         writer.flush();
     }
 

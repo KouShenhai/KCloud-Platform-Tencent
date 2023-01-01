@@ -15,8 +15,8 @@
  */
 package org.laokou.oss.server.controller;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.exception.CustomException;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.oss.server.support.StorageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class OssApiController {
 
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 //    @ApiOperation("对象存储>上传")
-    public HttpResultUtil<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
+    public HttpResult<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) {
             throw new CustomException("上传的文件不能为空");
         }
@@ -54,7 +54,7 @@ public class OssApiController {
         String url = storageFactory.build().upload(inputStream, fileName, fileSize);
         log.info("上传文件地址：{}",url);
         vo.setUrl(url);
-        return new HttpResultUtil<UploadVO>().ok(vo);
+        return new HttpResult<UploadVO>().ok(vo);
     }
 
 }

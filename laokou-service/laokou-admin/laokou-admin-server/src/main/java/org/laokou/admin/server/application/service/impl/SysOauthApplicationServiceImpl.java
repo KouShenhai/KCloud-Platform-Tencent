@@ -27,7 +27,7 @@ import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
-import org.laokou.common.core.exception.CustomException;
+import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.core.exception;
+package org.laokou.common.swagger.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.laokou.common.core.utils.MessageUtil;
 
 /**
- * 自定义异常
  * @author laokou
  */
 @Data

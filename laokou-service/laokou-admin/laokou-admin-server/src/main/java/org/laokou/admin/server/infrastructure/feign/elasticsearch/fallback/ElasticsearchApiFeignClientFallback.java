@@ -15,7 +15,7 @@
  */
 package org.laokou.admin.server.infrastructure.feign.elasticsearch.fallback;
 import org.laokou.admin.server.infrastructure.feign.elasticsearch.ElasticsearchApiFeignClient;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.elasticsearch.client.form.SearchForm;
@@ -34,9 +34,9 @@ public class ElasticsearchApiFeignClientFallback implements ElasticsearchApiFeig
     private final Throwable throwable;
 
     @Override
-    public HttpResultUtil<SearchVO<Map<String,Object>>> highlightSearch(SearchForm searchForm) {
+    public HttpResult<SearchVO<Map<String,Object>>> highlightSearch(SearchForm searchForm) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<SearchVO<Map<String,Object>>>().error("服务调用失败，请联系管理员");
+        return new HttpResult<SearchVO<Map<String,Object>>>().error("服务调用失败，请联系管理员");
     }
 
 }

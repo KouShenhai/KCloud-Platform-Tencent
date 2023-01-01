@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.common.core.utils;
-
-
-import org.laokou.common.core.exception.CustomException;
-
 import java.security.MessageDigest;
 import java.util.Arrays;
 
@@ -52,7 +48,7 @@ public class WxgzhUtil {
             messageDigest.update(str.getBytes());
             return getFormattedText(messageDigest.digest());
         } catch (Exception e) {
-            throw new CustomException(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
 	}
 
