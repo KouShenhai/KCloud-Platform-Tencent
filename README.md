@@ -67,7 +67,7 @@ KCloud-Platform-Tencent（老寇云平台）是一款企业级微服务架构的
 - 消息队列：RocketMQ & Kafka
 - 数据缓存：Redis
 - 统计报表：MongoDB
-- 对象存储：
+- 对象存储：Local & Alibaba Cloud OSS & FastDFS & Minio
 - 服务部署：Docker-Compose
 - 持续交付：Jenkins
 - 持久层框架：Mybatis Plus

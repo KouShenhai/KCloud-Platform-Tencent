@@ -9,17 +9,6 @@ services:
     restart: on-failure
     ports:
       - "5555:5555"
-    depends_on:
-      - laokou-register-service
-  laokou-register-service:
-    tty: true
-    image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-register:1.0-SNAPSHOT
-    container_name: laokou-register
-    environment:
-      - TZ="Asia/Shanghai"
-    ports:
-      - "1111:1111"
-    restart: on-failure
   laokou-admin-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-admin-server:1.0-SNAPSHOT
@@ -29,8 +18,6 @@ services:
     ports:
       - "9999:9999"
     restart: on-failure
-    depends_on:
-      - laokou-register-service
   laokou-auth-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-auth-server:1.0-SNAPSHOT
@@ -38,10 +25,8 @@ services:
     environment:
       - TZ="Asia/Shanghai"
     ports:
-      - "10000:10000"
+      - "1111:1111"
     restart: on-failure
-    depends_on:
-      - laokou-register-service
   laokou-monitor-service:
     tty: true
     image: registry.cn-hangzhou.aliyuncs.com/koushenhai/laokou-monitor:1.0-SNAPSHOT
@@ -60,5 +45,3 @@ services:
     ports:
       - "10003:10003"
     restart: on-failure
-    depends_on:
-      - laokou-register-service
