@@ -16,6 +16,7 @@
 package org.laokou.auth.server;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.laokou.common.swagger.config.CorsConfig;
+import org.laokou.common.swagger.config.SwaggerConfig;
 import org.laokou.redis.config.RedisSessionConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,7 +38,7 @@ import org.springframework.context.annotation.Import;
 @EnableAspectJAutoProxy
 @EnableEncryptableProperties
 @EnableFeignClients
-@Import({RedisSessionConfig.class, CorsConfig.class})
+@Import({RedisSessionConfig.class, CorsConfig.class, SwaggerConfig.class})
 @EnableDiscoveryClient
 public class AuthApplication{
 

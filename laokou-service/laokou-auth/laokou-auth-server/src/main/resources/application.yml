@@ -1,8 +1,6 @@
 # server
 server:
   port: 1111
-  tomcat:
-    uri-encoding: UTF-8
   servlet:
     encoding:
       charset: UTF-8
@@ -20,12 +18,13 @@ server:
 # spring
 spring:
   profiles:
-    # 环境 dev|test|prod
+    # dev|test|prod
     active: @profile.active@
+  # i18n
   messages:
-    encoding: UTF-8
     basename: i18n/messages
   cloud:
+    # network
     inetutils:
       ignoredInterfaces:
         - docker0
@@ -58,3 +57,8 @@ management:
   endpoint:
     health:
       show-details: always
+
+# springdoc
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
