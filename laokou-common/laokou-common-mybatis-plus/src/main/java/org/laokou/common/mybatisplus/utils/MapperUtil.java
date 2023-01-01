@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.mybatisplus.mapper.BaseBatchDao;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +43,7 @@ public class MapperUtil<T> {
             } catch (Exception e) {
                 sqlSession.rollback();
                 log.error("错误信息：{}",e.getMessage());
-                throw new CustomException(500,"批量插入数据失败");
+                throw new RuntimeException("批量插入数据失败");
             }
             if (i % batchNum == 0) {
                 sqlSession.commit();

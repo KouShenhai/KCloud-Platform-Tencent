@@ -58,3 +58,8 @@ management:
   endpoint:
     health:
       show-details: always
+
+# springdoc
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

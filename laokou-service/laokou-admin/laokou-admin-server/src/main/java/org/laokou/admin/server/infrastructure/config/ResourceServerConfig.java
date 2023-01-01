@@ -44,12 +44,16 @@ public class ResourceServerConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityFilterChain resourceFilterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf().disable()
                 .sessionManagement()
                 // 基于token.关闭session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests().requestMatchers(
-                 "/actuator/**").permitAll()
+                        "/v3/api-docs/**"
+                        , "/swagger-ui.html"
+                        , "/swagger-ui/**"
+                        , "/actuator/**").permitAll()
                 .and()
                 .authorizeHttpRequests()
                 .anyRequest()

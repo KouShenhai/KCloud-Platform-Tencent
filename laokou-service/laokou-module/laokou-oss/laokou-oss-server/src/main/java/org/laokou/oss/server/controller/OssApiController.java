@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.laokou.oss.server.controller;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.swagger.utils.HttpResult;
@@ -29,7 +31,7 @@ import java.io.InputStream;
  * @author laokou
  */
 @RestController
-//@Api(value = "对象存储API",protocols = "http",tags = "对象存储API")
+@Tag(name = "Oss API",description = "对象存储API")
 @RequestMapping("/api")
 @Slf4j
 public class OssApiController {
@@ -38,7 +40,7 @@ public class OssApiController {
     private StorageFactory storageFactory;
 
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    @ApiOperation("对象存储>上传")
+    @Operation(summary = "对象存储>上传",description = "对象存储>上传")
     public HttpResult<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) {
             throw new CustomException("上传的文件不能为空");

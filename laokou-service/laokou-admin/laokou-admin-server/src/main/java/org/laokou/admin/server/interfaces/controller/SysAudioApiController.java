@@ -15,7 +15,11 @@
  */
 package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
 import org.laokou.admin.server.application.service.WorkflowTaskApplicationService;
 import org.laokou.admin.client.dto.SysResourceDTO;
@@ -30,6 +34,7 @@ import org.laokou.redis.annotation.Lock4j;
 import org.laokou.redis.enums.LockScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -41,34 +46,36 @@ import java.util.List;
  * @date 2022/8/19 0019 下午 3:56
  */
 @RestController
-//@Api(value = "音频管理API",protocols = "http",tags = "音频管理API")
+@Tag(name = "Sys Resource Audio API",description = "音频管理API")
 @RequestMapping("/sys/resource/audio/api")
+@RequiredArgsConstructor
 public class SysAudioApiController {
 
-    @Autowired
-    private SysResourceApplicationService sysResourceApplicationService;
+    private final SysResourceApplicationService sysResourceApplicationService;
 
-    @Autowired
-    private WorkflowTaskApplicationService workflowTaskApplicationService;
+    private final WorkflowTaskApplicationService workflowTaskApplicationService;
 
     @GetMapping("/auditLog")
-//    @ApiOperation("音频管理>审批日志")
+    @Parameter(name = "businessId",description = "业务编号", required = true, example = "1441610450502848541")
+    @Operation(summary = "音频管理>审批日志",description = "音频管理>审批日志")
     @PreAuthorize("hasAuthority('sys:resource:audio:auditLog')")
     public HttpResult<List<SysAuditLogVO>> auditLog(@RequestParam("businessId") Long businessId) {
         return new HttpResult<List<SysAuditLogVO>>().ok(sysResourceApplicationService.queryAuditLogList(businessId));
     }
 
     @PostMapping("/syncIndex")
-//    @ApiOperation("音频管理>同步索引")
+    @Operation(summary = "音频管理>同步索引",description = "音频管理>同步索引")
     @OperateLog(module = "音频管理",name = "同步索引")
     @Lock4j(key = "audio_sync_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
     @PreAuthorize("hasAuthority('sys:resource:audio:syncIndex')")
+    @Parameter(name = "code",description = "编码",example = "audio")
     public HttpResult<Boolean> syncIndex(@RequestParam("code") String code) throws InterruptedException {
         return new HttpResult<Boolean>().ok(sysResourceApplicationService.syncResourceIndex(code));
     }
 
     @PostMapping("/createIndex")
-//    @ApiOperation("音频管理>创建索引")
+    @Operation(summary = "音频管理>创建索引",description = "音频管理>创建索引")
+    @Parameter(name = "code",description = "编码",example = "audio")
     @OperateLog(module = "音频管理",name = "创建索引")
     @PreAuthorize("hasAuthority('sys:resource:audio:createIndex')")
     @Lock4j(key = "audio_create_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
@@ -77,7 +84,8 @@ public class SysAudioApiController {
     }
 
     @DeleteMapping("/deleteIndex")
-//    @ApiOperation("音频管理>删除索引")
+    @Operation(summary = "音频管理>删除索引",description = "音频管理>删除索引")
+    @Parameter(name = "code",description = "编码",example = "audio")
     @OperateLog(module = "音频管理",name = "删除索引")
     @PreAuthorize("hasAuthority('sys:resource:audio:deleteIndex')")
     @Lock4j(key = "audio_delete_index_lock", scope = LockScope.DISTRIBUTED_LOCK)
@@ -85,37 +93,37 @@ public class SysAudioApiController {
         return new HttpResult<Boolean>().ok(sysResourceApplicationService.deleteResourceIndex(code));
     }
 
-    @PostMapping("/upload")
+//    @PostMapping("/upload")
 //    @ApiOperation("音频管理>上传")
-    public HttpResult<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
-        if (file.isEmpty()) {
-            throw new CustomException("上传的文件不能为空");
-        }
-        //文件名
-        final String fileName = file.getOriginalFilename();
-        //文件流
-        final InputStream inputStream = file.getInputStream();
-        //文件大小
-        final Long fileSize = file.getSize();
-        return new HttpResult<UploadVO>().ok(sysResourceApplicationService.uploadResource("audio",fileName,inputStream,fileSize));
-    }
+//    public HttpResult<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
+//        if (file.isEmpty()) {
+//            throw new CustomException("上传的文件不能为空");
+//        }
+//        //文件名
+//        final String fileName = file.getOriginalFilename();
+//        //文件流
+//        final InputStream inputStream = file.getInputStream();
+//        //文件大小
+//        final Long fileSize = file.getSize();
+//        return new HttpResult<UploadVO>().ok(sysResourceApplicationService.uploadResource("audio",fileName,inputStream,fileSize));
+//    }
 
     @PostMapping("/query")
-//    @ApiOperation("音频管理>查询")
+    @Operation(summary = "音频管理>查询",description = "音频管理>查询")
     @PreAuthorize("hasAuthority('sys:resource:audio:query')")
     public HttpResult<IPage<SysResourceVO>> query(@RequestBody SysResourceQo qo) {
         return new HttpResult<IPage<SysResourceVO>>().ok(sysResourceApplicationService.queryResourcePage(qo));
     }
 
     @GetMapping(value = "/detail")
-//    @ApiOperation("音频管理>详情")
+    @Operation(summary = "音频管理>详情",description = "音频管理>详情")
     @PreAuthorize("hasAuthority('sys:resource:audio:detail')")
     public HttpResult<SysResourceVO> detail(@RequestParam("id") Long id) {
         return new HttpResult<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));
     }
 
     @PostMapping(value = "/insert")
-//    @ApiOperation("音频管理>新增")
+    @Operation(summary = "音频管理>新增",description = "音频管理>新增")
     @OperateLog(module = "音频管理",name = "音频新增")
     @PreAuthorize("hasAuthority('sys:resource:audio:insert')")
     public HttpResult<Boolean> insert(@RequestBody SysResourceDTO dto) throws IOException {
@@ -123,7 +131,7 @@ public class SysAudioApiController {
     }
 
     @PutMapping(value = "/update")
-//    @ApiOperation("音频管理>修改")
+    @Operation(summary = "音频管理>修改",description = "音频管理>修改")
     @OperateLog(module = "音频管理",name = "音频修改")
     @PreAuthorize("hasAuthority('sys:resource:audio:update')")
     public HttpResult<Boolean> update(@RequestBody SysResourceDTO dto) throws IOException {
@@ -131,7 +139,7 @@ public class SysAudioApiController {
     }
 
     @DeleteMapping(value = "/delete")
-//    @ApiOperation("音频管理>删除")
+    @Operation(summary = "音频管理>删除",description = "音频管理>删除")
     @OperateLog(module = "音频管理",name = "音频删除")
     @PreAuthorize("hasAuthority('sys:resource:audio:delete')")
     public HttpResult<Boolean> delete(@RequestParam("id") Long id) {
@@ -139,7 +147,7 @@ public class SysAudioApiController {
     }
 
     @GetMapping(value = "/diagram")
-//    @ApiOperation(value = "音频管理>流程图")
+    @Operation(summary = "音频管理>流程图",description = "音频管理>流程图")
     @PreAuthorize("hasAuthority('sys:resource:audio:diagram')")
     public void diagram(@RequestParam("processInstanceId")String processInstanceId, HttpServletResponse response) throws IOException {
         workflowTaskApplicationService.diagramProcess(processInstanceId, response);

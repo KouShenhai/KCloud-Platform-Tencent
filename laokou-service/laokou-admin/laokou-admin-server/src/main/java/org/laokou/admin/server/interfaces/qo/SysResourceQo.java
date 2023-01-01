@@ -15,6 +15,7 @@
  */
 package org.laokou.admin.server.interfaces.qo;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BasePage;
@@ -26,10 +27,13 @@ import org.laokou.common.mybatisplus.entity.BasePage;
  */
 @Data
 @EqualsAndHashCode(callSuper=true)
+@Schema(name = "SysResourceQo",description = "资源实体类")
 public class SysResourceQo extends BasePage {
-
+    @Schema(name = "title",description = "标题")
     private String title;
+    @Schema(name = "code",description = "编码")
     private String code;
+    @Schema(name = "id",description = "编号")
     private Long id;
 
 }

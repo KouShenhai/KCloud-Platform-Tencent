@@ -69,7 +69,7 @@ public class Server {
     /**
      * 磁盘相关信息
      */
-    private List<SysFile> sysFiles = new LinkedList<>();
+    private List<SysFile> files = new LinkedList<>();
 
     public Cpu getCpu() {
         return cpu;
@@ -103,12 +103,12 @@ public class Server {
         this.sys = sys;
     }
 
-    public List<SysFile> getSysFiles() {
-        return sysFiles;
+    public List<SysFile> getFiles() {
+        return files;
     }
 
-    public void setSysFiles(List<SysFile> sysFiles) {
-        this.sysFiles = sysFiles;
+    public void setFiles(List<SysFile> files) {
+        this.files = files;
     }
 
     public void copyTo() {
@@ -202,7 +202,7 @@ public class Server {
             sysFile.setFree(convertFileSize(free));
             sysFile.setUsed(convertFileSize(used));
             sysFile.setUsage(NumberUtil.mul(NumberUtil.div(used, total, 4), 100));
-            sysFiles.add(sysFile);
+            files.add(sysFile);
         }
     }
 

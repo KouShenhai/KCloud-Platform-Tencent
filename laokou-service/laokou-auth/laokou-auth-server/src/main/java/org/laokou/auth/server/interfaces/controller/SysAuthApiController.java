@@ -34,11 +34,12 @@ import java.io.IOException;
 @RestController
 @Tag(name = "Sys Auth API",description = "系统认证API")
 @RequiredArgsConstructor
+@RequestMapping("/oauth2")
 public class SysAuthApiController {
 
     private final SysAuthApplicationService sysAuthApplicationService;
 
-    @GetMapping("/oauth2/captcha")
+    @GetMapping("/captcha")
     @Operation(summary = "系统认证>验证码",description = "系统认证>验证码")
     @Parameters(value = {
               @Parameter(name = AuthConstant.UUID,description = "唯一标识",example = "1111")
@@ -48,7 +49,7 @@ public class SysAuthApiController {
         return new HttpResult<String>().ok(sysAuthApplicationService.captcha(request));
     }
 
-    @PostMapping("/oauth2/login")
+    @PostMapping("/login")
     @Operation(summary = "系统认证>登录",description = "系统认证>登录")
     @Parameters(value = {
               @Parameter(name = OAuth2ParameterNames.USERNAME,description = "用户名",example = "admin")
@@ -64,7 +65,7 @@ public class SysAuthApiController {
         return new HttpResult<AuthToken>().ok(sysAuthApplicationService.login(request));
     }
 
-    @GetMapping("/oauth2/logout")
+    @GetMapping("/logout")
     @Operation(summary = "系统认证>注销",description = "系统认证>注销")
     public HttpResult<Boolean> logout(HttpServletRequest request) {
         return new HttpResult<Boolean>().ok(sysAuthApplicationService.logout(request));
