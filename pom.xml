@@ -105,7 +105,6 @@
             <id>dev</id>
             <properties>
                 <profile.active>dev</profile.active>
-                <tencent.namespace>laokou</tencent.namespace>
                 <mybatis-plus.log-impl>org.apache.ibatis.logging.stdout.StdOutImpl</mybatis-plus.log-impl>
             </properties>
             <activation>
@@ -117,7 +116,6 @@
             <id>test</id>
             <properties>
                 <profile.active>test</profile.active>
-                <tencent.namespace>laokou</tencent.namespace>
                 <mybatis-plus.log-impl>org.apache.ibatis.logging.stdout.StdOutImpl</mybatis-plus.log-impl>
             </properties>
         </profile>
@@ -126,7 +124,6 @@
             <id>prod</id>
             <properties>
                 <profile.active>prod</profile.active>
-                <tencent.namespace>laokou</tencent.namespace>
                 <mybatis-plus.log-impl>org.apache.ibatis.logging.nologging.NoLoggingImpl</mybatis-plus.log-impl>
             </properties>
         </profile>

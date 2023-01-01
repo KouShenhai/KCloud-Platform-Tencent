@@ -1,30 +1,41 @@
-jasypt:
-  encryptor:
-    password: koushenhai5201314wumeihua
+# server
+server:
+  port: 10007
+  tomcat:
+    connection-timeout: 600000
+  undertow:
+    threads:
+      # 设置IO线程数，来执行非阻塞任务，负责多个连接数
+      io: 16
+      # 工作线程数
+      worker: 256
+    # 每块buffer的空间大小
+    buffer-size: 1024
+    # 分配堆外内存
+    direct-buffers: true
+
 #spring
 spring:
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-  application:
-    name: @pom.parent.artifactId@
   profiles:
-    # 环境 dev|test|prod
+    # dev|test|prod
     active: @profile.active@
+  # i18n
   messages:
-    encoding: UTF-8
     basename: i18n/messages
   servlet:
+    # multipart
     multipart:
       enabled: true
       max-file-size: -1
       max-request-size: -1
   cloud:
+    # network
     inetutils:
       ignoredInterfaces:
         - docker0
         - veth.*
 
+# log
 management:
   endpoints:
     web:
@@ -34,7 +45,7 @@ management:
     health:
       show-details: always
 
-#mybatis
+# mybatis-plus
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   configuration:
