@@ -24,13 +24,11 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * SpringSecurity最新版本更新
  * @author laokou
- * @version 1.0
- * @date 2021/5/30 0030 下午 2:48
  */
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -45,7 +43,12 @@ public class ResourceServerConfig {
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityFilterChain resourceFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests().requestMatchers(
+        return http
+                .sessionManagement()
+                // 基于token.关闭session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeHttpRequests().requestMatchers(
                  "/actuator/**").permitAll()
                 .and()
                 .authorizeHttpRequests()

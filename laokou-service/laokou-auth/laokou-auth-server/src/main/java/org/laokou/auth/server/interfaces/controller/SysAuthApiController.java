@@ -32,7 +32,7 @@ import java.io.IOException;
  * @author laokou
  */
 @RestController
-@Tag(name = "系统认证API",description = "系统认证API")
+@Tag(name = "Sys Auth API",description = "系统认证API")
 @RequiredArgsConstructor
 public class SysAuthApiController {
 
@@ -59,8 +59,7 @@ public class SysAuthApiController {
             , @Parameter(name = AuthConstant.CAPTCHA,description = "验证码",example = "Bb6v")
             , @Parameter(name = OAuth2ParameterNames.SCOPE,description = "认证范围",example = "auth")
             , @Parameter(name = OAuth2ParameterNames.GRANT_TYPE,description = "认证类型",example = "password")
-    }
-    )
+    })
     public HttpResultUtil<AuthToken> login(HttpServletRequest request) throws IOException {
         return new HttpResultUtil<AuthToken>().ok(sysAuthApplicationService.login(request));
     }
