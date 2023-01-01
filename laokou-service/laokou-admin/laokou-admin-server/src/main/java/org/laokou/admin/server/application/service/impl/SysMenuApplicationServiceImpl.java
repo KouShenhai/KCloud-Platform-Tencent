@@ -28,7 +28,7 @@ import org.laokou.common.core.constant.Constant;
 import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.redis.utils.RedisKeyUtil;
-import org.laokou.common.swagger.utils.TreeUtil;
+import org.laokou.common.core.utils.TreeUtil;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

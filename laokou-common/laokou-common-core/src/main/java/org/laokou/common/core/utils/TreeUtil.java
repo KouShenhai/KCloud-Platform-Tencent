@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.common.swagger.utils;
+package org.laokou.common.core.utils;
 import lombok.Data;
 import org.apache.commons.collections.CollectionUtils;
-import org.laokou.common.swagger.exception.CustomException;
-
 import java.util.*;
 
 /**
@@ -33,7 +31,7 @@ public class TreeUtil {
     }
     public static <T extends TreeNo> T buildTreeNode(List<T> treeNodes,T rootNode) {
         if (null == rootNode) {
-            throw new CustomException("请构造根节点");
+            throw new RuntimeException("请构造根节点");
         }
         treeNodes.add(rootNode);
         //list转map
