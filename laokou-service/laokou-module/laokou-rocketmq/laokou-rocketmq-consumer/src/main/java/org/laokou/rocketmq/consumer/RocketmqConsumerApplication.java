@@ -1,5 +1,6 @@
 package org.laokou.rocketmq.consumer;
 
+import org.laokou.common.swagger.config.CorsConfig;
 import org.laokou.redis.config.RedisSessionConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.Import;
 @SpringBootApplication(scanBasePackages = {"org.laokou.redis","org.laokou.common.core","org.laokou.rocketmq.consumer"})
 @EnableDiscoveryClient
 @EnableFeignClients
-@Import(RedisSessionConfig.class)
+@Import({RedisSessionConfig.class, CorsConfig.class})
 public class RocketmqConsumerApplication {
 
     public static void main(String[] args) {

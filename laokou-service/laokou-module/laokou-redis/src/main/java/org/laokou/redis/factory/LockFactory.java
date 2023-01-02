@@ -15,19 +15,18 @@
  */
 package org.laokou.redis.factory;
 
+import lombok.RequiredArgsConstructor;
 import org.laokou.redis.utils.RedisUtil;
 import org.laokou.redis.enums.LockScope;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 /**
  * @author laokou
  */
 @Component
+@RequiredArgsConstructor
 public class LockFactory {
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
     public Locks build(LockScope scope) {
         return switch (scope) {

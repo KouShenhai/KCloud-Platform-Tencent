@@ -22,9 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.swagger.exception.CustomException;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.im.client.PushMsgDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.MsgDTO;
@@ -56,7 +56,7 @@ public class PlatformNoticeConsumer implements RocketMQListener<MessageExt> {
                 PushMsgDTO pushMsgDTO = new PushMsgDTO();
                 pushMsgDTO.setReceiver(dto.getReceiver());
                 pushMsgDTO.setMsg(dto.getTitle());
-                HttpResultUtil<Boolean> result = imApiFeignClient.push(pushMsgDTO);
+                HttpResult<Boolean> result = imApiFeignClient.push(pushMsgDTO);
                 if (!result.success()) {
                     throw new CustomException("消费失败");
                 }

@@ -16,12 +16,12 @@
 package org.laokou.oss.server.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.oss.server.support.StorageFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,10 +34,10 @@ import java.io.InputStream;
 @Tag(name = "Oss API",description = "对象存储API")
 @RequestMapping("/api")
 @Slf4j
+@RequiredArgsConstructor
 public class OssApiController {
 
-    @Autowired
-    private StorageFactory storageFactory;
+    private final StorageFactory storageFactory;
 
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "对象存储>上传",description = "对象存储>上传")

@@ -22,9 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.swagger.exception.CustomException;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
@@ -51,7 +51,7 @@ public class CreateIndexConsumer implements RocketMQListener<MessageExt> {
         }
         try {
             CreateIndexDTO createIndexDTO = JacksonUtil.toBean(messageBody, CreateIndexDTO.class);
-            HttpResultUtil<Boolean> result = elasticsearchApiFeignClient.create(createIndexDTO);
+            HttpResult<Boolean> result = elasticsearchApiFeignClient.create(createIndexDTO);
             if (!result.success()) {
                 throw new CustomException("消费失败");
             }

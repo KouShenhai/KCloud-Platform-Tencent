@@ -4,9 +4,6 @@ spring:
   profiles:
     # 环境 dev|test|prod
     active: @profile.active@
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
   application:
     name: @pom.parent.artifactId@
   cloud:

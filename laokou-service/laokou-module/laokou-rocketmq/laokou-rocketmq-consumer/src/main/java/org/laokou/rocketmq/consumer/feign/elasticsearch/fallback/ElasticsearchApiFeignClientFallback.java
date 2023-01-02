@@ -17,7 +17,7 @@ package org.laokou.rocketmq.consumer.feign.elasticsearch.fallback;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
 import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
@@ -35,21 +35,21 @@ public class ElasticsearchApiFeignClientFallback implements ElasticsearchApiFeig
     private final Throwable throwable;
 
     @Override
-    public HttpResultUtil<Boolean> syncBatch(ElasticsearchDTO model) {
+    public HttpResult<Boolean> syncBatch(ElasticsearchDTO model) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
+        return new HttpResult<Boolean>().error("服务调用失败，请联系管理员");
     }
 
     @Override
-    public HttpResultUtil<Boolean> create(CreateIndexDTO model) {
+    public HttpResult<Boolean> create(CreateIndexDTO model) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
+        return new HttpResult<Boolean>().error("服务调用失败，请联系管理员");
     }
 
     @Override
-    public HttpResultUtil<Boolean> delete(String indexName) {
+    public HttpResult<Boolean> delete(String indexName) {
         log.error("服务调用失败，报错原因：{}",throwable.getMessage());
-        return new HttpResultUtil<Boolean>().error("服务调用失败，请联系管理员");
+        return new HttpResult<Boolean>().error("服务调用失败，请联系管理员");
     }
 
 }

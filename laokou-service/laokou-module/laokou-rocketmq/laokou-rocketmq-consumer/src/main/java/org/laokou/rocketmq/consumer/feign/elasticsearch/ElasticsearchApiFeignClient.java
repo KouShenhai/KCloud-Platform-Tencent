@@ -16,7 +16,7 @@
 package org.laokou.rocketmq.consumer.feign.elasticsearch;
 
 import org.laokou.common.core.constant.ServiceConstant;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
 import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.factory.ElasticsearchApiFeignClientFallbackFactory;
@@ -40,7 +40,7 @@ public interface ElasticsearchApiFeignClient {
      * @return
      */
     @PostMapping("/api/syncBatch")
-    HttpResultUtil<Boolean> syncBatch(@RequestBody final ElasticsearchDTO model);
+    HttpResult<Boolean> syncBatch(@RequestBody final ElasticsearchDTO model);
 
     /**
      * 异步创建索引
@@ -48,7 +48,7 @@ public interface ElasticsearchApiFeignClient {
      * @return
      */
     @PostMapping("/api/create")
-    HttpResultUtil<Boolean> create(@RequestBody final CreateIndexDTO model);
+    HttpResult<Boolean> create(@RequestBody final CreateIndexDTO model);
 
     /**
      * 异步删除索引
@@ -56,5 +56,5 @@ public interface ElasticsearchApiFeignClient {
      * @return
      */
     @DeleteMapping("/api/delete")
-    HttpResultUtil<Boolean> delete(@RequestParam("indexName")final String indexName);
+    HttpResult<Boolean> delete(@RequestParam("indexName")final String indexName);
 }

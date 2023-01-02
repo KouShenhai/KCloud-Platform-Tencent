@@ -16,8 +16,10 @@
 
 package org.laokou.log.server.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.log.client.dto.AuditLogDTO;
 import org.laokou.log.client.dto.LoginLogDTO;
 import org.laokou.log.client.dto.OperateLogDTO;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sys/log/api")
+@Tag(name = "Sys Log API",description = "系统日志API")
 public class SysLogController {
 
     private final SysOperateLogService sysOperateLogService;
@@ -44,18 +47,21 @@ public class SysLogController {
     private final SysAuditLogService sysAuditLogService;
 
     @PostMapping("/login")
-    public HttpResultUtil<Boolean> login(@RequestBody LoginLogDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysLoginLogService.insertLoginLog(dto));
+    @Operation(summary = "系统日志>登录日志>新增",description = "系统日志>登录日志>新增")
+    public HttpResult<Boolean> login(@RequestBody LoginLogDTO dto) {
+        return new HttpResult<Boolean>().ok(sysLoginLogService.insertLoginLog(dto));
     }
 
     @PostMapping("/operate")
-    public HttpResultUtil<Boolean> operate(@RequestBody OperateLogDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysOperateLogService.insertOperateLog(dto));
+    @Operation(summary = "系统日志>操作日志>新增",description = "系统日志>操作日志>新增")
+    public HttpResult<Boolean> operate(@RequestBody OperateLogDTO dto) {
+        return new HttpResult<Boolean>().ok(sysOperateLogService.insertOperateLog(dto));
     }
 
     @PostMapping("/audit")
-    public HttpResultUtil<Boolean> audit(@RequestBody AuditLogDTO dto) {
-        return new HttpResultUtil<Boolean>().ok(sysAuditLogService.insertAuditLog(dto));
+    @Operation(summary = "系统日志>审批日志>新增",description = "系统日志>审批日志>新增")
+    public HttpResult<Boolean> audit(@RequestBody AuditLogDTO dto) {
+        return new HttpResult<Boolean>().ok(sysAuditLogService.insertAuditLog(dto));
     }
 
 }

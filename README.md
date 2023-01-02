@@ -162,10 +162,10 @@ elasticsearch:
 ##### 代码引入
 ```java
 @Service
+@RequiredArgsConstructor
 public class SysUserApplicationServiceImpl implements SysUserApplicationService {
-
-    @Autowired
-    private SysUserService sysUserService;
+    
+    private final SysUserService sysUserService;
 
     @Override
     @DataFilter(tableAlias = "boot_sys_user")

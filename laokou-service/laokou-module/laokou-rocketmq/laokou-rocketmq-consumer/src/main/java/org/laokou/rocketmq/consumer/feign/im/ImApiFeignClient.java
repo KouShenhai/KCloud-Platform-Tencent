@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.rocketmq.consumer.feign.im;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.rocketmq.consumer.feign.im.factory.ImApiFeignClientFallbackFactory;
 import org.laokou.common.core.constant.ServiceConstant;
 import org.laokou.im.client.PushMsgDTO;
@@ -35,6 +35,6 @@ public interface ImApiFeignClient {
      * @return
      */
     @PostMapping("/api/push")
-    HttpResultUtil<Boolean> push(@RequestBody PushMsgDTO dto);
+    HttpResult<Boolean> push(@RequestBody PushMsgDTO dto);
 
 }

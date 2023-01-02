@@ -15,7 +15,7 @@
  */
 package org.laokou.rocketmq.consumer.feign.log;
 import org.laokou.common.core.constant.ServiceConstant;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.log.client.dto.AuditLogDTO;
 import org.laokou.log.client.dto.LoginLogDTO;
 import org.laokou.log.client.dto.OperateLogDTO;
@@ -37,7 +37,7 @@ public interface LogApiFeignClient {
      * @return
      */
     @PostMapping("/login")
-    HttpResultUtil<Boolean> login(@RequestBody LoginLogDTO dto);
+    HttpResult<Boolean> login(@RequestBody LoginLogDTO dto);
 
     /**
      * 操作日志
@@ -45,7 +45,7 @@ public interface LogApiFeignClient {
      * @return
      */
     @PostMapping("/operate")
-    HttpResultUtil<Boolean> operate(@RequestBody OperateLogDTO dto);
+    HttpResult<Boolean> operate(@RequestBody OperateLogDTO dto);
 
     /**
      * 审批日志
@@ -53,6 +53,6 @@ public interface LogApiFeignClient {
      * @return
      */
     @PostMapping("/audit")
-    HttpResultUtil<Boolean> audit(@RequestBody AuditLogDTO dto);
+    HttpResult<Boolean> audit(@RequestBody AuditLogDTO dto);
 
 }

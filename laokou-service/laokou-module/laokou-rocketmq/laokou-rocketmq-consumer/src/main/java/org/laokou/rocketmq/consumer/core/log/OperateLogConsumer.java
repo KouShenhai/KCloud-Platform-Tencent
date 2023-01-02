@@ -22,9 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.laokou.common.core.exception.CustomException;
-import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.swagger.exception.CustomException;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.log.client.dto.OperateLogDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.consumer.feign.log.LogApiFeignClient;
@@ -50,7 +50,7 @@ public class OperateLogConsumer implements RocketMQListener<MessageExt> {
         }
         try {
             final OperateLogDTO operateLogDTO = JacksonUtil.toBean(messageBody, OperateLogDTO.class);
-            HttpResultUtil<Boolean> result = logApiFeignClient.operate(operateLogDTO);
+            HttpResult<Boolean> result = logApiFeignClient.operate(operateLogDTO);
             if (!result.success()) {
                 throw new CustomException("消费失败");
             }

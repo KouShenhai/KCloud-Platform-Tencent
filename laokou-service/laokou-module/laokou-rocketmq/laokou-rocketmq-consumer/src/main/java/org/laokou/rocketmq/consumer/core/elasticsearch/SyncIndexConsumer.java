@@ -22,10 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.laokou.common.core.exception.CustomException;
 import org.laokou.common.core.utils.ConvertUtil;
-import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.common.swagger.exception.CustomException;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.SyncIndexDTO;
@@ -53,7 +53,7 @@ public class SyncIndexConsumer implements RocketMQListener<MessageExt> {
         try {
             SyncIndexDTO syncIndexDTO = JacksonUtil.toBean(messageBody, SyncIndexDTO.class);
             ElasticsearchDTO dto = ConvertUtil.sourceToTarget(syncIndexDTO, ElasticsearchDTO.class);
-            HttpResultUtil<Boolean> result = elasticsearchApiFeignClient.syncBatch(dto);
+            HttpResult<Boolean> result = elasticsearchApiFeignClient.syncBatch(dto);
             if (!result.success()) {
                 throw new CustomException("消费失败");
             }

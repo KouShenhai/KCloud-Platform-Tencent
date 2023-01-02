@@ -17,6 +17,7 @@ package org.laokou.admin.server.infrastructure.aspect;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.laokou.admin.server.infrastructure.feign.rocketmq.RocketmqApiFeignClient;
 import org.laokou.auth.client.utils.UserUtil;
@@ -35,7 +36,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.laokou.log.client.dto.OperateLogDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
@@ -50,10 +50,10 @@ import java.util.stream.Collectors;
 @Component
 @Aspect
 @Slf4j
+@RequiredArgsConstructor
 public class OperateLogAspect {
 
-    @Autowired
-    private RocketmqApiFeignClient rocketmqApiFeignClient;
+    private final RocketmqApiFeignClient rocketmqApiFeignClient;
 
     /**
      * 配置切入点
