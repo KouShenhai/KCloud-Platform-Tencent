@@ -66,7 +66,6 @@ public class XssFilter implements GlobalFilter, Ordered {
                     .build(true).toUri();
             return chain.filter(exchange.mutate().request(request.mutate().uri(newUri).build()).build());
         }
-        // 过滤post/put请求
         return chain.filter(exchange);
     }
 
