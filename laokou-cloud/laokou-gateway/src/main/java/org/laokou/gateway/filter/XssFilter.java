@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.laokou.gateway.filter;
-
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.common.core.utils.XssUtil;
 import org.laokou.gateway.constant.GatewayConstant;
@@ -54,13 +53,20 @@ public class XssFilter implements GlobalFilter, Ordered {
             if (StringUtil.isEmpty(rawQuery)) {
                 return chain.filter(exchange);
             }
+            String[] query = rawQuery.split(Constant.AND);
+            StringBuffer sb = new StringBuffer();
+            for (String str : query) {
+                sb.append(XssUtil.filter(str)).append(Constant.AND);
+            }
             // 过滤后，重新构建请求体
-            rawQuery = XssUtil.clean(rawQuery);
+            rawQuery = sb.toString();
+            rawQuery = rawQuery.substring(0,rawQuery.length() - 1);
             URI newUri = UriComponentsBuilder.fromUri(uri)
                     .replaceQuery(rawQuery)
                     .build(true).toUri();
             return chain.filter(exchange.mutate().request(request.mutate().uri(newUri).build()).build());
         }
+        // 过滤post/put请求
         return chain.filter(exchange);
     }
 

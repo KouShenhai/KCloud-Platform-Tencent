@@ -35,4 +35,6 @@ public interface Constant {
     String UNDERLINE = "_";
 
     String COMMA = ",";
+
+    String AND = "&";
 }
