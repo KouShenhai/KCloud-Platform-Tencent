@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface RocketmqApiFeignClient {
 
     /**
-     * 异步发送
+     * 单向发送
      * @param topic: 主题
      * @param dto:   消息内容（Json格式）
      */

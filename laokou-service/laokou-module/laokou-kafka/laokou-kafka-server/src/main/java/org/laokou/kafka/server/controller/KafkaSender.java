@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 package org.laokou.kafka.server.controller;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.kafka.client.dto.KafkaDTO;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author laokou
  */
@@ -32,30 +28,15 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/api")
 @Slf4j
 @RequiredArgsConstructor
-@Api(value = "Kafka消息API",protocols = "http",tags = "Kafka消息API")
+@Tag(name = "Kafka API",description = "消息队列API")
 public class KafkaSender {
 
     private final KafkaTemplate kafkaTemplate;
 
-    @PostMapping("/send/{topic}")
-    @ApiOperation("Kafka消息>同步发送")
-    public void sendMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto) throws InterruptedException, ExecutionException {
-        kafkaTemplate.send(topic,dto).get();
+    @PostMapping("/sendOne/{topic}")
+    @Operation(summary = "消息队列>单向发送",description = "消息队列>单向发送")
+    public void sendMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto) {
+        kafkaTemplate.send(topic,dto.getData());
     }
 
-    @PostMapping("/sendAsync/{topic}")
-    @ApiOperation("Kafka消息>异步发送")
-    public void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody KafkaDTO dto) {
-//        kafkaTemplate.send(topic,dto.getData()).addCallback(new ListenableFutureCallback() {
-//            @Override
-//            public void onFailure(Throwable throwable) {
-//                log.error("报错信息：{}",throwable.getMessage());
-//            }
-//
-//            @Override
-//            public void onSuccess(Object o) {
-//                log.info("发送成功");
-//            }
-//        });
-    }
 }

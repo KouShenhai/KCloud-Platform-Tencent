@@ -1,4 +1,5 @@
 package org.laokou.mongodb.server.form;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.laokou.mongodb.client.dto.SearchDTO;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * @author laokou
  */
 @Data
-//@ApiModel("查询实体类")
+@Schema(name = "QueryForm",description = "MongoDB查询实体类")
 public class QueryForm implements Serializable {
 
     /**

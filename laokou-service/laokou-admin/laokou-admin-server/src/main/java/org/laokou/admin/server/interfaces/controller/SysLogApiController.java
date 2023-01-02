@@ -16,6 +16,8 @@
 package org.laokou.admin.server.interfaces.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysLogApplicationService;
@@ -34,7 +36,7 @@ import java.io.IOException;
  * @author laokou
  */
 @RestController
-//@Api(value = "系统日志API",protocols = "http",tags = "系统日志API")
+@Tag(name = "Sys Log API",description = "系统日志API")
 @RequestMapping("/sys/log/api")
 @RequiredArgsConstructor
 public class SysLogApiController {
@@ -42,14 +44,14 @@ public class SysLogApiController {
     private final SysLogApplicationService sysLogApplicationService;
 
     @PostMapping(value = "/operate/query")
-//    @ApiOperation("系统日志>操作日志>查询")
+    @Operation(summary = "系统日志>操作日志>查询",description = "系统日志>操作日志>查询")
     @PreAuthorize("hasAuthority('sys:log:operate:query')")
     public HttpResult<IPage<SysOperateLogVO>> queryOperateLog(@RequestBody SysOperateLogQo qo) {
         return new HttpResult<IPage<SysOperateLogVO>>().ok(sysLogApplicationService.queryOperateLogPage(qo));
     }
 
     @PostMapping(value = "/operate/export")
-//    @ApiOperation("系统日志>操作日志>导出")
+    @Operation(summary = "系统日志>操作日志>导出",description = "系统日志>操作日志>导出")
     @OperateLog(module = "操作日志",name = "日志导出")
     @PreAuthorize("hasAuthority('sys:log:operate:export')")
     public void exportOperateLog(@RequestBody SysOperateLogQo qo, HttpServletResponse response) throws IOException {
@@ -57,14 +59,14 @@ public class SysLogApiController {
     }
 
     @PostMapping(value = "/login/query")
-//    @ApiOperation("系统日志>登录日志>查询")
+    @Operation(summary = "系统日志>登录日志>查询",description = "系统日志>登录日志>查询")
     @PreAuthorize("hasAuthority('sys:log:login:query')")
     public HttpResult<IPage<SysLoginLogVO>> queryLoginLog(@RequestBody SysLoginLogQo qo) {
         return new HttpResult<IPage<SysLoginLogVO>>().ok(sysLogApplicationService.queryLoginLogPage(qo));
     }
 
     @PostMapping(value = "/login/export")
-//    @ApiOperation("系统日志>登录日志>导出")
+    @Operation(summary = "系统日志>登录日志>导出",description = "系统日志>登录日志>导出")
     @OperateLog(module = "登录日志",name = "日志导出")
     @PreAuthorize("hasAuthority('sys:log:login:export')")
     public void exportLoginLog(@RequestBody SysLoginLogQo qo, HttpServletResponse response) throws IOException {

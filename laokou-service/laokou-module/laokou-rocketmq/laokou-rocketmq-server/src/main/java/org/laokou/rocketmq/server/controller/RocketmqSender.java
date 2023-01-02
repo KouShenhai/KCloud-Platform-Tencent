@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 package org.laokou.rocketmq.server.controller;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;
@@ -32,20 +31,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 @Slf4j
 @RequiredArgsConstructor
-@Api(value = "rocketmq消息API",protocols = "http",tags = "rocketmq消息API")
+@Tag(name = "RocketMQ API",description = "消息队列API")
 public class RocketmqSender {
 
     private final RocketMQTemplate rocketMQTemplate;
 
     @PostMapping("/send/{topic}")
-    @ApiOperation("rocketmq消息>同步发送")
+    @Operation(summary = "消息队列>同步发送",description = "消息队列>同步发送")
     public void sendMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto) {
         SendStatus sendStatus = rocketMQTemplate.syncSend(topic, dto).getSendStatus();
         log.info("消息发送状态：{}",sendStatus.name());
     }
 
     @PostMapping("/sendAsync/{topic}")
-    @ApiOperation("rocketmq消息>异步发送")
+    @Operation(summary = "消息队列>异步发送",description = "消息队列>异步发送")
     public void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto) {
         rocketMQTemplate.asyncSend(topic, dto, new SendCallback() {
             @Override
@@ -59,7 +58,7 @@ public class RocketmqSender {
         });
     }
     @PostMapping("/sendOne/{topic}")
-    @ApiOperation("rocketmq消息>单向发送")
+    @Operation(summary = "消息队列>单向发送",description = "消息队列>单向发送")
     public void sendOneMessage(@PathVariable("topic") String topic, @RequestBody RocketmqDTO dto) {
          // 单向发送，只负责发送消息，不会触发回调函数，即发送消息请求不等待
          // 适用于耗时短，但对可靠性不高的场景，如日志收集

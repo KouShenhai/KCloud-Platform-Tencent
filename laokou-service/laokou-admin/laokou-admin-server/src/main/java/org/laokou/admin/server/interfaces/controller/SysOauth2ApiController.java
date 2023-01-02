@@ -15,41 +15,43 @@
  */
 package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysOauthApplicationService;
 import org.laokou.admin.client.dto.SysOauthDTO;
 import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 /**
  * @author laokou
  */
 @RestController
-//@Api(value = "系统认证API",protocols = "http",tags = "系统认证API")
-@RequestMapping("/sys/oauth/api")
-public class SysOauthApiController {
+@Tag(name = "Sys Oauth2 API",description = "系统认证API")
+@RequestMapping("/sys/oauth2/api")
+@RequiredArgsConstructor
+public class SysOauth2ApiController {
 
-    @Autowired
-    private SysOauthApplicationService sysOauthApplicationService;
+    private final SysOauthApplicationService sysOauthApplicationService;
 
     @PostMapping("/query")
-//    @ApiOperation("系统认证>查询")
+    @Operation(summary = "系统认证>查询",description = "系统认证>查询")
     @PreAuthorize("hasAuthority('sys:oauth:query')")
     public HttpResult<IPage<SysOauthVO>> query(@RequestBody SysOauthQo qo) {
         return new HttpResult<IPage<SysOauthVO>>().ok(sysOauthApplicationService.queryOauthPage(qo));
     }
 
     @GetMapping(value = "/detail")
-//    @ApiOperation("系统认证>详情")
+    @Operation(summary = "系统认证>详情",description = "系统认证>详情")
     public HttpResult<SysOauthVO> detail(@RequestParam("id") Long id) {
         return new HttpResult<SysOauthVO>().ok(sysOauthApplicationService.getOauthById(id));
     }
 
     @PostMapping(value = "/insert")
-//    @ApiOperation("系统认证>新增")
+    @Operation(summary = "系统认证>新增",description = "系统认证>新增")
     @OperateLog(module = "系统认证",name = "认证新增")
     @PreAuthorize("hasAuthority('sys:oauth:insert')")
     public HttpResult<Boolean> insert(@RequestBody SysOauthDTO dto) {
@@ -57,7 +59,7 @@ public class SysOauthApiController {
     }
 
     @PutMapping(value = "/update")
-//    @ApiOperation("系统认证>修改")
+    @Operation(summary = "系统认证>修改",description = "系统认证>修改")
     @OperateLog(module = "系统认证",name = "认证修改")
     @PreAuthorize("hasAuthority('sys:oauth:update')")
     public HttpResult<Boolean> update(@RequestBody SysOauthDTO dto) {
@@ -65,7 +67,7 @@ public class SysOauthApiController {
     }
 
     @DeleteMapping(value = "/delete")
-//    @ApiOperation("系统认证>删除")
+    @Operation(summary = "系统认证>删除",description = "系统认证>删除")
     @OperateLog(module = "系统认证",name = "认证删除")
     @PreAuthorize("hasAuthority('sys:oauth:delete')")
     public HttpResult<Boolean> delete(@RequestParam("id") Long id) {

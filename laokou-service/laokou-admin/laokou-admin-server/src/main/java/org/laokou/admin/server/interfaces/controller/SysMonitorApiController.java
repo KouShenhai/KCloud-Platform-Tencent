@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.interfaces.controller;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysMonitorApplicationService;
 import org.laokou.admin.client.vo.CacheVO;
 import org.laokou.admin.server.infrastructure.server.Server;
 import org.laokou.common.swagger.utils.HttpResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,21 +30,21 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2022/7/27 0027 下午 3:13
  */
 @RestController
-//@Api(value = "系统监控API",protocols = "http",tags = "系统监控API")
+@Tag(name = "Sys Monitor API",description = "系统监控API")
 @RequestMapping("/sys/monitor/api")
+@RequiredArgsConstructor
 public class SysMonitorApiController {
 
-    @Autowired
-    private SysMonitorApplicationService sysMonitorApplicationService;
+    private final SysMonitorApplicationService sysMonitorApplicationService;
 
     @GetMapping("/cache")
-//    @ApiOperation("系统监控>缓存")
+    @Operation(summary = "系统监控>缓存",description = "系统监控>缓存")
     public HttpResult<CacheVO> redis() {
         return new HttpResult<CacheVO>().ok(sysMonitorApplicationService.getCacheInfo());
     }
 
     @GetMapping("/server")
-//    @ApiOperation("系统监控>主机")
+    @Operation(summary = "系统监控>主机",description = "系统监控>主机")
     public HttpResult<Server> server() throws Exception {
         return new HttpResult<Server>().ok(sysMonitorApplicationService.getServerInfo());
     }

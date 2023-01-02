@@ -9,9 +9,6 @@
     </parent>
     <groupId>org.laokou</groupId>
     <artifactId>laokou-log-server</artifactId>
-    <properties>
-        <java.version>17</java.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.laokou</groupId>

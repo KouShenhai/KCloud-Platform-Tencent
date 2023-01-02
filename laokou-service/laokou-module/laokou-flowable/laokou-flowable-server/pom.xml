@@ -9,9 +9,6 @@
     </parent>
     <groupId>org.laokou</groupId>
     <artifactId>laokou-flowable-server</artifactId>
-    <properties>
-        <java.version>17</java.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>

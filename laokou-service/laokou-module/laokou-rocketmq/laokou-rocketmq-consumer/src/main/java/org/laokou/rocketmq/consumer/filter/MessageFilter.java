@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.laokou.rocketmq.consumer.filter;
-
 import lombok.RequiredArgsConstructor;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.laokou.common.core.utils.JacksonUtil;

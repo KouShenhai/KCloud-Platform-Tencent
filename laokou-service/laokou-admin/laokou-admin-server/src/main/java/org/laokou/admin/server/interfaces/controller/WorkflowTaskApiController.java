@@ -15,6 +15,8 @@
  */
 package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.admin.server.application.service.SysResourceApplicationService;
@@ -25,12 +27,11 @@ import org.laokou.flowable.client.dto.AuditDTO;
 import org.laokou.flowable.client.vo.TaskVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 /**
  * @author laokou
  */
 @RestController
-//@Api(value = "流程任务API",protocols = "http",tags = "流程任务API")
+@Tag(name = "Workflow Task API",description = "流程任务API")
 @RequestMapping("/workflow/task/api")
 @RequiredArgsConstructor
 public class WorkflowTaskApiController {
@@ -38,14 +39,14 @@ public class WorkflowTaskApiController {
     private final SysResourceApplicationService sysResourceApplicationService;
 
     @PostMapping(value = "/resource/query")
-//    @ApiOperation(value = "流程任务>资源查询")
+    @Operation(summary = "流程任务>资源查询",description = "流程任务>资源查询")
     @PreAuthorize("hasAuthority('workflow:task:resource:query')")
     public HttpResult<IPage<TaskVO>> queryResource(@RequestBody TaskQo qo) {
         return new HttpResult<IPage<TaskVO>>().ok(sysResourceApplicationService.queryResourceTask(qo));
     }
 
     @PostMapping(value = "/resource/audit")
-//    @ApiOperation(value = "流程任务>资源审批")
+    @Operation(summary = "流程任务>资源审批",description = "流程任务>资源审批")
     @OperateLog(module = "流程任务",name = "资源审批")
     @PreAuthorize("hasAuthority('workflow:task:resource:audit')")
     public HttpResult<Boolean> auditResource(@RequestBody AuditDTO dto) {
@@ -53,7 +54,7 @@ public class WorkflowTaskApiController {
     }
 
     @GetMapping(value = "/resource/detail")
-//    @ApiOperation(value = "流程任务>资源详情")
+    @Operation(summary = "流程任务>资源详情",description = "流程任务>资源详情")
     @PreAuthorize("hasAuthority('workflow:task:resource:detail')")
     public HttpResult<SysResourceVO> detailResource(@RequestParam("id") Long id) {
         return new HttpResult<SysResourceVO>().ok(sysResourceApplicationService.getResourceById(id));

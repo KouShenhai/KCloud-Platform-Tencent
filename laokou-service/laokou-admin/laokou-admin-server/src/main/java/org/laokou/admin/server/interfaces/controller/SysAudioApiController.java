@@ -26,19 +26,13 @@ import org.laokou.admin.client.dto.SysResourceDTO;
 import org.laokou.admin.server.interfaces.qo.SysResourceQo;
 import org.laokou.admin.client.vo.SysAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
-import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.swagger.utils.HttpResult;
-import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
 import org.laokou.redis.annotation.Lock4j;
 import org.laokou.redis.enums.LockScope;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 /**
  * @author laokou
@@ -56,7 +50,7 @@ public class SysAudioApiController {
     private final WorkflowTaskApplicationService workflowTaskApplicationService;
 
     @GetMapping("/auditLog")
-    @Parameter(name = "businessId",description = "业务编号", required = true, example = "1441610450502848541")
+    @Parameter(name = "businessId",description = "业务编号", required = true, example = "123")
     @Operation(summary = "音频管理>审批日志",description = "音频管理>审批日志")
     @PreAuthorize("hasAuthority('sys:resource:audio:auditLog')")
     public HttpResult<List<SysAuditLogVO>> auditLog(@RequestParam("businessId") Long businessId) {

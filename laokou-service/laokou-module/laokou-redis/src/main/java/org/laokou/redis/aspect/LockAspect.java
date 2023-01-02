@@ -61,7 +61,8 @@ public class LockAspect {
             lock4j = AnnotationUtils.findAnnotation(method,Lock4j.class);
         }
         assert lock4j != null;
-        String key = lock4j.key();
+        // 时间戳
+        String key = lock4j.key() + System.currentTimeMillis();
         long expire = lock4j.expire();
         long timeout = lock4j.timeout();
         final LockType type = lock4j.type();

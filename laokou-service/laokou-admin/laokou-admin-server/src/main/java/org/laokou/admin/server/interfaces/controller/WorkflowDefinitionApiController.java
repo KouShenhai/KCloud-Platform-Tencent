@@ -16,6 +16,8 @@
 package org.laokou.admin.server.interfaces.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.WorkflowDefinitionApplicationService;
@@ -35,7 +37,7 @@ import java.io.IOException;
  * @date 2022/7/6 0006 下午 5:59
  */
 @RestController
-//@Api(value = "流程定义API",protocols = "http",tags = "流程定义API")
+@Tag(name = "Workflow Definition API",description = "流程定义API")
 @RequestMapping("/workflow/definition/api")
 @RequiredArgsConstructor
 public class WorkflowDefinitionApiController {
@@ -43,7 +45,7 @@ public class WorkflowDefinitionApiController {
     private final WorkflowDefinitionApplicationService workflowDefinitionApplicationService;
 
     @PostMapping("/insert")
-//    @ApiOperation("流程定义>")
+    @Operation(summary = "流程定义>新增",description = "流程定义>新增")
     @OperateLog(module = "流程定义",name = "流程新增",type = DataTypeEnum.FILE)
     @PreAuthorize("hasAuthority('workflow:definition:insert')")
     public HttpResult<Boolean> insert(@RequestParam("name")String name, @RequestPart("file") MultipartFile file) throws IOException {
@@ -51,21 +53,21 @@ public class WorkflowDefinitionApiController {
     }
 
     @PostMapping("/query")
-//    @ApiOperation("流程定义>查询")
+    @Operation(summary = "流程定义>查询",description = "流程定义>查询")
     @PreAuthorize("hasAuthority('workflow:definition:query')")
     public HttpResult<IPage<DefinitionVO>> query(@RequestBody DefinitionQo qo) {
         return new HttpResult<IPage<DefinitionVO>>().ok(workflowDefinitionApplicationService.queryDefinitionPage(qo));
     }
 
     @GetMapping("/image")
-//    @ApiOperation("流程定义>图片")
+    @Operation(summary = "流程定义>图片",description = "流程定义>图片")
     @PreAuthorize("hasAuthority('workflow:definition:diagram')")
     public void image(@RequestParam("definitionId")String definitionId, HttpServletResponse response) {
         workflowDefinitionApplicationService.diagramDefinition(definitionId,response);
     }
 
     @DeleteMapping("/delete")
-//    @ApiOperation("流程定义>删除")
+    @Operation(summary = "流程定义>删除",description = "流程定义>删除")
     @OperateLog(module = "流程定义",name = "流程删除")
     @PreAuthorize("hasAuthority('workflow:definition:delete')")
     public HttpResult<Boolean> delete(@RequestParam("deploymentId")String deploymentId) {
@@ -73,7 +75,7 @@ public class WorkflowDefinitionApiController {
     }
 
     @PutMapping("/suspend")
-//    @ApiOperation("流程定义>挂起")
+    @Operation(summary = "流程定义>挂起",description = "流程定义>挂起")
     @OperateLog(module = "流程定义",name = "流程挂起")
     @PreAuthorize("hasAuthority('workflow:definition:suspend')")
     public HttpResult<Boolean> suspend(@RequestParam("definitionId")String definitionId) {
@@ -81,7 +83,7 @@ public class WorkflowDefinitionApiController {
     }
 
     @PutMapping("/activate")
-//    @ApiOperation("流程定义>激活")
+    @Operation(summary = "流程定义>激活",description = "流程定义>激活")
     @OperateLog(module = "流程定义",name = "流程激活")
     @PreAuthorize("hasAuthority('workflow:definition:activate')")
     public HttpResult<Boolean> activate(@RequestParam("definitionId")String definitionId) {

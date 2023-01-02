@@ -15,13 +15,15 @@
  */
 package org.laokou.admin.server.interfaces.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysDictApplicationService;
 import org.laokou.admin.client.dto.SysDictDTO;
 import org.laokou.admin.server.interfaces.qo.SysDictQo;
 import org.laokou.admin.client.vo.SysDictVO;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 /**
@@ -29,28 +31,28 @@ import org.springframework.web.bind.annotation.*;
  * @author laokou
  */
 @RestController
-//@Api(value = "系统字典API",protocols = "http",tags = "系统字典API")
+@Tag(name = "Sys Dict API",description = "系统字典API")
 @RequestMapping("/sys/dict/api")
+@RequiredArgsConstructor
 public class SysDictApiController {
 
-    @Autowired
-    private SysDictApplicationService sysDictApplicationService;
+    private final SysDictApplicationService sysDictApplicationService;
 
     @PostMapping(value = "/query")
-//    @ApiOperation("系统字典>查询")
+    @Operation(summary = "系统字典>查询",description = "系统字典>查询")
     @PreAuthorize("hasAuthority('sys:dict:query')")
     public HttpResult<IPage<SysDictVO>> query(@RequestBody SysDictQo qo) {
         return new HttpResult<IPage<SysDictVO>>().ok(sysDictApplicationService.queryDictPage(qo));
     }
 
     @GetMapping(value = "/detail")
-//    @ApiOperation("系统字典>详情")
+    @Operation(summary = "系统字典>详情",description = "系统字典>详情")
     public HttpResult<SysDictVO> detail(@RequestParam("id") Long id) {
         return new HttpResult<SysDictVO>().ok(sysDictApplicationService.getDictById(id));
     }
 
     @PostMapping(value = "/insert")
-//    @ApiOperation("系统字典>新增")
+    @Operation(summary = "系统字典>新增",description = "系统字典>新增")
     @OperateLog(module = "系统字典",name = "字典新增")
     @PreAuthorize("hasAuthority('sys:dict:insert')")
     public HttpResult<Boolean> insert(@RequestBody SysDictDTO dto) {
@@ -58,7 +60,7 @@ public class SysDictApiController {
     }
 
     @PutMapping(value = "/update")
-//    @ApiOperation("系统字典>修改")
+    @Operation(summary = "系统字典>修改",description = "系统字典>修改")
     @OperateLog(module = "系统字典",name = "字典修改")
     @PreAuthorize("hasAuthority('sys:dict:update')")
     public HttpResult<Boolean> update(@RequestBody SysDictDTO dto) {
@@ -66,7 +68,7 @@ public class SysDictApiController {
     }
 
     @DeleteMapping(value = "/delete")
-//    @ApiOperation("系统字典>删除")
+    @Operation(summary = "系统字典>删除",description = "系统字典>删除")
     @OperateLog(module = "系统字典",name = "字典删除")
     @PreAuthorize("hasAuthority('sys:dict:delete')")
     public HttpResult<Boolean> delete(@RequestParam("id") Long id) {

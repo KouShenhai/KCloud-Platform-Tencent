@@ -1,7 +1,7 @@
 package org.laokou.mongodb.server.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.laokou.common.core.utils.HttpResultUtil;
+import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.mongodb.client.model.MongodbModel;
 import org.laokou.mongodb.client.vo.SearchVO;
 import org.laokou.mongodb.server.form.QueryForm;
@@ -33,8 +33,8 @@ public class MongodbApiController {
     @PostMapping("/query")
 //    @ApiOperation("多条件查询Mongodb Collection")
     @CrossOrigin
-    public HttpResultUtil<SearchVO> queryCollection(@RequestBody final QueryForm queryForm) {
-        HttpResultUtil<SearchVO> result = new HttpResultUtil<>();
+    public HttpResult<SearchVO> queryCollection(@RequestBody final QueryForm queryForm) {
+        HttpResult<SearchVO> result = new HttpResult<>();
         result.setData(mongodbUtil.queryData(queryForm));
         return result;
     }
@@ -42,8 +42,8 @@ public class MongodbApiController {
     @PostMapping("/get")
 //    @ApiOperation("根据主键查询Mongodb Collection")
     @CrossOrigin
-    public HttpResultUtil<Object> getCollectionById(@RequestParam("collectionName")final String collectionName,@RequestParam("id")final String id) {
-        HttpResultUtil<Object> result = new HttpResultUtil<>();
+    public HttpResult<Object> getCollectionById(@RequestParam("collectionName")final String collectionName, @RequestParam("id")final String id) {
+        HttpResult<Object> result = new HttpResult<>();
         final Class<?> clazz = MongodbFieldUtil.getClazz(collectionName);
         result.setData(mongodbUtil.queryDataById(clazz,id));
         return result;

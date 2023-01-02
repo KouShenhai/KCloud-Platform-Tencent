@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.interfaces.controller;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysDeptApplicationService;
 import org.laokou.admin.client.dto.SysDeptDTO;
 import org.laokou.admin.server.interfaces.qo.SysDeptQo;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.admin.client.vo.SysDeptVO;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -33,28 +33,28 @@ import java.util.*;
  * @date 2022/7/26 0026 下午 4:28
  */
 @RestController
-//@Api(value = "系统部门API",protocols = "http",tags = "系统部门API")
+@Tag(name = "Sys Dept API",description = "系统部门API")
 @RequestMapping("/sys/dept/api")
+@RequiredArgsConstructor
 public class SysDeptApiController {
 
-    @Autowired
-    private SysDeptApplicationService sysDeptApplicationService;
+    private final SysDeptApplicationService sysDeptApplicationService;
 
+    @Operation(summary = "系统部门>列表",description = "系统部门>列表")
     @GetMapping("/list")
-//    @ApiOperation("系统部门>列表")
     public HttpResult<SysDeptVO> list() {
         return new HttpResult<SysDeptVO>().ok(sysDeptApplicationService.getDeptList());
     }
 
     @PostMapping("/query")
-//    @ApiOperation("系统部门>查询")
+    @Operation(summary = "系统部门>查询",description = "系统部门>查询")
     @PreAuthorize("hasAuthority('sys:dept:query')")
     public HttpResult<List<SysDeptVO>> query(@RequestBody SysDeptQo qo) {
         return new HttpResult<List<SysDeptVO>>().ok(sysDeptApplicationService.queryDeptList(qo));
     }
 
     @PostMapping("/insert")
-//    @ApiOperation("系统部门>新增")
+    @Operation(summary = "系统部门>新增",description = "系统部门>新增")
     @OperateLog(module = "系统部门",name = "部门新增")
     @PreAuthorize("hasAuthority('sys:dept:insert')")
     public HttpResult<Boolean> insert(@RequestBody SysDeptDTO dto) {
@@ -62,7 +62,7 @@ public class SysDeptApiController {
     }
 
     @PutMapping("/update")
-//    @ApiOperation("系统部门>修改")
+    @Operation(summary = "系统部门>修改",description = "系统部门>修改")
     @OperateLog(module = "系统部门",name = "部门修改")
     @PreAuthorize("hasAuthority('sys:dept:update')")
     public HttpResult<Boolean> update(@RequestBody SysDeptDTO dto) {
@@ -70,13 +70,13 @@ public class SysDeptApiController {
     }
 
     @GetMapping("/detail")
-//    @ApiOperation("系统部门>详情")
+    @Operation(summary = "系统部门>详情",description = "系统部门>详情")
     public HttpResult<SysDeptVO> detail(@RequestParam("id")Long id) {
         return new HttpResult<SysDeptVO>().ok(sysDeptApplicationService.getDept(id));
     }
 
     @DeleteMapping("/delete")
-//    @ApiOperation("系统部门>删除")
+    @Operation(summary = "系统部门>删除",description = "系统部门>删除")
     @OperateLog(module = "系统部门",name = "部门删除")
     @PreAuthorize("hasAuthority('sys:dept:delete')")
     public HttpResult<Boolean> delete(@RequestParam("id")Long id) {
@@ -84,7 +84,7 @@ public class SysDeptApiController {
     }
 
     @GetMapping("/get")
-//    @ApiOperation("系统部门>部门树ids")
+    @Operation(summary = "系统部门>部门树ids",description = "系统部门>部门树ids")
     public HttpResult<List<Long>> get(@RequestParam(value = "roleId")Long roleId) {
         return new HttpResult<List<Long>>().ok(sysDeptApplicationService.getDeptIdsByRoleId(roleId));
     }
