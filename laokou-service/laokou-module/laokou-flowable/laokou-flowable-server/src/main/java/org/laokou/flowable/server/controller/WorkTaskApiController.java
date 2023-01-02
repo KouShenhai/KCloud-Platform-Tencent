@@ -15,9 +15,8 @@
  */
 
 package org.laokou.flowable.server.controller;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.laokou.common.swagger.utils.HttpResult;
@@ -35,7 +34,7 @@ import java.io.IOException;
  * @author laokou
  */
 @RestController
-@Api(value = "流程任务API",protocols = "http",tags = "流程任务API")
+@Tag(name = "Work Task API",description = "流程任务API")
 @RequestMapping("/work/task/api")
 @RequiredArgsConstructor
 public class WorkTaskApiController {
@@ -43,25 +42,25 @@ public class WorkTaskApiController {
     private final WorkTaskService workTaskService;
 
     @PostMapping(value = "/query")
-    @ApiOperation(value = "流程任务>任务查询")
+    @Operation(summary = "流程任务>任务查询",description = "流程任务>任务查询")
     public HttpResult<PageVO<TaskVO>> query(@RequestBody TaskDTO dto) {
         return new HttpResult<PageVO<TaskVO>>().ok(workTaskService.queryTaskPage(dto));
     }
 
     @PostMapping(value = "/audit")
-    @ApiOperation(value = "流程任务>任务审批")
+    @Operation(summary = "流程任务>任务审批",description = "流程任务>任务审批")
     public HttpResult<AssigneeVO> audit(@RequestBody AuditDTO dto) {
         return new HttpResult<AssigneeVO>().ok(workTaskService.auditTask(dto));
     }
 
     @PostMapping(value = "/start")
-    @ApiOperation(value = "流程任务>任务开始")
+    @Operation(summary = "流程任务>任务开始",description = "流程任务>任务开始")
     public HttpResult<AssigneeVO> start(@RequestBody ProcessDTO dto) {
         return new HttpResult<AssigneeVO>().ok(workTaskService.startTask(dto));
     }
 
     @GetMapping(value = "/diagram")
-    @ApiOperation(value = "流程任务>任务流程")
+    @Operation(summary = "流程任务>任务流程",description = "流程任务>任务流程")
     public void diagram(@RequestParam("processInstanceId")String processInstanceId, HttpServletResponse response) throws IOException {
         workTaskService.diagramTask(processInstanceId, response);
     }
