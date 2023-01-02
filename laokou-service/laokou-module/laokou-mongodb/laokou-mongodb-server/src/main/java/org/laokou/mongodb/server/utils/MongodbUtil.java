@@ -28,18 +28,18 @@ public class MongodbUtil {
      * @param objData obj对象
      * @return
      */
-    public void saveData(String collectionName,Object objData) {
+    public void insert(String collectionName,Object objData) {
         mongoTemplate.save(objData,collectionName);
     }
 
-    public Object queryDataById(Class<?> clazz,String id) {
+    public Object get(Class<?> clazz,String id) {
         long startTime = System.currentTimeMillis();
         final Object obj = mongoTemplate.findById(id, clazz);
         log.info("消耗时间：{}ms",(System.currentTimeMillis() - startTime));
         return obj;
     }
 
-    public SearchVO queryData(QueryForm queryForm) {
+    public SearchVO query(QueryForm queryForm) {
         final long startTime = System.currentTimeMillis();
         final Query query = new Query();
         final String collectionName = queryForm.getCollectionName();
@@ -81,7 +81,7 @@ public class MongodbUtil {
         return searchVO;
     }
 
-    public void saveDataBatch(String collectionName,List<? extends Object> dataList) {
+    public void insertBatch(String collectionName,List<? extends Object> dataList) {
         mongoTemplate.insert(dataList,collectionName);
     }
 

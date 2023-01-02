@@ -20,9 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.constant.Constant;
-import org.laokou.common.core.exception.ErrorCode;
 import org.laokou.gateway.utils.PasswordUtil;
-import org.laokou.common.core.utils.HttpResultUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.gateway.constant.GatewayConstant;
 import org.laokou.gateway.utils.ResponseUtil;
@@ -88,13 +86,13 @@ public class AuthFilter implements GlobalFilter,Ordered {
         }
         // 表单提交
         MediaType mediaType = request.getHeaders().getContentType();
-        if (ANT_PATH_MATCHER.match(GatewayConstant.OAUTH_URI,requestUri) && MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
+        if (ANT_PATH_MATCHER.match(GatewayConstant.OAUTH2_AUTH_URI,requestUri) && MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
             return authDecode(exchange,chain);
         }
         // 获取token
         String token = ResponseUtil.getToken(request);
         if (StringUtil.isEmpty(token)) {
-            return ResponseUtil.response(exchange, new HttpResultUtil<>().error(ErrorCode.UNAUTHORIZED, GatewayConstant.UNAUTHORIZED_MSG));
+            return ResponseUtil.response(exchange, ResponseUtil.error(401, "未授权"));
         }
         ServerHttpRequest build = exchange.getRequest().mutate()
                 .header(Constant.AUTHORIZATION_HEAD, token).build();

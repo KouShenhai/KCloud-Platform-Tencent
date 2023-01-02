@@ -15,15 +15,13 @@
  */
 package org.laokou.gateway.exception;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.core.exception.ErrorCode;
-import org.laokou.common.core.utils.HttpResultUtil;
-import org.laokou.gateway.constant.GatewayConstant;
 import org.laokou.gateway.utils.ResponseUtil;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import java.util.Map;
 /**
  * 异常处理器
  * @author laokou
@@ -36,12 +34,12 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler, Ordere
 	@Override
 	public Mono<Void> handle(ServerWebExchange exchange, Throwable e) {
 		log.error("网关全局处理异常，异常信息:{}",e.getMessage());
-		HttpResultUtil<Boolean> result = new HttpResultUtil<>();
+		Map<String,Object> result;
 		if (e instanceof RuntimeException){
 			log.error("服务正在维护，请联系管理员");
-			result = result.error(ErrorCode.SERVICE_MAINTENANCE, GatewayConstant.SERVICE_MAINTENANCE_MSG);
+			result = ResponseUtil.error(500, "服务正在维护，请联系管理员");
 		} else {
-			result = result.error(ErrorCode.SERVICE_MAINTENANCE,GatewayConstant.OTHER_MSG);
+			result = ResponseUtil.error(505,"其他的异常");
 		}
 		return ResponseUtil.response(exchange,result);
 	}

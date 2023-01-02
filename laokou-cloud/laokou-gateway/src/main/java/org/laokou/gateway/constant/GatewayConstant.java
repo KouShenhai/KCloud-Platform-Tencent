@@ -4,24 +4,6 @@ package org.laokou.gateway.constant;
  * @author laokou
  */
 public interface GatewayConstant {
-
-    /**
-     * 异常处理
-     */
-    String SERVICE_MAINTENANCE_MSG = "服务正在维护，请联系管理员";
-    /**
-     * token鉴定
-     */
-    String UNAUTHORIZED_MSG = "未授权";
-    /**
-     * 未知异常
-     */
-    String OTHER_MSG = "其他的异常";
-    /**
-     * 服务熔断
-     */
-    String FALLBACK_MSG = "服务已被降级熔断";
-
     /**
      * 请求链-用户id
      */
@@ -33,7 +15,7 @@ public interface GatewayConstant {
     /**
      * 密码模式-请求地址
      */
-    String OAUTH_URI = "/oauth2/login";
+    String OAUTH2_AUTH_URI = "/oauth2/login";
 
     /**
      * 密码模式-用户名
@@ -46,10 +28,11 @@ public interface GatewayConstant {
     String PASSWORD = "password";
 
     /**
-     * 动态路由
+     * xss 请求头
      */
-    String REDIS_DYNAMIC_ROUTER_RULE_KEY = "dynamic:router:rule";
-
     String XSS_TICKET_HEADER = "xss-ticket";
+    /**
+     * xss 白名单
+     */
     String XSS_TICKET_VALUE = "xss-white";
 }

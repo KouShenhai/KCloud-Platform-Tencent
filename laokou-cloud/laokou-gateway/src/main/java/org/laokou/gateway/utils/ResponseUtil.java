@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.laokou.gateway.utils;
-
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
@@ -27,9 +25,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import java.nio.charset.StandardCharsets;
-
+import java.util.HashMap;
+import java.util.Map;
 /**
  * @author laokou
  */
@@ -46,6 +44,13 @@ public class ResponseUtil {
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
         exchange.getResponse().setStatusCode(HttpStatus.OK);
         return exchange.getResponse().writeWith(Flux.just(buffer));
+    }
+
+    public static Map<String,Object> error(int code,String msg) {
+        Map<String,Object> errorMap = new HashMap<>(2);
+        errorMap.put("code",code);
+        errorMap.put("msg",msg);
+        return errorMap;
     }
 
     /**
