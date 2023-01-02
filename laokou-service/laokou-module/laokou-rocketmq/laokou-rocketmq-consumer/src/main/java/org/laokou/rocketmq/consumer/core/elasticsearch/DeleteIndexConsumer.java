@@ -53,6 +53,7 @@ public class DeleteIndexConsumer implements RocketMQListener<MessageExt> {
             String deleteIndexKey = RedisKeyUtil.getDeleteIndexKey();
             Object obj = redisUtil.hGet(deleteIndexKey, indexName);
             if (obj != null) {
+                log.info("索引{}已删除，请稍后再删除");
                 return;
             }
             HttpResult<Boolean> result = elasticsearchApiFeignClient.delete(indexName);

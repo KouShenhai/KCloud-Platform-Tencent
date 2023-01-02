@@ -58,6 +58,7 @@ public class SyncIndexConsumer implements RocketMQListener<MessageExt> {
             String syncIndexKey = RedisKeyUtil.getSyncIndexKey();
             Object obj = redisUtil.hGet(syncIndexKey, syncIndexDTO.getIndexName());
             if (obj != null) {
+                log.info("索引{}已同步，请稍后再同步");
                 return;
             }
             ElasticsearchDTO dto = ConvertUtil.sourceToTarget(syncIndexDTO, ElasticsearchDTO.class);

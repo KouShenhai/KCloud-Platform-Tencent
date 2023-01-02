@@ -58,6 +58,7 @@ public class CreateIndexConsumer implements RocketMQListener<MessageExt> {
             String createIndexKey = RedisKeyUtil.getCreateIndexKey();
             Object obj = redisUtil.hGet(createIndexKey, createIndexDTO.getIndexName());
             if (obj != null) {
+                log.info("索引{}已创建，请稍后再创建");
                 return;
             }
             HttpResult<Boolean> result = elasticsearchApiFeignClient.create(createIndexDTO);
