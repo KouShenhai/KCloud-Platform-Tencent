@@ -14,40 +14,37 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.domain.sys.entity;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import lombok.Data;
 /**
- * 角色管理
+ * 系统角色
  * @author laokou
  */
 @Data
 @TableName("boot_sys_role")
-//@ApiModel("系统角色DO")
+@Schema(name = "SysRoleDO",description = "系统角色实体类")
 public class SysRoleDO extends BaseDO {
 
     /**
      * 角色名称
      */
     @NotBlank(message = "{sys.role.name.require}")
-    @TableField("name")
-//    @ApiModelProperty(value = "角色名称",name = "name",required = true,example = "管理员")
+    @Schema(name = "name",description = "角色名称",example = "管理员")
     private String name;
 
     /**
      * 角色排序
      */
-    @TableField("sort")
-//    @ApiModelProperty(value = "角色排序",name = "sort",required = true,example = "1")
+    @Schema(name = "sort",description = "角色排序",example = "1")
     private Integer sort;
 
     /**
      * 部门id
      */
-    @TableField("dept_id")
-//    @ApiModelProperty(value = "部门id",name = "deptId",required = true,example = "0")
+    @Schema(name = "deptId",description = "部门id",example = "0")
     private Long deptId;
 
 }

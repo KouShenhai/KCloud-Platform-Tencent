@@ -26,7 +26,7 @@ import lombok.Data;
  */
 @Data
 @TableName("boot_sys_oauth_client_details")
-public class SysOauthDO extends BaseDO {
+public class SysOauth2DO extends BaseDO {
 
     /**
      * 应用id

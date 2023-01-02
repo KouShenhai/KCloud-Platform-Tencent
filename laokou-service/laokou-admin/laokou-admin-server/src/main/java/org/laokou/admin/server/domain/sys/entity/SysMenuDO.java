@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.domain.sys.entity;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -33,7 +32,6 @@ public class SysMenuDO extends BaseDO {
 	 * 父菜单ID，一级菜单为0
 	 */
 	@NotBlank(message = "{sys.menu.pid.require}")
-	@TableField("pid")
 	@Schema(name = "pid",description = "父菜单ID",example = "0")
 	private Long pid;
 
@@ -41,43 +39,37 @@ public class SysMenuDO extends BaseDO {
 	 * 菜单名称
 	 */
 	@NotBlank(message = "{sys.menu.name.require}")
-	@TableField("name")
 	@Schema(name = "name",description = "菜单名称",example = "用户管理")
 	private String name;
 
 	/**
 	 * 菜单URL
 	 */
-	@TableField("url")
 	@Schema(name = "url",description = "菜单URL",example = "/sys/user/api/login")
 	private String url;
 
 	/**
 	 * 菜单权限标识
 	 */
-	@TableField("permission")
 	@Schema(name = "permission",description = "菜单权限标识",example = "sys:user:query")
 	private String permission;
 
 	/**
 	 * 菜单图标
 	 */
-	@TableField("icon")
 	@Schema(name = "icon",description = "菜单图标",example = "user")
 	private String icon;
 
 	/**
 	 * 字典排序
 	 */
-	@TableField("sort")
 	@Schema(name = "sort",description = "字典排序",example = "1")
 	private Integer sort;
 
 	/**
-	 * 字典类型 0 菜单 1 按钮
+	 * 菜单类型 0 菜单 1 按钮
 	 */
-    @TableField("type")
-	@Schema(name = "type",description = "菜单类型",example = "0")
+	@Schema(name = "type",description = "字典类型 0 菜单 1 按钮",example = "0")
 	private Integer type;
 
 }

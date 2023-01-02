@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.laokou.admin.server.application.service.SysOauthApplicationService;
-import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
+import org.laokou.admin.server.domain.sys.entity.SysOauth2DO;
 import org.laokou.admin.server.domain.sys.repository.service.SysOauthService;
 import org.laokou.admin.client.dto.SysOauthDTO;
 import org.laokou.admin.server.infrastructure.annotation.DataFilter;
@@ -53,25 +53,25 @@ public class SysOauthApplicationServiceImpl implements SysOauthApplicationServic
 
     @Override
     public Boolean insertOauth(SysOauthDTO dto) {
-        SysOauthDO sysOauthDO = ConvertUtil.sourceToTarget(dto, SysOauthDO.class);
-        final long count = sysOauthService.count(Wrappers.lambdaQuery(SysOauthDO.class).eq(SysOauthDO::getDelFlag, Constant.NO).eq(SysOauthDO::getClientId, sysOauthDO.getClientId()));
+        SysOauth2DO sysOauth2DO = ConvertUtil.sourceToTarget(dto, SysOauth2DO.class);
+        final long count = sysOauthService.count(Wrappers.lambdaQuery(SysOauth2DO.class).eq(SysOauth2DO::getDelFlag, Constant.NO).eq(SysOauth2DO::getClientId, sysOauth2DO.getClientId()));
         if (count > 0) {
             throw new CustomException("应用id已存在，请重新填写");
         }
-        sysOauthDO.setCreator(UserUtil.getUserId());
-        sysOauthDO.setDeptId(UserUtil.getDeptId());
-        return sysOauthService.save(sysOauthDO);
+        sysOauth2DO.setCreator(UserUtil.getUserId());
+        sysOauth2DO.setDeptId(UserUtil.getDeptId());
+        return sysOauthService.save(sysOauth2DO);
     }
 
     @Override
     public Boolean updateOauth(SysOauthDTO dto) {
-        final SysOauthDO sysOauthDO = ConvertUtil.sourceToTarget(dto, SysOauthDO.class);
-        final long count = sysOauthService.count(Wrappers.lambdaQuery(SysOauthDO.class).eq(SysOauthDO::getDelFlag, Constant.NO).eq(SysOauthDO::getClientId, sysOauthDO.getClientId()).ne(SysOauthDO::getId,dto.getId()));
+        final SysOauth2DO sysOauth2DO = ConvertUtil.sourceToTarget(dto, SysOauth2DO.class);
+        final long count = sysOauthService.count(Wrappers.lambdaQuery(SysOauth2DO.class).eq(SysOauth2DO::getDelFlag, Constant.NO).eq(SysOauth2DO::getClientId, sysOauth2DO.getClientId()).ne(SysOauth2DO::getId,dto.getId()));
         if (count > 0) {
             throw new CustomException("应用id已存在，请重新填写");
         }
-        sysOauthDO.setEditor(UserUtil.getUserId());
-        return sysOauthService.updateById(sysOauthDO);
+        sysOauth2DO.setEditor(UserUtil.getUserId());
+        return sysOauthService.updateById(sysOauth2DO);
     }
 
     @Override

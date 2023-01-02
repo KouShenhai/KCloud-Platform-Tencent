@@ -15,19 +15,27 @@
  */
 package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
-//import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 /**
- * 用户角色管理
+ * 系统用户角色
  * @author laokou
  */
 @Data
 @TableName("boot_sys_user_role")
-//@ApiModel("系统用户角色DO")
+@Schema(name = "SysUserRoleDO",description = "系统用户角色实体类")
 public class SysUserRoleDO {
 
+    /**
+     * 角色id
+     */
+    @Schema(name = "roleId",description = "角色id")
     private Long roleId;
 
+    /**
+     * 用户id
+     */
+    @Schema(name = "userId",description = "用户id")
     private Long userId;
 
 }

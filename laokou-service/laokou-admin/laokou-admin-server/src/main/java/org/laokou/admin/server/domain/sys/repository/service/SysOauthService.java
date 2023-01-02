@@ -17,7 +17,7 @@ package org.laokou.admin.server.domain.sys.repository.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
+import org.laokou.admin.server.domain.sys.entity.SysOauth2DO;
 import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
 
@@ -26,7 +26,7 @@ import org.laokou.admin.client.vo.SysOauthVO;
  * @version 1.0
  * @date 2022/8/11 0011 上午 9:49
  */
-public interface SysOauthService extends IService<SysOauthDO> {
+public interface SysOauthService extends IService<SysOauth2DO> {
 
     /**
      * 根据id删除认证配置

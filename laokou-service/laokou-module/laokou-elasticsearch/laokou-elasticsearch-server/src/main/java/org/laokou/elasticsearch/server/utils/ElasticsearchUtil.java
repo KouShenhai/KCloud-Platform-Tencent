@@ -214,7 +214,7 @@ public class ElasticsearchUtil {
      * @param indexName 索引名称
      * @param id        主键
      */
-    public Boolean deleteIndexById(String indexName, String id) {
+    public Boolean deleteById(String indexName, String id) {
         boolean indexExists = isIndexExists(indexName);
         if (!indexExists) {
             log.error("索引【{}】不存在，请创建索引");
@@ -340,10 +340,10 @@ public class ElasticsearchUtil {
     }
 
     /**
-     * 清空索引内容
+     * 清空内容
      * @param indexName 索引名称
      */
-    public Boolean deleteAllIndex(String indexName) {
+    public Boolean deleteAll(String indexName) {
         //判断索引是否存在
         boolean indexExists = isIndexExists(indexName);
         if (!indexExists) {

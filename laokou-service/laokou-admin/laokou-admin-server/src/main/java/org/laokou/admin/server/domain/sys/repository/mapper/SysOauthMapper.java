@@ -17,7 +17,7 @@ package org.laokou.admin.server.domain.sys.repository.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
+import org.laokou.admin.server.domain.sys.entity.SysOauth2DO;
 import org.laokou.admin.server.interfaces.qo.SysOauthQo;
 import org.laokou.admin.client.vo.SysOauthVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository
-public interface SysOauthMapper extends BaseMapper<SysOauthDO> {
+public interface SysOauthMapper extends BaseMapper<SysOauth2DO> {
 
     /**
      * 根据id删除认证配置

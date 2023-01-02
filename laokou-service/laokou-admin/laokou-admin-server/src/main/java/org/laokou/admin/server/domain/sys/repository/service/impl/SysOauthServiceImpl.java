@@ -17,7 +17,7 @@ package org.laokou.admin.server.domain.sys.repository.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.laokou.admin.server.domain.sys.entity.SysOauthDO;
+import org.laokou.admin.server.domain.sys.entity.SysOauth2DO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysOauthMapper;
 import org.laokou.admin.server.domain.sys.repository.service.SysOauthService;
 import org.laokou.admin.server.interfaces.qo.SysOauthQo;
@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class SysOauthServiceImpl extends ServiceImpl<SysOauthMapper, SysOauthDO> implements SysOauthService {
+public class SysOauthServiceImpl extends ServiceImpl<SysOauthMapper, SysOauth2DO> implements SysOauthService {
     @Override
     public void deleteOauth(Long id) {
         this.baseMapper.deleteOauth(id);

@@ -15,17 +15,27 @@
  */
 package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 /**
- * 角色菜单管理
+ * 系统角色菜单
  * @author laokou
  */
 @Data
 @TableName("boot_sys_role_menu")
-//@ApiModel("系统角色菜单DO")
+@Schema(name = "SysRoleMenuDO",description = "系统角色菜单实体类")
 public class SysRoleMenuDO {
 
+    /**
+     * 菜单id
+     */
+    @Schema(name = "menuId",description = "菜单id")
     private Long menuId;
+
+    /**
+     * 角色id
+     */
+    @Schema(name = "roleId",description = "角色id")
     private Long roleId;
 
 }

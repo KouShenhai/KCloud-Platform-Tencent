@@ -16,29 +16,58 @@
 package org.laokou.admin.server.domain.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import lombok.Data;
 
 /**
- * 消息管理
- *
+ * 系统消息
  * @author laokou
  */
 @Data
 @TableName("boot_sys_message")
-//@ApiModel("消息")
+@Schema(name = "SysMessageDO",description = "系统消息实体类")
 public class SysMessageDO extends BaseDO {
 
+    /**
+     * 用户id
+     */
+    // TODO 增加用户id
+
+    /**
+     * 用户名
+     */
+    @Schema(name = "username",description = "用户名")
     private String username;
 
+    /**
+     * 消息标题
+     */
+    @Schema(name = "title",description = "消息标题")
     private String title;
 
+    /**
+     * 消息内容
+     */
+    @Schema(name = "content",description = "消息内容")
     private String content;
 
+    /**
+     * 发送渠道 0 平台 1 微信公众号 2 邮箱
+     */
+    @Schema(name = "sendChannel",description = "发送渠道 0 平台 1 微信公众号 2 邮箱")
     private String sendChannel;
 
+    /**
+     * 部门id
+     */
+    @Schema(name = "deptId",description = "部门id")
     private Long deptId;
 
+    /**
+     * 消息类型 0 通知 1 提醒
+     */
+    @Schema(name = "type",description = "消息类型 0 通知 1 提醒")
     private Integer type;
 
 }

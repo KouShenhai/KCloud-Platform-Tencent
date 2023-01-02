@@ -14,81 +14,67 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.domain.sys.entity;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 /**
- * 用户管理
+ * 系统用户
  * @author laokou
  */
 @Data
 @TableName("boot_sys_user")
+@Schema(name = "SysUserDO",description = "系统用户实体类")
 public class SysUserDO extends BaseDO {
 
     @NotBlank(message = "{sys.user.password.require}")
-//    @ApiModelProperty(value = "密码",name = "password",required = true,example = "123456")
+    @Schema(name = "password",description = "密码",example = "123456")
     @Length(min = 6, max = 18, message = "密码长度必须在 {min} - {max} 之间")
-    @TableField("password")
     private String password;
 
     /**
      * 用户名
      */
     @NotBlank(message = "{sys.user.username.require}")
-//    @ApiModelProperty(value = "用户名",name = "username",required = true,example = "admin")
-    @TableField("username")
+    @Schema(name = "username",description = "用户名",example = "admin")
     private String username;
 
     /**
-     * 超级管理员 0：否 1：是
+     * 超级管理员标识 0 否 1 是
      */
-//    @ApiModelProperty(value = "超级管理员 0：否 1：是",name = "superAdmin",example = "1")
-    @TableField("super_admin")
-    @JsonProperty("superAdmin")
+    @Schema(name = "superAdmin",description = "超级管理员标识 0 否 1 是",example = "1")
     private Integer superAdmin;
 
     /**
-     * 头像url
+     * 用户头像URL
      */
-//    @ApiModelProperty(value = "头像url",name = "imgUrl",example = "https://pic.cnblogs.com/avatar/simple_avatar.gif")
-    @TableField("img_url")
-    @JsonProperty("imgUrl")
+    @Schema(name = "imgUrl",description = "用户头像URL",example = "https://pic.cnblogs.com/avatar/simple_avatar.gif")
     private String imgUrl;
 
     /**
-     * 电子邮箱
+     * 邮箱
      */
-//    @ApiModelProperty(value = "电子邮箱",name = "email",example = "2413176044@qq.com")
-    @TableField("email")
-    @JsonProperty("email")
+    @Schema(name = "email",description = "邮箱",example = "2413176044@qq.com")
     private String email;
 
     /**
-     * 状态 0停用 1正常
+     * 用户状态 0 正常 1 停用
      */
-//    @ApiModelProperty(value = "状态 0停用 1正常",name = "status",example = "1")
-    @TableField("status")
-    @JsonProperty("status")
+    @Schema(name = "status",description = "用户状态 0 正常 1 停用",example = "0")
     private Integer status;
 
     /**
      * 手机号
      */
-//    @ApiModelProperty(value = "手机号",name = "mobile",example = "18974432576")
-    @TableField("mobile")
-    @JsonProperty("mobile")
+    @Schema(name = "mobile",description = "手机号",example = "18974432578")
     private String mobile;
 
     /**
      * 部门id
      */
-//    @ApiModelProperty(value = "部门id",name = "deptId",example = "0")
-    @TableField("dept_id")
-    @JsonProperty("deptId")
+    @Schema(name = "deptId",description = "部门id",example = "0")
     private Long deptId;
 
 }

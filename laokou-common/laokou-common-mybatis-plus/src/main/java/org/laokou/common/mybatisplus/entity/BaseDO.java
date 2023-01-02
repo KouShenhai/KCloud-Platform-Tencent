@@ -63,9 +63,9 @@ public abstract class BaseDO {
     private Date updateDate;
 
     /**
-     * 删除标识
+     * 删除标识 0 未删除 1已删除
      */
-    @Schema(name = "delFlag",description = "删除标识")
+    @Schema(name = "delFlag",description = "删除标识 0 未删除 1已删除")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Integer delFlag;
 

@@ -15,6 +15,8 @@
  */
 
 package org.laokou.im.server.controller;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.im.client.PushMsgDTO;
@@ -30,7 +32,7 @@ import java.io.IOException;
  * @author laokou
  */
 @RestController
-//@Api(value = "即时通讯API",protocols = "http",tags = "即时通讯API")
+@Tag(name = "Im API",description = "即时通讯API")
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class ImController {
@@ -38,7 +40,7 @@ public class ImController {
     private final ImService imService;
 
     @PostMapping("/push")
-//    @ApiOperation("即时通讯API>消息推送")
+    @Operation(summary = "即时通讯>推送",description = "即时通讯>推送")
     public HttpResult<Boolean> push(@RequestBody PushMsgDTO dto) throws IOException {
         return new HttpResult<Boolean>().ok(imService.pusMessage(dto));
     }

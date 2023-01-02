@@ -43,9 +43,9 @@ public class SysDictDO extends BaseDO {
     @Schema(name = "dictValue",description = "字典值")
     private String dictValue;
     /**
-     * 状态 0 正常 1 停用
+     * 字典状态 0 正常 1 停用
      */
-    @Schema(name = "status",description = "字典状态",example = "0")
+    @Schema(name = "status",description = "字典状态 0 正常 1 停用",example = "0")
     private Integer status;
     /**
      * 字典备注
