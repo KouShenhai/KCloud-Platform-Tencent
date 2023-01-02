@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Configuration;
  * @author laokou
  */
 @Configuration
-public class SwaggerConfig {
+public class OpenApiMvcConfig {
 
     @Bean
     OpenAPI openAPI() {

@@ -19,7 +19,7 @@
 package org.laokou.admin.server;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.laokou.common.swagger.config.CorsConfig;
-import org.laokou.common.swagger.config.SwaggerConfig;
+import org.laokou.common.swagger.config.OpenApiMvcConfig;
 import org.laokou.redis.config.RedisSessionConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -42,7 +42,7 @@ import org.springframework.context.annotation.Import;
 @EnableAspectJAutoProxy
 @EnableEncryptableProperties
 @EnableFeignClients
-@Import({RedisSessionConfig.class, CorsConfig.class, SwaggerConfig.class})
+@Import({RedisSessionConfig.class, CorsConfig.class, OpenApiMvcConfig.class})
 public class AdminApplication {
 
     public static void main(String[] args) {
