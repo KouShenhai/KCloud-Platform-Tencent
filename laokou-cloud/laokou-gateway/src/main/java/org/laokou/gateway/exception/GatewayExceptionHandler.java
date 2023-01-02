@@ -37,9 +37,9 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler, Ordere
 		Map<String,Object> result;
 		if (e instanceof RuntimeException){
 			log.error("服务正在维护，请联系管理员");
-			result = ResponseUtil.error(500, "服务正在维护，请联系管理员");
+			result = ResponseUtil.error(GatewayException.SERVICE_MAINTENANCE);
 		} else {
-			result = ResponseUtil.error(505,"其他的异常");
+			result = ResponseUtil.error(GatewayException.UNAUTHORIZED);
 		}
 		return ResponseUtil.response(exchange,result);
 	}

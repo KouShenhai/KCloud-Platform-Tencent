@@ -18,6 +18,7 @@ import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.gateway.constant.GatewayConstant;
+import org.laokou.gateway.exception.GatewayException;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,10 +47,10 @@ public class ResponseUtil {
         return exchange.getResponse().writeWith(Flux.just(buffer));
     }
 
-    public static Map<String,Object> error(int code,String msg) {
+    public static Map<String,Object> error(GatewayException gatewayException) {
         Map<String,Object> errorMap = new HashMap<>(2);
-        errorMap.put("code",code);
-        errorMap.put("msg",msg);
+        errorMap.put("code",gatewayException.getCode());
+        errorMap.put("msg",gatewayException.getMsg());
         return errorMap;
     }
 

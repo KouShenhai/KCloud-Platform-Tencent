@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.constant.Constant;
+import org.laokou.gateway.exception.GatewayException;
 import org.laokou.gateway.utils.PasswordUtil;
 import org.laokou.common.core.utils.StringUtil;
 import org.laokou.gateway.constant.GatewayConstant;
@@ -92,7 +93,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         // 获取token
         String token = ResponseUtil.getToken(request);
         if (StringUtil.isEmpty(token)) {
-            return ResponseUtil.response(exchange, ResponseUtil.error(401, "未授权"));
+            return ResponseUtil.response(exchange, ResponseUtil.error(GatewayException.UNAUTHORIZED));
         }
         ServerHttpRequest build = exchange.getRequest().mutate()
                 .header(Constant.AUTHORIZATION_HEAD, token).build();
