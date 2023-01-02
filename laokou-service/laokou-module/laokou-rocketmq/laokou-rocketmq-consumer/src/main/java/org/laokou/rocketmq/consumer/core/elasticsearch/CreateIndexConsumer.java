@@ -26,6 +26,8 @@ import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.elasticsearch.client.dto.CreateIndexDTO;
+import org.laokou.redis.utils.RedisKeyUtil;
+import org.laokou.redis.utils.RedisUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.rocketmq.consumer.filter.MessageFilter;
@@ -43,6 +45,8 @@ public class CreateIndexConsumer implements RocketMQListener<MessageExt> {
 
     private final MessageFilter messageFilter;
 
+    private final RedisUtil redisUtil;
+
     @Override
     public void onMessage(MessageExt message) {
         String messageBody = messageFilter.getBody(message);
@@ -51,10 +55,17 @@ public class CreateIndexConsumer implements RocketMQListener<MessageExt> {
         }
         try {
             CreateIndexDTO createIndexDTO = JacksonUtil.toBean(messageBody, CreateIndexDTO.class);
+            String createIndexKey = RedisKeyUtil.getCreateIndexKey();
+            Object obj = redisUtil.hGet(createIndexKey, createIndexDTO.getIndexName());
+            if (obj != null) {
+                return;
+            }
             HttpResult<Boolean> result = elasticsearchApiFeignClient.create(createIndexDTO);
             if (!result.success()) {
                 throw new CustomException("消费失败");
             }
+            // 写入redis,一个小时才能创建索引
+            redisUtil.hSet(createIndexKey,createIndexDTO.getIndexName(),"0",RedisUtil.HOUR_ONE_EXPIRE);
         } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
             throw new CustomException("消费失败");

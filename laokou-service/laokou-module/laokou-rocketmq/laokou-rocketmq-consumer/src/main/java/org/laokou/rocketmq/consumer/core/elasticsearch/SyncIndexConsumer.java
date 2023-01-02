@@ -27,6 +27,8 @@ import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.elasticsearch.client.dto.ElasticsearchDTO;
+import org.laokou.redis.utils.RedisKeyUtil;
+import org.laokou.redis.utils.RedisUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.SyncIndexDTO;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
@@ -43,6 +45,7 @@ public class SyncIndexConsumer implements RocketMQListener<MessageExt> {
 
     private final ElasticsearchApiFeignClient elasticsearchApiFeignClient;
     private final MessageFilter messageFilter;
+    private final RedisUtil redisUtil;
 
     @Override
     public void onMessage(MessageExt message) {
@@ -52,11 +55,18 @@ public class SyncIndexConsumer implements RocketMQListener<MessageExt> {
         }
         try {
             SyncIndexDTO syncIndexDTO = JacksonUtil.toBean(messageBody, SyncIndexDTO.class);
+            String syncIndexKey = RedisKeyUtil.getSyncIndexKey();
+            Object obj = redisUtil.hGet(syncIndexKey, syncIndexDTO.getIndexName());
+            if (obj != null) {
+                return;
+            }
             ElasticsearchDTO dto = ConvertUtil.sourceToTarget(syncIndexDTO, ElasticsearchDTO.class);
             HttpResult<Boolean> result = elasticsearchApiFeignClient.syncBatch(dto);
             if (!result.success()) {
                 throw new CustomException("消费失败");
             }
+            // 写入redis,一个小时才能同步索引
+            redisUtil.hSet(syncIndexKey,syncIndexDTO.getIndexName(),"0",RedisUtil.HOUR_ONE_EXPIRE);
         } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
             throw new CustomException("消费失败");

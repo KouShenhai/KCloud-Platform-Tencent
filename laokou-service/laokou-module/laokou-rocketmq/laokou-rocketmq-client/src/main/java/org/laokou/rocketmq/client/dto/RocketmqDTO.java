@@ -29,6 +29,4 @@ public class RocketmqDTO implements Serializable {
 
     private String data;
 
-    private String msgId;
-
 }

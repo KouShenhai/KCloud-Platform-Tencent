@@ -25,7 +25,6 @@ import org.laokou.auth.server.infrastructure.feign.rocketmq.RocketmqApiFeignClie
 import org.laokou.common.core.utils.AddressUtil;
 import org.laokou.common.core.utils.IpUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.common.core.utils.SnowFlakeShortUtil;
 import org.laokou.log.client.dto.LoginLogDTO;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
@@ -61,7 +60,6 @@ public class LoginLogUtil {
             dto.setRequestStatus(status);
             RocketmqDTO rocketmqDTO = new RocketmqDTO();
             rocketmqDTO.setData(JacksonUtil.toJsonStr(dto));
-            rocketmqDTO.setMsgId(String.valueOf(SnowFlakeShortUtil.getInstance().nextId()));
             rocketmqApiFeignClient.sendOneMessage(RocketmqConstant.LAOKOU_LOGIN_LOG_TOPIC, rocketmqDTO);
         } catch (FeignException | IOException e) {
             log.error("异常信息：{}",e.getMessage());

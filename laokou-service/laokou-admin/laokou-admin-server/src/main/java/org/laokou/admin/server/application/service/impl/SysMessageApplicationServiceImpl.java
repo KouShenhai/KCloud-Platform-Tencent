@@ -36,7 +36,6 @@ import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.ConvertUtil;
 import org.laokou.common.core.utils.JacksonUtil;
-import org.laokou.common.core.utils.SnowFlakeShortUtil;
 import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.client.dto.MsgDTO;
@@ -124,7 +123,6 @@ public class SysMessageApplicationServiceImpl implements SysMessageApplicationSe
             msgDTO.setSendChannel(sendChannel);
             RocketmqDTO dto = new RocketmqDTO();
             dto.setData(JacksonUtil.toJsonStr(msgDTO));
-            dto.setMsgId(String.valueOf(SnowFlakeShortUtil.getInstance().nextId()));
             rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_MESSAGE_NOTICE_TOPIC,dto);
         } catch (FeignException e) {
             log.error("错误消息：{}",e.getMessage());

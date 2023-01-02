@@ -16,11 +16,9 @@
 package org.laokou.rocketmq.consumer.filter;
 import lombok.RequiredArgsConstructor;
 import org.apache.rocketmq.common.message.MessageExt;
-import org.laokou.common.core.utils.JacksonUtil;
 import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.redis.utils.RedisUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
-import org.laokou.rocketmq.client.dto.RocketmqDTO;
 import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 /**
@@ -37,16 +35,15 @@ public class MessageFilter {
         if (messageExt.getReconsumeTimes() == RocketmqConstant.RECONSUME_TIMES) {
             return null;
         }
+        String msgId = messageExt.getMsgId();
         String body = new String(messageExt.getBody(), StandardCharsets.UTF_8);
-        RocketmqDTO rocketmqDTO = JacksonUtil.toBean(body, RocketmqDTO.class);
-        String msgId = rocketmqDTO.getMsgId();
         String messageConsumeKey = RedisKeyUtil.getMessageConsumeKey();
         Object obj = redisUtil.hGet(messageConsumeKey, msgId);
         if (obj != null) {
             return null;
         }
         redisUtil.hSet(messageConsumeKey,msgId,"0",RedisUtil.HOUR_ONE_EXPIRE);
-        return rocketmqDTO.getData();
+        return body;
     }
 
 }

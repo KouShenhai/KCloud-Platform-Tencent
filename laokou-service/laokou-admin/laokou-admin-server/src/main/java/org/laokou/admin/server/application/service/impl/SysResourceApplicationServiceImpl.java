@@ -141,40 +141,39 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
 
     @Override
     public Boolean syncResourceIndex(String code) {
-            //总数
-            final Long resourceTotal = sysResourceService.getResourceTotal(code);
-            if (resourceTotal > 0) {
-                beforeSyncAsync();
-                //创建索引 - 时间分区
-                final String resourceIndex = RESOURCE_KEY + "_" + code;
-                //同步数据 - 异步
-                final int chunkSize = 500;
-                int pageIndex = 0;
-                while (pageIndex < resourceTotal) {
-                    final List<ResourceIndex> resourceIndexList = sysResourceService.getResourceIndexList(chunkSize, pageIndex,code);
-                    final Map<String, List<ResourceIndex>> resourceDataMap = resourceIndexList.stream().collect(Collectors.groupingBy(ResourceIndex::getYm));
-                    for (Map.Entry<String, List<ResourceIndex>> entry : resourceDataMap.entrySet()) {
-                        final String ym = entry.getKey();
-                        final List<ResourceIndex> resourceDataList = entry.getValue();
-                        //同步数据
-                        try {
-                            RocketmqDTO dto = new RocketmqDTO();
-                            final String indexName = resourceIndex + "_" + ym;
-                            final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
-                            final SyncIndexDTO syncIndexDTO = new SyncIndexDTO();
-                            syncIndexDTO.setIndexName(indexName);
-                            syncIndexDTO.setData(jsonDataList);
-                            dto.setData(JacksonUtil.toJsonStr(syncIndexDTO));
-                            dto.setMsgId(String.valueOf(SnowFlakeShortUtil.getInstance().nextId()));
-                            rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_SYNC_INDEX_TOPIC,dto);
-                        } catch (final FeignException e) {
-                            log.error("错误信息：{}",e.getMessage());
-                        }
+        //总数
+        final Long resourceTotal = sysResourceService.getResourceTotal(code);
+        if (resourceTotal > 0) {
+            beforeSyncAsync();
+            //创建索引 - 时间分区
+            final String resourceIndex = RESOURCE_KEY + "_" + code;
+            //同步数据 - 异步
+            final int chunkSize = 500;
+            int pageIndex = 0;
+            while (pageIndex < resourceTotal) {
+                final List<ResourceIndex> resourceIndexList = sysResourceService.getResourceIndexList(chunkSize, pageIndex,code);
+                final Map<String, List<ResourceIndex>> resourceDataMap = resourceIndexList.stream().collect(Collectors.groupingBy(ResourceIndex::getYm));
+                for (Map.Entry<String, List<ResourceIndex>> entry : resourceDataMap.entrySet()) {
+                    final String ym = entry.getKey();
+                    final List<ResourceIndex> resourceDataList = entry.getValue();
+                    //同步数据
+                    try {
+                        RocketmqDTO dto = new RocketmqDTO();
+                        final String indexName = resourceIndex + "_" + ym;
+                        final String jsonDataList = JacksonUtil.toJsonStr(resourceDataList);
+                        final SyncIndexDTO syncIndexDTO = new SyncIndexDTO();
+                        syncIndexDTO.setIndexName(indexName);
+                        syncIndexDTO.setData(jsonDataList);
+                        dto.setData(JacksonUtil.toJsonStr(syncIndexDTO));
+                        rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_SYNC_INDEX_TOPIC,dto);
+                    } catch (final FeignException e) {
+                        log.error("错误信息：{}",e.getMessage());
                     }
-                    pageIndex += chunkSize;
                 }
-                afterSyncAsync();
+                pageIndex += chunkSize;
             }
+            afterSyncAsync();
+        }
         return true;
     }
 
@@ -209,7 +208,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                     dto.setIndexName(indexName);
                     dto.setIndexAlias(resourceIndexAlias);
                     rocketmqDTO.setData(JacksonUtil.toJsonStr(dto));
-                    rocketmqDTO.setMsgId(String.valueOf(SnowFlakeShortUtil.getInstance().nextId()));
                     rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_CREATE_INDEX_TOPIC, rocketmqDTO);
                 } catch (final FeignException e) {
                     log.error("错误信息：{}", e.getMessage());
@@ -234,7 +232,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
                     RocketmqDTO rocketmqDTO = new RocketmqDTO();
                     final String indexName = resourceIndex + "_" + ym;
                     rocketmqDTO.setData(indexName);
-                    rocketmqDTO.setMsgId(String.valueOf(SnowFlakeShortUtil.getInstance().nextId()));
                     rocketmqApiFeignClient.sendMessage(RocketmqConstant.LAOKOU_DELETE_INDEX_TOPIC, rocketmqDTO);
                 } catch (final FeignException e) {
                     log.error("错误信息：{}", e.getMessage());
@@ -315,7 +312,6 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
             auditLogDTO.setType(AuditTypeEnum.RESOURCE.ordinal());
             RocketmqDTO rocketmqDTO = new RocketmqDTO();
             rocketmqDTO.setData(JacksonUtil.toJsonStr(auditLogDTO));
-            rocketmqDTO.setMsgId(String.valueOf(SnowFlakeShortUtil.getInstance().nextId()));
             rocketmqApiFeignClient.sendOneMessage(RocketmqConstant.LAOKOU_AUDIT_LOG_TOPIC, rocketmqDTO);
         } catch (FeignException e) {
             log.error("错误信息：{}",e.getMessage());

@@ -24,6 +24,8 @@ import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.swagger.utils.HttpResult;
+import org.laokou.redis.utils.RedisKeyUtil;
+import org.laokou.redis.utils.RedisUtil;
 import org.laokou.rocketmq.client.constant.RocketmqConstant;
 import org.laokou.rocketmq.consumer.feign.elasticsearch.ElasticsearchApiFeignClient;
 import org.laokou.rocketmq.consumer.filter.MessageFilter;
@@ -39,18 +41,26 @@ public class DeleteIndexConsumer implements RocketMQListener<MessageExt> {
 
     private final ElasticsearchApiFeignClient elasticsearchApiFeignClient;
     private final MessageFilter messageFilter;
+    private final RedisUtil redisUtil;
 
     @Override
     public void onMessage(MessageExt message) {
-        String messageBody = messageFilter.getBody(message);
-        if (messageBody == null) {
+        String indexName = messageFilter.getBody(message);
+        if (indexName == null) {
             return;
         }
         try {
-            HttpResult<Boolean> result = elasticsearchApiFeignClient.delete(messageBody);
+            String deleteIndexKey = RedisKeyUtil.getDeleteIndexKey();
+            Object obj = redisUtil.hGet(deleteIndexKey, indexName);
+            if (obj != null) {
+                return;
+            }
+            HttpResult<Boolean> result = elasticsearchApiFeignClient.delete(indexName);
             if (!result.success()) {
                 throw new CustomException("消费失败");
             }
+            // 写入redis,一个小时才能删除索引
+            redisUtil.hSet(deleteIndexKey,indexName,"0",RedisUtil.HOUR_ONE_EXPIRE);
         } catch (FeignException e) {
             log.error("错误信息:{}",e.getMessage());
             throw new CustomException("消费失败");

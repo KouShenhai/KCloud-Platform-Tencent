@@ -66,4 +66,28 @@ public final class RedisKeyUtil {
         return "sys:message:consume";
     }
 
+    /**
+     * 创建索引
+     * @return
+     */
+    public static String getCreateIndexKey() {
+        return "sys:es:create";
+    }
+
+    /**
+     * 删除索引
+     * @return
+     */
+    public static String getDeleteIndexKey() {
+        return "sys:es:delete";
+    }
+
+    /**
+     * 同步索引
+     * @return
+     */
+    public static String getSyncIndexKey() {
+        return "sys:es:sync";
+    }
+
 }
