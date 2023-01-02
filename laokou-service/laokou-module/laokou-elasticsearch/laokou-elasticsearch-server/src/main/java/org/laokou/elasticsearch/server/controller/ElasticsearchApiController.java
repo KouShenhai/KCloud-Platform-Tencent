@@ -36,7 +36,6 @@ import java.util.Map;
 @Tag(name = "Elasticsearch API",description = "分布式搜索API")
 @RequiredArgsConstructor
 public class ElasticsearchApiController {
-
     private final ElasticsearchUtil elasticsearchUtil;
 
     @PostMapping("/create")
