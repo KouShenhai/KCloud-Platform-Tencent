@@ -16,19 +16,17 @@
 package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import lombok.Data;
 /**
- * 菜单管理
- *
+ * 系统菜单
  * @author laokou
  */
 @Data
 @TableName("boot_sys_menu")
-//@ApiModel("菜单")
-@EqualsAndHashCode(callSuper=true)
+@Schema(name = "SysMenuDO",description = "系统菜单实体类")
 public class SysMenuDO extends BaseDO {
 
 	/**
@@ -36,7 +34,7 @@ public class SysMenuDO extends BaseDO {
 	 */
 	@NotBlank(message = "{sys.menu.pid.require}")
 	@TableField("pid")
-//	@ApiModelProperty(value = "父菜单ID",name = "pid",required = true,example = "0")
+	@Schema(name = "pid",description = "父菜单ID",example = "0")
 	private Long pid;
 
 	/**
@@ -44,42 +42,42 @@ public class SysMenuDO extends BaseDO {
 	 */
 	@NotBlank(message = "{sys.menu.name.require}")
 	@TableField("name")
-//	@ApiModelProperty(value = "菜单名称",name = "name",required = true,example = "用户管理")
+	@Schema(name = "name",description = "菜单名称",example = "用户管理")
 	private String name;
 
 	/**
 	 * 菜单URL
 	 */
 	@TableField("url")
-//	@ApiModelProperty(value = "菜单URL",name = "url", example = "/sys/user/api/login")
+	@Schema(name = "url",description = "菜单URL",example = "/sys/user/api/login")
 	private String url;
 
 	/**
-	 * 授权
+	 * 菜单权限标识
 	 */
 	@TableField("permission")
-//	@ApiModelProperty(value = "授权",name = "permission", example = "sys:user:query")
+	@Schema(name = "permission",description = "菜单权限标识",example = "sys:user:query")
 	private String permission;
 
 	/**
-	 * icon
+	 * 菜单图标
 	 */
 	@TableField("icon")
-//	@ApiModelProperty(value = "图标",name = "icon",example = "user")
+	@Schema(name = "icon",description = "菜单图标",example = "user")
 	private String icon;
 
 	/**
-	 * sort
+	 * 字典排序
 	 */
 	@TableField("sort")
-//	@ApiModelProperty(value = "排序",name = "sort",example = "1")
+	@Schema(name = "sort",description = "字典排序",example = "1")
 	private Integer sort;
 
 	/**
-	 * 类型   0：菜单   1：按钮
+	 * 字典类型 0 菜单 1 按钮
 	 */
     @TableField("type")
-//    @ApiModelProperty(value = "类型   0：菜单   1：按钮",name = "type",example = "0")
+	@Schema(name = "type",description = "菜单类型",example = "0")
 	private Integer type;
 
 }

@@ -54,11 +54,11 @@ public class SysAuthApiController {
     @Parameters(value = {
               @Parameter(name = OAuth2ParameterNames.USERNAME,description = "用户名",example = "admin")
             , @Parameter(name = OAuth2ParameterNames.PASSWORD,description = "密码",example = "admin123")
-            , @Parameter(name = OAuth2ParameterNames.CLIENT_ID,description = "认证编号",example = "auth-client")
+            , @Parameter(name = OAuth2ParameterNames.CLIENT_ID,description = "认证id",example = "auth-client")
             , @Parameter(name = OAuth2ParameterNames.CLIENT_SECRET,description = "认证密钥",example = "secret")
             , @Parameter(name = AuthConstant.UUID,description = "唯一标识",example = "1111")
             , @Parameter(name = AuthConstant.CAPTCHA,description = "验证码",example = "Bb6v")
-            , @Parameter(name = OAuth2ParameterNames.SCOPE,description = "认证范围",example = "auth")
+            , @Parameter(name = OAuth2ParameterNames.SCOPE,description = "认证scope",example = "auth")
             , @Parameter(name = OAuth2ParameterNames.GRANT_TYPE,description = "认证类型",example = "password")
     })
     public HttpResult<AuthToken> login(HttpServletRequest request) throws IOException {

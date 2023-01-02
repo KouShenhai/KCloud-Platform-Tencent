@@ -50,7 +50,7 @@ public class SysAudioApiController {
     private final WorkflowTaskApplicationService workflowTaskApplicationService;
 
     @GetMapping("/auditLog")
-    @Parameter(name = "businessId",description = "业务编号", required = true, example = "123")
+    @Parameter(name = "businessId",description = "业务id", required = true, example = "123")
     @Operation(summary = "音频管理>审批日志",description = "音频管理>审批日志")
     @PreAuthorize("hasAuthority('sys:resource:audio:auditLog')")
     public HttpResult<List<SysAuditLogVO>> auditLog(@RequestParam("businessId") Long businessId) {

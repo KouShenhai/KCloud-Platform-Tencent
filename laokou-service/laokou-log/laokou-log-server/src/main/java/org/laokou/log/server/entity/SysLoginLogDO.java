@@ -17,7 +17,6 @@ package org.laokou.log.server.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 
 /**
@@ -25,7 +24,6 @@ import org.laokou.common.mybatisplus.entity.BaseDO;
  */
 @Data
 @TableName("boot_sys_login_log")
-@EqualsAndHashCode(callSuper=true)
 public class SysLoginLogDO extends BaseDO {
 
     /**

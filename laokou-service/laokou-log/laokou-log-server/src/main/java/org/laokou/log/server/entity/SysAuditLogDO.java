@@ -17,7 +17,6 @@ package org.laokou.log.server.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 
 import java.util.Date;
@@ -29,7 +28,6 @@ import java.util.Date;
  */
 @Data
 @TableName("boot_sys_audit_log")
-@EqualsAndHashCode(callSuper=true)
 public class SysAuditLogDO extends BaseDO {
 
     private Long businessId;

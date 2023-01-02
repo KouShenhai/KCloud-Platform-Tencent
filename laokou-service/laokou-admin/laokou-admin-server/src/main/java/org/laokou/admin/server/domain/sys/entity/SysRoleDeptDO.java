@@ -16,7 +16,7 @@
 package org.laokou.admin.server.domain.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-//import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -26,10 +26,12 @@ import lombok.Data;
  */
 @Data
 @TableName("boot_sys_role_dept")
-//@ApiModel("系统角色部门DO")
+@Schema(name = "SysRoleDeptDO",description = "系统角色部门实体类")
 public class SysRoleDeptDO {
 
+    @Schema(name = "roleId",description = "角色id",example = "666")
     private Long roleId;
+    @Schema(name = "deptId",description = "部门id",example = "999")
     private Long deptId;
 
 }

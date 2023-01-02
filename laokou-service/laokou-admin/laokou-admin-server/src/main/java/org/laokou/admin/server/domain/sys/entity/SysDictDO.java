@@ -15,43 +15,53 @@
  */
 package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.EqualsAndHashCode;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import lombok.Data;
 /**
- * 字典管理
+ * 系统字典
  * @author laokou
  */
 @Data
 @TableName("boot_sys_dict")
-@EqualsAndHashCode(callSuper=true)
+@Schema(name = "SysDictDO",description = "系统字典实体类")
 public class SysDictDO extends BaseDO {
 
     /**
      * 标签
      */
+    @Schema(name = "dictLabel",description = "字典标签")
     private String dictLabel;
     /**
      * 类型
      */
+    @Schema(name = "type",description = "字典类型")
     private String type;
     /**
-     * 值
+     * 字典值
      */
+    @Schema(name = "dictValue",description = "字典值")
     private String dictValue;
     /**
      * 状态 0 正常 1 停用
      */
+    @Schema(name = "status",description = "字典状态",example = "0")
     private Integer status;
     /**
-     * 备注
+     * 字典备注
      */
+    @Schema(name = "remark",description = "字典备注",example = "OSS枚举")
     private String remark;
     /**
-     * 排序
+     * 字典排序
      */
+    @Schema(name = "sort",description = "字典排序",example = "1")
     private Integer sort;
 
+    /**
+     * 部门id
+     */
+    @Schema(name = "deptId",description = "部门id",example = "123")
     private Long deptId;
 
 }

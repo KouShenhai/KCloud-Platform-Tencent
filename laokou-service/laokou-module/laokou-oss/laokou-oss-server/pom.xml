@@ -47,10 +47,6 @@
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.laokou</groupId>
-            <artifactId>laokou-common-swagger</artifactId>
-        </dependency>
         <!--注册中心客户端-->
         <dependency>
             <groupId>com.tencent.cloud</groupId>

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.interfaces.qo;
-import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BasePage;
 import lombok.Data;
 /**
@@ -23,7 +22,6 @@ import lombok.Data;
  * @date 2022/7/7 0007 上午 9:00
  */
 @Data
-@EqualsAndHashCode(callSuper=true)
 public class DefinitionQo extends BasePage {
 
     private String processName;

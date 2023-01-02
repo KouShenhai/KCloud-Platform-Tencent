@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 package org.laokou.common.mybatisplus.entity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
 /**
  * @author laokou
  */
 @Data
+@Schema(name = "BasePage",description = "基础分页实体类")
 public abstract class BasePage {
 
-    @NotNull(message = "请填写显示页数")
+    /**
+     * 页码
+     */
+    @NotNull(message = "请填写显示页码")
+    @Schema(name = "pageNum",description = "页码")
     private Integer pageNum;
 
+    /**
+     *
+     */
     @NotNull(message = "请填写显示条数")
+    @Schema(name = "pageSize",description = "条数")
     private Integer pageSize;
 
     /**

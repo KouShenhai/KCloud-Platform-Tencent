@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.interfaces.qo;
-import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BasePage;
 import lombok.Data;
 /**
  * @author laokou
  */
 @Data
-@EqualsAndHashCode(callSuper=true)
 public class SysRoleQo extends BasePage {
 
     private String name;

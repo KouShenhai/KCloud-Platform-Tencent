@@ -15,7 +15,6 @@
  */
 package org.laokou.admin.server.domain.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import lombok.Data;
 /**
@@ -25,7 +24,6 @@ import lombok.Data;
  */
 @Data
 @TableName("boot_sys_resource")
-@EqualsAndHashCode(callSuper=true)
 public class SysResourceDO extends BaseDO {
 
     private String title;

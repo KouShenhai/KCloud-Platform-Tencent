@@ -43,7 +43,6 @@ public class MapperUtil<T> {
             } catch (Exception e) {
                 sqlSession.rollback();
                 log.error("错误信息：{}",e.getMessage());
-                throw new RuntimeException("批量插入数据失败");
             }
             if (i % batchNum == 0) {
                 sqlSession.commit();

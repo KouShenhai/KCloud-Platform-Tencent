@@ -16,14 +16,12 @@
 package org.laokou.common.swagger.exception;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.laokou.common.core.utils.MessageUtil;
 
 /**
  * @author laokou
  */
 @Data
-@EqualsAndHashCode(callSuper=true)
 public class CustomException extends RuntimeException{
 
     private int code;

@@ -18,7 +18,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import lombok.EqualsAndHashCode;
 import org.laokou.common.mybatisplus.entity.BaseDO;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -28,7 +27,6 @@ import org.hibernate.validator.constraints.Length;
  */
 @Data
 @TableName("boot_sys_user")
-@EqualsAndHashCode(callSuper=true)
 public class SysUserDO extends BaseDO {
 
     @NotBlank(message = "{sys.user.password.require}")
