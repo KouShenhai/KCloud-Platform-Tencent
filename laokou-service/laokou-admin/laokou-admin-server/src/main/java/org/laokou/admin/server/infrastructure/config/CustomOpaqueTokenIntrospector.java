@@ -15,7 +15,7 @@
  */
 package org.laokou.admin.server.infrastructure.config;
 import lombok.RequiredArgsConstructor;
-import org.laokou.admin.server.infrastructure.constant.CacheConstant;
+import org.laokou.admin.client.constant.CacheConstant;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.common.swagger.exception.ErrorCode;
 import org.laokou.common.core.utils.MessageUtil;
@@ -46,15 +46,15 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
     @Override
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         Cache userInfoCache = caffeineCacheManager.getCache(CacheConstant.TOKEN);
-        UserDetail userDetail = userInfoCache.get(token, UserDetail.class);
+        String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
+        UserDetail userDetail = userInfoCache.get(userInfoKey, UserDetail.class);
         if (userDetail != null) {
             return userDetail;
         }
-        String userInfoKey = RedisKeyUtil.getUserInfoKey(token);
         Object obj = redisUtil.get(userInfoKey);
         if (obj != null) {
             userDetail = (UserDetail) obj;
-            userInfoCache.put(token,userDetail);
+            userInfoCache.put(userInfoKey,userDetail);
             return userDetail;
         }
         OAuth2Authorization oAuth2Authorization = oAuth2AuthorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);

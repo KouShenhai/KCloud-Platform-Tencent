@@ -37,6 +37,14 @@ public final class RedisKeyUtil {
     public static String getUserInfoKey(String token) {
         return "sys:user:info:" + token;
     }
+
+    /**
+     * 二级缓存Key
+     */
+    public static String getDoubleCacheKey(String name,Long id) {
+        return "sys:" + name + ":cache:" + (id == null ? "" : id);
+    }
+
     /**
      * 布隆过滤器Key
      */

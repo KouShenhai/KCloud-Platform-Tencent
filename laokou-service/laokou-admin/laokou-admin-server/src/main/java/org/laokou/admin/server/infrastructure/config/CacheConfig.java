@@ -15,7 +15,7 @@
  */
 package org.laokou.admin.server.infrastructure.config;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import org.laokou.admin.server.infrastructure.constant.CacheConstant;
+import org.laokou.admin.client.constant.CacheConstant;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.support.SimpleCacheManager;

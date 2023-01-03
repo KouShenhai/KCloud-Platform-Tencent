@@ -1,4 +1,4 @@
-package org.laokou.admin.server.infrastructure.constant;
+package org.laokou.admin.client.constant;
 
 /**
  * @author laokou
