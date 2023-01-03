@@ -16,19 +16,13 @@
 package org.laokou.redis.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import java.time.Duration;
-
 /**
  * Redis配置
  * @author laokou
@@ -61,25 +55,12 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    /**
-     * 配置CacheManager
-     *
-     * @return
-     */
     @Bean
-    public CacheManager cacheManager() {
-        RedisSerializer<String> redisSerializer = new StringRedisSerializer();
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = getJsonRedisSerializer();
-        // 配置序列化（解决乱码的问题）
-        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                // 设置缓存失效时间
-                .entryTtl(Duration.ofHours(1))
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
-                .disableCachingNullValues();
-        return RedisCacheManager.builder(factory)
-                .cacheDefaults(config)
-                .build();
+    public RedisMessageListenerContainer redisMessageListenerContainer() {
+        RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
+        // 监听所有库过期事件
+        redisMessageListenerContainer.setConnectionFactory(factory);
+        return redisMessageListenerContainer;
     }
 
     private Jackson2JsonRedisSerializer getJsonRedisSerializer() {

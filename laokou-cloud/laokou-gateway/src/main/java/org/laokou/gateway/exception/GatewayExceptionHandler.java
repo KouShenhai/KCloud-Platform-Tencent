@@ -39,6 +39,7 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler, Ordere
 			log.error("服务正在维护，请联系管理员");
 			result = ResponseUtil.error(GatewayException.SERVICE_MAINTENANCE);
 		} else {
+			log.error("未知错误");
 			result = ResponseUtil.error(GatewayException.UNAUTHORIZED);
 		}
 		return ResponseUtil.response(exchange,result);

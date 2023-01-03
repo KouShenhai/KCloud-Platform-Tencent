@@ -20,9 +20,9 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin.version>2.0.2</maven-compiler-plugin.version>
-        <!--boot版本-->
+        <!--spring-boot版本-->
         <spring-boot.version>3.0.1</spring-boot.version>
-        <!--cloud版本-->
+        <!--spring-cloud版本-->
         <spring-cloud.version>2022.0.0</spring-cloud.version>
         <docker.repostory>registry.cn-hangzhou.aliyuncs.com</docker.repostory>
         <docker.registry.name>koushenhai</docker.registry.name>
@@ -31,6 +31,8 @@
         <spring-security.version>6.0.1</spring-security.version>
         <!--cloud-tencent版本-->
         <spring-cloud-tencent.version>1.8.2-2022.0.0</spring-cloud-tencent.version>
+        <!--spring-doc版本-->
+        <spring-doc.version>2.0.2</spring-doc.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -78,7 +80,7 @@
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi</artifactId>
-                <version>2.0.2</version>
+                <version>${spring-doc.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
