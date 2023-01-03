@@ -34,7 +34,6 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 import org.springframework.stereotype.Component;
 import java.security.Principal;
 import java.util.concurrent.TimeUnit;
-
 /**
  * @author laokou
  */
@@ -44,10 +43,10 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
     private final OAuth2AuthorizationService oAuth2AuthorizationService;
     private final RedisUtil redisUtil;
-    private static final Cache<String,UserDetail> caffeineCache;
+    private static final Cache<String,UserDetail> CAFFEINE_CACHE;
 
     static {
-        caffeineCache = Caffeine.newBuilder().initialCapacity(200)
+        CAFFEINE_CACHE = Caffeine.newBuilder().initialCapacity(200)
                 .expireAfterAccess(30, TimeUnit.MINUTES)
                 .maximumSize(2048)
                 .build();
@@ -55,7 +54,7 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
     @Override
     public OAuth2AuthenticatedPrincipal introspect(String token) {
-        UserDetail userDetail = caffeineCache.getIfPresent(token);
+        UserDetail userDetail = CAFFEINE_CACHE.getIfPresent(token);
         if (userDetail != null) {
             return userDetail;
         }
@@ -63,7 +62,7 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
         Object obj = redisUtil.get(userInfoKey);
         if (obj != null) {
             userDetail = (UserDetail) obj;
-            caffeineCache.put(token,userDetail);
+            CAFFEINE_CACHE.put(token,userDetail);
             return userDetail;
         }
         OAuth2Authorization oAuth2Authorization = oAuth2AuthorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
