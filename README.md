@@ -46,7 +46,7 @@ KCloud-Platform-Tencent（老寇云平台）是一款企业级微服务架构的
 | Spring Cloud Tencent        | 1.8.2-2022.0.0 |
 | Spring Boot Admin           | 3.0.0-M8       |
 | Spring Authorization Server | 1.0.0          |
-| Mybatis Plus                | 3.5.3          |
+| Mybatis Plus                | 3.5.3.1        |
 | Polaris                     | 1.13.3         |
 | Mysql                       | 5.7.9          |
 | Redis                       | 6.0.6          |
@@ -175,12 +175,6 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
         return sysUserService.getUserPage(page,qo);
     }
 }
-```
-##### XML配置
-```xml
-<if test="qo.sqlFilter != null and qo.sqlFilter != ''">
-    and ( ${qo.sqlFilter} )
-</if>
 ```
     
 ### 高可用系统构建

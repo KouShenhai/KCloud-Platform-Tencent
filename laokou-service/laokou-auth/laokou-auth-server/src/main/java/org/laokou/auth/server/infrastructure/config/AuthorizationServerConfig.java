@@ -111,7 +111,7 @@ public class AuthorizationServerConfig {
         return http
                 .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .authorizeHttpRequests(authorizeRequests -> {
-                    // 自定义接口、端点暴露
+                    // 忽略error
                     authorizeRequests.requestMatchers("/error").permitAll();
                     authorizeRequests.anyRequest().authenticated();
                 })

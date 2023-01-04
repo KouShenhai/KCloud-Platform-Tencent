@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.laokou.admin.server.infrastructure.aspect;
+import lombok.extern.slf4j.Slf4j;
 import org.laokou.admin.server.infrastructure.annotation.DataFilter;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.enums.SuperAdminEnum;
@@ -35,6 +36,7 @@ import java.util.List;
  */
 @Component
 @Aspect
+@Slf4j
 public class DataFilterAspect {
 
     @Pointcut("@annotation(org.laokou.admin.server.infrastructure.annotation.DataFilter)")
@@ -43,18 +45,19 @@ public class DataFilterAspect {
     @Before("dataFilterPointCut()")
     public void dataFilterPoint(JoinPoint point) {
         Object params = point.getArgs()[0];
-        if (params instanceof BasePage) {
+        if (params instanceof BasePage basePage) {
             UserDetail userDetail = UserUtil.userDetail();
-            //如果是超级管理员，不进行数据过滤
+            // 超级管理员不过滤数据
             if (userDetail.getSuperAdmin() == SuperAdminEnum.YES.ordinal()) {
                 return;
             }
             try {
                 //否则进行数据过滤
-                BasePage page = (BasePage)params;
                 String sqlFilter = getSqlFilter(userDetail, point);
-                page.setSqlFilter(sqlFilter);
-            }catch (Exception ignored){}
+                basePage.setSqlFilter(sqlFilter);
+            }catch (Exception ex){
+                log.error("错误信息:{}",ex.getMessage());
+            }
         }
     }
 
@@ -68,19 +71,21 @@ public class DataFilterAspect {
         if (dataFilter == null) {
             dataFilter = AnnotationUtils.findAnnotation(method,DataFilter.class);
         }
-        //获取表的别名
+        // 获取表的别名
         assert dataFilter != null;
         String tableAlias = dataFilter.tableAlias();
         if(StringUtil.isNotEmpty(tableAlias)){
             tableAlias +=  ".";
         }
         StringBuilder sqlFilter = new StringBuilder();
-        //用户列表
+        // 用户列表
         List<Long> deptIds = userDetail.getDeptIds();
+        sqlFilter.append("(");
         if (CollectionUtils.isNotEmpty(deptIds)) {
-            sqlFilter.append(" find_in_set(").append(tableAlias).append(dataFilter.deptId()).append(" , ").append("'").append(StringUtil.join(deptIds,",")).append("'").append(") or ");
+            sqlFilter.append("find_in_set(").append(tableAlias).append(dataFilter.deptId()).append(" , ").append("\"").append(StringUtil.join(deptIds,",")).append("\"").append(") or ");
         }
-        sqlFilter.append(tableAlias).append(dataFilter.userId()).append(" = ").append("'").append(userDetail.getUserId()).append("' ");
+        sqlFilter.append(tableAlias).append(dataFilter.userId()).append(" = ").append(userDetail.getUserId());
+        sqlFilter.append(")");
         return sqlFilter.toString();
     }
 

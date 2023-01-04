@@ -41,6 +41,7 @@ public abstract class BasePage {
     /**
      * sql拼接
      */
+    @Schema(name = "sqlFilter",description = "sql拼接")
     private String sqlFilter;
 
 }

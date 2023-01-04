@@ -22,7 +22,7 @@
         <!--flowable版本-->
         <flowable.version>6.7.2</flowable.version>
         <!--mybatis-plus版本 -->
-        <mybatis-plus.version>3.5.3</mybatis-plus.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <!--commons-httpclient版本-->
         <commons-httpclient.version>3.1</commons-httpclient.version>
         <!--commons-configuration版本-->
@@ -270,11 +270,6 @@
             <dependency>
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-monitor</artifactId>
-                <version>${laokou.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.laokou</groupId>
-                <artifactId>laokou-register</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
             <dependency>
