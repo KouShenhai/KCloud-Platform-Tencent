@@ -42,7 +42,7 @@ public final class RedisKeyUtil {
      * 二级缓存Key
      */
     public static String getDoubleCacheKey(String name,Long id) {
-        return "sys:" + name + ":cache:" + (id == null ? "" : id);
+        return "sys:" + name + ":cache:" + id;
     }
 
     /**

@@ -46,9 +46,6 @@ public class RedisKeyExpirationEventMessageListener extends KeyExpirationEventMe
         if (key.matches(RedisKeyUtil.getUserInfoKey("") + regex)) {
             caffeineCacheManager.getCache(CacheConstant.TOKEN).evict(key);
         }
-        if (key.matches(RedisKeyUtil.getDoubleCacheKey(CacheConstant.USER,null) + regex)) {
-            caffeineCacheManager.getCache(CacheConstant.USER).evict(key);
-        }
     }
 
     public static void main(String[] args) {
