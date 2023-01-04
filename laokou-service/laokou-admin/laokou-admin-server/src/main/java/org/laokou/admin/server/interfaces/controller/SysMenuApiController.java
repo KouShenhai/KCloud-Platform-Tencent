@@ -17,8 +17,11 @@ package org.laokou.admin.server.interfaces.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.laokou.admin.client.constant.CacheConstant;
+import org.laokou.admin.client.enums.CacheEnum;
 import org.laokou.admin.server.application.service.SysMenuApplicationService;
 import org.laokou.admin.client.dto.SysMenuDTO;
+import org.laokou.admin.server.infrastructure.annotation.DataCache;
 import org.laokou.admin.server.interfaces.qo.SysMenuQo;
 import org.laokou.admin.client.vo.SysMenuVO;
 import org.laokou.common.swagger.utils.HttpResult;
@@ -53,6 +56,7 @@ public class SysMenuApiController {
 
     @GetMapping("/detail")
     @Operation(summary = "系统菜单>详情",description = "系统菜单>详情")
+    @DataCache(name = CacheConstant.MENU,key = "#id")
     public HttpResult<SysMenuVO> detail(@RequestParam("id")Long id) {
         return new HttpResult<SysMenuVO>().ok(sysMenuApplicationService.getMenuById(id));
     }
@@ -61,6 +65,7 @@ public class SysMenuApiController {
     @Operation(summary = "系统菜单>修改",description = "系统菜单>修改")
     @OperateLog(module = "系统菜单",name = "菜单修改")
     @PreAuthorize("hasAuthority('sys:menu:update')")
+    @DataCache(name = CacheConstant.MENU,key = "#dto.id",type = CacheEnum.DEL)
     public HttpResult<Boolean> update(@RequestBody SysMenuDTO dto) {
         return new HttpResult<Boolean>().ok(sysMenuApplicationService.updateMenu(dto));
     }
@@ -69,6 +74,7 @@ public class SysMenuApiController {
     @Operation(summary = "系统菜单>新增",description = "系统菜单>新增")
     @OperateLog(module = "系统菜单",name = "菜单新增")
     @PreAuthorize("hasAuthority('sys:menu:insert')")
+    @DataCache(name = CacheConstant.MENU,key = "#dto.id",type = CacheEnum.DEL)
     public HttpResult<Boolean> insert(@RequestBody SysMenuDTO dto) {
         return new HttpResult<Boolean>().ok(sysMenuApplicationService.insertMenu(dto));
     }
@@ -77,6 +83,7 @@ public class SysMenuApiController {
     @Operation(summary = "系统菜单>删除",description = "系统菜单>删除")
     @OperateLog(module = "系统菜单",name = "菜单删除")
     @PreAuthorize("hasAuthority('sys:menu:delete')")
+    @DataCache(name = CacheConstant.MENU,key = "#id",type = CacheEnum.DEL)
     public HttpResult<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResult<Boolean>().ok(sysMenuApplicationService.deleteMenu(id));
     }

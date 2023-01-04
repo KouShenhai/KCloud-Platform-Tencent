@@ -44,6 +44,46 @@ public class CacheConfig {
                 .initialCapacity(10)
                 .maximumSize(100)
                 .build()));
+        caffeineList.add(new CaffeineCache(CacheConstant.AUDIO, Caffeine.newBuilder()
+                .expireAfterWrite(5, TimeUnit.MINUTES)
+                .initialCapacity(10)
+                .maximumSize(100)
+                .build()));
+        caffeineList.add(new CaffeineCache(CacheConstant.DEPT, Caffeine.newBuilder()
+                .expireAfterWrite(5, TimeUnit.MINUTES)
+                .initialCapacity(10)
+                .maximumSize(100)
+                .build()));
+        caffeineList.add(new CaffeineCache(CacheConstant.DICT, Caffeine.newBuilder()
+                .expireAfterWrite(5, TimeUnit.MINUTES)
+                .initialCapacity(10)
+                .maximumSize(100)
+                .build()));
+        caffeineList.add(new CaffeineCache(CacheConstant.IMAGE, Caffeine.newBuilder()
+                .expireAfterWrite(5, TimeUnit.MINUTES)
+                .initialCapacity(10)
+                .maximumSize(100)
+                .build()));
+        caffeineList.add(new CaffeineCache(CacheConstant.MENU, Caffeine.newBuilder()
+                .expireAfterWrite(5, TimeUnit.MINUTES)
+                .initialCapacity(10)
+                .maximumSize(100)
+                .build()));
+        caffeineList.add(new CaffeineCache(CacheConstant.MESSAGE, Caffeine.newBuilder()
+                .expireAfterWrite(5, TimeUnit.MINUTES)
+                .initialCapacity(10)
+                .maximumSize(100)
+                .build()));
+        caffeineList.add(new CaffeineCache(CacheConstant.ROLE, Caffeine.newBuilder()
+                .expireAfterWrite(5, TimeUnit.MINUTES)
+                .initialCapacity(10)
+                .maximumSize(100)
+                .build()));
+        caffeineList.add(new CaffeineCache(CacheConstant.VIDEO, Caffeine.newBuilder()
+                .expireAfterWrite(5, TimeUnit.MINUTES)
+                .initialCapacity(10)
+                .maximumSize(100)
+                .build()));
         cacheManager.setCaches(caffeineList);
         return cacheManager;
     }

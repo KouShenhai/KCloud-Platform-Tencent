@@ -44,7 +44,7 @@ public class JacksonUtil {
      * @return T
      */
     @SneakyThrows
-    public static <T> T toBean(String json, Class<T> clazz) {
+    public <T> T toBean(String json, Class<T> clazz) {
         if (check(json, clazz)) {
             return null;
         }
@@ -56,7 +56,7 @@ public class JacksonUtil {
     }
 
     @SneakyThrows
-    public static <T> T toBean(InputStream inputStream, Class<T> clazz) {
+    public <T> T toBean(InputStream inputStream, Class<T> clazz) {
         return (inputStream == null || clazz == null) ? null :
                 MAPPER.readValue(inputStream, clazz);
     }
@@ -68,7 +68,7 @@ public class JacksonUtil {
      * @return json
      */
     @SneakyThrows
-    public static String toJsonStr(Object obj) {
+    public String toJsonStr(Object obj) {
         return toJsonStr(obj,false);
     }
 
@@ -80,7 +80,7 @@ public class JacksonUtil {
      * @return json
      */
     @SneakyThrows
-    public static String toJsonStr(Object obj,boolean flag) {
+    public String toJsonStr(Object obj,boolean flag) {
         if (obj instanceof String) {
             return (String) obj;
         }
@@ -99,7 +99,7 @@ public class JacksonUtil {
      * @return List<T>
      */
     @SneakyThrows
-    public static <T> List<T> toList(String json, Class<T> clazz) {
+    public <T> List<T> toList(String json, Class<T> clazz) {
         if (check(json, clazz)) {
             return new ArrayList<>();
         }
@@ -117,7 +117,7 @@ public class JacksonUtil {
      * @return Map<K, V>
      */
     @SneakyThrows
-    public static <K, V> Map<K, V> toMap(String json, Class<K> keyClass, Class<V> valueClass) {
+    public <K, V> Map<K, V> toMap(String json, Class<K> keyClass, Class<V> valueClass) {
         if (check(json, keyClass, valueClass)) {
             return Collections.emptyMap();
         }

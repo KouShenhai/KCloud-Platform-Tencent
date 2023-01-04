@@ -17,8 +17,11 @@ package org.laokou.admin.server.interfaces.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.laokou.admin.client.constant.CacheConstant;
+import org.laokou.admin.client.enums.CacheEnum;
 import org.laokou.admin.server.application.service.SysDeptApplicationService;
 import org.laokou.admin.client.dto.SysDeptDTO;
+import org.laokou.admin.server.infrastructure.annotation.DataCache;
 import org.laokou.admin.server.interfaces.qo.SysDeptQo;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.admin.client.vo.SysDeptVO;
@@ -57,6 +60,7 @@ public class SysDeptApiController {
     @Operation(summary = "系统部门>新增",description = "系统部门>新增")
     @OperateLog(module = "系统部门",name = "部门新增")
     @PreAuthorize("hasAuthority('sys:dept:insert')")
+    @DataCache(name = CacheConstant.DEPT,key = "#dto.id",type = CacheEnum.DEL)
     public HttpResult<Boolean> insert(@RequestBody SysDeptDTO dto) {
         return new HttpResult<Boolean>().ok(sysDeptApplicationService.insertDept(dto));
     }
@@ -65,12 +69,14 @@ public class SysDeptApiController {
     @Operation(summary = "系统部门>修改",description = "系统部门>修改")
     @OperateLog(module = "系统部门",name = "部门修改")
     @PreAuthorize("hasAuthority('sys:dept:update')")
+    @DataCache(name = CacheConstant.DEPT,key = "#dto.id",type = CacheEnum.DEL)
     public HttpResult<Boolean> update(@RequestBody SysDeptDTO dto) {
         return new HttpResult<Boolean>().ok(sysDeptApplicationService.updateDept(dto));
     }
 
     @GetMapping("/detail")
     @Operation(summary = "系统部门>详情",description = "系统部门>详情")
+    @DataCache(name = CacheConstant.DEPT,key = "#id")
     public HttpResult<SysDeptVO> detail(@RequestParam("id")Long id) {
         return new HttpResult<SysDeptVO>().ok(sysDeptApplicationService.getDept(id));
     }
@@ -79,6 +85,7 @@ public class SysDeptApiController {
     @Operation(summary = "系统部门>删除",description = "系统部门>删除")
     @OperateLog(module = "系统部门",name = "部门删除")
     @PreAuthorize("hasAuthority('sys:dept:delete')")
+    @DataCache(name = CacheConstant.DEPT,key = "#id",type = CacheEnum.DEL)
     public HttpResult<Boolean> delete(@RequestParam("id")Long id) {
         return new HttpResult<Boolean>().ok(sysDeptApplicationService.deleteDept(id));
     }

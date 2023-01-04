@@ -61,9 +61,9 @@ public class DataFilterAspect {
     /**
      * 获取数据过滤的SQL
      */
-    private String getSqlFilter(UserDetail userDetail, JoinPoint point) throws Exception {
+    private String getSqlFilter(UserDetail userDetail, JoinPoint point) {
         MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = point.getTarget().getClass().getDeclaredMethod(signature.getName(), signature.getParameterTypes());
+        Method method = signature.getMethod();
         DataFilter dataFilter = method.getAnnotation(DataFilter.class);
         if (dataFilter == null) {
             dataFilter = AnnotationUtils.findAnnotation(method,DataFilter.class);

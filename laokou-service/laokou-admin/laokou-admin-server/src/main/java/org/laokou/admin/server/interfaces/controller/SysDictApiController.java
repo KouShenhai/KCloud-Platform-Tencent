@@ -18,8 +18,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.laokou.admin.client.constant.CacheConstant;
+import org.laokou.admin.client.enums.CacheEnum;
 import org.laokou.admin.server.application.service.SysDictApplicationService;
 import org.laokou.admin.client.dto.SysDictDTO;
+import org.laokou.admin.server.infrastructure.annotation.DataCache;
 import org.laokou.admin.server.interfaces.qo.SysDictQo;
 import org.laokou.admin.client.vo.SysDictVO;
 import org.laokou.common.swagger.utils.HttpResult;
@@ -47,6 +50,7 @@ public class SysDictApiController {
 
     @GetMapping(value = "/detail")
     @Operation(summary = "系统字典>详情",description = "系统字典>详情")
+    @DataCache(name = CacheConstant.DICT,key = "#id")
     public HttpResult<SysDictVO> detail(@RequestParam("id") Long id) {
         return new HttpResult<SysDictVO>().ok(sysDictApplicationService.getDictById(id));
     }
@@ -55,6 +59,7 @@ public class SysDictApiController {
     @Operation(summary = "系统字典>新增",description = "系统字典>新增")
     @OperateLog(module = "系统字典",name = "字典新增")
     @PreAuthorize("hasAuthority('sys:dict:insert')")
+    @DataCache(name = CacheConstant.DICT,key = "#dto.id",type = CacheEnum.DEL)
     public HttpResult<Boolean> insert(@RequestBody SysDictDTO dto) {
         return new HttpResult<Boolean>().ok(sysDictApplicationService.insertDict(dto));
     }
@@ -63,6 +68,7 @@ public class SysDictApiController {
     @Operation(summary = "系统字典>修改",description = "系统字典>修改")
     @OperateLog(module = "系统字典",name = "字典修改")
     @PreAuthorize("hasAuthority('sys:dict:update')")
+    @DataCache(name = CacheConstant.DICT,key = "#dto.id",type = CacheEnum.DEL)
     public HttpResult<Boolean> update(@RequestBody SysDictDTO dto) {
         return new HttpResult<Boolean>().ok(sysDictApplicationService.updateDict(dto));
     }
@@ -71,6 +77,7 @@ public class SysDictApiController {
     @Operation(summary = "系统字典>删除",description = "系统字典>删除")
     @OperateLog(module = "系统字典",name = "字典删除")
     @PreAuthorize("hasAuthority('sys:dict:delete')")
+    @DataCache(name = CacheConstant.DICT,key = "#id",type = CacheEnum.DEL)
     public HttpResult<Boolean> delete(@RequestParam("id") Long id) {
         return new HttpResult<Boolean>().ok(sysDictApplicationService.deleteDict(id));
     }

@@ -79,12 +79,8 @@ public class OperateLogAspect {
         try {
             HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
             //获取注解
-            Signature signature = joinPoint.getSignature();
-            MethodSignature methodSignature = (MethodSignature) signature;
+            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
             Method method = methodSignature.getMethod();
-            if (null == method) {
-                return;
-            }
             OperateLog operateLog = method.getAnnotation(OperateLog.class);
             if (operateLog == null) {
                 operateLog = AnnotationUtils.findAnnotation(method, OperateLog.class);

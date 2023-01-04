@@ -1,5 +1,7 @@
 package org.laokou.admin.server.infrastructure.annotation;
 
+import org.laokou.admin.client.enums.CacheEnum;
+
 import java.lang.annotation.*;
 
 /**
@@ -26,11 +28,11 @@ public @interface DataCache {
      * 默认10分钟
      * @return
      */
-    int expire() default 600;
+    long expire() default 600;
 
     /**
      * 操作类型
      */
-
+    CacheEnum type() default CacheEnum.GET;
 
 }
