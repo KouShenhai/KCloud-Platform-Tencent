@@ -5,7 +5,7 @@
     <parent>
         <artifactId>laokou-email</artifactId>
         <groupId>org.laokou</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>3.0.1</version>
     </parent>
     <groupId>org.laokou</groupId>
     <artifactId>laokou-email-server</artifactId>
