@@ -4,6 +4,7 @@
 # Log file
 *.log
 logs
+doc/db/db_data
 .idea
 *.iml
 # BlueJ files
