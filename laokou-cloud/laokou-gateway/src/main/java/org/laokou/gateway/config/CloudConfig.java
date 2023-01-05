@@ -17,8 +17,11 @@ package org.laokou.gateway.config;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.gateway.config.HttpClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.HttpMessageConverter;
 
 import java.util.stream.Collectors;
@@ -33,4 +36,14 @@ public class CloudConfig {
     public HttpMessageConverters messageConverters(ObjectProvider<HttpMessageConverter<?>> converters) {
         return new HttpMessageConverters(converters.orderedStream().collect(Collectors.toList()));
     }
+
+    @Primary
+    @Bean
+    public HttpClientProperties clientProperties() {
+        return new CustomHttpClientProperties();
+    }
+
+    @ConfigurationProperties(value = "spring.cloud.gateway.httpclient", ignoreInvalidFields = true)
+    private static class CustomHttpClientProperties extends HttpClientProperties {}
+
 }
