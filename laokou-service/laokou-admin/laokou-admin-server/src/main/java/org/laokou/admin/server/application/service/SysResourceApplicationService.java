@@ -23,6 +23,7 @@ import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.flowable.client.dto.AuditDTO;
 import org.laokou.flowable.client.vo.TaskVO;
 import org.laokou.oss.client.vo.UploadVO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -74,13 +75,12 @@ public interface SysResourceApplicationService {
     /**
      * 上传资源
      * @param code
-     * @param fileName
-     * @param inputStream
-     * @param fileSize
+     * @param file
+     * @param md5
      * @return
      * @throws Exception
      */
-    UploadVO uploadResource(String code, String fileName, InputStream inputStream, Long fileSize) throws Exception;
+    UploadVO uploadResource(String code, MultipartFile file,String md5) throws Exception;
 
     /**
      * 同步资源到ES（批量异步同步）

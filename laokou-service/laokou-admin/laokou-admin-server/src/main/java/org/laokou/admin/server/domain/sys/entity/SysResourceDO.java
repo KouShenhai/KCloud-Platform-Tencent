@@ -77,10 +77,4 @@ public class SysResourceDO extends BaseDO {
     @Schema(name = "processInstanceId",description = "流程id")
     private String processInstanceId;
 
-    /**
-     * 唯一标识
-     */
-    @Schema(name = "md5",description = "唯一标识")
-    private String md5;
-
 }

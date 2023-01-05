@@ -34,7 +34,6 @@
         `code`,
         remark,
         tags,
-        md5,
         process_instance_id
         from boot_sys_resource
         where id = #{id}

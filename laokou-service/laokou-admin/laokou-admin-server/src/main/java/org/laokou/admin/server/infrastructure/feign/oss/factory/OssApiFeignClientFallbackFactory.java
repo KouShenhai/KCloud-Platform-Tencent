@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.client.dto;
-
-import lombok.Data;
+package org.laokou.admin.server.infrastructure.feign.oss.factory;
+import org.laokou.admin.server.infrastructure.feign.oss.fallback.OssApiFeignClientFallback;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
 
 /**
+ * 回调工厂
  * @author laokou
  * @version 1.0
- * @date 2022/8/19 0019 下午 3:46
+ * @date 2020/9/5 0005 上午 12:12
  */
-@Data
-public class SysResourceDTO {
-    private Long id;
-    private String title;
-    private String url;
-    private String code;
-    private String remark;
-    private String tags;
-    private String md5;
+@Component
+public class OssApiFeignClientFallbackFactory implements FallbackFactory<OssApiFeignClientFallback> {
+
+    @Override
+    public OssApiFeignClientFallback create(Throwable throwable) {
+        return new OssApiFeignClientFallback(throwable);
+    }
 }

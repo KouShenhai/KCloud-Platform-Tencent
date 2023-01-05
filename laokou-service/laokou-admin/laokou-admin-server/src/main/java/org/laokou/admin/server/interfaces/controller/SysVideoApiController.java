@@ -30,10 +30,14 @@ import org.laokou.admin.client.vo.SysAuditLogVO;
 import org.laokou.admin.client.vo.SysResourceVO;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.admin.server.infrastructure.annotation.OperateLog;
+import org.laokou.oss.client.vo.UploadVO;
 import org.laokou.redis.annotation.Lock4j;
 import org.laokou.redis.enums.LockScope;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.util.List;
 /**
@@ -51,20 +55,11 @@ public class SysVideoApiController {
 
     private final WorkflowTaskApplicationService workflowTaskApplicationService;
 
-//    @PostMapping("/upload")
-////    @ApiOperation("视频管理>上传")
-//    public HttpResult<UploadVO> upload(@RequestPart("file") MultipartFile file) throws Exception {
-//        if (file.isEmpty()) {
-//            throw new CustomException("上传的文件不能为空");
-//        }
-//        //文件名
-//        final String fileName = file.getOriginalFilename();
-//        //文件流
-//        final InputStream inputStream = file.getInputStream();
-//        //文件大小
-//        final Long fileSize = file.getSize();
-//        return new HttpResult<UploadVO>().ok(sysResourceApplicationService.uploadResource("video",fileName,inputStream,fileSize));
-//    }
+    @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "视频管理>上传",description = "视频管理>上传")
+    public HttpResult<UploadVO> upload(@RequestPart("file") MultipartFile file, @RequestParam("md5")String md5) throws Exception {
+        return new HttpResult<UploadVO>().ok(sysResourceApplicationService.uploadResource("video",file,md5));
+    }
 
     @PostMapping("/query")
     @Operation(summary = "视频管理>查询",description = "视频管理>查询")

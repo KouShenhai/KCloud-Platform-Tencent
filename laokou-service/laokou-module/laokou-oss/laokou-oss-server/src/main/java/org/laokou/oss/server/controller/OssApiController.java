@@ -70,7 +70,7 @@ public class OssApiController {
         String contentType = file.getContentType();
         int limitRead = (int) (fileSize + 1);
         // 上传文件
-        String url = storageFactory.build().upload(limitRead,md5, fileSize, newFileName, inputStream, contentType);
+        String url = storageFactory.build().upload(limitRead, fileSize, newFileName, inputStream, contentType);
         // 写入文件记录表
         sysOssLogService.insertLog(url,md5,fileName,fileSize);
         return new HttpResult<UploadVO>().ok(UploadVO.builder().url(url).build());

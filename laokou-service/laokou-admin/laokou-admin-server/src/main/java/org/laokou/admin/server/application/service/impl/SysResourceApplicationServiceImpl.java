@@ -28,6 +28,7 @@ import org.laokou.admin.server.domain.sys.entity.SysResourceDO;
 import org.laokou.admin.server.domain.sys.repository.service.SysAuditLogService;
 import org.laokou.admin.server.domain.sys.repository.service.SysResourceService;
 import org.laokou.admin.server.infrastructure.feign.flowable.WorkTaskApiFeignClient;
+import org.laokou.admin.server.infrastructure.feign.oss.OssApiFeignClient;
 import org.laokou.admin.server.interfaces.qo.TaskQo;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.utils.*;
@@ -58,6 +59,8 @@ import org.laokou.rocketmq.client.dto.SyncIndexDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -79,6 +82,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     private final RocketmqApiFeignClient rocketmqApiFeignClient;
     private final SysMessageApplicationService sysMessageApplicationService;
     private final WorkTaskApiFeignClient workTaskApiFeignClient;
+    private final OssApiFeignClient ossApiFeignClient;
 
     @Override
     public IPage<SysResourceVO> queryResourcePage(SysResourceQo qo) {
@@ -120,23 +124,26 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
     }
 
     @Override
-    public UploadVO uploadResource(String code, String fileName, InputStream inputStream, Long fileSize) throws Exception {
+    public UploadVO uploadResource(String code, MultipartFile file,String md5) {
+        if (file.isEmpty()) {
+            throw new CustomException("上传的文件不能为空");
+        }
         //判断类型
+        String fileName = file.getOriginalFilename();
         String fileSuffix = FileUtil.getFileSuffix(fileName);
         if (!FileUtil.checkFileExt(code,fileSuffix)) {
             throw new CustomException("格式不正确，请重新上传资源");
         }
-        UploadVO vo = new UploadVO();
-        String md5 = DigestUtils.md5DigestAsHex(inputStream);
-        //判断是否有md5
-        LambdaQueryWrapper<SysResourceDO> wrapper = Wrappers.lambdaQuery(SysResourceDO.class);
-        wrapper.eq(SysResourceDO::getMd5,md5);
-        List<SysResourceDO> list = sysResourceService.list(wrapper);
-//        if (list.size() > 0) {
-//            vo.setUrl(list.get(0).getUri());
-//        }
-        //vo.setMd5(md5);
-        return vo;
+        try {
+            HttpResult<UploadVO> result = ossApiFeignClient.upload(file,md5);
+            if (!result.success()) {
+                throw new CustomException(result.getCode(), result.getMsg());
+            }
+            return result.getData();
+        } catch (FeignException e) {
+            log.error("错误信息:{}",e.getMessage());
+        }
+        return UploadVO.builder().build();
     }
 
     @Override

@@ -32,13 +32,13 @@ public abstract class AbstractStorageService implements StorageService{
 
     protected SysOssVO vo;
 
-    public String upload(int readLimit,String md5, long size, String fileName, InputStream inputStream, String contentType) {
+    public String upload(int limitRead, long size, String fileName, InputStream inputStream, String contentType) {
         // 获取AmazonS3
         AmazonS3 amazonS3 = getAmazonS3();
         // 创建bucket
         createBucket(amazonS3);
         // 上传文件
-        putObject(amazonS3,md5,readLimit,size,fileName,inputStream,contentType);
+        putObject(amazonS3,limitRead,size,fileName,inputStream,contentType);
         // 获取地址
         return getUrl(amazonS3, fileName);
     }

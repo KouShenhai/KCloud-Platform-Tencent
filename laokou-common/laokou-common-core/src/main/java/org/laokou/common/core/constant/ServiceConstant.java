@@ -27,5 +27,6 @@ public interface ServiceConstant {
     String LAOKOU_KAFKA = "laokou-kafka";
     String LAOKOU_FLOWABLE = "laokou-flowable";
     String LAOKOU_LOG = "laokou-log";
+    String LAOKOU_OSS = "laokou-oss";
 
 }
