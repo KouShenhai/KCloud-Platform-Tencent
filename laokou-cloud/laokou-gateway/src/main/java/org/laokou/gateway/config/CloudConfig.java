@@ -39,11 +39,9 @@ public class CloudConfig {
 
     @Primary
     @Bean
-    public HttpClientProperties clientProperties() {
-        return new CustomHttpClientProperties();
-    }
-
     @ConfigurationProperties(value = "spring.cloud.gateway.httpclient", ignoreInvalidFields = true)
-    private static class CustomHttpClientProperties extends HttpClientProperties {}
+    public HttpClientProperties httpClientProperties() {
+        return new HttpClientProperties();
+    }
 
 }
