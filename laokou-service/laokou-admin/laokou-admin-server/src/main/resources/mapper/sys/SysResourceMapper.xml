@@ -29,7 +29,7 @@
         select
         id,
         title,
-        uri,
+        url,
         `status`,
         `code`,
         remark,

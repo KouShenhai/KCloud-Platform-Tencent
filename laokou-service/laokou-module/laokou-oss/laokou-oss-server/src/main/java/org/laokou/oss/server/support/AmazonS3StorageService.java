@@ -39,12 +39,13 @@ public class AmazonS3StorageService extends AbstractStorageService{
     }
 
     @Override
-    public void putObject(AmazonS3 amazonS3, int readLimit, long size, String fileName, InputStream inputStream,String contentType) {
+    public void putObject(AmazonS3 amazonS3,String md5, int readLimit, long size, String fileName, InputStream inputStream,String contentType) {
         // 上传文件
         String bucketName = vo.getBucketName();
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(size);
         objectMetadata.setContentType(contentType);
+        objectMetadata.setContentMD5(md5);
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName,fileName , inputStream, objectMetadata);
         putObjectRequest.getRequestClientOptions().setReadLimit(readLimit);
         amazonS3.putObject(putObjectRequest);

@@ -19,14 +19,14 @@ public class RocketConfig {
     @Value("${rocketmq.name-server}")
     private String nameServer;
 
-    @Bean(name = "template")
-    public RocketMQTemplate template() {
-        RocketMQTemplate rocketMQTemplate = new RocketMQTemplate();
-        DefaultMQProducer defaultMQProducer = new DefaultMQProducer();
-        defaultMQProducer.setProducerGroup(producerGroup);
-        defaultMQProducer.setNamesrvAddr(nameServer);
-        rocketMQTemplate.setProducer(defaultMQProducer);
-        return rocketMQTemplate;
+    @Bean(name = "rocketTemplate")
+    public RocketMQTemplate rocketTemplate() {
+        RocketMQTemplate template = new RocketMQTemplate();
+        DefaultMQProducer defaultProducer = new DefaultMQProducer();
+        defaultProducer.setProducerGroup(producerGroup);
+        defaultProducer.setNamesrvAddr(nameServer);
+        template.setProducer(defaultProducer);
+        return template;
     }
 
 }

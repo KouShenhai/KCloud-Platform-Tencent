@@ -27,7 +27,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 /**
  * @author laokou
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common.core","org.laokou.oss","org.laokou.redis","org.laokou.common.mybatisplus"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.common.swagger","org.laokou.common.core","org.laokou.oss","org.laokou.redis","org.laokou.common.mybatisplus"})
 @EnableDiscoveryClient
 @Import({CorsConfig.class, RedisSessionConfig.class, OpenApiMvcConfig.class})
 @EnableEncryptableProperties

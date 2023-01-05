@@ -20,6 +20,7 @@ package org.laokou.admin.server;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.laokou.common.swagger.config.CorsConfig;
 import org.laokou.common.swagger.config.OpenApiMvcConfig;
+import org.laokou.common.swagger.exception.CustomExceptionHandler;
 import org.laokou.redis.config.RedisSessionConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -36,13 +37,16 @@ import org.springframework.context.annotation.Import;
  * DDD分层架构(分布式微服务架构) > 表现层 应用层 领域层 基础层
  * @author laokou
  */
-@SpringBootApplication(scanBasePackages = {"org.laokou.common.core", "org.laokou.admin", "org.laokou.redis", "org.laokou.common.mybatisplus", "org.laokou.auth.client"})
+@SpringBootApplication(scanBasePackages = {"org.laokou.common.swagger","org.laokou.common.core", "org.laokou.admin", "org.laokou.redis", "org.laokou.common.mybatisplus", "org.laokou.auth.client"})
 @EnableDiscoveryClient
 @EnableConfigurationProperties
 @EnableAspectJAutoProxy
 @EnableEncryptableProperties
 @EnableFeignClients
-@Import({RedisSessionConfig.class, CorsConfig.class, OpenApiMvcConfig.class})
+@Import({RedisSessionConfig.class
+        , CorsConfig.class
+        , CustomExceptionHandler.class
+        , OpenApiMvcConfig.class})
 public class AdminApplication {
 
     public static void main(String[] args) {

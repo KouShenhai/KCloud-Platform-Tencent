@@ -1,8 +1,6 @@
 package org.laokou.oss.server.support;
 
 import com.amazonaws.services.s3.AmazonS3;
-import org.laokou.oss.client.vo.UploadVO;
-
 import java.io.InputStream;
 
 /**
@@ -24,8 +22,9 @@ public interface StorageService {
      * @param fileName
      * @param inputStream
      * @param contentType
+     * @param md5
      */
-    void putObject(AmazonS3 amazonS3, int readLimit, long size, String fileName, InputStream inputStream,String contentType);
+    void putObject(AmazonS3 amazonS3,String md5, int readLimit, long size, String fileName, InputStream inputStream,String contentType);
 
     /**
      * 获取地址
@@ -42,7 +41,8 @@ public interface StorageService {
      * @param contentType
      * @param size
      * @param readLimit
+     * @param md5
      * @return
      */
-    UploadVO upload(int readLimit, long size, String fileName, InputStream inputStream,String contentType);
+    String upload(int readLimit,String md5, long size, String fileName, InputStream inputStream,String contentType);
 }

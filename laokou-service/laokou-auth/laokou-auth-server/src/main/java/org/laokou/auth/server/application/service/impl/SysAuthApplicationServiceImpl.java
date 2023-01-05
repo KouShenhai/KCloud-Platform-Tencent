@@ -157,18 +157,18 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 .authorizedScopes(scopes)
                 .authorizationGrantType(grantType);
         // 生成access_token
-        OAuth2Token generatedOAuth2AccessToken = Optional.ofNullable(tokenGenerator.generate(context)).orElseThrow(() -> new CustomException("令牌生成器无法生成访问令牌"));
+        OAuth2Token generatedOauth2AccessToken = Optional.ofNullable(tokenGenerator.generate(context)).orElseThrow(() -> new CustomException("令牌生成器无法生成访问令牌"));
         OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(
                 OAuth2AccessToken.TokenType.BEARER
-                , generatedOAuth2AccessToken.getTokenValue()
-                , generatedOAuth2AccessToken.getIssuedAt()
-                , generatedOAuth2AccessToken.getExpiresAt()
+                , generatedOauth2AccessToken.getTokenValue()
+                , generatedOauth2AccessToken.getIssuedAt()
+                , generatedOauth2AccessToken.getExpiresAt()
                 , context.getAuthorizedScopes());
         // jwt
-        if (generatedOAuth2AccessToken instanceof ClaimAccessor) {
+        if (generatedOauth2AccessToken instanceof ClaimAccessor) {
             authorizationBuilder.token(oAuth2AccessToken,
                     meta -> meta.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME
-                            ,((ClaimAccessor)generatedOAuth2AccessToken).getClaims()))
+                            ,((ClaimAccessor)generatedOauth2AccessToken).getClaims()))
                     .authorizedScopes(scopes)
                     .attribute(Principal.class.getName(), principal);
         }else {
@@ -179,16 +179,16 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .tokenType(OAuth2TokenType.REFRESH_TOKEN)
                 .build();
-        OAuth2Token generateOAuth2RefreshToken = Optional.ofNullable(tokenGenerator.generate(context)).orElseThrow(() -> new CustomException("令牌生成器无法生成刷新令牌"));
-        authorizationBuilder.refreshToken((OAuth2RefreshToken) generateOAuth2RefreshToken);
+        OAuth2Token generateOauth2RefreshToken = Optional.ofNullable(tokenGenerator.generate(context)).orElseThrow(() -> new CustomException("令牌生成器无法生成刷新令牌"));
+        authorizationBuilder.refreshToken((OAuth2RefreshToken) generateOauth2RefreshToken);
         OAuth2Authorization oAuth2Authorization = authorizationBuilder.build();
         // 放入内存
         oAuth2AuthorizationService.save(oAuth2Authorization);
         // 2.响应给前端
-        String accessToken = generatedOAuth2AccessToken.getTokenValue();
-        String refreshToken = generateOAuth2RefreshToken.getTokenValue();
-        Instant expiresAt = generatedOAuth2AccessToken.getExpiresAt();
-        Instant issuedAt = generatedOAuth2AccessToken.getIssuedAt();
+        String accessToken = generatedOauth2AccessToken.getTokenValue();
+        String refreshToken = generateOauth2RefreshToken.getTokenValue();
+        Instant expiresAt = generatedOauth2AccessToken.getExpiresAt();
+        Instant issuedAt = generatedOauth2AccessToken.getIssuedAt();
         String tokenType = OAuth2AccessToken.TokenType.BEARER.getValue();
         long expireIn = ChronoUnit.SECONDS.between(issuedAt, expiresAt);
         String loginType = grantType.getValue();

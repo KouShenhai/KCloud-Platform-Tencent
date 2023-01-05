@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * <p>
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.admin.client.vo;
 
+package org.laokou.oss.server.entity;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.laokou.common.mybatisplus.entity.BaseDO;
 
 /**
  * @author laokou
- * @version 1.0
- * @date 2022/8/19 0019 下午 3:45
  */
 @Data
-public class SysResourceVO {
+@TableName("boot_sys_oss_log")
+@Schema(name = "SysOssLogDO",description = "系统存储日志实体类")
+public class SysOssLogDO extends BaseDO {
 
-    private Long id;
-    private String title;
-    private String author;
+    private String md5;
     private String url;
-    private Integer status;
-    private String code;
-    private String remark;
-    private String tags;
-    private String processInstanceId;
+    private String fileName;
+    private Long fileSize;
 
 }

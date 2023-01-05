@@ -23,7 +23,6 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import org.laokou.oss.client.vo.SysOssVO;
-import org.laokou.oss.client.vo.UploadVO;
 import java.io.InputStream;
 
 /**
@@ -33,17 +32,15 @@ public abstract class AbstractStorageService implements StorageService{
 
     protected SysOssVO vo;
 
-    public UploadVO upload(int readLimit, long size, String fileName, InputStream inputStream, String contentType) {
+    public String upload(int readLimit,String md5, long size, String fileName, InputStream inputStream, String contentType) {
         // 获取AmazonS3
         AmazonS3 amazonS3 = getAmazonS3();
         // 创建bucket
         createBucket(amazonS3);
         // 上传文件
-        putObject(amazonS3,readLimit,size,fileName,inputStream,contentType);
+        putObject(amazonS3,md5,readLimit,size,fileName,inputStream,contentType);
         // 获取地址
-        String url = getUrl(amazonS3, fileName);
-        // 构建响应体
-        return UploadVO.builder().url(url).build();
+        return getUrl(amazonS3, fileName);
     }
 
     private AmazonS3 getAmazonS3() {

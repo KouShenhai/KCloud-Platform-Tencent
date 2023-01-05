@@ -42,9 +42,9 @@ public class SysResourceDO extends BaseDO {
     private String author;
 
     /**
-     * 资源URI
+     * 资源URL
      */
-    @Schema(name = "url",description = "资源URI")
+    @Schema(name = "url",description = "资源URL")
     private String url;
 
     /**

@@ -132,9 +132,9 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         LambdaQueryWrapper<SysResourceDO> wrapper = Wrappers.lambdaQuery(SysResourceDO.class);
         wrapper.eq(SysResourceDO::getMd5,md5);
         List<SysResourceDO> list = sysResourceService.list(wrapper);
-        if (list.size() > 0) {
-            vo.setUrl(list.get(0).getUri());
-        }
+//        if (list.size() > 0) {
+//            vo.setUrl(list.get(0).getUri());
+//        }
         //vo.setMd5(md5);
         return vo;
     }
@@ -365,8 +365,8 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
 
     /**
      * 开始任务
-     * @param businessKey
-     * @param businessName
+     * @param businessKey 业务主键
+     * @param businessName 业务名称
      * @return
      */
     private String startTask(Long businessKey,String businessName) {
