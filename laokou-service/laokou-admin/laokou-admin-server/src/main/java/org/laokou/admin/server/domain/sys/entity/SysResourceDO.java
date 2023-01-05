@@ -44,8 +44,8 @@ public class SysResourceDO extends BaseDO {
     /**
      * 资源URI
      */
-    @Schema(name = "uri",description = "资源URI")
-    private String uri;
+    @Schema(name = "url",description = "资源URI")
+    private String url;
 
     /**
      * 资源状态 0 待审核 1 审核中 2 审批驳回 3 审批通过

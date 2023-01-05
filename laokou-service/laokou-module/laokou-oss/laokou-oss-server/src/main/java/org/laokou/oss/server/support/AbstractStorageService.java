@@ -14,15 +14,55 @@
  * limitations under the License.
  */
 package org.laokou.oss.server.support;
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import org.laokou.oss.client.vo.SysOssVO;
+import org.laokou.oss.client.vo.UploadVO;
+import java.io.InputStream;
 
-import org.laokou.oss.client.vo.CloudStorageVO;
 /**
  * @author laokou
  */
 public abstract class AbstractStorageService implements StorageService{
-    /**
-     * 配置文件
-     */
-    protected CloudStorageVO cloudStorageVO;
+
+    protected SysOssVO vo;
+
+    public UploadVO upload(int readLimit, long size, String fileName, InputStream inputStream, String contentType) {
+        // 获取AmazonS3
+        AmazonS3 amazonS3 = getAmazonS3();
+        // 创建bucket
+        createBucket(amazonS3);
+        // 上传文件
+        putObject(amazonS3,readLimit,size,fileName,inputStream,contentType);
+        // 获取地址
+        String url = getUrl(amazonS3, fileName);
+        // 构建响应体
+        return UploadVO.builder().url(url).build();
+    }
+
+    private AmazonS3 getAmazonS3() {
+        String accessKey = vo.getAccessKey();
+        String secretKey = vo.getSecretKey();
+        String region = vo.getRegion();
+        String endpoint = vo.getEndpoint();
+        Boolean pathStyleAccessEnabled = vo.getPathStyleAccessEnabled();
+        ClientConfiguration clientConfiguration = new ClientConfiguration();
+        AwsClientBuilder.EndpointConfiguration endpointConfiguration = new AwsClientBuilder.EndpointConfiguration(endpoint, region);
+        AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        AWSCredentialsProvider awsCredentialsProvider = new AWSStaticCredentialsProvider(awsCredentials);
+        AmazonS3 amazonS3 = AmazonS3Client.builder()
+                .withEndpointConfiguration(endpointConfiguration)
+                .withClientConfiguration(clientConfiguration)
+                .withCredentials(awsCredentialsProvider)
+                .withPathStyleAccessEnabled(pathStyleAccessEnabled)
+                .build();
+        return amazonS3;
+    }
 
 }

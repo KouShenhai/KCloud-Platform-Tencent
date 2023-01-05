@@ -16,6 +16,8 @@
 package org.laokou.oss.server.service;
 
 
+import org.laokou.oss.client.vo.SysOssVO;
+
 /**
  * @author laokou
  */
@@ -25,6 +27,6 @@ public interface SysOssService {
      * 查询OSS配置
      * @return
      */
-    String queryOssConfig();
+    SysOssVO queryOssConfig();
 
 }

@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 package org.laokou.oss.client.vo;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @author laokou
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UploadVO {
 
     private String url;
-    private String md5;
 
 }

@@ -24,7 +24,6 @@ import org.laokou.admin.server.domain.sys.entity.SysUserDO;
 import org.laokou.admin.server.domain.sys.repository.mapper.SysUserMapper;
 import org.laokou.admin.server.domain.sys.repository.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.laokou.common.core.utils.StringUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -35,13 +34,8 @@ import java.util.List;
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> implements SysUserService {
-
     @Override
     public void updateUser(SysUserDTO dto) {
-        String password = dto.getPassword();
-        if (StringUtil.isNotEmpty(password)) {
-            //dto.setPassword(PasswordUtil.encode(password));
-        }
         this.baseMapper.updateUser(dto);
     }
 

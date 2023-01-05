@@ -33,13 +33,14 @@ import org.laokou.admin.client.dto.SysUserDTO;
 import org.laokou.auth.client.utils.UserUtil;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.enums.SuperAdminEnum;
+import org.laokou.common.core.utils.StringUtil;
 import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.auth.client.user.UserDetail;
 import org.apache.commons.collections.CollectionUtils;
 import org.laokou.common.core.utils.ConvertUtil;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -55,6 +56,8 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     private final SysRoleService sysRoleService;
 
     private final SysUserRoleService sysUserRoleService;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Boolean updateUser(SysUserDTO dto) {
@@ -72,6 +75,10 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
             throw new CustomException("账号已存在，请重新填写");
         }
         dto.setEditor(userDetail.getUserId());
+        String password = dto.getPassword();
+        if (StringUtil.isNotEmpty(password)) {
+            dto.setPassword(passwordEncoder.encode(password));
+        }
         sysUserService.updateUser(dto);
         List<Long> roleIds = dto.getRoleIds();
         //删除中间表
@@ -90,7 +97,7 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
             throw new CustomException("账号已存在，请重新填写");
         }
         sysUserDO.setCreator(UserUtil.getUserId());
-        //sysUserDO.setPassword(PasswordUtil.encode(dto.getPassword()));
+        sysUserDO.setPassword(passwordEncoder.encode(dto.getPassword()));
         sysUserService.save(sysUserDO);
         List<Long> roleIds = dto.getRoleIds();
         if (CollectionUtils.isNotEmpty(roleIds)) {

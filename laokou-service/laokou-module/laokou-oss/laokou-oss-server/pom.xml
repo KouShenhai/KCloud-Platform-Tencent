@@ -24,24 +24,12 @@
             <artifactId>aws-java-sdk-s3</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.minio</groupId>
-            <artifactId>minio</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.laokou</groupId>
             <artifactId>laokou-redis</artifactId>
         </dependency>
         <dependency>
             <groupId>org.laokou</groupId>
             <artifactId>laokou-common-mybatis-plus</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.tobato</groupId>
-            <artifactId>fastdfs-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.aliyun.oss</groupId>
-            <artifactId>aliyun-sdk-oss</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -19,8 +19,8 @@ public class RocketConfig {
     @Value("${rocketmq.name-server}")
     private String nameServer;
 
-    @Bean(name = "rocketMQTemplate")
-    public RocketMQTemplate rocketMQTemplate() {
+    @Bean(name = "template")
+    public RocketMQTemplate template() {
         RocketMQTemplate rocketMQTemplate = new RocketMQTemplate();
         DefaultMQProducer defaultMQProducer = new DefaultMQProducer();
         defaultMQProducer.setProducerGroup(producerGroup);

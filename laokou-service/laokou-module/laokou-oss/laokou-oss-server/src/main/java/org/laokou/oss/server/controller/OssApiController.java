@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 package org.laokou.oss.server.controller;
+import cn.hutool.core.util.IdUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.laokou.common.core.utils.FileUtil;
 import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.laokou.oss.client.vo.UploadVO;
@@ -45,17 +47,20 @@ public class OssApiController {
         if (file.isEmpty()) {
             throw new CustomException("上传的文件不能为空");
         }
-        //文件名
-        final String fileName = file.getOriginalFilename();
-        //文件流
-        final InputStream inputStream = file.getInputStream();
-        //文件大小
-        final Long fileSize = file.getSize();
-        //上传文件
-        UploadVO vo = new UploadVO();
-        String url = storageFactory.build().upload(inputStream, fileName, fileSize);
-        log.info("上传文件地址：{}",url);
-        vo.setUrl(url);
+        // 是否上传
+
+        // 文件名
+        String fileName = IdUtil.simpleUUID() + FileUtil.getFileSuffix(file.getOriginalFilename());
+        // 文件流
+        InputStream inputStream = file.getInputStream();
+        // 文件大小
+        Long fileSize = file.getSize();
+        // 文件类型
+        String contentType = file.getContentType();
+        int limitRead = (int) (fileSize + 1);
+        // 上传文件
+        UploadVO vo = storageFactory.build().upload(limitRead, fileSize, fileName, inputStream, contentType);
+        // 写入文件记录表
         return new HttpResult<UploadVO>().ok(vo);
     }
 

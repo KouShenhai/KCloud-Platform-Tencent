@@ -60,7 +60,7 @@ public final class RedisKeyUtil {
     }
 
     /**
-     * 部门Key
+     * 系统部门Key
      */
     public static String getDeptAllKey() {
         return "sys:dept:all";
@@ -75,7 +75,7 @@ public final class RedisKeyUtil {
     }
 
     /**
-     * 创建索引
+     * 创建索引Key
      * @return
      */
     public static String getCreateIndexKey() {
@@ -83,7 +83,7 @@ public final class RedisKeyUtil {
     }
 
     /**
-     * 删除索引
+     * 删除索引Key
      * @return
      */
     public static String getDeleteIndexKey() {
@@ -91,11 +91,17 @@ public final class RedisKeyUtil {
     }
 
     /**
-     * 同步索引
+     * 同步索引Key
      * @return
      */
     public static String getSyncIndexKey() {
         return "sys:es:sync";
     }
 
+    /**
+     * 亚马逊S3Key
+     */
+    public static String getAmazonS3Key(Long id) {
+        return "sys:amazon:s3:" + id;
+    }
 }

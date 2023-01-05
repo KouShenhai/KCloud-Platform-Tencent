@@ -18,15 +18,16 @@ package org.laokou.oss.server.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 /**
  * @author laokou
  */
 @Configuration
-public class ThreadPoolConfig {
+public class AsyncTaskConfig {
 
     @Bean
-    public ThreadPoolTaskExecutor ossThreadPoolTaskExecutor() {
+    public Executor asyncTaskServiceExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         // 核心线程数
         taskExecutor.setCorePoolSize(8);

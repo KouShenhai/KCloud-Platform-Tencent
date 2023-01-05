@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.laokou.oss.server.support;
-import com.github.tobato.fastdfs.FdfsClientConfig;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableMBeanExport;
-import org.springframework.context.annotation.Import;
-import org.springframework.jmx.support.RegistrationPolicy;
-
+package org.laokou.oss.client.vo;
+import lombok.Data;
 /**
- * 组件类
+ * oss
  * @author laokou
  */
+@Data
+public class SysOssVO {
 
-@Configuration
-@Import(FdfsClientConfig.class)
-@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
-public class FastdfsImport {
+    private Long id;
+    private String name;
+    private String endpoint;
+    private String region;
+    private String accessKey;
+    private String secretKey;
+    private String bucketName;
+    private Boolean pathStyleAccessEnabled;
+
 }

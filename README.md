@@ -68,7 +68,7 @@ KCloud-Platform-Tencent（老寇云平台）是一款企业级微服务架构的
 - 日志分析：EFK
 - 数据缓存：Caffeine + Redis
 - 统计报表：MongoDB
-- 对象存储：AWS S3
+- 对象存储：Amazon S3
 - 服务部署：Docker
 - 持续交付：Jenkins
 - 持久层框架：Mybatis Plus
@@ -173,6 +173,17 @@ public class SysUserApplicationServiceImpl implements SysUserApplicationService 
     public IPage<SysUserVO> queryUserPage(SysUserQO qo) {
         IPage<SysUserVO> page = new Page<>(qo.getPageNum(),qo.getPageSize());
         return sysUserService.getUserPage(page,qo);
+    }
+}
+```
+
+### 二级缓存
+##### 代码引入
+```java
+public class SysUserApiController {
+    @DataCache(name = CacheConstant.USER, key = "#id")
+    public HttpResult<SysUserVO> detail(@RequestParam("id") Long id) {
+        return new HttpResult<SysUserVO>().ok(sysUserApplicationService.getUserById(id));
     }
 }
 ```

@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiMvcConfig {
 
     @Bean
-    OpenAPI openAPI() {
+    OpenAPI openApi() {
         return new OpenAPI()
                 .info(new Info().title("API文档").description("API文档").version("3.0.1")
                         .contact(new Contact().name("寇申海").url("https://kcloud.blog.csdn.net").email("2413176044@qq.com"))

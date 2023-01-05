@@ -16,11 +16,8 @@
 package org.laokou.oss.server.support;
 import lombok.RequiredArgsConstructor;
 import org.laokou.common.swagger.exception.CustomException;
-import org.laokou.common.core.utils.JacksonUtil;
+import org.laokou.oss.client.vo.SysOssVO;
 import org.laokou.redis.utils.RedisKeyUtil;
-import org.laokou.common.core.utils.StringUtil;
-import org.laokou.oss.client.vo.CloudStorageVO;
-import org.laokou.oss.server.enums.StorageTypeEnum;
 import org.laokou.oss.server.service.SysOssService;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.stereotype.Component;
@@ -38,24 +35,17 @@ public class StorageFactory {
    public StorageService build(){
        String ossConfigKey = RedisKeyUtil.getOssConfigKey();
        Object object = redisUtil.get(ossConfigKey);
-       String ossConfig;
+       SysOssVO vo;
        if (object == null) {
-           ossConfig = sysOssService.queryOssConfig();
-           if (StringUtil.isBlank(ossConfig)) {
+           vo = sysOssService.queryOssConfig();
+           if (null == vo) {
                throw new CustomException("请配置OSS");
            }
-           redisUtil.set(ossConfigKey,ossConfig,RedisUtil.HOUR_ONE_EXPIRE);
+           redisUtil.set(ossConfigKey,vo,RedisUtil.HOUR_ONE_EXPIRE);
        } else {
-           ossConfig = object.toString();
+           vo = (SysOssVO) object;
        }
-       CloudStorageVO vo = JacksonUtil.toBean(ossConfig, CloudStorageVO.class);
-       StorageTypeEnum typeEnum = StorageTypeEnum.getType(vo.getType());
-       return switch (typeEnum) {
-           case ALIYUN -> new AliyunStorageService(vo);
-           case LOCAL -> new LocalStorageService(vo);
-           case FASTDFS -> new FastdfsStorageService(vo);
-           case MINIO -> new MinioStorageService(vo);
-       };
+       return new AmazonS3StorageService(vo);
    }
 
 }

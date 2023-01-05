@@ -135,7 +135,7 @@ public class SysResourceApplicationServiceImpl implements SysResourceApplication
         if (list.size() > 0) {
             vo.setUrl(list.get(0).getUri());
         }
-        vo.setMd5(md5);
+        //vo.setMd5(md5);
         return vo;
     }
 

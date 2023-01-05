@@ -1,27 +1,48 @@
 package org.laokou.oss.server.support;
+
+import com.amazonaws.services.s3.AmazonS3;
+import org.laokou.oss.client.vo.UploadVO;
+
 import java.io.InputStream;
+
 /**
  * @author laokou
  */
 public interface StorageService {
 
     /**
-     * 按1M分片
+     * 创建bucket
+     * @param amazonS3
      */
-    Long CHUNK_SIZE = 1L * 1024 * 1024;
-
-    String SEPARATOR = "/";
-
-    String ROD = "-";
+    void createBucket(AmazonS3 amazonS3);
 
     /**
      * 上传文件
-     * @param inputStream 文件流
-     * @param fileName 文件名称
-     * @param fileSize 文件大小
-     * @return
-     * @throws Exception
+     * @param amazonS3
+     * @param readLimit
+     * @param size
+     * @param fileName
+     * @param inputStream
+     * @param contentType
      */
-    String upload(InputStream inputStream, String fileName, Long fileSize) throws Exception;
+    void putObject(AmazonS3 amazonS3, int readLimit, long size, String fileName, InputStream inputStream,String contentType);
 
+    /**
+     * 获取地址
+     * @param amazonS3
+     * @param fileName
+     * @return
+     */
+    String getUrl(AmazonS3 amazonS3,String fileName);
+
+    /**
+     * 上传文件
+     * @param fileName
+     * @param inputStream
+     * @param contentType
+     * @param size
+     * @param readLimit
+     * @return
+     */
+    UploadVO upload(int readLimit, long size, String fileName, InputStream inputStream,String contentType);
 }
