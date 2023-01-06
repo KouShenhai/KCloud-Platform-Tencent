@@ -46,7 +46,7 @@ public class SysOssLogServiceImpl extends ServiceImpl<SysOssLogMapper, SysOssLog
     }
 
     @Override
-    public SysOssLogDO getLogByMD5(String md5) {
+    public SysOssLogDO getLogByMd5(String md5) {
         LambdaQueryWrapper<SysOssLogDO> queryWrapper = Wrappers.lambdaQuery(SysOssLogDO.class)
                 .select(SysOssLogDO::getUrl)
                 .eq(SysOssLogDO::getMd5, md5)

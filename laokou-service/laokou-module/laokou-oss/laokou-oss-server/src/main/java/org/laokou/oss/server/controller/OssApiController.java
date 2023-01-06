@@ -54,14 +54,14 @@ public class OssApiController {
             throw new CustomException("上传的文件不能为空");
         }
         // 是否上传
-        SysOssLogDO logDO = sysOssLogService.getLogByMD5(md5);
+        SysOssLogDO logDO = sysOssLogService.getLogByMd5(md5);
         if (null != logDO) {
             return new HttpResult<UploadVO>().ok(UploadVO.builder().url(logDO.getUrl()).build());
         }
         // 文件大小
-        Long fileSize = file.getSize();
-        final Long FILE_100M = 100L * 1024 * 1024;
-        if (fileSize > FILE_100M) {
+        long fileSize = file.getSize();
+        long file100M = 100 * 1024 * 1024;
+        if (fileSize > file100M) {
             throw new CustomException("单个文件上传不能超过100M，请重新选择文件并上传");
         }
         // 文件名

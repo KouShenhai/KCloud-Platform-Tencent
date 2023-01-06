@@ -10,24 +10,24 @@ import java.util.Map;
  */
 public class MongodbFieldUtil {
 
-    private static final Map<String,Class<?>> classMap = new HashMap<>(16);
+    private static final Map<String,Class<?>> CLASS_MAP = new HashMap<>(16);
 
     static {
 
     }
 
     public static Object getObj(final String collectionName,final String jsonData) {
-        final Class<?> clazz = classMap.get(collectionName);
+        final Class<?> clazz = CLASS_MAP.get(collectionName);
         return JacksonUtil.toBean(jsonData,clazz);
     }
 
     public static List<? extends Object> getObjList(final String collectionName,final String jsonData) {
-        final Class<?> clazz = classMap.get(collectionName);
+        final Class<?> clazz = CLASS_MAP.get(collectionName);
         return JacksonUtil.toList(jsonData, clazz);
     }
 
     public static Class<?> getClazz(final String collectionName) {
-        return classMap.get(collectionName);
+        return CLASS_MAP.get(collectionName);
     }
 
 }

@@ -22,6 +22,6 @@ public interface SysOssLogService extends IService<SysOssLogDO> {
      * @param md5
      * @return
      */
-    SysOssLogDO getLogByMD5(String md5);
+    SysOssLogDO getLogByMd5(String md5);
 
 }
