@@ -4,8 +4,8 @@ spring:
     name: laokou-gateway
   cloud:
     polaris:
-      address: grpc://192.168.62.144:8091
-      namespace: laokou
+      address: ${POLARIS_ADDRESS}
+      namespace: ${POLARIS_NAMESPACE}
       config:
         local-file-root-path: polaris
     tencent:
@@ -15,10 +15,10 @@ spring:
             enabled: true
             rule-staining:
               enabled: true
-              namespace: laokou
+              namespace: ${POLARIS_NAMESPACE}
               group: ${spring.application.name}
               fileName: rule/staining.json
     loadbalancer:
       configurations: polaris
     config:
-      address: grpc://192.168.62.144:8093
+      address: ${CONFIG_ADDRESS}

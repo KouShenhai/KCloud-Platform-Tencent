@@ -4,11 +4,11 @@ spring:
     name: laokou-auth
   cloud:
     polaris:
-      address: grpc://192.168.62.144:8091
-      namespace: laokou
+      address: ${POLARIS_ADDRESS}
+      namespace: ${POLARIS_NAMESPACE}
     tencent:
       metadata:
         content:
           version: 2.0.0
     config:
-      address: grpc://192.168.62.144:8093
+      address: ${CONFIG_ADDRESS}

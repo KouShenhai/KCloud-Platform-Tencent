@@ -3,7 +3,7 @@ spring:
     name: laokou-api
   cloud:
     polaris:
-      address: grpc://192.168.62.144:8091
-      namespace: laokou
+      address: ${POLARIS_ADDRESS}
+      namespace: ${POLARIS_NAMESPACE}
     config:
-      address: grpc://192.168.62.144:8093
+      address: ${CONFIG_ADDRESS}
