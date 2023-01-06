@@ -268,7 +268,7 @@ laok5/test123
 - 采用Apache2.0开源协议，并且承诺永不参与商业用途，仅供大家无偿使用
 
 ### 参与贡献
-欢迎各路英雄好汉参与KCloud-Platform-Tencent代码贡献，期待您的加入！Fork本仓库 新建Feat_xxx分支提交代码，新建Pull Request
+欢迎各路英雄好汉参与KCloud-Platform-Tencent代码贡献，期待您的加入！Fork本仓库 新建 feat_xxx_环境_时间（如 feat_laokou_dev_20230116） 分支提交代码，新建Pull Request
 
 ### 开源协议
 KCloud-Platform-Tencent 开源软件遵循 [Apache 2.0 协议](https://www.apache.org/licenses/LICENSE-2.0.html) 请务必保留作者、Copyright信息  
