@@ -17,31 +17,25 @@
 package org.laokou.admin.server.infrastructure.config;
 
 import org.laokou.admin.client.constant.CacheConstant;
+import org.laokou.redis.config.AbstractRedisDeleteListener;
 import org.laokou.redis.utils.RedisKeyUtil;
 import org.springframework.cache.CacheManager;
-import org.springframework.data.redis.connection.Message;
-import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Component;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author laokou
  */
 @Component
-public class RedisKeyExpirationEventMessageListener extends KeyExpirationEventMessageListener {
+public class RedisDeleteEventMessageListener extends AbstractRedisDeleteListener {
 
     private CacheManager caffeineCacheManager;
 
-    public RedisKeyExpirationEventMessageListener(RedisMessageListenerContainer listenerContainer,CacheManager caffeineCacheManager) {
-        super(listenerContainer);
+    public RedisDeleteEventMessageListener(CacheManager caffeineCacheManager) {
         this.caffeineCacheManager = caffeineCacheManager;
     }
 
     @Override
-    public void onMessage(Message message, byte[] pattern) {
-        String key = new String(message.getBody(), StandardCharsets.UTF_8);
+    protected void doHandle(String key) {
         String regex = ".*";
         if (key.matches(RedisKeyUtil.getUserInfoKey("") + regex)) {
             caffeineCacheManager.getCache(CacheConstant.TOKEN).evict(key);

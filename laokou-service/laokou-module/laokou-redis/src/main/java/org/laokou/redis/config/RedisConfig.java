@@ -56,10 +56,12 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisMessageListenerContainer redisMessageListenerContainer() {
+    public RedisMessageListenerContainer redisMessageListenerContainer(AbstractRedisDeleteListener abstractRedisDeleteListener) {
         RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
-        // 监听所有库过期事件
+        // 设置factory
         redisMessageListenerContainer.setConnectionFactory(factory);
+        // 监听所有key的删除事件
+        redisMessageListenerContainer.addMessageListener(abstractRedisDeleteListener,AbstractRedisDeleteListener.TOPIC);
         return redisMessageListenerContainer;
     }
 

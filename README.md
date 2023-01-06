@@ -124,7 +124,7 @@ KCloud-Platform-Tencent（老寇云平台）是一款企业级微服务架构的
 #### 安装包
 [百度网盘](https://pan.baidu.com/s/1swrV9ffJnmz4S0mfkuBbIw) 提取码：1111
 
-### 项目配置
+### 环境配置
 #### 服务配置
 ```yaml
 spring:
@@ -153,7 +153,7 @@ elasticsearch:
   cluster-name: elasticsearch-node
 ```
 
-#### 高版本JDK兼容
+### JDK版本兼容
 ##### VM options配置
 ```shell script
 --add-opens=java.base/java.lang=ALL-UNNAMED
@@ -186,6 +186,12 @@ public class SysUserApiController {
         return new HttpResult<SysUserVO>().ok(sysUserApplicationService.getUserById(id));
     }
 }
+```
+
+### Redis开启订阅
+##### 输入命令
+```shell
+config set notify-keyspace-events KEA
 ```
     
 ### 高可用系统构建

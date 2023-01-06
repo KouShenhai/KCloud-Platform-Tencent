@@ -56,7 +56,7 @@ public class XssFilter implements GlobalFilter, Ordered {
             String[] query = rawQuery.split(Constant.AND);
             StringBuffer sb = new StringBuffer();
             for (String str : query) {
-                sb.append(XssUtil.filter(str)).append(Constant.AND);
+                sb.append(XssUtil.clean(str)).append(Constant.AND);
             }
             // 过滤后，重新构建请求体
             rawQuery = sb.toString();

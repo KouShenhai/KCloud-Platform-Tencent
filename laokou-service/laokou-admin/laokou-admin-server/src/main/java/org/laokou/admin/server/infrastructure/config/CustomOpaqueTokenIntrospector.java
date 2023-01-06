@@ -32,6 +32,8 @@ import org.springframework.security.oauth2.server.resource.InvalidBearerTokenExc
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.stereotype.Component;
 import java.security.Principal;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 /**
  * @author laokou
  */
@@ -64,8 +66,11 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
         if (!oAuth2Authorization.getAccessToken().isActive()) {
             throw new InvalidBearerTokenException(MessageUtil.getMessage(ErrorCode.AUTHORIZATION_INVALID));
         }
+        Instant expiresAt = oAuth2Authorization.getAccessToken().getToken().getExpiresAt();
+        Instant nowAt = Instant.now();
+        long expireTime = ChronoUnit.SECONDS.between(nowAt, expiresAt);
         userDetail = (UserDetail) ((UsernamePasswordAuthenticationToken) oAuth2Authorization.getAttribute(Principal.class.getName())).getPrincipal();
-        redisUtil.set(userInfoKey,userDetail,RedisUtil.HOUR_ONE_EXPIRE);
+        redisUtil.set(userInfoKey,userDetail,expireTime);
         return userDetail;
     }
 }

@@ -51,13 +51,13 @@ public class XssUtil extends Whitelist {
             for (Pattern pattern : SCRIPT_PATTERNS) {
                 value = pattern.matcher(value).replaceAll("");
             }
-            value = filter(value.replaceAll("'","“"));
+            value = filter(value.replaceAll("'","\""));
         }
         return value;
     }
 
     public static void main(String[] args) {
-        String cleanValue = XssUtil.filter("select & from sql <script>qqqqqq</script>");
+        String cleanValue = XssUtil.clean("select & from sql <script>qqqqqq</script>");
         System.out.println(cleanValue);
     }
 
