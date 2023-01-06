@@ -213,52 +213,52 @@ laok5/test123
 ### 项目截图
 <table>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/1.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/2.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/1.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/2.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/3.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/4.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/3.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/4.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/5.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/6.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/5.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/6.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/7.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/8.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/7.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/8.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/9.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/10.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/9.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/10.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/11.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/12.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/11.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/12.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/13.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/14.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/13.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/14.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/15.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/16.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/15.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/16.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/17.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/18.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/17.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/18.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/19.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/20.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/19.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/20.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/21.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/22.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/21.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/22.png"/></td>
     </tr>
     <tr>
-        <td><img alt="暂无图片" src="./doc/image/23.png"/></td>
-        <td><img alt="暂无图片" src="./doc/image/24.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/23.png"/></td>
+        <td><img alt="暂无图片" src="doc/image/24.png"/></td>
     </tr>
 </table>
 
@@ -287,4 +287,4 @@ KCloud-Platform-Tencent 开源软件遵循 [Apache 2.0 协议](https://www.apach
 博客：[https://kcloud.blog.csdn.net](https://kcloud.blog.csdn.net)  
 邮箱：[2413176044@qq.com](https://mail.qq.com)  
 QQ：[2413176044]( http://wpa.qq.com/msgrd?v=3&uin=2413176044&Site=gitee&Menu=yes)  
-后端技术交流群 [![加入QQ群](https://img.shields.io/badge/Q群-465450496-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=dvy7ZHVodv0L7teZSzQMs-rS1HeIJdZX&jump_from=webapi&authKey=hfiWSkeD7W8Gl4lf8SFDxrl5tuvbOPEIAbS6V6TCklrGYTC+u7gvHAH+kskUbjx3)  
+后端技术交流群 [![加入QQ群](https://img.shields.io/badge/Q群-218686225-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=dvy7ZHVodv0L7teZSzQMs-rS1HeIJdZX&jump_from=webapi&authKey=hfiWSkeD7W8Gl4lf8SFDxrl5tuvbOPEIAbS6V6TCklrGYTC+u7gvHAH+kskUbjx3)  
