@@ -275,8 +275,10 @@ KCloud-Platform-Tencent 开源软件遵循 [Apache 2.0 协议](https://www.apach
 ![](doc/image/25.png)
 
 ### 项目地址
-后端地址：[KCloud-Platform-Tencent](https://gitee.com/laokouyun/KCloud-Platform-Tencent)  
-前端地址：[KCloud-Antdv-Tencent](https://gitee.com/laokouyun/KCloud-Antdv-Tencent)
+Gitub 后端地址：[KCloud-Platform-Tencent](https://github.com/KouShenhai/KCloud-Platform-Tencent)  
+Gitub 前端地址：[KCloud-Antdv-Tencent](https://github.com/KouShenhai/KCloud-Antdv-Tencent)
+Gtiee 后端地址：[KCloud-Platform-Tencent](https://gitee.com/laokouyun/KCloud-Platform-Tencent)  
+Gitee 前端地址：[KCloud-Antdv-Tencent](https://gitee.com/laokouyun/KCloud-Antdv-Tencent)
 
 ### 致谢
 [Spring官网](https://spring.io)  
