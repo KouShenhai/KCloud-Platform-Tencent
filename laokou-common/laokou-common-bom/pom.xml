@@ -12,7 +12,7 @@
     <properties>
         <laokou.version>3.0.1</laokou.version>
         <!--boot版本-->
-        <spring-boot.version>3.0.0</spring-boot.version>
+        <spring-boot.version>3.0.1</spring-boot.version>
         <!--lombok版本-->
         <lombok.version>1.18.20</lombok.version>
         <!--mysql版本-->
@@ -49,48 +49,22 @@
         <commons-fileupload.version>1.3.3</commons-fileupload.version>
         <!--joda-time版本-->
         <joda-time.version>2.10</joda-time.version>
-        <!--micrometer-jvm-extras版本-->
-        <micrometer-jvm-extras.version>0.2.0</micrometer-jvm-extras.version>
         <!--jasypt版本-->
         <jasypt.version>2.1.0</jasypt.version>
-        <!--apollo-client版本-->
-        <apollo-client.version>1.6.0</apollo-client.version>
-        <!--fastdfs-client版本-->
-        <fastdfs-client.version>1.26.2</fastdfs-client.version>
-        <!--aliyun-sdk-oss版本-->
-        <aliyun-sdk-oss.version>3.8.0</aliyun-sdk-oss.version>
-        <!--alipay-sdk-java版本-->
-        <alipay-sdk-java.version>4.22.34.ALL</alipay-sdk-java.version>
         <!--druid版本-->
         <druid.version>1.1.17</druid.version>
         <!--captcha版本-->
         <easy-captcha.version>1.6.2</easy-captcha.version>
         <!--guava版本-->
         <guava.version>31.1-JRE</guava.version>
-        <!--jjwt版本-->
-        <jjwt.version>0.7.0</jjwt.version>
-        <!--knife4j版本-->
-        <knife4j.version>3.0.3</knife4j.version>
-        <!--weixin-java-mp版本-->
-        <weixin-java-mp.version>4.2.0</weixin-java-mp.version>
         <!--commons-codec版本-->
         <commons-codec.version>1.15</commons-codec.version>
-        <!--oracle驱动依赖-->
-        <oracle.version>11.2.0.3</oracle.version>
         <!--freemarker模板引擎依赖-->
         <freemarker.version>2.3.31</freemarker.version>
         <!--oshi版本-->
         <oshi.version>5.8.0</oshi.version>
         <!-- elasticsearch版本-->
         <elasticsearch.version>7.6.2</elasticsearch.version>
-        <!--jaxb版本-->
-        <jaxb.version>2.3.0</jaxb.version>
-        <!--activation版本-->
-        <activation.version>1.1.1</activation.version>
-        <!--springfox版本-->
-        <springfox.version>3.0.0</springfox.version>
-        <!--minio版本-->
-        <minio.version>8.4.3</minio.version>
         <!--rocketmq版本-->
         <rocketmq.version>2.2.2</rocketmq.version>
         <!--jakarta.servlet-api版本-->
@@ -114,11 +88,6 @@
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk-s3</artifactId>
                 <version>${aws-java-sdk-s3.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.minio</groupId>
-                <artifactId>minio</artifactId>
-                <version>${minio.version}</version>
             </dependency>
             <!-- 定义 lombok 版本 -->
             <dependency>
@@ -148,11 +117,6 @@
                 <groupId>org.jsoup</groupId>
                 <artifactId>jsoup</artifactId>
                 <version>${jsoup.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -220,11 +184,6 @@
                 <version>${hutool-all.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jjwt.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-common-core</artifactId>
                 <version>${laokou.version}</version>
@@ -234,33 +193,16 @@
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.oracle</groupId>
-                <artifactId>ojdbc6</artifactId>
-                <version>${oracle.version}</version>
-            </dependency>
             <!-- 解析客户端操作系统、浏览器等 -->
             <dependency>
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${UserAgentUtils.version}</version>
             </dependency>
-            <!-- 可选, 用于进程内存使用图表 -->
-            <dependency>
-                <groupId>io.github.mweirauch</groupId>
-                <artifactId>micrometer-jvm-extras</artifactId>
-                <version>${micrometer-jvm-extras.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.github.ulisesbocchio</groupId>
                 <artifactId>jasypt-spring-boot-starter</artifactId>
                 <version>${jasypt.version}</version>
-            </dependency>
-            <!--apollo客户端依赖     -->
-            <dependency>
-                <groupId>com.ctrip.framework.apollo</groupId>
-                <artifactId>apollo-client</artifactId>
-                <version>${apollo-client.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.laokou</groupId>
@@ -273,16 +215,6 @@
                 <version>${laokou.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.tobato</groupId>
-                <artifactId>fastdfs-client</artifactId>
-                <version>${fastdfs-client.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aliyun.oss</groupId>
-                <artifactId>aliyun-sdk-oss</artifactId>
-                <version>${aliyun-sdk-oss.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-admin-server</artifactId>
                 <version>${laokou.version}</version>
@@ -291,11 +223,6 @@
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-admin-client</artifactId>
                 <version>${laokou.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.binarywang</groupId>
-                <artifactId>weixin-java-mp</artifactId>
-                <version>${weixin-java-mp.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.oshi</groupId>
@@ -311,11 +238,6 @@
                 <groupId>net.java.dev.jna</groupId>
                 <artifactId>jna-platform</artifactId>
                 <version>${oshi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alipay.sdk</groupId>
-                <artifactId>alipay-sdk-java</artifactId>
-                <version>${alipay-sdk-java.version}</version>
             </dependency>
             <dependency>
                 <groupId>de.codecentric</groupId>
@@ -378,26 +300,6 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${jaxb.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-impl</artifactId>
-                <version>${jaxb.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-core</artifactId>
-                <version>${jaxb.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.activation</groupId>
-                <artifactId>activation</artifactId>
-                <version>${activation.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-client</artifactId>
                 <version>${elasticsearch.version}</version>
@@ -426,11 +328,6 @@
                 <groupId>org.laokou</groupId>
                 <artifactId>laokou-rocketmq-consumer</artifactId>
                 <version>${laokou.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-boot-starter</artifactId>
-                <version>${springfox.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.laokou</groupId>
