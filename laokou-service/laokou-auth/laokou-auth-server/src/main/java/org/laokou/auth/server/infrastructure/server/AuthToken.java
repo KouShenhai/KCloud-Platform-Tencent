@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.laokou.auth.server.infrastructure.token;
+package org.laokou.auth.server.infrastructure.server;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

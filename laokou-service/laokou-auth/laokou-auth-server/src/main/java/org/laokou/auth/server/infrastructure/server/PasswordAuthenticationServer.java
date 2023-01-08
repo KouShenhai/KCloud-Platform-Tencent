@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.auth.server.infrastructure.token;
+package org.laokou.auth.server.infrastructure.server;
 import com.wf.captcha.GifCaptcha;
 import com.wf.captcha.base.Captcha;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,12 +42,12 @@ import java.awt.*;
  */
 @Component
 @Slf4j
-public class PasswordAuthenticationToken extends AbstractAuthenticationToken{
+public class PasswordAuthenticationServer extends AbstractAuthenticationServer {
 
     private final SysCaptchaService sysCaptchaService;
     public static final String GRANT_TYPE = "password";
 
-    public PasswordAuthenticationToken(SysUserServiceImpl sysUserService
+    public PasswordAuthenticationServer(SysUserServiceImpl sysUserService
             , SysMenuService sysMenuService
             , SysDeptService sysDeptService
             , SysCaptchaService sysCaptchaService

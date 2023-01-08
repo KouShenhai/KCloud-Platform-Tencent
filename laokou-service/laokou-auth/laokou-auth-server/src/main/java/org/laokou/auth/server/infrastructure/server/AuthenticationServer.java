@@ -1,4 +1,4 @@
-package org.laokou.auth.server.infrastructure.token;
+package org.laokou.auth.server.infrastructure.server;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +17,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
  *
  * @author laokou
  */
-public interface AuthenticationToken {
+public interface AuthenticationServer {
 
     /**
      * 获取认证名称

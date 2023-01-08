@@ -20,8 +20,8 @@ import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.infrastructure.context.CustomAuthorizationServerContext;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
-import org.laokou.auth.server.infrastructure.token.AuthenticationToken;
-import org.laokou.auth.server.infrastructure.token.AuthToken;
+import org.laokou.auth.server.infrastructure.server.AuthenticationServer;
+import org.laokou.auth.server.infrastructure.server.AuthToken;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.swagger.exception.CustomException;
@@ -116,17 +116,17 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
         return authenticationToken(request).login(request);
     }
 
-    private AuthenticationToken authenticationToken(HttpServletRequest request) {
+    private AuthenticationServer authenticationToken(HttpServletRequest request) {
         // 1.验证grantType
         String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
         if (StringUtil.isEmpty(grantType)) {
             throw new CustomException(ErrorCode.UNSUPPORTED_GRANT_TYPE);
         }
         try {
-            String className = AuthenticationToken.class.getSimpleName();
-            AuthenticationToken authenticationToken = SpringContextUtil.getBean(grantType + className, AuthenticationToken.class);
+            String className = AuthenticationServer.class.getSimpleName();
+            AuthenticationServer authenticationServer = SpringContextUtil.getBean(grantType + className, AuthenticationServer.class);
             // 2.验证账号/密码/验证码 或 手机号/验证码等等
-            return authenticationToken;
+            return authenticationServer;
         } catch (NoSuchBeanDefinitionException e ) {
             throw new CustomException(ErrorCode.UNSUPPORTED_GRANT_TYPE);
         }

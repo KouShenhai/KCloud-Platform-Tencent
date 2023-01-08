@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.laokou.auth.server.infrastructure.token;
+package org.laokou.auth.server.infrastructure.server;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -40,11 +40,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class EmailAuthenticationToken extends AbstractAuthenticationToken{
+public class EmailAuthenticationServer extends AbstractAuthenticationServer {
 
     public static final String GRANT_TYPE = "email";
 
-    public EmailAuthenticationToken(SysUserServiceImpl sysUserService
+    public EmailAuthenticationServer(SysUserServiceImpl sysUserService
             , SysMenuService sysMenuService
             , SysDeptService sysDeptService
             , LoginLogUtil loginLogUtil

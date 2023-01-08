@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.auth.server.infrastructure.token;
+package org.laokou.auth.server.infrastructure.server;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.user.UserDetail;
@@ -45,7 +45,7 @@ import java.util.List;
  *  # 邮件登录
  * @author laokou
  */
-public abstract class AbstractAuthenticationToken implements AuthenticationToken, UserDetailsService {
+public abstract class AbstractAuthenticationServer implements AuthenticationServer, UserDetailsService {
 
     protected final SysUserServiceImpl sysUserService;
     protected final SysMenuService sysMenuService;
@@ -54,7 +54,7 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
     protected final RedisUtil redisUtil;
     protected final PasswordEncoder passwordEncoder;
 
-    public AbstractAuthenticationToken(
+    public AbstractAuthenticationServer(
       SysUserServiceImpl sysUserService
     , SysMenuService sysMenuService
     , SysDeptService sysDeptService
@@ -76,7 +76,7 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
             throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         // 是否锁定
-        String loginType = PasswordAuthenticationToken.GRANT_TYPE;
+        String loginType = PasswordAuthenticationServer.GRANT_TYPE;
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         if (!userDetail.isEnabled()) {
             loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
@@ -104,7 +104,7 @@ public abstract class AbstractAuthenticationToken implements AuthenticationToken
             loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             throw new CustomException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
         }
-        if (PasswordAuthenticationToken.GRANT_TYPE.equals(grantType)) {
+        if (PasswordAuthenticationServer.GRANT_TYPE.equals(grantType)) {
             // 验证密码
             String clientPassword = userDetail.getPassword();
             if (!passwordEncoder.matches(password, clientPassword)) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.laokou.auth.server.infrastructure.token;
+package org.laokou.auth.server.infrastructure.server;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -40,11 +40,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class SmsAuthenticationToken extends AbstractAuthenticationToken{
+public class SmsAuthenticationServer extends AbstractAuthenticationServer {
 
     public static final String GRANT_TYPE = "sms";
 
-    public SmsAuthenticationToken(SysUserServiceImpl sysUserService
+    public SmsAuthenticationServer(SysUserServiceImpl sysUserService
             , SysMenuService sysMenuService
             , SysDeptService sysDeptService
             , LoginLogUtil loginLogUtil

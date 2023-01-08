@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
-import org.laokou.auth.server.infrastructure.token.AuthToken;
+import org.laokou.auth.server.infrastructure.server.AuthToken;
 import org.laokou.common.swagger.utils.HttpResult;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.web.bind.annotation.*;

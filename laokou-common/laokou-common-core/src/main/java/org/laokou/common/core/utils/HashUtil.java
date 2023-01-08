@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 package org.laokou.common.core.utils;
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import java.util.Map;
+
 /**
  * @author laokou
  * @version 1.0
@@ -28,6 +35,19 @@ public class HashUtil {
     public static int getHash(String key) {
         int h;
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }
+
+    public static MultiValueMap<String, String> getParameters(HttpServletRequest request) {
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>(parameterMap.size());
+        parameterMap.forEach((key, values) -> {
+            if (values.length > 0) {
+                for (String value : values) {
+                    parameters.add(key, value);
+                }
+            }
+        });
+        return parameters;
     }
 
 }

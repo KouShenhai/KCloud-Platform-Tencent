@@ -23,12 +23,13 @@ import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
+import org.laokou.auth.server.infrastructure.authentication.OAuth2PasswordAuthenticationConverter;
 import org.laokou.auth.server.infrastructure.customizer.CustomTokenCustomizer;
 import org.laokou.auth.server.infrastructure.handler.CustomAuthenticationFailureHandler;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
-import org.laokou.auth.server.infrastructure.token.EmailAuthenticationToken;
-import org.laokou.auth.server.infrastructure.token.PasswordAuthenticationToken;
-import org.laokou.auth.server.infrastructure.token.SmsAuthenticationToken;
+import org.laokou.auth.server.infrastructure.server.EmailAuthenticationServer;
+import org.laokou.auth.server.infrastructure.server.PasswordAuthenticationServer;
+import org.laokou.auth.server.infrastructure.server.SmsAuthenticationServer;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -105,7 +106,8 @@ public class AuthorizationServerConfig {
                         new OAuth2AuthorizationCodeAuthenticationConverter()
                         , new OAuth2ClientCredentialsAuthenticationConverter()
                         , new OAuth2RefreshTokenAuthenticationConverter()
-                        , new OAuth2AuthorizationCodeRequestAuthenticationConverter()))))
+                        , new OAuth2AuthorizationCodeRequestAuthenticationConverter()
+                        , new OAuth2PasswordAuthenticationConverter()))))
                 .clientAuthentication(clientAuthentication -> clientAuthentication.errorResponseHandler(new CustomAuthenticationFailureHandler()))
         );
         return http
@@ -137,9 +139,9 @@ public class AuthorizationServerConfig {
                 .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(
                         List.of(AuthorizationGrantType.AUTHORIZATION_CODE
                                 , AuthorizationGrantType.REFRESH_TOKEN
-                                , new AuthorizationGrantType(PasswordAuthenticationToken.GRANT_TYPE)
-                                , new AuthorizationGrantType(SmsAuthenticationToken.GRANT_TYPE)
-                                , new AuthorizationGrantType(EmailAuthenticationToken.GRANT_TYPE)
+                                , new AuthorizationGrantType(PasswordAuthenticationServer.GRANT_TYPE)
+                                , new AuthorizationGrantType(SmsAuthenticationServer.GRANT_TYPE)
+                                , new AuthorizationGrantType(EmailAuthenticationServer.GRANT_TYPE)
                                 , AuthorizationGrantType.CLIENT_CREDENTIALS)))
                 // 支持OIDC
                 .scopes(scopes -> scopes.addAll(List.of(
@@ -201,7 +203,7 @@ public class AuthorizationServerConfig {
             , LoginLogUtil loginLogUtil
             , PasswordEncoder passwordEncoder
             , RedisUtil redisUtil) {
-        return new PasswordAuthenticationToken(sysUserService,sysMenuService
+        return new PasswordAuthenticationServer(sysUserService,sysMenuService
                 , sysDeptService
                 , sysCaptchaService
                 , loginLogUtil

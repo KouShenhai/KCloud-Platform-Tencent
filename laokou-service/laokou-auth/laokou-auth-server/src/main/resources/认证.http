@@ -1,0 +1,22 @@
+# 抽个时间补充一下内容。。。
+POST http://localhost:1111/oauth2/token
+Authorization: Basic YXV0aC1jbGllbnQ6c2VjcmV0
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="grant_type"
+
+password
+--WebAppBoundary
+Content-Disposition: form-data; name="username"
+
+admin
+--WebAppBoundary
+Content-Disposition: form-data; name="password"
+
+admin123
+--WebAppBoundary
+Content-Disposition: form-data; name="scope"
+
+auth
+--WebAppBoundary
