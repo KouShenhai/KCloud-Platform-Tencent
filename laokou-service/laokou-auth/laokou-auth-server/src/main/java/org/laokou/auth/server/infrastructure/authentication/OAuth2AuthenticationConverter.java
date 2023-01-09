@@ -15,7 +15,6 @@
  */
 package org.laokou.auth.server.infrastructure.authentication;
 import jakarta.servlet.http.HttpServletRequest;
-import org.laokou.auth.server.infrastructure.server.PasswordAuthenticationServer;
 import org.laokou.common.core.utils.HashUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,18 +22,27 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.util.MultiValueMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 /**
  * 密码模式
  * @author laokou
  */
-public class OAuth2PasswordAuthenticationConverter implements AuthenticationConverter {
+public class OAuth2AuthenticationConverter implements AuthenticationConverter {
+
+    /**
+     * 密码/手机/邮箱
+     */
+    private static final List<String> grantTypes = List.of(
+            OAuth2PasswordAuthenticationProvider.GRANT_TYPE
+            , OAuth2SmsAuthenticationProvider.GRANT_TYPE
+            , OAuth2EmailAuthenticationProvider.GRANT_TYPE);
 
     @Override
     public Authentication convert(HttpServletRequest request) {
         String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
         // 密码模式
-        if (!PasswordAuthenticationServer.GRANT_TYPE.equals(grantType)) {
+        if (!grantTypes.contains(grantType)) {
             return null;
         }
         // 获取上下文认证信息
@@ -44,12 +52,10 @@ public class OAuth2PasswordAuthenticationConverter implements AuthenticationConv
         Map<String, Object> additionalParameters = new HashMap<>(parameters.size());
         parameters.forEach((key, value) -> {
             if (!key.equals(OAuth2ParameterNames.GRANT_TYPE) &&
-                    !key.equals(OAuth2ParameterNames.CLIENT_ID) &&
-                    !key.equals(OAuth2ParameterNames.CODE) &&
-                    !key.equals(OAuth2ParameterNames.REDIRECT_URI)) {
+                    !key.equals(OAuth2ParameterNames.CLIENT_ID)) {
                 additionalParameters.put(key, value.get(0));
             }
         });
-        return new OAuth2PasswordAuthenticationToken(clientPrincipal, additionalParameters);
+        return new OAuth2AuthenticationToken(grantType,clientPrincipal, additionalParameters);
     }
 }

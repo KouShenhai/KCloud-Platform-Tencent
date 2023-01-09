@@ -45,7 +45,7 @@ import java.util.List;
  *  # 邮件登录
  * @author laokou
  */
-public abstract class AbstractAuthenticationServer implements AuthenticationServer, UserDetailsService {
+public abstract class AbstractAuthenticationServer implements AuthenticationServer {
 
     protected final SysUserServiceImpl sysUserService;
     protected final SysMenuService sysMenuService;
@@ -67,69 +67,6 @@ public abstract class AbstractAuthenticationServer implements AuthenticationServ
         this.sysUserService = sysUserService;
         this.redisUtil = redisUtil;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException {
-        UserDetail userDetail = sysUserService.getUserDetail(loginName);
-        if (userDetail == null) {
-            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
-        }
-        // 是否锁定
-        String loginType = PasswordAuthenticationServer.GRANT_TYPE;
-        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-        if (!userDetail.isEnabled()) {
-            loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
-            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
-        }
-        Long userId = userDetail.getUserId();
-        Integer superAdmin = userDetail.getSuperAdmin();
-        // 权限标识列表
-        List<String> permissionsList = sysMenuService.getPermissionsList(superAdmin,userId);
-        if (CollectionUtils.isEmpty(permissionsList)) {
-            loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
-            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
-        }
-        userDetail.setPermissionList(permissionsList);
-        userDetail.setDeptIds(sysDeptService.getDeptIds(superAdmin,userId));
-        return userDetail;
-    }
-
-    protected UsernamePasswordAuthenticationToken getUserInfo(String loginName, String password, HttpServletRequest request) {
-        AuthorizationGrantType grantType = getGrantType();
-        String loginType = grantType.getValue();
-        // 验证用户
-        UserDetail userDetail = sysUserService.getUserDetail(loginName);
-        if (userDetail == null) {
-            loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
-            throw new CustomException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
-        }
-        if (PasswordAuthenticationServer.GRANT_TYPE.equals(grantType)) {
-            // 验证密码
-            String clientPassword = userDetail.getPassword();
-            if (!passwordEncoder.matches(password, clientPassword)) {
-                loginLogUtil.recordLogin(loginName, loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR), request);
-                throw new CustomException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
-            }
-        }
-        // 是否锁定
-        if (!userDetail.isEnabled()) {
-            loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
-            throw new CustomException(ErrorCode.ACCOUNT_DISABLE);
-        }
-        Long userId = userDetail.getUserId();
-        Integer superAdmin = userDetail.getSuperAdmin();
-        // 权限标识列表
-        List<String> permissionsList = sysMenuService.getPermissionsList(superAdmin,userId);
-        if (CollectionUtils.isEmpty(permissionsList)) {
-            loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
-            throw new CustomException(ErrorCode.NOT_PERMISSIONS);
-        }
-        // 部门列表
-        List<Long> deptIds = sysDeptService.getDeptIds(superAdmin,userId);
-        userDetail.setDeptIds(deptIds);
-        userDetail.setPermissionList(permissionsList);
-        return new UsernamePasswordAuthenticationToken(userDetail,loginName,userDetail.getAuthorities());
     }
 
 }

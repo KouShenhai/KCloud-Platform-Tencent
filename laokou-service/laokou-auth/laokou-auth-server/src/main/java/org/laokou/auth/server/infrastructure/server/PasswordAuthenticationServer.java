@@ -65,38 +65,10 @@ public class PasswordAuthenticationServer extends AbstractAuthenticationServer {
 
     @Override
     public UsernamePasswordAuthenticationToken login(HttpServletRequest request) {
-        // 判断唯一标识是否为空
-        String uuid = request.getParameter(AuthConstant.UUID);
-        log.info("唯一标识：{}",uuid);
-        if (StringUtil.isEmpty(uuid)) {
-            throw new CustomException(ErrorCode.IDENTIFIER_NOT_NULL);
-        }
-        // 判断验证码是否为空
-        String captcha = request.getParameter(AuthConstant.CAPTCHA);
-        log.info("验证码：{}",captcha);
-        if (StringUtil.isEmpty(captcha)) {
-            throw new CustomException(ErrorCode.CAPTCHA_NOT_NULL);
-        }
-        // 验证账号是否为空
-        String username = request.getParameter(OAuth2ParameterNames.USERNAME);
-        log.info("账号：{}",username);
-        if (StringUtil.isEmpty(username)) {
-            throw new CustomException(ErrorCode.USERNAME_NOT_NULL);
-        }
-        // 验证密码是否为空
-        String password = request.getParameter(OAuth2ParameterNames.PASSWORD);
-        log.info("密码：{}",password);
-        if (StringUtil.isEmpty(password)) {
-            throw new CustomException(ErrorCode.PASSWORD_NOT_NULL);
-        }
-        // 验证验证码
-        Boolean validate = sysCaptchaService.validate(uuid, captcha);
-        if (!validate) {
-            loginLogUtil.recordLogin(username,GRANT_TYPE, ResultStatusEnum.FAIL.ordinal(),MessageUtil.getMessage(ErrorCode.CAPTCHA_ERROR),request);
-            throw new CustomException(ErrorCode.CAPTCHA_ERROR);
-        }
+
         // 获取用户信息
-        return super.getUserInfo(username, password, request);
+        // return super.getUserInfo(username, password, request);
+        return null;
     }
 
     @Override

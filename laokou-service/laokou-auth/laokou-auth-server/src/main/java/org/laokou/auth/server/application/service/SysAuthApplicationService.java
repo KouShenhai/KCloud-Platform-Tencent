@@ -26,13 +26,13 @@ import java.io.IOException;
  */
 public interface SysAuthApplicationService {
 
-    /***
-     * 用户登录
-     * @param request
-     * @throws IOException
-     * @return
-     */
-    AuthToken login(HttpServletRequest request) throws IOException;
+//    /***
+//     * 用户登录
+//     * @param request
+//     * @throws IOException
+//     * @return
+//     */
+//    AuthToken login(HttpServletRequest request) throws IOException;
 
     /**
      * 生成验证码

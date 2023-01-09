@@ -60,24 +60,9 @@ public class EmailAuthenticationServer extends AbstractAuthenticationServer {
 
     @Override
     public UsernamePasswordAuthenticationToken login(HttpServletRequest request) {
-        // 判断验证码
-        String code = request.getParameter(OAuth2ParameterNames.CODE);
-        log.info("验证码：{}",code);
-        if (StringUtil.isEmpty(code)) {
-            throw new CustomException(ErrorCode.CAPTCHA_NOT_NULL);
-        }
-        String email = request.getParameter(AuthConstant.EMAIL);
-        log.info("邮箱：{}",email);
-        if (StringUtil.isEmpty(email)) {
-            throw new CustomException("邮箱不为空");
-        }
-        boolean isEmail = RegexUtil.emailRegex(email);
-        if (!isEmail) {
-            throw new CustomException("邮箱格式不对");
-        }
-        // TODO 验证验证码
-        // 获取用户信息
-        return super.getUserInfo(email, "", request);
+
+        // super.getUserInfo(email, "", request);
+        return null;
     }
 
     @Override

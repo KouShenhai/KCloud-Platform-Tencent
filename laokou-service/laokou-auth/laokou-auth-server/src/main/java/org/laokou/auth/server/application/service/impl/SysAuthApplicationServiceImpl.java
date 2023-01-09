@@ -16,12 +16,17 @@
 package org.laokou.auth.server.application.service.impl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.client.user.UserDetail;
+import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
+import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
+import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.context.CustomAuthorizationServerContext;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.auth.server.infrastructure.server.AuthenticationServer;
 import org.laokou.auth.server.infrastructure.server.AuthToken;
+import org.laokou.auth.server.infrastructure.server.PasswordAuthenticationServer;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.swagger.exception.CustomException;
@@ -33,7 +38,11 @@ import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.redis.utils.RedisUtil;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
@@ -70,16 +79,16 @@ public class SysAuthApplicationServiceImpl implements SysAuthApplicationService 
     private final LoginLogUtil loginLogUtil;
     private final RedisUtil redisUtil;
 
-    @Override
-    public AuthToken login(HttpServletRequest request) {
-        // 1.验证认证相关信息
-        RegisteredClient registeredClient = loginBefore(request);
-        // 2.登录中
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = loginInfo(request);
-        // 3.生成token
-        AuthToken authToken = loginAfter(registeredClient, usernamePasswordAuthenticationToken, request);
-        return authToken;
-    }
+//    @Override
+//    public AuthToken login(HttpServletRequest request) {
+//        // 1.验证认证相关信息
+//        RegisteredClient registeredClient = loginBefore(request);
+//        // 2.登录中
+//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = loginInfo(request);
+//        // 3.生成token
+//        AuthToken authToken = loginAfter(registeredClient, usernamePasswordAuthenticationToken, request);
+//        return authToken;
+//    }
 
     private RegisteredClient loginBefore(HttpServletRequest request) {
         // 1.验证clientId

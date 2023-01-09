@@ -17,15 +17,65 @@
 package org.laokou.auth.server.infrastructure.authentication;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.laokou.auth.client.constant.AuthConstant;
+import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
+import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
+import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
+import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
+import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
+import org.laokou.common.core.utils.RegexUtil;
+import org.laokou.common.core.utils.StringUtil;
+import org.laokou.common.swagger.exception.CustomException;
+import org.laokou.common.swagger.exception.ErrorCode;
+import org.laokou.redis.utils.RedisUtil;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.stereotype.Component;
 
 /**
  * @author laokou
  */
+@Component
+@Slf4j
 public class OAuth2SmsAuthenticationProvider extends AbstractOAuth2AuthenticationProvider{
+
+    public static final String GRANT_TYPE = "sms";
+
+    public OAuth2SmsAuthenticationProvider(SysUserServiceImpl sysUserService
+            , SysMenuService sysMenuService
+            , SysDeptService sysDeptService
+            , LoginLogUtil loginLogUtil
+            , PasswordEncoder passwordEncoder
+            , SysCaptchaService sysCaptchaService) {
+        super(sysUserService, sysMenuService, sysDeptService, loginLogUtil, passwordEncoder,sysCaptchaService);
+    }
+
     @Override
     Authentication login(HttpServletRequest request) {
-        // 手机
-        return null;
+        String code = request.getParameter(OAuth2ParameterNames.CODE);
+        log.info("验证码：{}",code);
+        if (StringUtil.isEmpty(code)) {
+            throw new CustomException(ErrorCode.CAPTCHA_NOT_NULL);
+        }
+        String mobile = request.getParameter(AuthConstant.MOBILE);
+        log.info("手机：{}",mobile);
+        if (StringUtil.isEmpty(mobile)) {
+            throw new CustomException("手机号不为空");
+        }
+        boolean isMobile = RegexUtil.mobileRegex(mobile);
+        if (!isMobile) {
+            throw new CustomException("手机号格式不对");
+        }
+        // TODO 验证验证码
+        // 获取用户信息
+        return super.getUserInfo(mobile, "", request);
+    }
+
+    @Override
+    AuthorizationGrantType getGrantType() {
+            return new AuthorizationGrantType(GRANT_TYPE);
     }
 }

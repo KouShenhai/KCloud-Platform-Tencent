@@ -19,18 +19,15 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
-import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
-import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
-import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
-import org.laokou.auth.server.infrastructure.authentication.OAuth2PasswordAuthenticationConverter;
+import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserDetailServiceImpl;
+import org.laokou.auth.server.infrastructure.authentication.OAuth2AuthenticationConverter;
+import org.laokou.auth.server.infrastructure.authentication.OAuth2EmailAuthenticationProvider;
+import org.laokou.auth.server.infrastructure.authentication.OAuth2PasswordAuthenticationProvider;
+import org.laokou.auth.server.infrastructure.authentication.OAuth2SmsAuthenticationProvider;
 import org.laokou.auth.server.infrastructure.customizer.CustomTokenCustomizer;
-import org.laokou.auth.server.infrastructure.handler.CustomAuthenticationFailureHandler;
-import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.auth.server.infrastructure.server.EmailAuthenticationServer;
 import org.laokou.auth.server.infrastructure.server.PasswordAuthenticationServer;
 import org.laokou.auth.server.infrastructure.server.SmsAuthenticationServer;
-import org.laokou.redis.utils.RedisUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -65,9 +62,9 @@ import org.springframework.security.oauth2.server.authorization.token.JwtGenerat
 import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.oauth2.server.authorization.web.authentication.*;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -97,7 +94,10 @@ public class AuthorizationServerConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http
     , AuthorizationServerSettings authorizationServerSettings
-    , OAuth2AuthorizationService authorizationService) throws Exception {
+    , OAuth2AuthorizationService authorizationService
+    , OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider
+    , OAuth2SmsAuthenticationProvider smsAuthenticationProvider
+    , OAuth2EmailAuthenticationProvider emailAuthenticationProvider) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
         authorizationServerConfigurer.oidc(Customizer.withDefaults());
         http.exceptionHandling(configurer -> configurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
@@ -107,11 +107,8 @@ public class AuthorizationServerConfig {
                         , new OAuth2ClientCredentialsAuthenticationConverter()
                         , new OAuth2RefreshTokenAuthenticationConverter()
                         , new OAuth2AuthorizationCodeRequestAuthenticationConverter()
-                        , new OAuth2PasswordAuthenticationConverter()))))
-                .clientAuthentication(clientAuthentication -> clientAuthentication.errorResponseHandler(new CustomAuthenticationFailureHandler()))
-        );
-        return http
-                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                        , new OAuth2AuthenticationConverter())))));
+        DefaultSecurityFilterChain securityFilterChain = http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .authorizeHttpRequests(authorizeRequests -> {
                     // 忽略error
                     authorizeRequests.requestMatchers("/error").permitAll();
@@ -125,6 +122,10 @@ public class AuthorizationServerConfig {
                 .apply(new FormConfig())
                 .and()
                 .build();
+        http.authenticationProvider(passwordAuthenticationProvider)
+                .authenticationProvider(emailAuthenticationProvider)
+                .authenticationProvider(smsAuthenticationProvider);
+        return securityFilterChain;
     }
 
     @Bean
@@ -195,20 +196,8 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    UserDetailsService userDetailsService(
-            SysUserServiceImpl sysUserService
-            , SysMenuService sysMenuService
-            , SysDeptService sysDeptService
-            , SysCaptchaService sysCaptchaService
-            , LoginLogUtil loginLogUtil
-            , PasswordEncoder passwordEncoder
-            , RedisUtil redisUtil) {
-        return new PasswordAuthenticationServer(sysUserService,sysMenuService
-                , sysDeptService
-                , sysCaptchaService
-                , loginLogUtil
-                , passwordEncoder
-                , redisUtil);
+    UserDetailsService userDetailsService(SysUserDetailServiceImpl sysAuthApplicationServiceImpl) {
+        return sysAuthApplicationServiceImpl;
     }
 
     @Bean

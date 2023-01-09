@@ -76,7 +76,8 @@ public class SmsAuthenticationServer extends AbstractAuthenticationServer {
         }
         // TODO 验证验证码
         // 获取用户信息
-        return super.getUserInfo(mobile, "", request);
+        // return super.getUserInfo(mobile, "", request);
+        return null;
     }
 
     @Override
