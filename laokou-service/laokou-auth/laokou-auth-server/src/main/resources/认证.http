@@ -17,3 +17,11 @@ Content-Disposition: form-data; name="password"
 
 admin123
 --WebAppBoundary
+Content-Disposition: form-data; name="uuid"
+
+1111
+--WebAppBoundary
+Content-Disposition: form-data; name="captcha"
+
+unwn
+--WebAppBoundary

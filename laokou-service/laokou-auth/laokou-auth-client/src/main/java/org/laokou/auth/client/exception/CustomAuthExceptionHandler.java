@@ -48,4 +48,9 @@ public class CustomAuthExceptionHandler {
         throw new OAuth2AuthenticationException(error);
     }
 
+    public static void throwError(int errorCode,String description) {
+        OAuth2Error error = new OAuth2Error("" + errorCode, description,"");
+        throw new OAuth2AuthenticationException(error);
+    }
+
 }
