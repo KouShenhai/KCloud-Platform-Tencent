@@ -23,5 +23,26 @@ Content-Disposition: form-data; name="uuid"
 --WebAppBoundary
 Content-Disposition: form-data; name="captcha"
 
-unwn
+aASX
+--WebAppBoundary
+
+#########
+
+# @no-redirect
+POST http://localhost:1111/oauth2/token
+Authorization: Basic YXV0aC1jbGllbnQ6c2VjcmV0
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="grant_type"
+
+sms
+--WebAppBoundary
+Content-Disposition: form-data; name="phone"
+
+13487567891
+--WebAppBoundary
+Content-Disposition: form-data; name="code"
+
+1234
 --WebAppBoundary

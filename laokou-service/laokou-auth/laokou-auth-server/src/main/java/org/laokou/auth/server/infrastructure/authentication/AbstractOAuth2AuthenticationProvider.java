@@ -78,8 +78,8 @@ public abstract class AbstractOAuth2AuthenticationProvider implements Authentica
         this.sysUserService = sysUserService;
         this.passwordEncoder = passwordEncoder;
         this.sysCaptchaService = sysCaptchaService;
-        this.authorizationService = authorizationService;
         this.tokenGenerator = tokenGenerator;
+        this.authorizationService = authorizationService;
     }
 
 

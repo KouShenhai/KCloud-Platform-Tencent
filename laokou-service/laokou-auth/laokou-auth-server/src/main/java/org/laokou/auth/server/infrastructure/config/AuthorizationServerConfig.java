@@ -21,6 +21,7 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserDetailServiceImpl;
 import org.laokou.auth.server.infrastructure.authentication.OAuth2AuthenticationConverter;
+import org.laokou.auth.server.infrastructure.authentication.OAuth2EmailAuthenticationProvider;
 import org.laokou.auth.server.infrastructure.authentication.OAuth2PasswordAuthenticationProvider;
 import org.laokou.auth.server.infrastructure.customizer.CustomTokenCustomizer;
 import org.laokou.auth.server.infrastructure.server.EmailAuthenticationServer;
@@ -93,7 +94,8 @@ public class AuthorizationServerConfig {
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http
     , AuthorizationServerSettings authorizationServerSettings
     , OAuth2AuthorizationService authorizationService
-    , OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider) throws Exception {
+    , OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider
+    , OAuth2EmailAuthenticationProvider emailAuthenticationProvider) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
         authorizationServerConfigurer.oidc(Customizer.withDefaults());
         http.exceptionHandling(configurer -> configurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
@@ -118,7 +120,8 @@ public class AuthorizationServerConfig {
                 .apply(new FormConfig())
                 .and()
                 .build();
-        http.authenticationProvider(passwordAuthenticationProvider);
+        http.authenticationProvider(passwordAuthenticationProvider)
+                .authenticationProvider(emailAuthenticationProvider);
         return securityFilterChain;
     }
 

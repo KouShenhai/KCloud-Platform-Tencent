@@ -34,7 +34,9 @@ public class OAuth2AuthenticationConverter implements AuthenticationConverter {
      * 密码/手机/邮箱
      */
     private static final List<String> grantTypes = List.of(
-            OAuth2PasswordAuthenticationProvider.GRANT_TYPE);
+            OAuth2PasswordAuthenticationProvider.GRANT_TYPE
+            , OAuth2SmsAuthenticationProvider.GRANT_TYPE
+            , OAuth2EmailAuthenticationProvider.GRANT_TYPE);
 
     @Override
     public Authentication convert(HttpServletRequest request) {
