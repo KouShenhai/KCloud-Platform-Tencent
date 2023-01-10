@@ -16,6 +16,7 @@
 package org.laokou.auth.server.infrastructure.authentication;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.collections.CollectionUtils;
+import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
@@ -169,20 +170,20 @@ public abstract class AbstractOAuth2AuthenticationProvider implements Authentica
         UserDetail userDetail = sysUserService.getUserDetail(loginName);
         if (userDetail == null) {
             loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
-            throw new CustomException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
+            CustomAuthExceptionHandler.throwError(ErrorCode.ACCOUNT_PASSWORD_ERROR, MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
         if (OAuth2PasswordAuthenticationProvider.GRANT_TYPE.equals(grantType)) {
             // 验证密码
             String clientPassword = userDetail.getPassword();
             if (!passwordEncoder.matches(password, clientPassword)) {
                 loginLogUtil.recordLogin(loginName, loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR), request);
-                throw new CustomException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
+                CustomAuthExceptionHandler.throwError(ErrorCode.ACCOUNT_PASSWORD_ERROR, MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
             }
         }
         // 是否锁定
         if (!userDetail.isEnabled()) {
             loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE),request);
-            throw new CustomException(ErrorCode.ACCOUNT_DISABLE);
+            CustomAuthExceptionHandler.throwError(ErrorCode.ACCOUNT_DISABLE, MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
         }
         Long userId = userDetail.getUserId();
         Integer superAdmin = userDetail.getSuperAdmin();
@@ -190,7 +191,7 @@ public abstract class AbstractOAuth2AuthenticationProvider implements Authentica
         List<String> permissionsList = sysMenuService.getPermissionsList(superAdmin,userId);
         if (CollectionUtils.isEmpty(permissionsList)) {
             loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS),request);
-            throw new CustomException(ErrorCode.NOT_PERMISSIONS);
+            CustomAuthExceptionHandler.throwError(ErrorCode.NOT_PERMISSIONS, MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
         }
         // 部门列表
         List<Long> deptIds = sysDeptService.getDeptIds(superAdmin,userId);

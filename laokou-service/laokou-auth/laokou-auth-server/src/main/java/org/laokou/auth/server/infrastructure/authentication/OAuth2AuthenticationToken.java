@@ -29,11 +29,11 @@ public class OAuth2AuthenticationToken extends OAuth2AuthorizationGrantAuthentic
     /**
      * Sub-class constructor.
      *
+     * @param grantType
      * @param clientPrincipal        the authenticated client principal
      * @param additionalParameters   the additional parameters
      */
-    protected OAuth2AuthenticationToken(
-            String grantType
+    protected OAuth2AuthenticationToken(String grantType
             , Authentication clientPrincipal
             , Map<String, Object> additionalParameters) {
         super(new AuthorizationGrantType(grantType), clientPrincipal, additionalParameters);
