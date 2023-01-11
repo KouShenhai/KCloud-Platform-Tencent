@@ -16,10 +16,6 @@
 package org.laokou.auth.server.application.service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.laokou.auth.server.infrastructure.server.AuthToken;
-
-import java.io.IOException;
-
 /**
  * auth服务
  * @author laokou

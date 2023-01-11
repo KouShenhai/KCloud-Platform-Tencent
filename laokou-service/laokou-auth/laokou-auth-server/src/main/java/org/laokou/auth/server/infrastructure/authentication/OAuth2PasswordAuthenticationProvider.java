@@ -21,7 +21,7 @@ import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
-import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
+import org.laokou.auth.server.domain.sys.repository.service.SysUserService;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.utils.MessageUtil;
@@ -45,7 +45,7 @@ public class OAuth2PasswordAuthenticationProvider extends OAuth2BaseAuthenticati
 
     public static final String GRANT_TYPE = "password";
 
-    public OAuth2PasswordAuthenticationProvider(SysUserServiceImpl sysUserService
+    public OAuth2PasswordAuthenticationProvider(SysUserService sysUserService
             , SysMenuService sysMenuService
             , SysDeptService sysDeptService
             , LoginLogUtil loginLogUtil

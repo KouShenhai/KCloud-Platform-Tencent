@@ -21,7 +21,7 @@ import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
-import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
+import org.laokou.auth.server.domain.sys.repository.service.SysUserService;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.utils.HttpContextUtil;
@@ -54,7 +54,7 @@ import java.util.Set;
  */
 public abstract class OAuth2BaseAuthenticationProvider implements AuthenticationProvider {
 
-    protected SysUserServiceImpl sysUserService;
+    protected SysUserService sysUserService;
     protected SysMenuService sysMenuService;
     protected SysDeptService sysDeptService;
     protected LoginLogUtil loginLogUtil;
@@ -64,7 +64,7 @@ public abstract class OAuth2BaseAuthenticationProvider implements Authentication
     protected OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
 
     public OAuth2BaseAuthenticationProvider(
-            SysUserServiceImpl sysUserService
+            SysUserService sysUserService
             , SysMenuService sysMenuService
             , SysDeptService sysDeptService
             , LoginLogUtil loginLogUtil

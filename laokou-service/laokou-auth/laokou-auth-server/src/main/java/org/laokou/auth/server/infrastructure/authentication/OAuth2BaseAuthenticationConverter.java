@@ -63,6 +63,4 @@ public abstract class OAuth2BaseAuthenticationConverter implements Authenticatio
         return convert(clientPrincipal,additionalParameters);
     }
 
-111
-
 }

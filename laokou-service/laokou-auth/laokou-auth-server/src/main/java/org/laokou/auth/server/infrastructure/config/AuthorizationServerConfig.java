@@ -19,12 +19,15 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
+import org.laokou.auth.server.domain.sys.repository.service.SysUserService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserDetailServiceImpl;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.authentication.OAuth2PasswordAuthenticationProvider;
 import org.laokou.auth.server.infrastructure.customizer.CustomTokenCustomizer;
+import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -91,7 +94,14 @@ public class AuthorizationServerConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http
     , AuthorizationServerSettings authorizationServerSettings
-    , OAuth2AuthorizationService authorizationService) throws Exception {
+    , OAuth2AuthorizationService authorizationService
+    , SysUserService sysUserService
+    , SysMenuService sysMenuService
+    , SysDeptService sysDeptService
+    , LoginLogUtil loginLogUtil
+    , PasswordEncoder passwordEncoder
+    , SysCaptchaService sysCaptchaService
+    , OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
         authorizationServerConfigurer.oidc(Customizer.withDefaults());
         http.exceptionHandling(configurer -> configurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
@@ -115,7 +125,7 @@ public class AuthorizationServerConfig {
                 .apply(new FormConfig())
                 .and()
                 .build();
-        http.authenticationProvider(new OAuth2PasswordAuthenticationProvider(null,null,null,null,null,null,null,null));
+        http.authenticationProvider(new OAuth2PasswordAuthenticationProvider(sysUserService,sysMenuService,sysDeptService,loginLogUtil,passwordEncoder,sysCaptchaService,authorizationService,tokenGenerator));
         return defaultSecurityFilterChain;
     }
 

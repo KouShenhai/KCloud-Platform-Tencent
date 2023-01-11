@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 package org.laokou.auth.server.application.service.impl;
+import com.wf.captcha.GifCaptcha;
+import com.wf.captcha.base.Captcha;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.client.user.UserDetail;
-import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
-import org.laokou.auth.server.infrastructure.server.AuthenticationServer;
+import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
 import org.laokou.common.core.constant.Constant;
 import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.swagger.exception.ErrorCode;
@@ -29,27 +29,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.laokou.common.core.utils.*;
 import org.laokou.redis.utils.RedisKeyUtil;
 import org.laokou.redis.utils.RedisUtil;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.*;
-import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.stereotype.Service;
+import java.awt.*;
 import java.security.Principal;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 /**
  * SpringSecurity最新版本更新
  * @author laokou
@@ -61,26 +48,24 @@ import java.util.Set;
 public class SysAuthApplicationServiceImpl implements SysAuthApplicationService {
     private final OAuth2AuthorizationService oAuth2AuthorizationService;
     private final RedisUtil redisUtil;
-
-    private AuthenticationServer authenticationToken(HttpServletRequest request) {
-        // 1.验证grantType
-        String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
-        if (StringUtil.isEmpty(grantType)) {
-            throw new CustomException(ErrorCode.UNSUPPORTED_GRANT_TYPE);
-        }
-        try {
-            String className = AuthenticationServer.class.getSimpleName();
-            AuthenticationServer authenticationServer = SpringContextUtil.getBean(grantType + className, AuthenticationServer.class);
-            // 2.验证账号/密码/验证码 或 手机号/验证码等等
-            return authenticationServer;
-        } catch (NoSuchBeanDefinitionException e ) {
-            throw new CustomException(ErrorCode.UNSUPPORTED_GRANT_TYPE);
-        }
-    }
+    private final SysCaptchaService sysCaptchaService;
 
     @Override
     public String captcha(HttpServletRequest request) {
-        return authenticationToken(request).captcha(request);
+        // 判断唯一标识是否为空
+        String uuid = request.getParameter(AuthConstant.UUID);
+        log.info("唯一标识：{}",uuid);
+        if (StringUtil.isEmpty(uuid)) {
+            throw new CustomException(ErrorCode.IDENTIFIER_NOT_NULL);
+        }
+        // 三个参数分别为宽、高、位数
+        Captcha captcha = new GifCaptcha(130, 48, 4);
+        // 设置字体，有默认字体，可以不用设置
+        captcha.setFont(new Font("Verdana", Font.PLAIN, 32));
+        // 设置类型，纯数字、纯字母、字母数字混合
+        captcha.setCharType(Captcha.TYPE_DEFAULT);
+        sysCaptchaService.setCode(uuid,captcha.text());
+        return captcha.toBase64();
     }
 
     @Override
