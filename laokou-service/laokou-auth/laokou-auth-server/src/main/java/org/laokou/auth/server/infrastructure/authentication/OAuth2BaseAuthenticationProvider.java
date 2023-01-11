@@ -16,6 +16,7 @@
 package org.laokou.auth.server.infrastructure.authentication;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.collections.CollectionUtils;
+import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysCaptchaService;
@@ -26,7 +27,6 @@ import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.laokou.common.core.enums.ResultStatusEnum;
 import org.laokou.common.core.utils.HttpContextUtil;
 import org.laokou.common.core.utils.MessageUtil;
-import org.laokou.common.swagger.exception.CustomException;
 import org.laokou.common.swagger.exception.ErrorCode;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -86,7 +86,7 @@ public abstract class OAuth2BaseAuthenticationProvider implements Authentication
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         Authentication usernamePasswordToken = login(request);
-        return getToken(authentication,usernamePasswordToken);
+        return getToken(authentication,usernamePasswordToken,request);
     }
 
     /**
@@ -116,7 +116,7 @@ public abstract class OAuth2BaseAuthenticationProvider implements Authentication
      * @param principal
      * @return
      */
-    protected Authentication getToken(Authentication authentication,Authentication principal) {
+    protected Authentication getToken(Authentication authentication,Authentication principal,HttpServletRequest request) {
         // 生成token（access_token + refresh_token）
         OAuth2BaseAuthenticationToken OAuth2BaseAuthenticationToken = (OAuth2BaseAuthenticationToken) authentication;
         OAuth2ClientAuthenticationToken clientPrincipal = getAuthenticatedClientElseThrowInvalidClient(OAuth2BaseAuthenticationToken);
@@ -126,6 +126,7 @@ public abstract class OAuth2BaseAuthenticationProvider implements Authentication
         String loginName = principal.getCredentials().toString();
         // 认证类型
         AuthorizationGrantType grantType = getGrantType();
+        String loginType = grantType.getValue();
         // 获取上下文
         DefaultOAuth2TokenContext.Builder builder = DefaultOAuth2TokenContext.builder()
                 .registeredClient(registeredClient)
@@ -150,7 +151,8 @@ public abstract class OAuth2BaseAuthenticationProvider implements Authentication
                 , context.getAuthorizedScopes());
         // jwt
         if (generatedOauth2AccessToken instanceof ClaimAccessor) {
-            authorizationBuilder.token(oAuth2AccessToken,
+            authorizationBuilder
+                    .token(oAuth2AccessToken,
                             meta -> meta.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME
                                     ,((ClaimAccessor)generatedOauth2AccessToken).getClaims()))
                     .authorizedScopes(scopes)
@@ -170,6 +172,8 @@ public abstract class OAuth2BaseAuthenticationProvider implements Authentication
         authorizationBuilder.refreshToken(oAuth2RefreshToken);
         OAuth2Authorization oAuth2Authorization = authorizationBuilder.build();
         authorizationService.save(oAuth2Authorization);
+        // 登录成功
+        loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.SUCCESS.ordinal(), AuthConstant.LOGIN_SUCCESS_MSG,request);
         return new OAuth2AccessTokenAuthenticationToken(
                 registeredClient, clientPrincipal, oAuth2AccessToken, oAuth2RefreshToken, Collections.emptyMap());
     }

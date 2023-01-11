@@ -106,8 +106,7 @@ public class AuthorizationServerConfig {
         authorizationServerConfigurer.oidc(Customizer.withDefaults());
         http.exceptionHandling(configurer -> configurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
                 .apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(new DelegatingAuthenticationConverter(
-                List.of(
-                        new OAuth2PasswordAuthenticationConverter()
+                List.of(new OAuth2PasswordAuthenticationConverter()
                         , new OAuth2SmsAuthenticationConverter()
                         , new OAuth2EmailAuthenticationConverter()
                         , new OAuth2AuthorizationCodeAuthenticationConverter()
