@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class OAuth2PasswordAuthenticationProvider extends AbstractOAuth2AuthenticationProvider{
+public class OAuth2PasswordAuthenticationProvider extends OAuth2BaseAuthenticationProvider {
 
     public static final String GRANT_TYPE = "password";
 
@@ -57,7 +57,12 @@ public class OAuth2PasswordAuthenticationProvider extends AbstractOAuth2Authenti
     }
 
     @Override
-    Authentication checkInfo(HttpServletRequest request) {
+    public boolean supports(Class<?> authentication) {
+        return OAuth2PasswordAuthenticationToken.class.isAssignableFrom(authentication);
+    }
+
+    @Override
+    Authentication login(HttpServletRequest request) {
         // 判断唯一标识是否为空
         String uuid = request.getParameter(AuthConstant.UUID);
         log.info("唯一标识：{}",uuid);

@@ -49,10 +49,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 /**
- * 抽象 -> 邮件/手机/密码
+ * 邮件/手机/密码
  * @author laokou
  */
-public abstract class AbstractOAuth2AuthenticationProvider implements AuthenticationProvider {
+public abstract class OAuth2BaseAuthenticationProvider implements AuthenticationProvider {
 
     protected SysUserServiceImpl sysUserService;
     protected SysMenuService sysMenuService;
@@ -63,7 +63,7 @@ public abstract class AbstractOAuth2AuthenticationProvider implements Authentica
     protected OAuth2AuthorizationService authorizationService;
     protected OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
 
-    public AbstractOAuth2AuthenticationProvider(
+    public OAuth2BaseAuthenticationProvider(
             SysUserServiceImpl sysUserService
             , SysMenuService sysMenuService
             , SysDeptService sysDeptService
@@ -85,20 +85,18 @@ public abstract class AbstractOAuth2AuthenticationProvider implements Authentica
 
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-        Authentication usernamePasswordToken = checkInfo(request);
+        Authentication usernamePasswordToken = login(request);
         return getToken(authentication,usernamePasswordToken);
     }
 
-    public boolean supports(Class<?> authentication) {
-        return true;
-    }
+    abstract public boolean supports(Class<?> authentication);
 
     /**
      * 登录
      * @param request
      * @return
      */
-    abstract Authentication checkInfo(HttpServletRequest request);
+    abstract Authentication login(HttpServletRequest request);
 
     /**
      * 认证类型
@@ -107,10 +105,16 @@ public abstract class AbstractOAuth2AuthenticationProvider implements Authentica
      */
     abstract AuthorizationGrantType getGrantType();
 
+    /**
+     * 仿照授权码模式
+     * @param authentication
+     * @param principal
+     * @return
+     */
     protected Authentication getToken(Authentication authentication,Authentication principal) {
         // 生成token（access_token + refresh_token）
-        OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
-        OAuth2ClientAuthenticationToken clientPrincipal = getAuthenticatedClientElseThrowInvalidClient(oAuth2AuthenticationToken);
+        OAuth2BaseAuthenticationToken OAuth2BaseAuthenticationToken = (OAuth2BaseAuthenticationToken) authentication;
+        OAuth2ClientAuthenticationToken clientPrincipal = getAuthenticatedClientElseThrowInvalidClient(OAuth2BaseAuthenticationToken);
         RegisteredClient registeredClient = clientPrincipal.getRegisteredClient();
         // 获取认证范围
         Set<String> scopes = registeredClient.getScopes();
@@ -145,6 +149,7 @@ public abstract class AbstractOAuth2AuthenticationProvider implements Authentica
                             meta -> meta.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME
                                     ,((ClaimAccessor)generatedOauth2AccessToken).getClaims()))
                     .authorizedScopes(scopes)
+                    // admin后台管理需要token，解析token获取用户信息，因此将用户信息存在数据库，下次直接查询数据库就可以获取用户信息
                     .attribute(Principal.class.getName(), principal);
         }else {
             authorizationBuilder.accessToken(oAuth2AccessToken);

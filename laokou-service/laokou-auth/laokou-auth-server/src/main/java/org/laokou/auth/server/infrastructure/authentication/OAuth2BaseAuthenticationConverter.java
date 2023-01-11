@@ -22,27 +22,31 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.util.MultiValueMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 /**
  * 密码模式
  * @author laokou
  */
-public class OAuth2AuthenticationConverter implements AuthenticationConverter {
+public abstract class OAuth2BaseAuthenticationConverter implements AuthenticationConverter {
 
     /**
-     * 密码/手机/邮箱
+     * 类型
+     * @return
      */
-    private static final List<String> grantTypes = List.of(
-            OAuth2PasswordAuthenticationProvider.GRANT_TYPE
-            , OAuth2SmsAuthenticationProvider.GRANT_TYPE
-            , OAuth2EmailAuthenticationProvider.GRANT_TYPE);
+    abstract String getGrantType();
+
+    /**
+     * 转换
+     * @param clientPrincipal
+     * @param additionalParameters
+     * @return
+     */
+    abstract Authentication convert(Authentication clientPrincipal,Map<String, Object> additionalParameters);
 
     @Override
     public Authentication convert(HttpServletRequest request) {
         String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
-        // 密码模式
-        if (!grantTypes.contains(grantType)) {
+        if (!getGrantType().equals(grantType)) {
             return null;
         }
         // 获取上下文认证信息
@@ -56,6 +60,9 @@ public class OAuth2AuthenticationConverter implements AuthenticationConverter {
                 additionalParameters.put(key, value.get(0));
             }
         });
-        return new OAuth2AuthenticationToken(grantType,clientPrincipal, additionalParameters);
+        return convert(clientPrincipal,additionalParameters);
     }
+
+111
+
 }

@@ -19,14 +19,12 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
+import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserDetailServiceImpl;
-import org.laokou.auth.server.infrastructure.authentication.OAuth2AuthenticationConverter;
-import org.laokou.auth.server.infrastructure.authentication.OAuth2EmailAuthenticationProvider;
+import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
 import org.laokou.auth.server.infrastructure.authentication.OAuth2PasswordAuthenticationProvider;
 import org.laokou.auth.server.infrastructure.customizer.CustomTokenCustomizer;
-import org.laokou.auth.server.infrastructure.server.EmailAuthenticationServer;
-import org.laokou.auth.server.infrastructure.server.PasswordAuthenticationServer;
-import org.laokou.auth.server.infrastructure.server.SmsAuthenticationServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -91,11 +89,9 @@ public class AuthorizationServerConfig {
      */
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http
     , AuthorizationServerSettings authorizationServerSettings
-    , OAuth2AuthorizationService authorizationService
-    , OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider
-    , OAuth2EmailAuthenticationProvider emailAuthenticationProvider) throws Exception {
+    , OAuth2AuthorizationService authorizationService) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
         authorizationServerConfigurer.oidc(Customizer.withDefaults());
         http.exceptionHandling(configurer -> configurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
@@ -104,9 +100,8 @@ public class AuthorizationServerConfig {
                         new OAuth2AuthorizationCodeAuthenticationConverter()
                         , new OAuth2ClientCredentialsAuthenticationConverter()
                         , new OAuth2RefreshTokenAuthenticationConverter()
-                        , new OAuth2AuthorizationCodeRequestAuthenticationConverter()
-                        , new OAuth2AuthenticationConverter())))));
-        DefaultSecurityFilterChain securityFilterChain = http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                        , new OAuth2AuthorizationCodeRequestAuthenticationConverter())))));
+        DefaultSecurityFilterChain defaultSecurityFilterChain = http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .authorizeHttpRequests(authorizeRequests -> {
                     // 忽略error
                     authorizeRequests.requestMatchers("/error").permitAll();
@@ -120,9 +115,8 @@ public class AuthorizationServerConfig {
                 .apply(new FormConfig())
                 .and()
                 .build();
-        http.authenticationProvider(passwordAuthenticationProvider)
-                .authenticationProvider(emailAuthenticationProvider);
-        return securityFilterChain;
+        http.authenticationProvider(new OAuth2PasswordAuthenticationProvider(null,null,null,null,null,null,null,null));
+        return defaultSecurityFilterChain;
     }
 
     @Bean
@@ -137,9 +131,7 @@ public class AuthorizationServerConfig {
                 .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(
                         List.of(AuthorizationGrantType.AUTHORIZATION_CODE
                                 , AuthorizationGrantType.REFRESH_TOKEN
-                                , new AuthorizationGrantType(PasswordAuthenticationServer.GRANT_TYPE)
-                                , new AuthorizationGrantType(SmsAuthenticationServer.GRANT_TYPE)
-                                , new AuthorizationGrantType(EmailAuthenticationServer.GRANT_TYPE)
+                                , new AuthorizationGrantType(OAuth2PasswordAuthenticationProvider.GRANT_TYPE)
                                 , AuthorizationGrantType.CLIENT_CREDENTIALS)))
                 // 支持OIDC
                 .scopes(scopes -> scopes.addAll(List.of(
@@ -161,7 +153,7 @@ public class AuthorizationServerConfig {
                         .accessTokenTimeToLive(Duration.ofHours(1))
                         .refreshTokenTimeToLive(Duration.ofHours(6))
                         .build())
-                // 客户端相关配置，包括验证密钥或需要授权页面
+                // 客-/*+配置，包括验证密钥或需要授权页面
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
         // Save registered client in db as if in-memory
@@ -171,7 +163,7 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    public OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator(JwtEncoder jwtEncoder) {
+    OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator(JwtEncoder jwtEncoder) {
         JwtGenerator generator = new JwtGenerator(jwtEncoder);
         generator.setJwtCustomizer(new CustomTokenCustomizer());
         return new DelegatingOAuth2TokenGenerator(generator, new OAuth2RefreshTokenGenerator());
@@ -193,8 +185,12 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    UserDetailsService userDetailsService(SysUserDetailServiceImpl sysAuthApplicationServiceImpl) {
-        return sysAuthApplicationServiceImpl;
+    UserDetailsService userDetailsService(
+            SysUserServiceImpl sysUserService
+            , SysMenuService sysMenuService
+            , SysDeptService sysDeptService) {
+        return new SysUserDetailServiceImpl(sysUserService,sysMenuService
+                , sysDeptService);
     }
 
     @Bean
@@ -209,10 +205,9 @@ public class AuthorizationServerConfig {
     /**
      * 加载jwk资源
      * 生成令牌
-     * @return
-     */
+     * @return     */
     @Bean
-    public JWKSource<SecurityContext> jwkSource() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, JOSEException {
+    JWKSource<SecurityContext> jwkSource() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, JOSEException {
         String alias = "auth";
         String password = "koushenhai";
         String path = "auth.jks";
@@ -242,12 +237,12 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
+    JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
         return new NimbusJwtEncoder(jwkSource);
     }
 
     @Bean
-    public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
+    OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
         return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
     }
 

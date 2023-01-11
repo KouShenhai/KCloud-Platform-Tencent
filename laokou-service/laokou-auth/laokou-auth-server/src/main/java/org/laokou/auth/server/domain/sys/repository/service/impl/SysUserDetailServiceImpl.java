@@ -19,18 +19,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.laokou.auth.client.user.UserDetail;
 import org.laokou.auth.server.domain.sys.repository.service.SysDeptService;
 import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
-import org.laokou.common.core.utils.MessageUtil;
-import org.laokou.common.swagger.exception.ErrorCode;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 import java.util.List;
 /**
  * @author laokou
  */
-@Service
 @RequiredArgsConstructor
 public class SysUserDetailServiceImpl implements UserDetailsService {
 
@@ -42,17 +38,18 @@ public class SysUserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException {
         UserDetail userDetail = sysUserService.getUserDetail(loginName);
         if (userDetail == null) {
-            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
+            throw new BadCredentialsException("The account number or password is incorrect");
         }
+        // 是否锁定
         if (!userDetail.isEnabled()) {
-            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.ACCOUNT_DISABLE));
+            throw new BadCredentialsException("Account has been deactivated");
         }
         Long userId = userDetail.getUserId();
         Integer superAdmin = userDetail.getSuperAdmin();
         // 权限标识列表
         List<String> permissionsList = sysMenuService.getPermissionsList(superAdmin,userId);
         if (CollectionUtils.isEmpty(permissionsList)) {
-            throw new BadCredentialsException(MessageUtil.getMessage(ErrorCode.NOT_PERMISSIONS));
+            throw new BadCredentialsException("You do not have permission to access, please contact the administrator");
         }
         userDetail.setPermissionList(permissionsList);
         userDetail.setDeptIds(sysDeptService.getDeptIds(superAdmin,userId));
