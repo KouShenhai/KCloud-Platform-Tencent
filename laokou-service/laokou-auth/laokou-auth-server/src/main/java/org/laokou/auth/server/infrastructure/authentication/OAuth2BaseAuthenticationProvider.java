@@ -141,7 +141,7 @@ public abstract class OAuth2BaseAuthenticationProvider implements Authentication
                 .authorizedScopes(scopes)
                 .authorizationGrantType(grantType);
         // 生成access_token
-        OAuth2Token generatedOauth2AccessToken = Optional.ofNullable(tokenGenerator.generate(context)).orElseThrow(() -> new CustomException("令牌生成器无法生成访问令牌"));
+        OAuth2Token generatedOauth2AccessToken = Optional.ofNullable(tokenGenerator.generate(context)).orElseThrow(() -> CustomAuthExceptionHandler.getError(OAuth2ErrorCodes.SERVER_ERROR,"令牌生成器无法生成访问令牌",CustomAuthExceptionHandler.ERROR_URI));
         OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(
                 OAuth2AccessToken.TokenType.BEARER
                 , generatedOauth2AccessToken.getTokenValue()
@@ -165,7 +165,7 @@ public abstract class OAuth2BaseAuthenticationProvider implements Authentication
                 .tokenType(OAuth2TokenType.REFRESH_TOKEN)
                 .build();
         OAuth2Token generateOauth2RefreshToken = Optional.ofNullable(tokenGenerator.generate(context)).orElseThrow(() ->
-                new CustomException("令牌生成器无法生成刷新令牌"));
+                CustomAuthExceptionHandler.getError(OAuth2ErrorCodes.SERVER_ERROR,"令牌生成器无法生成刷新令牌",CustomAuthExceptionHandler.ERROR_URI));
         OAuth2RefreshToken oAuth2RefreshToken = (OAuth2RefreshToken) generateOauth2RefreshToken;
         authorizationBuilder.refreshToken(oAuth2RefreshToken);
         OAuth2Authorization oAuth2Authorization = authorizationBuilder.build();

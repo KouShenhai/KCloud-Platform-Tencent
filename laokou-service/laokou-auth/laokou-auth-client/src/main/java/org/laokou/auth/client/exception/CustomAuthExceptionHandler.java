@@ -31,6 +31,9 @@ import java.nio.charset.StandardCharsets;
  * @author laokou
  */
 public class CustomAuthExceptionHandler {
+
+    public static final String ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
+
     public static void handleException(HttpServletResponse response, int code, String message) throws IOException {
         response.setStatus(HttpStatus.HTTP_OK);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
@@ -41,8 +44,21 @@ public class CustomAuthExceptionHandler {
     }
 
     public static void throwError(int errorCode,String description) {
-        OAuth2Error error = new OAuth2Error("" + errorCode, description,"");
+        throwError("" + errorCode,description,"");
+    }
+
+    public static void throwError(String errorCode,String description) {
+        throwError(errorCode,description,"");
+    }
+
+    public static void throwError(String errorCode,String description,String uri) {
+        OAuth2Error error = new OAuth2Error(errorCode, description,uri);
         throw new OAuth2AuthenticationException(error);
+    }
+
+    public static OAuth2AuthenticationException getError(String errorCode,String description,String uri) {
+        OAuth2Error error = new OAuth2Error(errorCode, description,uri);
+        return new OAuth2AuthenticationException(error);
     }
 
 }
