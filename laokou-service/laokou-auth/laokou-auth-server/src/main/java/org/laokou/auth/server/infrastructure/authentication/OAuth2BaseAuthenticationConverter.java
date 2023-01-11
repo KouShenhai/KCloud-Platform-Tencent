@@ -15,12 +15,17 @@
  */
 package org.laokou.auth.server.infrastructure.authentication;
 import jakarta.servlet.http.HttpServletRequest;
+import org.laokou.auth.client.exception.CustomAuthExceptionHandler;
 import org.laokou.common.core.utils.HashUtil;
+import org.laokou.common.core.utils.MessageUtil;
+import org.laokou.common.swagger.exception.ErrorCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -49,10 +54,15 @@ public abstract class OAuth2BaseAuthenticationConverter implements Authenticatio
         if (!getGrantType().equals(grantType)) {
             return null;
         }
-        // 获取上下文认证信息
-        Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();
         // 构建请求参数集合
         MultiValueMap<String, String> parameters = HashUtil.getParameters(request);
+        // 判断scope
+        String scope = parameters.getFirst(OAuth2ParameterNames.SCOPE);
+        if (StringUtils.hasText(scope) && parameters.get(OAuth2ParameterNames.SCOPE).size() != 1) {
+            CustomAuthExceptionHandler.throwError(ErrorCode.INVALID_SCOPE, MessageUtil.getMessage(ErrorCode.INVALID_SCOPE));
+        }
+        // 获取上下文认证信息
+        Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();
         Map<String, Object> additionalParameters = new HashMap<>(parameters.size());
         parameters.forEach((key, value) -> {
             if (!key.equals(OAuth2ParameterNames.GRANT_TYPE) &&
