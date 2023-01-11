@@ -59,7 +59,7 @@ management:
     health:
       show-details: always
 
-# springdoc
+# springdoc 3
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

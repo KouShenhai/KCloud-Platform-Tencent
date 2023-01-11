@@ -16,14 +16,12 @@
 package org.laokou.auth.server.interfaces.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.laokou.auth.client.constant.AuthConstant;
 import org.laokou.auth.server.application.service.SysAuthApplicationService;
 import org.laokou.common.swagger.utils.HttpResult;
-import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.web.bind.annotation.*;
 /**
  * 系统认证控制器
@@ -37,31 +35,12 @@ public class SysAuthApiController {
 
     private final SysAuthApplicationService sysAuthApplicationService;
 
-    @GetMapping("/captcha")
-    @Operation(summary = "系统认证>验证码",description = "系统认证>验证码")
-    @Parameters(value = {
-              @Parameter(name = AuthConstant.UUID,description = "唯一标识",example = "1111")
-            , @Parameter(name = OAuth2ParameterNames.GRANT_TYPE,description = "认证类型",example = "password")
-    })
+    @GetMapping("/password/captcha")
+    @Operation(summary = "系统认证>账号密码登录>验证码",description = "系统认证>账号密码登录>验证码")
+    @Parameter(name = AuthConstant.UUID,description = "唯一标识",example = "1111")
     public HttpResult<String> captcha(HttpServletRequest request) {
         return new HttpResult<String>().ok(sysAuthApplicationService.captcha(request));
     }
-
-//    @PostMapping("/login")
-//    @Operation(summary = "系统认证>登录",description = "系统认证>登录")
-//    @Parameters(value = {
-//              @Parameter(name = OAuth2ParameterNames.USERNAME,description = "用户名",example = "admin")
-//            , @Parameter(name = OAuth2ParameterNames.PASSWORD,description = "密码",example = "admin123")
-//            , @Parameter(name = OAuth2ParameterNames.CLIENT_ID,description = "认证id",example = "auth-client")
-//            , @Parameter(name = OAuth2ParameterNames.CLIENT_SECRET,description = "认证密钥",example = "secret")
-//            , @Parameter(name = AuthConstant.UUID,description = "唯一标识",example = "1111")
-//            , @Parameter(name = AuthConstant.CAPTCHA,description = "验证码",example = "Bb6v")
-//            , @Parameter(name = OAuth2ParameterNames.SCOPE,description = "认证scope",example = "auth")
-//            , @Parameter(name = OAuth2ParameterNames.GRANT_TYPE,description = "认证类型",example = "password")
-//    })
-//    public HttpResult<AuthToken> login(HttpServletRequest request) throws IOException {
-//        return new HttpResult<AuthToken>().ok(sysAuthApplicationService.login(request));
-//    }
 
     @GetMapping("/logout")
     @Operation(summary = "系统认证>注销",description = "系统认证>注销")

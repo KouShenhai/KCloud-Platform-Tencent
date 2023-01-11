@@ -99,7 +99,7 @@ management:
 # 忽略uris
 ignore:
   uris:
-    - /oauth2/captcha
+    - /oauth2/password/captcha
     - /actuator/**
     - /ws/**
     - /favicon.ico
