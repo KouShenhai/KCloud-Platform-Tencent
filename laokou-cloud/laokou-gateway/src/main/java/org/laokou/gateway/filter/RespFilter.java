@@ -28,6 +28,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -49,6 +50,7 @@ public class RespFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 获取request对象
         ServerHttpRequest request = exchange.getRequest();
+        request.getHeaders();
         // 获取uri
         String requestUri = request.getPath().pathWithinApplication().value();
         // 表单提交
@@ -77,6 +79,8 @@ public class RespFilter implements GlobalFilter, Ordered {
                             int code = node.get(GatewayConstant.ERROR).asInt();
                             Map<String, Object> dataMap = ResponseUtil.response(code, msg);
                             byte[] uppedContent = JacksonUtil.toJsonStr(dataMap).getBytes();
+                            // 修改状态码
+                            response.setStatusCode(HttpStatus.OK);
                             return dataBufferFactory.wrap(uppedContent);
                         }));
                     }

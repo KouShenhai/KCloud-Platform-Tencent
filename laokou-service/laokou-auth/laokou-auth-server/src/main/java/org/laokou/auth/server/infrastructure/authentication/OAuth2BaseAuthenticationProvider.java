@@ -182,7 +182,7 @@ public abstract class OAuth2BaseAuthenticationProvider implements Authentication
             loginLogUtil.recordLogin(loginName,loginType, ResultStatusEnum.FAIL.ordinal(), MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR),request);
             CustomAuthExceptionHandler.throwError(ErrorCode.ACCOUNT_PASSWORD_ERROR, MessageUtil.getMessage(ErrorCode.ACCOUNT_PASSWORD_ERROR));
         }
-        if (OAuth2PasswordAuthenticationProvider.GRANT_TYPE.equals(grantType)) {
+        if (OAuth2PasswordAuthenticationProvider.GRANT_TYPE.equals(loginType)) {
             // 验证密码
             String clientPassword = userDetail.getPassword();
             if (!passwordEncoder.matches(password, clientPassword)) {
