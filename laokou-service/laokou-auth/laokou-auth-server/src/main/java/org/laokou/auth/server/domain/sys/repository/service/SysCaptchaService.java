@@ -22,7 +22,7 @@ public interface SysCaptchaService {
 
     /**
      * 图片验证码
-     * @param uuid
+     * @param uuid 唯一标识
      * @param code
      * @return
      */
