@@ -71,7 +71,7 @@ public class XssFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return Ordered.LOWEST_PRECEDENCE + 100;
+        return Ordered.HIGHEST_PRECEDENCE + 1000;
     }
 
 }

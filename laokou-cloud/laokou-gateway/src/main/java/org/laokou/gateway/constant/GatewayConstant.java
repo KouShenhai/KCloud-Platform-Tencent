@@ -15,12 +15,16 @@ public interface GatewayConstant {
     /**
      * 密码模式-请求地址
      */
-    String OAUTH2_AUTH_URI = "/oauth2/token";
+    String OAUTH2_AUTH_URI = "/**/oauth2/token";
 
     /**
      * 密码模式-用户名
      */
     String USERNAME = "username";
+
+    String ERROR_DESCRIPTION = "error_description";
+
+    String ERROR = "error";
 
     /**
      * 密码模式-密码
@@ -35,4 +39,6 @@ public interface GatewayConstant {
      * xss 白名单
      */
     String XSS_TICKET_VALUE = "xss-white";
+
+    int SUCCESS = 200;
 }

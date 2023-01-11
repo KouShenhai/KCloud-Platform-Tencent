@@ -40,7 +40,6 @@ import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.HandlerStrategies;
@@ -65,8 +64,6 @@ import java.util.function.Function;
 @ConfigurationProperties(prefix = "ignore")
 public class AuthFilter implements GlobalFilter,Ordered {
 
-    private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
-
     /**
      * 不拦截的urls
      */
@@ -87,7 +84,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
         }
         // 表单提交
         MediaType mediaType = request.getHeaders().getContentType();
-        if (ANT_PATH_MATCHER.match(GatewayConstant.OAUTH2_AUTH_URI,requestUri) && MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
+        if (ResponseUtil.ANT_PATH_MATCHER.match(GatewayConstant.OAUTH2_AUTH_URI,requestUri) && MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
             return authDecode(exchange,chain);
         }
         // 获取token
@@ -183,7 +180,7 @@ public class AuthFilter implements GlobalFilter,Ordered {
      */
     private boolean pathMatcher(String requestUri) {
         for (String url : uris) {
-            if (ANT_PATH_MATCHER.match(url, requestUri)) {
+            if (ResponseUtil.ANT_PATH_MATCHER.match(url, requestUri)) {
                 return true;
             }
         }

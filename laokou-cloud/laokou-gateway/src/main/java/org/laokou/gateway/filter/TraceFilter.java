@@ -60,6 +60,6 @@ public class TraceFilter implements GlobalFilter,Ordered {
 
     @Override
     public int getOrder() {
-        return Ordered.LOWEST_PRECEDENCE + 1000;
+        return Ordered.HIGHEST_PRECEDENCE + 2000;
     }
 }

@@ -23,6 +23,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -33,6 +34,7 @@ import java.util.Map;
  * @author laokou
  */
 public class ResponseUtil {
+    public static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
     /**
      * 前端响应
@@ -45,6 +47,13 @@ public class ResponseUtil {
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
         exchange.getResponse().setStatusCode(HttpStatus.OK);
         return exchange.getResponse().writeWith(Flux.just(buffer));
+    }
+
+    public static Map<String,Object> response(int code,String msg) {
+       Map<String,Object> dataMap = new HashMap<>(2);
+       dataMap.put("code",code);
+       dataMap.put("msg",msg);
+       return dataMap;
     }
 
     public static Map<String,Object> error(GatewayException gatewayException) {
