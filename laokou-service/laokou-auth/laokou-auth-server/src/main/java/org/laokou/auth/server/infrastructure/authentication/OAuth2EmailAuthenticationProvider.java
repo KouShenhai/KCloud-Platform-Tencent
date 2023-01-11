@@ -56,7 +56,7 @@ public class OAuth2EmailAuthenticationProvider extends OAuth2BaseAuthenticationP
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return OAuth2EmailAuthenticationProvider.class.isAssignableFrom(authentication);
+        return OAuth2EmailAuthenticationToken.class.isAssignableFrom(authentication);
     }
 
     @Override

@@ -27,7 +27,7 @@ ABHb
 
 #########
 
-# @no-redirect
+# 手机登录
 POST http://localhost:1111/oauth2/token
 Authorization: Basic YXV0aC1jbGllbnQ6c2VjcmV0
 Content-Type: multipart/form-data; boundary=WebAppBoundary

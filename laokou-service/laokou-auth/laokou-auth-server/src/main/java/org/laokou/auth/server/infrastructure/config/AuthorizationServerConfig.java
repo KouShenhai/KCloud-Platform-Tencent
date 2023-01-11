@@ -25,10 +25,7 @@ import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.SysUserService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserDetailServiceImpl;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
-import org.laokou.auth.server.infrastructure.authentication.OAuth2EmailAuthenticationProvider;
-import org.laokou.auth.server.infrastructure.authentication.OAuth2PasswordAuthenticationConverter;
-import org.laokou.auth.server.infrastructure.authentication.OAuth2PasswordAuthenticationProvider;
-import org.laokou.auth.server.infrastructure.authentication.OAuth2SmsAuthenticationProvider;
+import org.laokou.auth.server.infrastructure.authentication.*;
 import org.laokou.auth.server.infrastructure.customizer.CustomTokenCustomizer;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.springframework.context.annotation.Bean;
@@ -111,6 +108,8 @@ public class AuthorizationServerConfig {
                 .apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(new DelegatingAuthenticationConverter(
                 List.of(
                         new OAuth2PasswordAuthenticationConverter()
+                        , new OAuth2SmsAuthenticationConverter()
+                        , new OAuth2EmailAuthenticationConverter()
                         , new OAuth2AuthorizationCodeAuthenticationConverter()
                         , new OAuth2ClientCredentialsAuthenticationConverter()
                         , new OAuth2RefreshTokenAuthenticationConverter()
