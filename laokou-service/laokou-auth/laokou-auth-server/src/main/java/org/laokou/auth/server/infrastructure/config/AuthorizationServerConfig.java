@@ -168,10 +168,9 @@ public class AuthorizationServerConfig {
                         .accessTokenTimeToLive(Duration.ofHours(1))
                         .refreshTokenTimeToLive(Duration.ofHours(6))
                         .build())
-                // 客-/*+配置，包括验证密钥或需要授权页面
+                // 客户端配置，包括验证密钥或需要授权页面
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
-        // Save registered client in db as if in-memory
         JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
         registeredClientRepository.save(registeredClient);
         return registeredClientRepository;
