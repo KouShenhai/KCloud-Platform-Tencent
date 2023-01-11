@@ -25,7 +25,10 @@ import org.laokou.auth.server.domain.sys.repository.service.SysMenuService;
 import org.laokou.auth.server.domain.sys.repository.service.SysUserService;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserDetailServiceImpl;
 import org.laokou.auth.server.domain.sys.repository.service.impl.SysUserServiceImpl;
+import org.laokou.auth.server.infrastructure.authentication.OAuth2EmailAuthenticationProvider;
+import org.laokou.auth.server.infrastructure.authentication.OAuth2PasswordAuthenticationConverter;
 import org.laokou.auth.server.infrastructure.authentication.OAuth2PasswordAuthenticationProvider;
+import org.laokou.auth.server.infrastructure.authentication.OAuth2SmsAuthenticationProvider;
 import org.laokou.auth.server.infrastructure.customizer.CustomTokenCustomizer;
 import org.laokou.auth.server.infrastructure.log.LoginLogUtil;
 import org.springframework.context.annotation.Bean;
@@ -107,7 +110,8 @@ public class AuthorizationServerConfig {
         http.exceptionHandling(configurer -> configurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
                 .apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(new DelegatingAuthenticationConverter(
                 List.of(
-                        new OAuth2AuthorizationCodeAuthenticationConverter()
+                        new OAuth2PasswordAuthenticationConverter()
+                        , new OAuth2AuthorizationCodeAuthenticationConverter()
                         , new OAuth2ClientCredentialsAuthenticationConverter()
                         , new OAuth2RefreshTokenAuthenticationConverter()
                         , new OAuth2AuthorizationCodeRequestAuthenticationConverter())))));
@@ -122,10 +126,10 @@ public class AuthorizationServerConfig {
                         .authorizationService(authorizationService)
                         .authorizationServerSettings(authorizationServerSettings))
                 .and()
-                .apply(new FormConfig())
-                .and()
                 .build();
-        http.authenticationProvider(new OAuth2PasswordAuthenticationProvider(sysUserService,sysMenuService,sysDeptService,loginLogUtil,passwordEncoder,sysCaptchaService,authorizationService,tokenGenerator));
+        http.authenticationProvider(new OAuth2PasswordAuthenticationProvider(sysUserService,sysMenuService,sysDeptService,loginLogUtil,passwordEncoder,sysCaptchaService,authorizationService,tokenGenerator))
+                .authenticationProvider(new OAuth2SmsAuthenticationProvider(sysUserService,sysMenuService,sysDeptService,loginLogUtil,passwordEncoder,sysCaptchaService,authorizationService,tokenGenerator))
+                .authenticationProvider(new OAuth2EmailAuthenticationProvider(sysUserService,sysMenuService,sysDeptService,loginLogUtil,passwordEncoder,sysCaptchaService,authorizationService,tokenGenerator));
         return defaultSecurityFilterChain;
     }
 
@@ -142,6 +146,8 @@ public class AuthorizationServerConfig {
                         List.of(AuthorizationGrantType.AUTHORIZATION_CODE
                                 , AuthorizationGrantType.REFRESH_TOKEN
                                 , new AuthorizationGrantType(OAuth2PasswordAuthenticationProvider.GRANT_TYPE)
+                                , new AuthorizationGrantType(OAuth2EmailAuthenticationProvider.GRANT_TYPE)
+                                , new AuthorizationGrantType(OAuth2SmsAuthenticationProvider.GRANT_TYPE)
                                 , AuthorizationGrantType.CLIENT_CREDENTIALS)))
                 // 支持OIDC
                 .scopes(scopes -> scopes.addAll(List.of(

@@ -89,6 +89,11 @@ public abstract class OAuth2BaseAuthenticationProvider implements Authentication
         return getToken(authentication,usernamePasswordToken);
     }
 
+    /**
+     * Token是否支持认证（provider）
+     * @param authentication
+     * @return
+     */
     abstract public boolean supports(Class<?> authentication);
 
     /**
