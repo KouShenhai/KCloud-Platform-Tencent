@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.laokou.email.server;
+package org.laokou.mail.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,10 +22,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author laokou
  */
 @SpringBootApplication
-public class EmailApplication {
+public class MailApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EmailApplication.class, args);
+        SpringApplication.run(MailApplication.class, args);
     }
 
 }

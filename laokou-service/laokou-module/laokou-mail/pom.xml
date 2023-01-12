@@ -7,11 +7,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.laokou</groupId>
-    <artifactId>laokou-email</artifactId>
+    <artifactId>laokou-mail</artifactId>
     <packaging>pom</packaging>
     <version>3.0.1</version>
     <modules>
-        <module>laokou-email-client</module>
-        <module>laokou-email-server</module>
+        <module>laokou-mail-client</module>
+        <module>laokou-mail-server</module>
     </modules>
 </project>

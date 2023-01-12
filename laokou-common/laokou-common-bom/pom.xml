@@ -336,12 +336,12 @@
             </dependency>
             <dependency>
                 <groupId>org.laokou</groupId>
-                <artifactId>laokou-email-client</artifactId>
+                <artifactId>laokou-mail-client</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.laokou</groupId>
-                <artifactId>laokou-email-server</artifactId>
+                <artifactId>laokou-mail-server</artifactId>
                 <version>${laokou.version}</version>
             </dependency>
             <dependency>

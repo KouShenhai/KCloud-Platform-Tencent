@@ -3,17 +3,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>laokou-email</artifactId>
+        <artifactId>laokou-mail</artifactId>
         <groupId>org.laokou</groupId>
         <version>3.0.1</version>
     </parent>
     <groupId>org.laokou</groupId>
-    <artifactId>laokou-email-server</artifactId>
+    <artifactId>laokou-mail-server</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.laokou</groupId>
-            <artifactId>laokou-email-client</artifactId>
+            <artifactId>laokou-mail-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -34,7 +34,7 @@
                 <configuration>
                     <finalName>${project.artifactId}</finalName>
                     <!-- main方法的地址 只需要修改这个地址-->
-                    <mainClass>org.laokou.email.server.EmailApplication</mainClass>
+                    <mainClass>org.laokou.mail.server.MailApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
