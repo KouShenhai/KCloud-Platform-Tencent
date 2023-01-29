@@ -1,3 +1,11 @@
+# 老夫时间有限，主要维护基于阿里巴巴的脚手架
+# 项目地址
+# Gitub 后端地址：[KCloud-Platform-Alibaba](https://github.com/KouShenhai/KCloud-Platform-Alibaba)  
+# Gitub 前端地址：[KCloud-Antdv-Alibaba](https://github.com/KouShenhai/KCloud-Antdv-Alibaba)  
+
+# Gtiee 后端地址：[KCloud-Platform-Alibaba](https://gitee.com/laokouyun/KCloud-Platform-Alibaba)  
+# Gitee 前端地址：[KCloud-Antdv-Alibaba](https://gitee.com/laokouyun/KCloud-Antdv-Alibaba)  
+
 ### 项目备注
 项目：KCloud-Platform-Tencent  
 作者：老寇  
