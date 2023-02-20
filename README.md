@@ -3,7 +3,7 @@
 作者：老寇  
 语言：Java  
 职位：Java工程师  
-时间：2020.06.08 ~ 至今  
+时间：2020.09.23 ~ 至今  
 
 ### 项目介绍
 KCloud-Platform-Tencent（老寇云平台）是一款企业级微服务架构的云服务平台。基于Spring Boot 3.0.1、Spring Cloud 2022.0.0、Spring Cloud Tencent 1.8.2-2022.0.0最新版本开发，
